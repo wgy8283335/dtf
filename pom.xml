@@ -10,6 +10,7 @@
     <version>0.1</version>
     <modules>
         <module>dtf-client-core</module>
+        <module>springdemo</module>
     </modules>
 
     <properties>
