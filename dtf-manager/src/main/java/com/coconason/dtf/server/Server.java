@@ -23,10 +23,11 @@ public class Server {
     }
 
     public static void main(String[] args) throws Exception{
-        if(args.length != 1){
-            System.err.println("Usage:"+Server.class.getSimpleName()+"<port>");
-        }
-        int port = Integer.parseInt(args[0]);
+//        if(args.length != 1){
+//            System.err.println("Usage:"+Server.class.getSimpleName()+"<port>");
+//        }
+//        int port = Integer.parseInt(args[0]);
+        int port = 8848;
         new Server(port).start();
     }
 
