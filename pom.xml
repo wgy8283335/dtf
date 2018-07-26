@@ -11,6 +11,10 @@
     <modules>
         <module>dtf-client-core</module>
         <module>springdemo</module>
+        <module>dtfmanager</module>
+        <module>dtf-manager</module>
+        <module>netty-client-demo</module>
+        <module>dtfclientdemo</module>
     </modules>
 
     <properties>
