@@ -10,19 +10,26 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class NettyMessageDecoder extends LengthFieldBasedFrameDecoder {
+public class NettyMessageDecoder extends LengthFieldBasedFrameDecoder
+{
 
-    MarshallingDecoder marshallingDecoder;
+	NettyMarshallingDecoder marshallingDecoder;
 
-    public NettyMessageDecoder(int maxFrameLength, int lengthFieldOffset,int lengthFieldLength) throws IOException {
-		super(maxFrameLength, lengthFieldOffset, lengthFieldLength);
-		marshallingDecoder = new MarshallingDecoder();
-    }
+	public NettyMessageDecoder(int maxFrameLength, int lengthFieldOffset, int lengthFieldLength, int lengthAdjustment,
+							   int initialBytesToStrip) throws IOException
+	{
+		super(maxFrameLength, lengthFieldOffset, lengthFieldLength, lengthAdjustment, initialBytesToStrip);
 
-    @Override
-    protected Object decode(ChannelHandlerContext ctx, ByteBuf in) throws Exception {
+		marshallingDecoder = MarshallingCodeCFactory.buildMarshallingDecoder();
+	}
+
+	@Override
+	protected Object decode(ChannelHandlerContext ctx, ByteBuf in) throws Exception
+	{
 		ByteBuf frame = (ByteBuf) super.decode(ctx, in);
-		if (frame == null) {
+		if (frame == null)
+		{
+			System.out.println("解码器返回null");
 			return null;
 		}
 
@@ -34,27 +41,30 @@ public class NettyMessageDecoder extends LengthFieldBasedFrameDecoder {
 		header.setType(frame.readByte());
 		header.setPriority(frame.readByte());
 
-		int size = frame.readInt();
-		if (size > 0) {
-			Map<String, Object> attch = new HashMap<String, Object>(size);
-			int keySize = 0;
-			byte[] keyArray = null;
-			String key = null;
-			for (int i = 0; i < size; i++) {
-				keySize = frame.readInt();
-				keyArray = new byte[keySize];
+		// 得到附件个数
+		int attachSize = frame.readInt();
+		if (attachSize > 0)
+		{
+			Map<String, Object> attachment = new HashMap<>();
+			for (int i = 0; i < attachSize; i++)
+			{
+				int keySize = frame.readInt();
+				byte[] keyArray = new byte[keySize];
 				frame.readBytes(keyArray);
-				key = new String(keyArray, "UTF-8");
-				attch.put(key, marshallingDecoder.decode(frame));
+				String key = new String(keyArray, "UTF-8");
+				Object val = marshallingDecoder.decode(ctx, frame);
+				attachment.put(key, val);
 			}
-			keyArray = null;
-			key = null;
-			header.setAttachment(attch);
+			header.setAttachment(attachment);
 		}
-		if (frame.readableBytes() > 4) {
-			message.setBody(marshallingDecoder.decode(frame));
+
+		if (frame.readableBytes() > 0)
+		{
+			message.setBody(marshallingDecoder.decode(ctx, frame));
 		}
 		message.setHeader(header);
 		return message;
-    }
+
+	}
+
 }
