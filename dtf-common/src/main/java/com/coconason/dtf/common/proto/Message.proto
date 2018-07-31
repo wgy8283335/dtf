@@ -1,0 +1,20 @@
+option java_package = "com.coconason.dtf.common.protobuf";
+option java_outer_classname = "MessageProto";
+
+message Message{
+    optional int32 crcCode=100001;
+
+    optional int32 length=100002;
+
+    optional int64 sessionID=100003;
+
+    optional int32 type=100004;
+
+    optional int32 priority=100005;
+
+    optional bytes data=100006;
+
+    optional int32 action=100007;
+
+    optional int64 key=100008;
+}

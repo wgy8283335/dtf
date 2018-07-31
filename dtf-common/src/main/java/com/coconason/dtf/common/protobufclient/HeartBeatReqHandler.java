@@ -1,12 +1,9 @@
-package com.coconason.dtf.common.client;
+package com.coconason.dtf.common.protobufclient;
 
-
-import com.coconason.dtf.common.object.Header;
 import com.coconason.dtf.common.object.MessageType;
-import com.coconason.dtf.common.object.NettyMessage;
+import com.coconason.dtf.common.protobuf.MessageProto;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
@@ -20,11 +17,10 @@ public class HeartBeatReqHandler extends ChannelInboundHandlerAdapter
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception
 	{
 		// 如果握手成功，主动发送心跳消息
-		NettyMessage message = (NettyMessage) msg;
-		Header header = message.getHeader();
-		if (header != null)
+		MessageProto.Message message = (MessageProto.Message) msg;
+		if (message.getLength() != 100002)
 		{
-			if (header.getType() == MessageType.LOGIN_RESP)
+			if (message.getType() == MessageType.LOGIN_RESP)
 			{
 				if (heartBeat == null)
 				{
@@ -34,7 +30,7 @@ public class HeartBeatReqHandler extends ChannelInboundHandlerAdapter
 							TimeUnit.MILLISECONDS);
 				}
 			}
-			else if (header.getType() == MessageType.HEARTBEAT_RESP)
+			else if (message.getType() == MessageType.HEARTBEAT_RESP)
 			{
 				System.out.println("Client receive server heart beat message :" + message);
 			}
@@ -90,14 +86,11 @@ public class HeartBeatReqHandler extends ChannelInboundHandlerAdapter
 
 	}
 
-	private NettyMessage buildHeartBeat()
+	private MessageProto.Message buildHeartBeat()
 	{
-		NettyMessage heartBeat = new NettyMessage();
-		Header header = new Header();
-		header.setType(MessageType.HEARTBEAT_REQ);
-		heartBeat.setHeader(header);
-		heartBeat.setBody(null);
-		return heartBeat;
+		MessageProto.Message.Builder builder = MessageProto.Message.newBuilder();
+		builder.setType(MessageType.HEARTBEAT_REQ);
+		return builder.build();
 	}
 
 }
