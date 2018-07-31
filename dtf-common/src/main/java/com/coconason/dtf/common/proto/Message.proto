@@ -12,7 +12,7 @@ message Message{
 
     optional int32 priority=100005;
 
-    optional bytes data=100006;
+    optional string data=100006;
 
     optional int32 action=100007;
 

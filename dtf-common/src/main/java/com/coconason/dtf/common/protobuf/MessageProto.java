@@ -61,15 +61,20 @@ public final class MessageProto {
      */
     int getPriority();
 
-    // optional bytes data = 100006;
+    // optional string data = 100006;
     /**
-     * <code>optional bytes data = 100006;</code>
+     * <code>optional string data = 100006;</code>
      */
     boolean hasData();
     /**
-     * <code>optional bytes data = 100006;</code>
+     * <code>optional string data = 100006;</code>
      */
-    com.google.protobuf.ByteString getData();
+    String getData();
+    /**
+     * <code>optional string data = 100006;</code>
+     */
+    com.google.protobuf.ByteString
+        getDataBytes();
 
     // optional int32 action = 100007;
     /**
@@ -302,20 +307,47 @@ public final class MessageProto {
       return priority_;
     }
 
-    // optional bytes data = 100006;
+    // optional string data = 100006;
     public static final int DATA_FIELD_NUMBER = 100006;
-    private com.google.protobuf.ByteString data_;
+    private Object data_;
     /**
-     * <code>optional bytes data = 100006;</code>
+     * <code>optional string data = 100006;</code>
      */
     public boolean hasData() {
       return ((bitField0_ & 0x00000020) == 0x00000020);
     }
     /**
-     * <code>optional bytes data = 100006;</code>
+     * <code>optional string data = 100006;</code>
      */
-    public com.google.protobuf.ByteString getData() {
-      return data_;
+    public String getData() {
+      Object ref = data_;
+      if (ref instanceof String) {
+        return (String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          data_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string data = 100006;</code>
+     */
+    public com.google.protobuf.ByteString
+        getDataBytes() {
+      Object ref = data_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (String) ref);
+        data_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
 
     // optional int32 action = 100007;
@@ -356,7 +388,7 @@ public final class MessageProto {
       sessionID_ = 0L;
       type_ = 0;
       priority_ = 0;
-      data_ = com.google.protobuf.ByteString.EMPTY;
+      data_ = "";
       action_ = 0;
       key_ = 0L;
     }
@@ -388,7 +420,7 @@ public final class MessageProto {
         output.writeInt32(100005, priority_);
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        output.writeBytes(100006, data_);
+        output.writeBytes(100006, getDataBytes());
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
         output.writeInt32(100007, action_);
@@ -427,7 +459,7 @@ public final class MessageProto {
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(100006, data_);
+          .computeBytesSize(100006, getDataBytes());
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
         size += com.google.protobuf.CodedOutputStream
@@ -563,7 +595,7 @@ public final class MessageProto {
         bitField0_ = (bitField0_ & ~0x00000008);
         priority_ = 0;
         bitField0_ = (bitField0_ & ~0x00000010);
-        data_ = com.google.protobuf.ByteString.EMPTY;
+        data_ = "";
         bitField0_ = (bitField0_ & ~0x00000020);
         action_ = 0;
         bitField0_ = (bitField0_ & ~0x00000040);
@@ -661,7 +693,9 @@ public final class MessageProto {
           setPriority(other.getPriority());
         }
         if (other.hasData()) {
-          setData(other.getData());
+          bitField0_ |= 0x00000020;
+          data_ = other.data_;
+          onChanged();
         }
         if (other.hasAction()) {
           setAction(other.getAction());
@@ -861,24 +895,49 @@ public final class MessageProto {
         return this;
       }
 
-      // optional bytes data = 100006;
-      private com.google.protobuf.ByteString data_ = com.google.protobuf.ByteString.EMPTY;
+      // optional string data = 100006;
+      private Object data_ = "";
       /**
-       * <code>optional bytes data = 100006;</code>
+       * <code>optional string data = 100006;</code>
        */
       public boolean hasData() {
         return ((bitField0_ & 0x00000020) == 0x00000020);
       }
       /**
-       * <code>optional bytes data = 100006;</code>
+       * <code>optional string data = 100006;</code>
        */
-      public com.google.protobuf.ByteString getData() {
-        return data_;
+      public String getData() {
+        Object ref = data_;
+        if (!(ref instanceof String)) {
+          String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          data_ = s;
+          return s;
+        } else {
+          return (String) ref;
+        }
       }
       /**
-       * <code>optional bytes data = 100006;</code>
+       * <code>optional string data = 100006;</code>
        */
-      public Builder setData(com.google.protobuf.ByteString value) {
+      public com.google.protobuf.ByteString
+          getDataBytes() {
+        Object ref = data_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (String) ref);
+          data_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string data = 100006;</code>
+       */
+      public Builder setData(
+          String value) {
         if (value == null) {
     throw new NullPointerException();
   }
@@ -888,11 +947,24 @@ public final class MessageProto {
         return this;
       }
       /**
-       * <code>optional bytes data = 100006;</code>
+       * <code>optional string data = 100006;</code>
        */
       public Builder clearData() {
         bitField0_ = (bitField0_ & ~0x00000020);
         data_ = getDefaultInstance().getData();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string data = 100006;</code>
+       */
+      public Builder setDataBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+        data_ = value;
         onChanged();
         return this;
       }
@@ -991,7 +1063,7 @@ public final class MessageProto {
       "\n\rMessage.proto\"\230\001\n\007Message\022\021\n\007crcCode\030\241" +
       "\215\006 \001(\005\022\020\n\006length\030\242\215\006 \001(\005\022\023\n\tsessionID\030\243\215" +
       "\006 \001(\003\022\016\n\004type\030\244\215\006 \001(\005\022\022\n\010priority\030\245\215\006 \001(" +
-      "\005\022\016\n\004data\030\246\215\006 \001(\014\022\020\n\006action\030\247\215\006 \001(\005\022\r\n\003k" +
+      "\005\022\016\n\004data\030\246\215\006 \001(\t\022\020\n\006action\030\247\215\006 \001(\005\022\r\n\003k" +
       "ey\030\250\215\006 \001(\003B1\n!com.coconason.dtf.common.p" +
       "rotobufB\014MessageProto"
     };

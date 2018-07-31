@@ -1,8 +1,6 @@
 package com.coconason.dtf.common.protobufserver;
 
-import com.coconason.dtf.common.object.Header;
-import com.coconason.dtf.common.object.MessageType;
-import com.coconason.dtf.common.object.NettyMessage;
+import com.coconason.dtf.common.constant.MessageType;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -79,6 +77,7 @@ public class LoginAuthRespHandler extends ChannelInboundHandlerAdapter
     {
         MessageProto.Message.Builder builder= MessageProto.Message.newBuilder();
         builder.setType(MessageType.LOGIN_RESP);
+        builder.setData(result);
         return builder.build();
     }
 

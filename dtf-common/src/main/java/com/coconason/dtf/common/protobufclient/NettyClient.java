@@ -1,7 +1,5 @@
 package com.coconason.dtf.common.protobufclient;
 
-import com.coconason.dtf.common.codec.NettyMessageDecoder;
-import com.coconason.dtf.common.codec.NettyMessageEncoder;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
@@ -16,7 +14,6 @@ import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import io.netty.handler.timeout.ReadTimeoutHandler;
-
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -77,7 +74,6 @@ public class NettyClient
 			this.host = host;
 			this.port = port;
 		}
-
 		@Override
 		public void run(){
 			try{
@@ -87,5 +83,9 @@ public class NettyClient
 				e.printStackTrace();
 			}
 		}
+
+//		public void run() {
+//
+//		}
 	}
 }

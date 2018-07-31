@@ -1,7 +1,5 @@
 package com.coconason.dtf.common.protobufserver;
 
-import com.coconason.dtf.common.codec.NettyMessageDecoder;
-import com.coconason.dtf.common.codec.NettyMessageEncoder;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;

@@ -1,4 +1,4 @@
-package com.coconason.dtf.common.object;
+package com.coconason.dtf.common.constant;
 
 
 public interface MessageType {
