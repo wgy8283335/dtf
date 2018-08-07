@@ -1,6 +1,5 @@
 package com.coconason.dtf.client.core.spring.interceptor;
 
-import com.coconason.dtf.client.core.nettyclient.Client;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;

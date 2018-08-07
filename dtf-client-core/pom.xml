@@ -17,7 +17,6 @@
             <artifactId>spring-context</artifactId>
             <version>4.3.18.RELEASE</version>
         </dependency>
-
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjrt</artifactId>
@@ -32,6 +31,11 @@
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
             <version>4.1.16.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>com.coconason</groupId>
+            <artifactId>dtf-common</artifactId>
+            <version>0.1</version>
         </dependency>
     </dependencies>
     <build>

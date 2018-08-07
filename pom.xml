@@ -10,11 +10,7 @@
     <version>0.1</version>
     <modules>
         <module>dtf-client-core</module>
-        <module>springdemo</module>
-        <module>dtfmanager</module>
         <module>dtf-manager</module>
-        <module>netty-client-demo</module>
-        <module>dtfclientdemo</module>
         <module>dtf-common</module>
     </modules>
 
