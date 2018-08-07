@@ -15,6 +15,7 @@
         <module>dtf-manager</module>
         <module>netty-client-demo</module>
         <module>dtfclientdemo</module>
+        <module>dtf-common</module>
     </modules>
 
     <properties>
