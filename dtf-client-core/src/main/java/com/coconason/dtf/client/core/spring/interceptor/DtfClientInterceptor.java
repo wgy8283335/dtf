@@ -16,7 +16,7 @@ public class DtfClientInterceptor {
     @Around("@annotation(com.coconason.dtf.client.core.annotation.DtfTransaction)")
     public Object dtfTransactionExecute(ProceedingJoinPoint joinPoint)throws Throwable{
         System.out.println("Start to proceed Aspect");
-        new Client("localhost", 8848).start();
+        //new Client("localhost", 8848).start();
         Object result = joinPoint.proceed();
         System.out.println("End to proceed Aspect");
         return result;
