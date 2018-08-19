@@ -1,6 +1,5 @@
 package com.coconason.dtf.client.core.spring.http;
 
-import com.coconason.dtf.client.core.aop.bean.TxTransactionLocal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpRequest;
@@ -22,7 +21,7 @@ public class DtfHttpRequestInterceptor implements ClientHttpRequestInterceptor {
         TxTransactionLocal txTransactionLocal = TxTransactionLocal.current();
         String groupId = txTransactionLocal == null ? null : txTransactionLocal.getGroupId();
 
-        logger.debug("LCN-SpringCloud TxGroup info -> groupId:"+groupId);
+        logger.debug("DTF-SpringCloud TxGroup info -> groupId:"+groupId);
 
         if(txTransactionLocal!=null) {
             httpRequest.getHeaders().add("tx-group", groupId);
