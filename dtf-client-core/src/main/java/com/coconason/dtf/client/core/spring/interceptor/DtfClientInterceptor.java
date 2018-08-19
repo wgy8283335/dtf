@@ -17,7 +17,8 @@ public class DtfClientInterceptor {
     public Object dtfTransactionExecute(ProceedingJoinPoint joinPoint)throws Throwable{
         System.out.println("Start to proceed Aspect");
         //new Client("localhost", 8848).start();
-        Object result = joinPoint.proceed();
+        //Object result = joinPoint.proceed();
+
         System.out.println("End to proceed Aspect");
         return result;
     }
