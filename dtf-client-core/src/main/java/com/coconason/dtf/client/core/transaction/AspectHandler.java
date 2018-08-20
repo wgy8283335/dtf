@@ -25,7 +25,11 @@ public class AspectHandler {
         if (transactional == null) {
             transactional = clazz.getAnnotation(Transactional.class);
         }
-
+        //When the service is creator,should create groupId and store in public object.
+        //Then execute the program.And if the program has transactional operation in database,
+        //should use database proxy to send transaction information to the transaction server.
+        //At the end send submit request to the server, and listen the response from server.
+        //If success, submit transaction by database proxy.If fail,cancel transaction by database proxy.
 
 
         return null;
