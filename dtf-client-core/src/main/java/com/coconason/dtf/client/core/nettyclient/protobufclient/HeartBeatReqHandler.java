@@ -1,6 +1,7 @@
 package com.coconason.dtf.client.core.nettyclient.protobufclient;
 
 import com.coconason.dtf.common.constant.MessageType;
+import com.coconason.dtf.common.protobuf.MessageProto;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
@@ -18,7 +19,7 @@ public class HeartBeatReqHandler extends ChannelInboundHandlerAdapter
 	{
 		// 如果握手成功，主动发送心跳消息
 		MessageProto.Message message = (MessageProto.Message) msg;
-		if (message.getLength() != 100002)
+		if (message.getLength() != 2)
 		{
 			if (message.getType() == MessageType.LOGIN_RESP)
 			{

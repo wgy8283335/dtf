@@ -1,5 +1,6 @@
 package com.coconason.dtf.server.protobufserver;
 
+import com.coconason.dtf.common.protobuf.MessageProto;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -53,6 +54,7 @@ public class NettyServer
                             ch.pipeline().addLast(new ProtobufEncoder());
                             ch.pipeline().addLast(new ReadTimeoutHandler(50));
                             ch.pipeline().addLast(new LoginAuthRespHandler());
+                            ch.pipeline().addLast(new ServerTransactionHandler());
                             ch.pipeline().addLast(new HeartBeatRespHandler());
                         }
                     });

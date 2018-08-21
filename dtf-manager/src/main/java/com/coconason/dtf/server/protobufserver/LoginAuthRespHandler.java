@@ -1,6 +1,7 @@
 package com.coconason.dtf.server.protobufserver;
 
 import com.coconason.dtf.common.constant.MessageType;
+import com.coconason.dtf.common.protobuf.MessageProto;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
@@ -30,7 +31,7 @@ public class LoginAuthRespHandler extends ChannelInboundHandlerAdapter
     {
         MessageProto.Message message = (MessageProto.Message) msg;
         // 如果是握手请求消息
-        if (message.getLength() != 100002 && message.getType() == MessageType.LOGIN_REQ)
+        if (message.getLength() != 2 && message.getType() == MessageType.LOGIN_REQ)
         {
             System.out.println("receive client login req : " + message);
             MessageProto.Message loginResp = null;
@@ -76,7 +77,7 @@ public class LoginAuthRespHandler extends ChannelInboundHandlerAdapter
     {
         MessageProto.Message.Builder builder= MessageProto.Message.newBuilder();
         builder.setType(MessageType.LOGIN_RESP);
-        builder.setData(result);
+        builder.setInfo(result);
         return builder.build();
     }
 

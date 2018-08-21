@@ -1,6 +1,6 @@
 package com.coconason.dtf.client.core.nettyclient.protobufclient;
 
-
+import com.coconason.dtf.common.protobuf.MessageProto;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -22,6 +22,7 @@ import java.util.concurrent.TimeUnit;
 
 public class NettyClient
 {
+
 
 	private ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(1);
 
@@ -53,6 +54,7 @@ public class NettyClient
 							ch.pipeline().addLast(new ProtobufEncoder());
 							ch.pipeline().addLast(new ReadTimeoutHandler(50));
 							ch.pipeline().addLast(new LoginAuthReqHandler());
+							ch.pipeline().addLast(new ClientTransactionHandler());
 							ch.pipeline().addLast(new HeartBeatReqHandler());
 						}
 					});
