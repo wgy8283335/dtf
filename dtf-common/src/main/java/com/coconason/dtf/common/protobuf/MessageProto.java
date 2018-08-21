@@ -11,90 +11,90 @@ public final class MessageProto {
   public interface MessageOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
 
-    // optional int32 crcCode = 100001;
+    // optional int32 crcCode = 1;
     /**
-     * <code>optional int32 crcCode = 100001;</code>
+     * <code>optional int32 crcCode = 1;</code>
      */
     boolean hasCrcCode();
     /**
-     * <code>optional int32 crcCode = 100001;</code>
+     * <code>optional int32 crcCode = 1;</code>
      */
     int getCrcCode();
 
-    // optional int32 length = 100002;
+    // optional int32 length = 2;
     /**
-     * <code>optional int32 length = 100002;</code>
+     * <code>optional int32 length = 2;</code>
      */
     boolean hasLength();
     /**
-     * <code>optional int32 length = 100002;</code>
+     * <code>optional int32 length = 2;</code>
      */
     int getLength();
 
-    // optional int64 sessionID = 100003;
+    // optional int64 sessionID = 3;
     /**
-     * <code>optional int64 sessionID = 100003;</code>
+     * <code>optional int64 sessionID = 3;</code>
      */
     boolean hasSessionID();
     /**
-     * <code>optional int64 sessionID = 100003;</code>
+     * <code>optional int64 sessionID = 3;</code>
      */
     long getSessionID();
 
-    // optional int32 type = 100004;
+    // optional int32 type = 4;
     /**
-     * <code>optional int32 type = 100004;</code>
+     * <code>optional int32 type = 4;</code>
      */
     boolean hasType();
     /**
-     * <code>optional int32 type = 100004;</code>
+     * <code>optional int32 type = 4;</code>
      */
     int getType();
 
-    // optional int32 priority = 100005;
+    // optional int32 priority = 5;
     /**
-     * <code>optional int32 priority = 100005;</code>
+     * <code>optional int32 priority = 5;</code>
      */
     boolean hasPriority();
     /**
-     * <code>optional int32 priority = 100005;</code>
+     * <code>optional int32 priority = 5;</code>
      */
     int getPriority();
 
-    // optional string data = 100006;
+    // optional int64 id = 6;
     /**
-     * <code>optional string data = 100006;</code>
+     * <code>optional int64 id = 6;</code>
      */
-    boolean hasData();
+    boolean hasId();
     /**
-     * <code>optional string data = 100006;</code>
+     * <code>optional int64 id = 6;</code>
      */
-    String getData();
+    long getId();
+
+    // optional string info = 7;
     /**
-     * <code>optional string data = 100006;</code>
+     * <code>optional string info = 7;</code>
+     */
+    boolean hasInfo();
+    /**
+     * <code>optional string info = 7;</code>
+     */
+    String getInfo();
+    /**
+     * <code>optional string info = 7;</code>
      */
     com.google.protobuf.ByteString
-        getDataBytes();
+        getInfoBytes();
 
-    // optional int32 action = 100007;
+    // optional int32 action = 8;
     /**
-     * <code>optional int32 action = 100007;</code>
+     * <code>optional int32 action = 8;</code>
      */
     boolean hasAction();
     /**
-     * <code>optional int32 action = 100007;</code>
+     * <code>optional int32 action = 8;</code>
      */
     int getAction();
-
-    // optional int64 key = 100008;
-    /**
-     * <code>optional int64 key = 100008;</code>
-     */
-    boolean hasKey();
-    /**
-     * <code>optional int64 key = 100008;</code>
-     */
-    long getKey();
   }
   /**
    * Protobuf type {@code Message}
@@ -147,44 +147,44 @@ public final class MessageProto {
               }
               break;
             }
-            case 800008: {
+            case 8: {
               bitField0_ |= 0x00000001;
               crcCode_ = input.readInt32();
               break;
             }
-            case 800016: {
+            case 16: {
               bitField0_ |= 0x00000002;
               length_ = input.readInt32();
               break;
             }
-            case 800024: {
+            case 24: {
               bitField0_ |= 0x00000004;
               sessionID_ = input.readInt64();
               break;
             }
-            case 800032: {
+            case 32: {
               bitField0_ |= 0x00000008;
               type_ = input.readInt32();
               break;
             }
-            case 800040: {
+            case 40: {
               bitField0_ |= 0x00000010;
               priority_ = input.readInt32();
               break;
             }
-            case 800050: {
+            case 48: {
               bitField0_ |= 0x00000020;
-              data_ = input.readBytes();
+              id_ = input.readInt64();
               break;
             }
-            case 800056: {
+            case 58: {
               bitField0_ |= 0x00000040;
-              action_ = input.readInt32();
+              info_ = input.readBytes();
               break;
             }
-            case 800064: {
+            case 64: {
               bitField0_ |= 0x00000080;
-              key_ = input.readInt64();
+              action_ = input.readInt32();
               break;
             }
           }
@@ -226,101 +226,235 @@ public final class MessageProto {
       return PARSER;
     }
 
+    /**
+     * Protobuf enum {@code Message.ActionType}
+     */
+    public enum ActionType
+        implements com.google.protobuf.ProtocolMessageEnum {
+      /**
+       * <code>ADD = 1;</code>
+       */
+      ADD(0, 1),
+      /**
+       * <code>APPLYFORSUBMIT = 2;</code>
+       */
+      APPLYFORSUBMIT(1, 2),
+      /**
+       * <code>APPROVESUBMIT = 3;</code>
+       */
+      APPROVESUBMIT(2, 3),
+      /**
+       * <code>CANCEL = 4;</code>
+       */
+      CANCEL(3, 4),
+      /**
+       * <code>SUCCESS = 5;</code>
+       */
+      SUCCESS(4, 5),
+      /**
+       * <code>FAIL = 6;</code>
+       */
+      FAIL(5, 6),
+      ;
+
+      /**
+       * <code>ADD = 1;</code>
+       */
+      public static final int ADD_VALUE = 1;
+      /**
+       * <code>APPLYFORSUBMIT = 2;</code>
+       */
+      public static final int APPLYFORSUBMIT_VALUE = 2;
+      /**
+       * <code>APPROVESUBMIT = 3;</code>
+       */
+      public static final int APPROVESUBMIT_VALUE = 3;
+      /**
+       * <code>CANCEL = 4;</code>
+       */
+      public static final int CANCEL_VALUE = 4;
+      /**
+       * <code>SUCCESS = 5;</code>
+       */
+      public static final int SUCCESS_VALUE = 5;
+      /**
+       * <code>FAIL = 6;</code>
+       */
+      public static final int FAIL_VALUE = 6;
+
+
+      public final int getNumber() { return value; }
+
+      public static ActionType valueOf(int value) {
+        switch (value) {
+          case 1: return ADD;
+          case 2: return APPLYFORSUBMIT;
+          case 3: return APPROVESUBMIT;
+          case 4: return CANCEL;
+          case 5: return SUCCESS;
+          case 6: return FAIL;
+          default: return null;
+        }
+      }
+
+      public static com.google.protobuf.Internal.EnumLiteMap<ActionType>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static com.google.protobuf.Internal.EnumLiteMap<ActionType>
+          internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<ActionType>() {
+              public ActionType findValueByNumber(int number) {
+                return ActionType.valueOf(number);
+              }
+            };
+
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+          getValueDescriptor() {
+        return getDescriptor().getValues().get(index);
+      }
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptorForType() {
+        return getDescriptor();
+      }
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptor() {
+        return Message.getDescriptor().getEnumTypes().get(0);
+      }
+
+      private static final ActionType[] VALUES = values();
+
+      public static ActionType valueOf(
+          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new IllegalArgumentException(
+            "EnumValueDescriptor is not for this type.");
+        }
+        return VALUES[desc.getIndex()];
+      }
+
+      private final int index;
+      private final int value;
+
+      private ActionType(int index, int value) {
+        this.index = index;
+        this.value = value;
+      }
+
+      // @@protoc_insertion_point(enum_scope:Message.ActionType)
+    }
+
     private int bitField0_;
-    // optional int32 crcCode = 100001;
-    public static final int CRCCODE_FIELD_NUMBER = 100001;
+    // optional int32 crcCode = 1;
+    public static final int CRCCODE_FIELD_NUMBER = 1;
     private int crcCode_;
     /**
-     * <code>optional int32 crcCode = 100001;</code>
+     * <code>optional int32 crcCode = 1;</code>
      */
     public boolean hasCrcCode() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>optional int32 crcCode = 100001;</code>
+     * <code>optional int32 crcCode = 1;</code>
      */
     public int getCrcCode() {
       return crcCode_;
     }
 
-    // optional int32 length = 100002;
-    public static final int LENGTH_FIELD_NUMBER = 100002;
+    // optional int32 length = 2;
+    public static final int LENGTH_FIELD_NUMBER = 2;
     private int length_;
     /**
-     * <code>optional int32 length = 100002;</code>
+     * <code>optional int32 length = 2;</code>
      */
     public boolean hasLength() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
-     * <code>optional int32 length = 100002;</code>
+     * <code>optional int32 length = 2;</code>
      */
     public int getLength() {
       return length_;
     }
 
-    // optional int64 sessionID = 100003;
-    public static final int SESSIONID_FIELD_NUMBER = 100003;
+    // optional int64 sessionID = 3;
+    public static final int SESSIONID_FIELD_NUMBER = 3;
     private long sessionID_;
     /**
-     * <code>optional int64 sessionID = 100003;</code>
+     * <code>optional int64 sessionID = 3;</code>
      */
     public boolean hasSessionID() {
       return ((bitField0_ & 0x00000004) == 0x00000004);
     }
     /**
-     * <code>optional int64 sessionID = 100003;</code>
+     * <code>optional int64 sessionID = 3;</code>
      */
     public long getSessionID() {
       return sessionID_;
     }
 
-    // optional int32 type = 100004;
-    public static final int TYPE_FIELD_NUMBER = 100004;
+    // optional int32 type = 4;
+    public static final int TYPE_FIELD_NUMBER = 4;
     private int type_;
     /**
-     * <code>optional int32 type = 100004;</code>
+     * <code>optional int32 type = 4;</code>
      */
     public boolean hasType() {
       return ((bitField0_ & 0x00000008) == 0x00000008);
     }
     /**
-     * <code>optional int32 type = 100004;</code>
+     * <code>optional int32 type = 4;</code>
      */
     public int getType() {
       return type_;
     }
 
-    // optional int32 priority = 100005;
-    public static final int PRIORITY_FIELD_NUMBER = 100005;
+    // optional int32 priority = 5;
+    public static final int PRIORITY_FIELD_NUMBER = 5;
     private int priority_;
     /**
-     * <code>optional int32 priority = 100005;</code>
+     * <code>optional int32 priority = 5;</code>
      */
     public boolean hasPriority() {
       return ((bitField0_ & 0x00000010) == 0x00000010);
     }
     /**
-     * <code>optional int32 priority = 100005;</code>
+     * <code>optional int32 priority = 5;</code>
      */
     public int getPriority() {
       return priority_;
     }
 
-    // optional string data = 100006;
-    public static final int DATA_FIELD_NUMBER = 100006;
-    private Object data_;
+    // optional int64 id = 6;
+    public static final int ID_FIELD_NUMBER = 6;
+    private long id_;
     /**
-     * <code>optional string data = 100006;</code>
+     * <code>optional int64 id = 6;</code>
      */
-    public boolean hasData() {
+    public boolean hasId() {
       return ((bitField0_ & 0x00000020) == 0x00000020);
     }
     /**
-     * <code>optional string data = 100006;</code>
+     * <code>optional int64 id = 6;</code>
      */
-    public String getData() {
-      Object ref = data_;
+    public long getId() {
+      return id_;
+    }
+
+    // optional string info = 7;
+    public static final int INFO_FIELD_NUMBER = 7;
+    private Object info_;
+    /**
+     * <code>optional string info = 7;</code>
+     */
+    public boolean hasInfo() {
+      return ((bitField0_ & 0x00000040) == 0x00000040);
+    }
+    /**
+     * <code>optional string info = 7;</code>
+     */
+    public String getInfo() {
+      Object ref = info_;
       if (ref instanceof String) {
         return (String) ref;
       } else {
@@ -328,58 +462,42 @@ public final class MessageProto {
             (com.google.protobuf.ByteString) ref;
         String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
-          data_ = s;
+          info_ = s;
         }
         return s;
       }
     }
     /**
-     * <code>optional string data = 100006;</code>
+     * <code>optional string info = 7;</code>
      */
     public com.google.protobuf.ByteString
-        getDataBytes() {
-      Object ref = data_;
+        getInfoBytes() {
+      Object ref = info_;
       if (ref instanceof String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (String) ref);
-        data_ = b;
+        info_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
     }
 
-    // optional int32 action = 100007;
-    public static final int ACTION_FIELD_NUMBER = 100007;
+    // optional int32 action = 8;
+    public static final int ACTION_FIELD_NUMBER = 8;
     private int action_;
     /**
-     * <code>optional int32 action = 100007;</code>
+     * <code>optional int32 action = 8;</code>
      */
     public boolean hasAction() {
-      return ((bitField0_ & 0x00000040) == 0x00000040);
-    }
-    /**
-     * <code>optional int32 action = 100007;</code>
-     */
-    public int getAction() {
-      return action_;
-    }
-
-    // optional int64 key = 100008;
-    public static final int KEY_FIELD_NUMBER = 100008;
-    private long key_;
-    /**
-     * <code>optional int64 key = 100008;</code>
-     */
-    public boolean hasKey() {
       return ((bitField0_ & 0x00000080) == 0x00000080);
     }
     /**
-     * <code>optional int64 key = 100008;</code>
+     * <code>optional int32 action = 8;</code>
      */
-    public long getKey() {
-      return key_;
+    public int getAction() {
+      return action_;
     }
 
     private void initFields() {
@@ -388,9 +506,9 @@ public final class MessageProto {
       sessionID_ = 0L;
       type_ = 0;
       priority_ = 0;
-      data_ = "";
+      id_ = 0L;
+      info_ = "";
       action_ = 0;
-      key_ = 0L;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -405,28 +523,28 @@ public final class MessageProto {
                         throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeInt32(100001, crcCode_);
+        output.writeInt32(1, crcCode_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeInt32(100002, length_);
+        output.writeInt32(2, length_);
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeInt64(100003, sessionID_);
+        output.writeInt64(3, sessionID_);
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        output.writeInt32(100004, type_);
+        output.writeInt32(4, type_);
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        output.writeInt32(100005, priority_);
+        output.writeInt32(5, priority_);
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        output.writeBytes(100006, getDataBytes());
+        output.writeInt64(6, id_);
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
-        output.writeInt32(100007, action_);
+        output.writeBytes(7, getInfoBytes());
       }
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
-        output.writeInt64(100008, key_);
+        output.writeInt32(8, action_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -439,35 +557,35 @@ public final class MessageProto {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(100001, crcCode_);
+          .computeInt32Size(1, crcCode_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(100002, length_);
+          .computeInt32Size(2, length_);
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(100003, sessionID_);
+          .computeInt64Size(3, sessionID_);
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(100004, type_);
+          .computeInt32Size(4, type_);
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(100005, priority_);
+          .computeInt32Size(5, priority_);
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(100006, getDataBytes());
+          .computeInt64Size(6, id_);
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(100007, action_);
+          .computeBytesSize(7, getInfoBytes());
       }
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(100008, key_);
+          .computeInt32Size(8, action_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -595,11 +713,11 @@ public final class MessageProto {
         bitField0_ = (bitField0_ & ~0x00000008);
         priority_ = 0;
         bitField0_ = (bitField0_ & ~0x00000010);
-        data_ = "";
+        id_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000020);
-        action_ = 0;
+        info_ = "";
         bitField0_ = (bitField0_ & ~0x00000040);
-        key_ = 0L;
+        action_ = 0;
         bitField0_ = (bitField0_ & ~0x00000080);
         return this;
       }
@@ -652,15 +770,15 @@ public final class MessageProto {
         if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
           to_bitField0_ |= 0x00000020;
         }
-        result.data_ = data_;
+        result.id_ = id_;
         if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
           to_bitField0_ |= 0x00000040;
         }
-        result.action_ = action_;
+        result.info_ = info_;
         if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
           to_bitField0_ |= 0x00000080;
         }
-        result.key_ = key_;
+        result.action_ = action_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -692,16 +810,16 @@ public final class MessageProto {
         if (other.hasPriority()) {
           setPriority(other.getPriority());
         }
-        if (other.hasData()) {
-          bitField0_ |= 0x00000020;
-          data_ = other.data_;
+        if (other.hasId()) {
+          setId(other.getId());
+        }
+        if (other.hasInfo()) {
+          bitField0_ |= 0x00000040;
+          info_ = other.info_;
           onChanged();
         }
         if (other.hasAction()) {
           setAction(other.getAction());
-        }
-        if (other.hasKey()) {
-          setKey(other.getKey());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -730,22 +848,22 @@ public final class MessageProto {
       }
       private int bitField0_;
 
-      // optional int32 crcCode = 100001;
+      // optional int32 crcCode = 1;
       private int crcCode_ ;
       /**
-       * <code>optional int32 crcCode = 100001;</code>
+       * <code>optional int32 crcCode = 1;</code>
        */
       public boolean hasCrcCode() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>optional int32 crcCode = 100001;</code>
+       * <code>optional int32 crcCode = 1;</code>
        */
       public int getCrcCode() {
         return crcCode_;
       }
       /**
-       * <code>optional int32 crcCode = 100001;</code>
+       * <code>optional int32 crcCode = 1;</code>
        */
       public Builder setCrcCode(int value) {
         bitField0_ |= 0x00000001;
@@ -754,7 +872,7 @@ public final class MessageProto {
         return this;
       }
       /**
-       * <code>optional int32 crcCode = 100001;</code>
+       * <code>optional int32 crcCode = 1;</code>
        */
       public Builder clearCrcCode() {
         bitField0_ = (bitField0_ & ~0x00000001);
@@ -763,22 +881,22 @@ public final class MessageProto {
         return this;
       }
 
-      // optional int32 length = 100002;
+      // optional int32 length = 2;
       private int length_ ;
       /**
-       * <code>optional int32 length = 100002;</code>
+       * <code>optional int32 length = 2;</code>
        */
       public boolean hasLength() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>optional int32 length = 100002;</code>
+       * <code>optional int32 length = 2;</code>
        */
       public int getLength() {
         return length_;
       }
       /**
-       * <code>optional int32 length = 100002;</code>
+       * <code>optional int32 length = 2;</code>
        */
       public Builder setLength(int value) {
         bitField0_ |= 0x00000002;
@@ -787,7 +905,7 @@ public final class MessageProto {
         return this;
       }
       /**
-       * <code>optional int32 length = 100002;</code>
+       * <code>optional int32 length = 2;</code>
        */
       public Builder clearLength() {
         bitField0_ = (bitField0_ & ~0x00000002);
@@ -796,22 +914,22 @@ public final class MessageProto {
         return this;
       }
 
-      // optional int64 sessionID = 100003;
+      // optional int64 sessionID = 3;
       private long sessionID_ ;
       /**
-       * <code>optional int64 sessionID = 100003;</code>
+       * <code>optional int64 sessionID = 3;</code>
        */
       public boolean hasSessionID() {
         return ((bitField0_ & 0x00000004) == 0x00000004);
       }
       /**
-       * <code>optional int64 sessionID = 100003;</code>
+       * <code>optional int64 sessionID = 3;</code>
        */
       public long getSessionID() {
         return sessionID_;
       }
       /**
-       * <code>optional int64 sessionID = 100003;</code>
+       * <code>optional int64 sessionID = 3;</code>
        */
       public Builder setSessionID(long value) {
         bitField0_ |= 0x00000004;
@@ -820,7 +938,7 @@ public final class MessageProto {
         return this;
       }
       /**
-       * <code>optional int64 sessionID = 100003;</code>
+       * <code>optional int64 sessionID = 3;</code>
        */
       public Builder clearSessionID() {
         bitField0_ = (bitField0_ & ~0x00000004);
@@ -829,22 +947,22 @@ public final class MessageProto {
         return this;
       }
 
-      // optional int32 type = 100004;
+      // optional int32 type = 4;
       private int type_ ;
       /**
-       * <code>optional int32 type = 100004;</code>
+       * <code>optional int32 type = 4;</code>
        */
       public boolean hasType() {
         return ((bitField0_ & 0x00000008) == 0x00000008);
       }
       /**
-       * <code>optional int32 type = 100004;</code>
+       * <code>optional int32 type = 4;</code>
        */
       public int getType() {
         return type_;
       }
       /**
-       * <code>optional int32 type = 100004;</code>
+       * <code>optional int32 type = 4;</code>
        */
       public Builder setType(int value) {
         bitField0_ |= 0x00000008;
@@ -853,7 +971,7 @@ public final class MessageProto {
         return this;
       }
       /**
-       * <code>optional int32 type = 100004;</code>
+       * <code>optional int32 type = 4;</code>
        */
       public Builder clearType() {
         bitField0_ = (bitField0_ & ~0x00000008);
@@ -862,22 +980,22 @@ public final class MessageProto {
         return this;
       }
 
-      // optional int32 priority = 100005;
+      // optional int32 priority = 5;
       private int priority_ ;
       /**
-       * <code>optional int32 priority = 100005;</code>
+       * <code>optional int32 priority = 5;</code>
        */
       public boolean hasPriority() {
         return ((bitField0_ & 0x00000010) == 0x00000010);
       }
       /**
-       * <code>optional int32 priority = 100005;</code>
+       * <code>optional int32 priority = 5;</code>
        */
       public int getPriority() {
         return priority_;
       }
       /**
-       * <code>optional int32 priority = 100005;</code>
+       * <code>optional int32 priority = 5;</code>
        */
       public Builder setPriority(int value) {
         bitField0_ |= 0x00000010;
@@ -886,7 +1004,7 @@ public final class MessageProto {
         return this;
       }
       /**
-       * <code>optional int32 priority = 100005;</code>
+       * <code>optional int32 priority = 5;</code>
        */
       public Builder clearPriority() {
         bitField0_ = (bitField0_ & ~0x00000010);
@@ -895,142 +1013,142 @@ public final class MessageProto {
         return this;
       }
 
-      // optional string data = 100006;
-      private Object data_ = "";
+      // optional int64 id = 6;
+      private long id_ ;
       /**
-       * <code>optional string data = 100006;</code>
+       * <code>optional int64 id = 6;</code>
        */
-      public boolean hasData() {
+      public boolean hasId() {
         return ((bitField0_ & 0x00000020) == 0x00000020);
       }
       /**
-       * <code>optional string data = 100006;</code>
+       * <code>optional int64 id = 6;</code>
        */
-      public String getData() {
-        Object ref = data_;
+      public long getId() {
+        return id_;
+      }
+      /**
+       * <code>optional int64 id = 6;</code>
+       */
+      public Builder setId(long value) {
+        bitField0_ |= 0x00000020;
+        id_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int64 id = 6;</code>
+       */
+      public Builder clearId() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        id_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      // optional string info = 7;
+      private Object info_ = "";
+      /**
+       * <code>optional string info = 7;</code>
+       */
+      public boolean hasInfo() {
+        return ((bitField0_ & 0x00000040) == 0x00000040);
+      }
+      /**
+       * <code>optional string info = 7;</code>
+       */
+      public String getInfo() {
+        Object ref = info_;
         if (!(ref instanceof String)) {
           String s = ((com.google.protobuf.ByteString) ref)
               .toStringUtf8();
-          data_ = s;
+          info_ = s;
           return s;
         } else {
           return (String) ref;
         }
       }
       /**
-       * <code>optional string data = 100006;</code>
+       * <code>optional string info = 7;</code>
        */
       public com.google.protobuf.ByteString
-          getDataBytes() {
-        Object ref = data_;
+          getInfoBytes() {
+        Object ref = info_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (String) ref);
-          data_ = b;
+          info_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
         }
       }
       /**
-       * <code>optional string data = 100006;</code>
+       * <code>optional string info = 7;</code>
        */
-      public Builder setData(
+      public Builder setInfo(
           String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000020;
-        data_ = value;
+  bitField0_ |= 0x00000040;
+        info_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string data = 100006;</code>
+       * <code>optional string info = 7;</code>
        */
-      public Builder clearData() {
-        bitField0_ = (bitField0_ & ~0x00000020);
-        data_ = getDefaultInstance().getData();
+      public Builder clearInfo() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        info_ = getDefaultInstance().getInfo();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string data = 100006;</code>
+       * <code>optional string info = 7;</code>
        */
-      public Builder setDataBytes(
+      public Builder setInfoBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000020;
-        data_ = value;
+  bitField0_ |= 0x00000040;
+        info_ = value;
         onChanged();
         return this;
       }
 
-      // optional int32 action = 100007;
+      // optional int32 action = 8;
       private int action_ ;
       /**
-       * <code>optional int32 action = 100007;</code>
+       * <code>optional int32 action = 8;</code>
        */
       public boolean hasAction() {
-        return ((bitField0_ & 0x00000040) == 0x00000040);
+        return ((bitField0_ & 0x00000080) == 0x00000080);
       }
       /**
-       * <code>optional int32 action = 100007;</code>
+       * <code>optional int32 action = 8;</code>
        */
       public int getAction() {
         return action_;
       }
       /**
-       * <code>optional int32 action = 100007;</code>
+       * <code>optional int32 action = 8;</code>
        */
       public Builder setAction(int value) {
-        bitField0_ |= 0x00000040;
+        bitField0_ |= 0x00000080;
         action_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int32 action = 100007;</code>
+       * <code>optional int32 action = 8;</code>
        */
       public Builder clearAction() {
-        bitField0_ = (bitField0_ & ~0x00000040);
-        action_ = 0;
-        onChanged();
-        return this;
-      }
-
-      // optional int64 key = 100008;
-      private long key_ ;
-      /**
-       * <code>optional int64 key = 100008;</code>
-       */
-      public boolean hasKey() {
-        return ((bitField0_ & 0x00000080) == 0x00000080);
-      }
-      /**
-       * <code>optional int64 key = 100008;</code>
-       */
-      public long getKey() {
-        return key_;
-      }
-      /**
-       * <code>optional int64 key = 100008;</code>
-       */
-      public Builder setKey(long value) {
-        bitField0_ |= 0x00000080;
-        key_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional int64 key = 100008;</code>
-       */
-      public Builder clearKey() {
         bitField0_ = (bitField0_ & ~0x00000080);
-        key_ = 0L;
+        action_ = 0;
         onChanged();
         return this;
       }
@@ -1060,11 +1178,13 @@ public final class MessageProto {
       descriptor;
   static {
     String[] descriptorData = {
-      "\n\rMessage.proto\"\230\001\n\007Message\022\021\n\007crcCode\030\241" +
-      "\215\006 \001(\005\022\020\n\006length\030\242\215\006 \001(\005\022\023\n\tsessionID\030\243\215" +
-      "\006 \001(\003\022\016\n\004type\030\244\215\006 \001(\005\022\022\n\010priority\030\245\215\006 \001(" +
-      "\005\022\016\n\004data\030\246\215\006 \001(\t\022\020\n\006action\030\247\215\006 \001(\005\022\r\n\003k" +
-      "ey\030\250\215\006 \001(\003B1\n!com.coconason.dtf.common.p" +
+      "\n\rMessage.proto\"\350\001\n\007Message\022\017\n\007crcCode\030\001" +
+      " \001(\005\022\016\n\006length\030\002 \001(\005\022\021\n\tsessionID\030\003 \001(\003\022" +
+      "\014\n\004type\030\004 \001(\005\022\020\n\010priority\030\005 \001(\005\022\n\n\002id\030\006 " +
+      "\001(\003\022\014\n\004info\030\007 \001(\t\022\016\n\006action\030\010 \001(\005\"_\n\nAct" +
+      "ionType\022\007\n\003ADD\020\001\022\022\n\016APPLYFORSUBMIT\020\002\022\021\n\r" +
+      "APPROVESUBMIT\020\003\022\n\n\006CANCEL\020\004\022\013\n\007SUCCESS\020\005" +
+      "\022\010\n\004FAIL\020\006B1\n!com.coconason.dtf.common.p" +
       "rotobufB\014MessageProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
@@ -1077,7 +1197,7 @@ public final class MessageProto {
           internal_static_Message_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_Message_descriptor,
-              new String[] { "CrcCode", "Length", "SessionID", "Type", "Priority", "Data", "Action", "Key", });
+              new String[] { "CrcCode", "Length", "SessionID", "Type", "Priority", "Id", "Info", "Action", });
           return null;
         }
       };

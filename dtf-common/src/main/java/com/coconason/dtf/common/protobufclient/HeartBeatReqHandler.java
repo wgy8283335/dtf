@@ -18,7 +18,7 @@ public class HeartBeatReqHandler extends ChannelInboundHandlerAdapter
 	{
 		// 如果握手成功，主动发送心跳消息
 		MessageProto.Message message = (MessageProto.Message) msg;
-		if (message.getLength() != 100002)
+		if (message.getLength() != 2)
 		{
 			if (message.getType() == MessageType.LOGIN_RESP)
 			{

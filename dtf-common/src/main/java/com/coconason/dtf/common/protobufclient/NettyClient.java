@@ -14,6 +14,8 @@ import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import io.netty.handler.timeout.ReadTimeoutHandler;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -21,6 +23,7 @@ import java.util.concurrent.TimeUnit;
 
 public class NettyClient
 {
+
 
 	private ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(1);
 
@@ -52,6 +55,7 @@ public class NettyClient
 							ch.pipeline().addLast(new ProtobufEncoder());
 							ch.pipeline().addLast(new ReadTimeoutHandler(50));
 							ch.pipeline().addLast(new LoginAuthReqHandler());
+							ch.pipeline().addLast(new ClientTransactionHandler());
 							ch.pipeline().addLast(new HeartBeatReqHandler());
 						}
 					});

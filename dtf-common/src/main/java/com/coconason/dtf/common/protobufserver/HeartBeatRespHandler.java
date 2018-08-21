@@ -16,7 +16,7 @@ public class HeartBeatRespHandler extends ChannelInboundHandlerAdapter
     {
 
         MessageProto.Message message = (MessageProto.Message) msg;
-        if (message.getLength() != 100002 && message.getType() == MessageType.HEARTBEAT_REQ)
+        if (message.getLength() != 2 && message.getType() == MessageType.HEARTBEAT_REQ)
         {
             System.out.println("Receive client heart beat message");
             ctx.writeAndFlush(buildHeartBeat());

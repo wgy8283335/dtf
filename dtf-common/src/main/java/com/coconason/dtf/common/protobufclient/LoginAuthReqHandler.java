@@ -1,5 +1,6 @@
 package com.coconason.dtf.common.protobufclient;
 
+import com.alibaba.fastjson.JSONObject;
 import com.coconason.dtf.common.constant.MessageType;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import io.netty.channel.ChannelHandlerContext;
@@ -14,6 +15,7 @@ public class LoginAuthReqHandler extends ChannelInboundHandlerAdapter
 		MessageProto.Message message = buildLoginReq();
 		ctx.writeAndFlush(message);
 		System.out.println("客户端发送握手请求：" + message);
+		ctx.fireChannelActive();
 	}
 
 	@Override
@@ -21,11 +23,11 @@ public class LoginAuthReqHandler extends ChannelInboundHandlerAdapter
 	{
 		MessageProto.Message message = (MessageProto.Message) msg;
 		// 如果是握手应答消息，需要判断是否握手成功
-		if (message.getLength() != 100002 && message.getType() == MessageType.LOGIN_RESP)
+		if (message.getLength() != 2 && message.getType() == MessageType.LOGIN_RESP)
 		{
-			if (message.getLength() != 100002)
+			if (message.getLength() != 2)
 			{
-				String loginResult = message.getData().toString();
+				String loginResult = message.getInfo().toString();
 				if (loginResult.equals("login_ok"))
 				{
 					System.out.println("Login is success :" + message);
