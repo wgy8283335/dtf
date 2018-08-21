@@ -2,6 +2,8 @@ package com.coconason.dtf.client.core.transaction;
 
 import com.coconason.dtf.client.core.annotation.DtfTransaction;
 import com.coconason.dtf.client.core.beans.TransactionGroupInfo;
+import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
+import com.coconason.dtf.client.core.nettyclient.protobufclient.ClientTransactionHandler;
 import com.coconason.dtf.client.core.utils.GroupidGenerator;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
@@ -28,6 +30,7 @@ public class AspectHandler {
         }
         //declare one transaction group
         TransactionGroupInfo groupInfo;
+        TransactionServiceInfo serviceInfo;
         //1.When the service is creator,should create groupId and store in public object.
         //2.Then execute the program.And if the program has transactional operation in database,
         //should use database proxy to send transaction information to the transaction server.
@@ -40,15 +43,18 @@ public class AspectHandler {
             //2.
             point.proceed();
             //3.
-
-
+            ClientTransactionHandler clientTransactionHandler = new ClientTransactionHandler();
+            serviceInfo = new TransactionServiceInfo(groupInfo.getGroupId(),groupInfo.getGroupMemberId(),"","","");
+            clientTransactionHandler.sendMsg(serviceInfo);
         }
-        //When the service is follower,execute the program.And if the program has transactional operation in database,
+        //1.When the service is follower,execute the program.And if the program has transactional operation in database,
         //should use database proxy to send transaction information to the transaction server.
-        //And listen the response from server.
+        //2.And listen the response from server.
         //If the response is submit,submit transaction by database proxy.If the response is cancel,cancel transaction by database proxy.
         else{
+            //1.
 
+            //2.
         }
 
 

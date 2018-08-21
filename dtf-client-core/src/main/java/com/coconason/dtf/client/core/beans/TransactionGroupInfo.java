@@ -10,6 +10,7 @@ import java.util.List;
 public class TransactionGroupInfo {
     private String groupId;
     private List<Integer> groupMembers;
+    private String groupMemberId;
 
     public TransactionGroupInfo(String groupId) {
         this.groupId = groupId;
@@ -17,6 +18,7 @@ public class TransactionGroupInfo {
     }
 
     public void addMemeber(Integer memberId){
+        groupMemberId = memberId.toString();
         groupMembers.add(memberId);
     }
 
@@ -26,5 +28,9 @@ public class TransactionGroupInfo {
 
     public List<Integer> getGroupMembers() {
         return groupMembers;
+    }
+
+    public String getGroupMemberId() {
+        return groupMemberId;
     }
 }

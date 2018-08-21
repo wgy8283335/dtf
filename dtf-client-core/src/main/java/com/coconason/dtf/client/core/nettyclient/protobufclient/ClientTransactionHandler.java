@@ -1,6 +1,7 @@
 package com.coconason.dtf.client.core.nettyclient.protobufclient;
 
 import com.alibaba.fastjson.JSONObject;
+import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
 import com.coconason.dtf.common.constant.MessageType;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import io.netty.channel.ChannelHandlerContext;
@@ -15,7 +16,7 @@ public class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 	public void channelActive(ChannelHandlerContext ctx) throws Exception
 	{
 		this.ctx = ctx;
-		sendMsg("90000","1","http://com.ping.test/pang","get","{id:90999}");
+		//sendMsg("90000","1","http://com.ping.test/pang","get","{id:90999}");
 	}
 
 	@Override
@@ -36,6 +37,10 @@ public class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 		ctx.fireExceptionCaught(cause);
 	}
 
+	public void sendMsg(TransactionServiceInfo serviceInfo) {
+		sendMsg(serviceInfo);
+	}
+
 	public void sendMsg(String groupId,String groupMemeberId,String serviceLink,String type,String params){
 		MessageProto.Message.Builder builder= MessageProto.Message.newBuilder();
 		builder.setType(MessageType.TRANSACTION_REQ);
@@ -50,5 +55,4 @@ public class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 		System.out.println("Send transaction message:\n" + message);
 		ctx.writeAndFlush(message);
 	}
-
 }
