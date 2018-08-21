@@ -1,6 +1,6 @@
 package com.coconason.dtf.client.core.spring.interceptor;
 
-import com.coconason.dtf.client.core.beans.TransactionRollback;
+import com.alibaba.fastjson.JSONObject;
 import com.coconason.dtf.client.core.transaction.AspectHandler;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -31,15 +30,14 @@ public class DtfClientInterceptor {
 //        Object result = joinPoint.proceed();
 //        System.out.println("End to proceed Aspect");
 //        return result;
-        TransactionRollback transactionRollback = TransactionRollback.getCurrentThreadLocal();
-        String groupId = null;
-        int maxTimeOut = 0;
-        if(transactionRollback == null){
-            RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
-            HttpServletRequest request = requestAttributes == null ? null : ((ServletRequestAttributes) requestAttributes).getRequest();
-            groupId = request == null ? null : request.getHeader("groupId");
-            maxTimeOut = request == null?0:Integer.parseInt(request.getHeader("maxTimeOut"));
-        }
-        return aspectHandler.before(groupId,maxTimeOut,joinPoint);
+
+        //If the model is creator the request would be null.
+        //If the model is follower the request would not be null.
+        RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
+        HttpServletRequest request = requestAttributes == null ? null : ((ServletRequestAttributes) requestAttributes).getRequest();
+        String info = request == null ? null : request.getHeader("info");
+        String groupId = info == null ? null : JSONObject.parseObject(info).get("groupId").toString();
+        String groupMemberId = info == null ? null : JSONObject.parseObject(info).get("groupMemberId").toString();
+        return aspectHandler.before(groupId,groupMemberId,joinPoint);
     }
 }

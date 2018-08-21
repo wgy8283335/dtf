@@ -18,14 +18,15 @@ public class DtfHttpRequestInterceptor implements ClientHttpRequestInterceptor {
 
     @Override
     public ClientHttpResponse intercept(HttpRequest httpRequest, byte[] bytes, ClientHttpRequestExecution clientHttpRequestExecution) throws IOException {
-        TxTransactionLocal txTransactionLocal = TxTransactionLocal.current();
-        String groupId = txTransactionLocal == null ? null : txTransactionLocal.getGroupId();
-
-        logger.debug("DTF-SpringCloud TxGroup info -> groupId:"+groupId);
-
-        if(txTransactionLocal!=null) {
-            httpRequest.getHeaders().add("tx-group", groupId);
-        }
-        return clientHttpRequestExecution.execute(httpRequest,bytes);
+//        TxTransactionLocal txTransactionLocal = TxTransactionLocal.current();
+//        String groupId = txTransactionLocal == null ? null : txTransactionLocal.getGroupId();
+//
+//        logger.debug("DTF-SpringCloud TxGroup info -> groupId:"+groupId);
+//
+//        if(txTransactionLocal!=null) {
+//            httpRequest.getHeaders().add("tx-group", groupId);
+//        }
+//        return clientHttpRequestExecution.execute(httpRequest,bytes);
+        return null;
     }
 }
