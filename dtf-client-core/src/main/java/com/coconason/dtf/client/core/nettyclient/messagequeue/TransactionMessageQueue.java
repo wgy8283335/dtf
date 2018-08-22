@@ -17,7 +17,7 @@ public class TransactionMessageQueue {
         messageQueue.put(info);
     }
 
-    public TransactionServiceInfo get() throws InterruptedException{
+    public TransactionServiceInfo take() throws InterruptedException{
         return messageQueue.take();
     }
 
