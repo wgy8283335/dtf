@@ -2,6 +2,7 @@ package com.coconason.dtf.client.core.nettyclient.messagequeue;
 
 import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
 import com.coconason.dtf.client.core.nettyclient.protobufclient.ClientTransactionHandler;
+import com.coconason.dtf.client.core.nettyclient.protobufclient.NettyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,12 +16,16 @@ public class TransactionMessageSender {
     TransactionMessageQueue queue;
 
     @Autowired
-    ClientTransactionHandler handler;
+    NettyService service;
 
     public void sendMessage(){
         TransactionServiceInfo transactionServiceInfo;
         while ((transactionServiceInfo = queue.get())!=null){
-            handler.sendMsg(transactionServiceInfo);
+            service.sendMsg(transactionServiceInfo);
+        }
+
+        while(!queue.isEmpty()){
+
         }
     }
 }

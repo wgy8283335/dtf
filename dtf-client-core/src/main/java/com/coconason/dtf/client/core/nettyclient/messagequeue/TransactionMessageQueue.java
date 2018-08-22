@@ -3,7 +3,7 @@ package com.coconason.dtf.client.core.nettyclient.messagequeue;
 import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
 import org.springframework.stereotype.Component;
 
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * @Author: Jason
@@ -11,14 +11,18 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 @Component
 public class TransactionMessageQueue {
-    private final ConcurrentLinkedQueue<TransactionServiceInfo> messageQueue = new ConcurrentLinkedQueue<>();
+    private final LinkedBlockingQueue<TransactionServiceInfo> messageQueue = new LinkedBlockingQueue<>();
 
-    public boolean put(TransactionServiceInfo info){
-        return messageQueue.add(info);
+    public void put(TransactionServiceInfo info) throws InterruptedException{
+        messageQueue.put(info);
     }
 
-    public TransactionServiceInfo get(){
-        return messageQueue.poll();
+    public TransactionServiceInfo get() throws InterruptedException{
+        return messageQueue.take();
+    }
+
+    public boolean isEmpty(){
+        return messageQueue.isEmpty();
     }
 
 }
