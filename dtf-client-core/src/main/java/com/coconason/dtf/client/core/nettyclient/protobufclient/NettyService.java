@@ -1,6 +1,7 @@
 package com.coconason.dtf.client.core.nettyclient.protobufclient;
 
 import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
+import com.coconason.dtf.client.core.nettyclient.nettyserverconfig.NettyServerConfiguration;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
@@ -16,6 +17,7 @@ import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ScheduledExecutorService;
@@ -36,9 +38,12 @@ public class NettyService {
 
     private EventLoopGroup group = new NioEventLoopGroup();
 
+    @Autowired
+    NettyServerConfiguration nettyServerConfiguration;
+
     public synchronized void start(){
         try{
-            connect("127.0.0.1", 18080);
+            connect(nettyServerConfiguration.getHost(),nettyServerConfiguration.getPort());
         }catch (Exception e){
             System.out.println("Exception-----> \n" + e);
         }
