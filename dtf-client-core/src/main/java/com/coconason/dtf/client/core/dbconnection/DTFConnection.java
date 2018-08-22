@@ -32,17 +32,12 @@ public class DTFConnection implements Connection {
 
     private boolean hasClose = false;
 
-    TransactionServiceInfo info;
-
-    @Autowired
-    TransactionMessageQueue queue;
-
     @Autowired
     ThreadsInfo threadsInfo;
+
     public DTFConnection(Connection connection) {
         this.connection = connection;
     }
-
 
     @Override
     public void commit() throws SQLException {
@@ -78,8 +73,6 @@ public class DTFConnection implements Connection {
             hasClose = false;
             return;
         }
-        //1. Put transaction info in the transaction message queue.
-        queue.put(info);
         Runnable runnable = new Runnable() {
             @Override
             public void run() {

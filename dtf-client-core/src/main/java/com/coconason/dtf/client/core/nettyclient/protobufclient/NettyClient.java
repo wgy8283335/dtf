@@ -19,10 +19,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-
 public class NettyClient
 {
-
 
 	private ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(1);
 
@@ -87,9 +85,5 @@ public class NettyClient
 				e.printStackTrace();
 			}
 		}
-
-//		public void run() {
-//
-//		}
 	}
 }

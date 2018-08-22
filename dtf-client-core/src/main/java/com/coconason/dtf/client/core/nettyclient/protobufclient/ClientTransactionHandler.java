@@ -13,6 +13,8 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.Method;
+
 @Component
 public class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 {
@@ -61,18 +63,17 @@ public class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 	}
 
 	public void sendMsg(TransactionServiceInfo serviceInfo) {
-		sendMsg(serviceInfo);
+		sendMsg(serviceInfo.getGroupId(),serviceInfo.getGroupMemeberId(),serviceInfo.getMethod(),serviceInfo.getArgs());
 	}
 
-	public void sendMsg(String groupId,String groupMemeberId,String serviceLink,String type,String params){
+	public void sendMsg(String groupId, String groupMemeberId, Method method,Object[] args){
 		MessageProto.Message.Builder builder= MessageProto.Message.newBuilder();
 		builder.setType(MessageType.TRANSACTION_REQ);
 		JSONObject info = new JSONObject();
 		info.put("groupId",groupId);
 		info.put("groupMemeberId",groupMemeberId);
-		info.put("serviceLink",serviceLink);
-		info.put("params",params);
-		info.put("type",type);
+		info.put("method",method);
+		info.put("args",args);
 		builder.setInfo(info.toJSONString());
 		MessageProto.Message message = builder.build();
 		System.out.println("Send transaction message:\n" + message);

@@ -1,5 +1,7 @@
 package com.coconason.dtf.client.core.beans;
 
+import java.lang.reflect.Method;
+
 /**
  * @Author: Jason
  * @date: 2018/8/21-17:15
@@ -7,35 +9,45 @@ package com.coconason.dtf.client.core.beans;
 public class TransactionServiceInfo {
     String groupId;
     String groupMemeberId;
-    String serviceLink;
-    String type;
-    String params;
+    Method method;
+    Object[] args;
 
-    public TransactionServiceInfo(String groupId, String groupMemeberId, String serviceLink, String type, String params) {
+    public TransactionServiceInfo(String groupId, String groupMemeberId, Method method, Object[] args) {
         this.groupId = groupId;
         this.groupMemeberId = groupMemeberId;
-        this.serviceLink = serviceLink;
-        this.type = type;
-        this.params = params;
+        this.method = method;
+        this.args = args;
     }
 
     public String getGroupId() {
         return groupId;
     }
 
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
+
     public String getGroupMemeberId() {
         return groupMemeberId;
     }
 
-    public String getServiceLink() {
-        return serviceLink;
+    public void setGroupMemeberId(String groupMemeberId) {
+        this.groupMemeberId = groupMemeberId;
     }
 
-    public String getType() {
-        return type;
+    public Method getMethod() {
+        return method;
     }
 
-    public String getParams() {
-        return params;
+    public void setMethod(Method method) {
+        this.method = method;
+    }
+
+    public Object[] getArgs() {
+        return args;
+    }
+
+    public void setArgs(Object[] args) {
+        this.args = args;
     }
 }
