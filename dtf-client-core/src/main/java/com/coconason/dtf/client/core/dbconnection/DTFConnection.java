@@ -1,9 +1,20 @@
 package com.coconason.dtf.client.core.dbconnection;
 
+import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
+import com.coconason.dtf.client.core.constants.DBOperationType;
+import com.coconason.dtf.client.core.nettyclient.messagequeue.TransactionMessageQueue;
+import com.coconason.dtf.client.core.utils.UuidGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.sql.*;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @Author: Jason
@@ -11,9 +22,23 @@ import java.util.concurrent.Executor;
  */
 public class DTFConnection implements Connection {
 
+    private Logger logger = LoggerFactory.getLogger(DTFConnection.class);
+
     private Connection connection;
+
     private boolean readOnly;
 
+    private volatile DBOperationType state = DBOperationType.COMMIT;
+
+    private boolean hasClose = false;
+
+    TransactionServiceInfo info;
+
+    @Autowired
+    TransactionMessageQueue queue;
+
+    @Autowired
+    ThreadsInfo threadsInfo;
     public DTFConnection(Connection connection) {
         this.connection = connection;
     }
@@ -21,17 +46,72 @@ public class DTFConnection implements Connection {
 
     @Override
     public void commit() throws SQLException {
-
+        if(readOnly){
+            connection.commit();
+            return;
+        }
+        logger.info("commit");
+        state = DBOperationType.COMMIT;
+        close();
+        hasClose = true;
     }
 
     @Override
     public void rollback() throws SQLException {
-
+        if(readOnly){
+            connection.rollback();
+            return;
+        }
+        logger.info("rollback");
+        state = DBOperationType.ROLLBACK;
+        close();
+        hasClose = true;
     }
 
     @Override
     public void close() throws SQLException {
-
+        if(readOnly){
+            connection.close();
+            return;
+        }
+        if(hasClose){
+            hasClose = false;
+            return;
+        }
+        //1. Put transaction info in the transaction message queue.
+        queue.put(info);
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    //2. Use lock condition to wait for signaling.
+                    LockAndCondition lc = new LockAndCondition(new ReentrantLock(),state);
+                    threadsInfo.put(UuidGenerator.generateUuid(),lc);
+                    lc.await();
+                    //3. After signaling, if success commit or rollback, otherwise skip the committing.
+                    if(state == DBOperationType.COMMIT){
+                        connection.commit();
+                    }else if(state == DBOperationType.ROLLBACK){
+                        connection.rollback();
+                    }
+                } catch (Exception e) {
+                    try {
+                        connection.rollback();
+                    } catch (SQLException e1) {
+                        e1.printStackTrace();
+                    }
+                } finally {
+                    try {
+                        //4. close the connection.
+                        connection.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+        Thread thread = new Thread(runnable);
+        thread.start();
     }
 
     @Override

@@ -1,16 +1,24 @@
 package com.coconason.dtf.client.core.nettyclient.protobufclient;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
+import com.coconason.dtf.client.core.constants.DBOperationType;
+import com.coconason.dtf.client.core.dbconnection.LockAndCondition;
+import com.coconason.dtf.client.core.dbconnection.ThreadsInfo;
 import com.coconason.dtf.common.constant.MessageType;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 {
+
+	@Autowired
+	ThreadsInfo threadsInfo;
 
 	private ChannelHandlerContext ctx;
 
@@ -24,6 +32,19 @@ public class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception
 	{
+
+		MessageProto.Message message = (MessageProto.Message) msg;
+		JSONObject map = JSON.parseObject(message.getInfo());
+		LockAndCondition lc = threadsInfo.get(map.get("threadId").toString());
+		DBOperationType state = lc.getState();
+		//1.If notified to be commit
+		if(state == DBOperationType.COMMIT){
+			lc.signal();
+		}
+		//2.If notified to be rollback
+		else if(state == DBOperationType.ROLLBACK){
+			lc.signal();
+		}
 		ctx.fireChannelRead(msg);
 	}
 
