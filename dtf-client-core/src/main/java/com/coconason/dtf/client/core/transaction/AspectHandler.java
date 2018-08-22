@@ -3,10 +3,12 @@ package com.coconason.dtf.client.core.transaction;
 import com.coconason.dtf.client.core.annotation.DtfTransaction;
 import com.coconason.dtf.client.core.beans.TransactionGroupInfo;
 import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
+import com.coconason.dtf.client.core.nettyclient.messagequeue.TransactionMessageQueue;
 import com.coconason.dtf.client.core.nettyclient.protobufclient.ClientTransactionHandler;
 import com.coconason.dtf.client.core.utils.GroupidGenerator;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import java.lang.reflect.Method;
@@ -17,6 +19,10 @@ import java.lang.reflect.Method;
  */
 @Component
 public class AspectHandler {
+
+    @Autowired
+    TransactionMessageQueue queue;
+
     public Object before(String groupId, String groupMemberId,ProceedingJoinPoint point) throws Throwable {
         MethodSignature signature = (MethodSignature) point.getSignature();
         Method method = signature.getMethod();
@@ -43,9 +49,10 @@ public class AspectHandler {
             //2.
             point.proceed();
             //3.
-            ClientTransactionHandler clientTransactionHandler = new ClientTransactionHandler();
-            serviceInfo = new TransactionServiceInfo(groupInfo.getGroupId(),groupInfo.getGroupMemberId(),"","","");
-            clientTransactionHandler.sendMsg(serviceInfo);
+            //ClientTransactionHandler clientTransactionHandler = new ClientTransactionHandler();
+            //serviceInfo = new TransactionServiceInfo(groupInfo.getGroupId(),groupInfo.getGroupMemberId(),"","","");
+            //clientTransactionHandler.sendMsg(serviceInfo);
+            queue.put(new TransactionServiceInfo(groupInfo.getGroupId(),groupInfo.getGroupMemberId(),"","",""));
         }
         //1.When the service is follower,execute the program.And if the program has transactional operation in database,
         //should use database proxy to send transaction information to the transaction server.

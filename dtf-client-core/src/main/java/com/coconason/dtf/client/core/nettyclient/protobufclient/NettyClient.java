@@ -31,6 +31,7 @@ public class NettyClient
 	public static void main(String[] args) throws Exception
 	{
 		new NettyClient().connect("127.0.0.1", 18080);
+
 	}
 
 	private void connect(String host, int port) throws Exception
