@@ -1,5 +1,7 @@
 package com.coconason.dtf.client.core.dbconnection;
 
+import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
+import com.coconason.dtf.client.core.nettyclient.messagequeue.TransactionMessageQueue;
 import com.coconason.dtf.client.core.utils.UuidGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +30,9 @@ public class DTFConnection implements Connection {
 
     @Autowired
     ThreadsInfo threadsInfo;
+
+    @Autowired
+    TransactionMessageQueue queue;
 
     public DTFConnection(Connection connection) {
         this.connection = connection;
@@ -74,6 +79,7 @@ public class DTFConnection implements Connection {
                     //2. Use lock condition to wait for signaling.
                     LockAndCondition lc = new LockAndCondition(new ReentrantLock(),state);
                     threadsInfo.put(UuidGenerator.generateUuid(),lc);
+                    queue.put(TransactionServiceInfo.getCurrent());
                     lc.await();
                     //3. After signaling, if success commit or rollback, otherwise skip the committing.
                     if(state == DBOperationType.COMMIT){

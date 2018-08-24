@@ -50,13 +50,15 @@ public class AspectHandler {
             groupInfo = new TransactionGroupInfo(GroupidGenerator.getStringId(0,0));
             groupInfo.addMemeber(1);
             TransactionGroupInfo.setCurrent(groupInfo);
+            TransactionServiceInfo.setCurrent(new TransactionServiceInfo(UuidGenerator.generateUuid(), ActionType.ADD,groupInfo.getGroupId(),1,method,args));
             //2.
             point.proceed();
+
             //3.
             //ClientTransactionHandler clientTransactionHandler = new ClientTransactionHandler();
             //serviceInfo = new TransactionServiceInfo(groupInfo.getGroupId(),groupInfo.getGroupMemberId(),"","","");
             //clientTransactionHandler.sendMsg(serviceInfo);
-            queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), ActionType.ADD,groupInfo.getGroupId(),1,method,args));
+            //queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), ActionType.ADD,groupInfo.getGroupId(),1,method,args));
             //4.Send confirm message to netty server, in oreder to commit all transaction in the service
             nettyService.sendMsg(new TransactionServiceInfo(UuidGenerator.generateUuid(), ActionType.APPLYFORSUBMIT,groupInfo.getGroupId().toString(),groupInfo.getGroupMembers()));
 
@@ -69,12 +71,13 @@ public class AspectHandler {
             groupInfo = new TransactionGroupInfo(groupId);
             groupInfo.addMemeber(groupMemberId);
             TransactionGroupInfo.setCurrent(groupInfo);
+            TransactionServiceInfo.setCurrent(new TransactionServiceInfo(UuidGenerator.generateUuid(), ActionType.ADD,groupId,groupMemberId,method,args));
             //1.
             point.proceed();
             //2.ClientTransactionHandler clientTransactionHandler = new ClientTransactionHandler();
             //serviceInfo = new TransactionServiceInfo(groupInfo.getGroupId(),groupInfo.getGroupMemberId(),"","","");
             //clientTransactionHandler.sendMsg(serviceInfo);
-            queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), ActionType.ADD,groupId,groupMemberId,method,args));
+           // queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), ActionType.ADD,groupId,groupMemberId,method,args));
 
 
 

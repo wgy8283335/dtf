@@ -11,6 +11,8 @@ import java.util.List;
  */
 public class TransactionServiceInfo {
 
+    private final static ThreadLocal<TransactionServiceInfo> current = new ThreadLocal<>();
+
     String id;
     JSONObject info;
     ActionType action;
@@ -25,6 +27,14 @@ public class TransactionServiceInfo {
 
     public ActionType getAction() {
         return action;
+    }
+
+    public static TransactionServiceInfo getCurrent() {
+        return current.get();
+    }
+
+    public static void setCurrent(TransactionServiceInfo transactionServiceInfo){
+        current.set(transactionServiceInfo);
     }
 
     public TransactionServiceInfo(String id, ActionType action, String groupId, Integer groupMemeberId, Method method, Object[] args) {
