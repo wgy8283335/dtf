@@ -79,7 +79,7 @@ public final class MessageProto {
     /**
      * <code>optional string info = 7;</code>
      */
-    java.lang.String getInfo();
+    String getInfo();
     /**
      * <code>optional string info = 7;</code>
      */
@@ -94,7 +94,7 @@ public final class MessageProto {
     /**
      * <code>optional .Message.ActionType action = 8 [default = DEFAULT];</code>
      */
-    com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType getAction();
+    Message.ActionType getAction();
   }
   /**
    * Protobuf type {@code Message}
@@ -119,7 +119,7 @@ public final class MessageProto {
     }
 
     private final com.google.protobuf.UnknownFieldSet unknownFields;
-    @java.lang.Override
+    @Override
     public final com.google.protobuf.UnknownFieldSet
         getUnknownFields() {
       return this.unknownFields;
@@ -184,7 +184,7 @@ public final class MessageProto {
             }
             case 64: {
               int rawValue = input.readEnum();
-              com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType value = com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType.valueOf(rawValue);
+              ActionType value = ActionType.valueOf(rawValue);
               if (value == null) {
                 unknownFields.mergeVarintField(8, rawValue);
               } else {
@@ -207,14 +207,14 @@ public final class MessageProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.coconason.dtf.common.protobuf.MessageProto.internal_static_Message_descriptor;
+      return MessageProto.internal_static_Message_descriptor;
     }
 
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+    protected FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.coconason.dtf.common.protobuf.MessageProto.internal_static_Message_fieldAccessorTable
+      return MessageProto.internal_static_Message_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.coconason.dtf.common.protobuf.MessageProto.Message.class, com.coconason.dtf.common.protobuf.MessageProto.Message.Builder.class);
+              Message.class, Builder.class);
     }
 
     public static com.google.protobuf.Parser<Message> PARSER =
@@ -227,7 +227,7 @@ public final class MessageProto {
       }
     };
 
-    @java.lang.Override
+    @Override
     public com.google.protobuf.Parser<Message> getParserForType() {
       return PARSER;
     }
@@ -265,6 +265,22 @@ public final class MessageProto {
        * <code>DEFAULT = 7;</code>
        */
       DEFAULT(6, 7),
+      /**
+       * <code>LOGIN_REQ = 8;</code>
+       */
+      LOGIN_REQ(7, 8),
+      /**
+       * <code>LOGIN_RESP = 9;</code>
+       */
+      LOGIN_RESP(8, 9),
+      /**
+       * <code>HEARTBEAT_REQ = 10;</code>
+       */
+      HEARTBEAT_REQ(9, 10),
+      /**
+       * <code>HEARTBEAT_RESP = 11;</code>
+       */
+      HEARTBEAT_RESP(10, 11),
       ;
 
       /**
@@ -295,6 +311,22 @@ public final class MessageProto {
        * <code>DEFAULT = 7;</code>
        */
       public static final int DEFAULT_VALUE = 7;
+      /**
+       * <code>LOGIN_REQ = 8;</code>
+       */
+      public static final int LOGIN_REQ_VALUE = 8;
+      /**
+       * <code>LOGIN_RESP = 9;</code>
+       */
+      public static final int LOGIN_RESP_VALUE = 9;
+      /**
+       * <code>HEARTBEAT_REQ = 10;</code>
+       */
+      public static final int HEARTBEAT_REQ_VALUE = 10;
+      /**
+       * <code>HEARTBEAT_RESP = 11;</code>
+       */
+      public static final int HEARTBEAT_RESP_VALUE = 11;
 
 
       public final int getNumber() { return value; }
@@ -308,6 +340,10 @@ public final class MessageProto {
           case 5: return SUCCESS;
           case 6: return FAIL;
           case 7: return DEFAULT;
+          case 8: return LOGIN_REQ;
+          case 9: return LOGIN_RESP;
+          case 10: return HEARTBEAT_REQ;
+          case 11: return HEARTBEAT_RESP;
           default: return null;
         }
       }
@@ -334,7 +370,7 @@ public final class MessageProto {
       }
       public static final com.google.protobuf.Descriptors.EnumDescriptor
           getDescriptor() {
-        return com.coconason.dtf.common.protobuf.MessageProto.Message.getDescriptor().getEnumTypes().get(0);
+        return Message.getDescriptor().getEnumTypes().get(0);
       }
 
       private static final ActionType[] VALUES = values();
@@ -342,7 +378,7 @@ public final class MessageProto {
       public static ActionType valueOf(
           com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
         if (desc.getType() != getDescriptor()) {
-          throw new java.lang.IllegalArgumentException(
+          throw new IllegalArgumentException(
             "EnumValueDescriptor is not for this type.");
         }
         return VALUES[desc.getIndex()];
@@ -458,7 +494,7 @@ public final class MessageProto {
 
     // optional string info = 7;
     public static final int INFO_FIELD_NUMBER = 7;
-    private java.lang.Object info_;
+    private Object info_;
     /**
      * <code>optional string info = 7;</code>
      */
@@ -468,14 +504,14 @@ public final class MessageProto {
     /**
      * <code>optional string info = 7;</code>
      */
-    public java.lang.String getInfo() {
-      java.lang.Object ref = info_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
+    public String getInfo() {
+      Object ref = info_;
+      if (ref instanceof String) {
+        return (String) ref;
       } else {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
+        String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
           info_ = s;
         }
@@ -487,11 +523,11 @@ public final class MessageProto {
      */
     public com.google.protobuf.ByteString
         getInfoBytes() {
-      java.lang.Object ref = info_;
-      if (ref instanceof java.lang.String) {
+      Object ref = info_;
+      if (ref instanceof String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
+                (String) ref);
         info_ = b;
         return b;
       } else {
@@ -501,7 +537,7 @@ public final class MessageProto {
 
     // optional .Message.ActionType action = 8 [default = DEFAULT];
     public static final int ACTION_FIELD_NUMBER = 8;
-    private com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType action_;
+    private ActionType action_;
     /**
      * <code>optional .Message.ActionType action = 8 [default = DEFAULT];</code>
      */
@@ -511,7 +547,7 @@ public final class MessageProto {
     /**
      * <code>optional .Message.ActionType action = 8 [default = DEFAULT];</code>
      */
-    public com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType getAction() {
+    public ActionType getAction() {
       return action_;
     }
 
@@ -523,7 +559,7 @@ public final class MessageProto {
       priority_ = 0;
       id_ = 0L;
       info_ = "";
-      action_ = com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType.DEFAULT;
+      action_ = ActionType.DEFAULT;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -608,59 +644,59 @@ public final class MessageProto {
     }
 
     private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    protected java.lang.Object writeReplace()
+    @Override
+    protected Object writeReplace()
         throws java.io.ObjectStreamException {
       return super.writeReplace();
     }
 
-    public static com.coconason.dtf.common.protobuf.MessageProto.Message parseFrom(
+    public static Message parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.coconason.dtf.common.protobuf.MessageProto.Message parseFrom(
+    public static Message parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.coconason.dtf.common.protobuf.MessageProto.Message parseFrom(byte[] data)
+    public static Message parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.coconason.dtf.common.protobuf.MessageProto.Message parseFrom(
+    public static Message parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.coconason.dtf.common.protobuf.MessageProto.Message parseFrom(java.io.InputStream input)
+    public static Message parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.coconason.dtf.common.protobuf.MessageProto.Message parseFrom(
+    public static Message parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseFrom(input, extensionRegistry);
     }
-    public static com.coconason.dtf.common.protobuf.MessageProto.Message parseDelimitedFrom(java.io.InputStream input)
+    public static Message parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input);
     }
-    public static com.coconason.dtf.common.protobuf.MessageProto.Message parseDelimitedFrom(
+    public static Message parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input, extensionRegistry);
     }
-    public static com.coconason.dtf.common.protobuf.MessageProto.Message parseFrom(
+    public static Message parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.coconason.dtf.common.protobuf.MessageProto.Message parseFrom(
+    public static Message parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -669,14 +705,14 @@ public final class MessageProto {
 
     public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.coconason.dtf.common.protobuf.MessageProto.Message prototype) {
+    public static Builder newBuilder(Message prototype) {
       return newBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() { return newBuilder(this); }
 
-    @java.lang.Override
+    @Override
     protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        BuilderParent parent) {
       Builder builder = new Builder(parent);
       return builder;
     }
@@ -685,17 +721,17 @@ public final class MessageProto {
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.coconason.dtf.common.protobuf.MessageProto.MessageOrBuilder {
+       implements MessageOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.coconason.dtf.common.protobuf.MessageProto.internal_static_Message_descriptor;
+        return MessageProto.internal_static_Message_descriptor;
       }
 
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      protected FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.coconason.dtf.common.protobuf.MessageProto.internal_static_Message_fieldAccessorTable
+        return MessageProto.internal_static_Message_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.coconason.dtf.common.protobuf.MessageProto.Message.class, com.coconason.dtf.common.protobuf.MessageProto.Message.Builder.class);
+                Message.class, Builder.class);
       }
 
       // Construct using com.coconason.dtf.common.protobuf.MessageProto.Message.newBuilder()
@@ -704,7 +740,7 @@ public final class MessageProto {
       }
 
       private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+          BuilderParent parent) {
         super(parent);
         maybeForceBuilderInitialization();
       }
@@ -732,7 +768,7 @@ public final class MessageProto {
         bitField0_ = (bitField0_ & ~0x00000020);
         info_ = "";
         bitField0_ = (bitField0_ & ~0x00000040);
-        action_ = com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType.DEFAULT;
+        action_ = ActionType.DEFAULT;
         bitField0_ = (bitField0_ & ~0x00000080);
         return this;
       }
@@ -743,23 +779,23 @@ public final class MessageProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.coconason.dtf.common.protobuf.MessageProto.internal_static_Message_descriptor;
+        return MessageProto.internal_static_Message_descriptor;
       }
 
-      public com.coconason.dtf.common.protobuf.MessageProto.Message getDefaultInstanceForType() {
-        return com.coconason.dtf.common.protobuf.MessageProto.Message.getDefaultInstance();
+      public Message getDefaultInstanceForType() {
+        return Message.getDefaultInstance();
       }
 
-      public com.coconason.dtf.common.protobuf.MessageProto.Message build() {
-        com.coconason.dtf.common.protobuf.MessageProto.Message result = buildPartial();
+      public Message build() {
+        Message result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public com.coconason.dtf.common.protobuf.MessageProto.Message buildPartial() {
-        com.coconason.dtf.common.protobuf.MessageProto.Message result = new com.coconason.dtf.common.protobuf.MessageProto.Message(this);
+      public Message buildPartial() {
+        Message result = new Message(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
@@ -800,16 +836,16 @@ public final class MessageProto {
       }
 
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.coconason.dtf.common.protobuf.MessageProto.Message) {
-          return mergeFrom((com.coconason.dtf.common.protobuf.MessageProto.Message)other);
+        if (other instanceof Message) {
+          return mergeFrom((Message)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.coconason.dtf.common.protobuf.MessageProto.Message other) {
-        if (other == com.coconason.dtf.common.protobuf.MessageProto.Message.getDefaultInstance()) return this;
+      public Builder mergeFrom(Message other) {
+        if (other == Message.getDefaultInstance()) return this;
         if (other.hasCrcCode()) {
           setCrcCode(other.getCrcCode());
         }
@@ -848,11 +884,11 @@ public final class MessageProto {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.coconason.dtf.common.protobuf.MessageProto.Message parsedMessage = null;
+        Message parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.coconason.dtf.common.protobuf.MessageProto.Message) e.getUnfinishedMessage();
+          parsedMessage = (Message) e.getUnfinishedMessage();
           throw e;
         } finally {
           if (parsedMessage != null) {
@@ -1062,7 +1098,7 @@ public final class MessageProto {
       }
 
       // optional string info = 7;
-      private java.lang.Object info_ = "";
+      private Object info_ = "";
       /**
        * <code>optional string info = 7;</code>
        */
@@ -1072,15 +1108,15 @@ public final class MessageProto {
       /**
        * <code>optional string info = 7;</code>
        */
-      public java.lang.String getInfo() {
-        java.lang.Object ref = info_;
-        if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+      public String getInfo() {
+        Object ref = info_;
+        if (!(ref instanceof String)) {
+          String s = ((com.google.protobuf.ByteString) ref)
               .toStringUtf8();
           info_ = s;
           return s;
         } else {
-          return (java.lang.String) ref;
+          return (String) ref;
         }
       }
       /**
@@ -1088,11 +1124,11 @@ public final class MessageProto {
        */
       public com.google.protobuf.ByteString
           getInfoBytes() {
-        java.lang.Object ref = info_;
+        Object ref = info_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
+                  (String) ref);
           info_ = b;
           return b;
         } else {
@@ -1103,7 +1139,7 @@ public final class MessageProto {
        * <code>optional string info = 7;</code>
        */
       public Builder setInfo(
-          java.lang.String value) {
+          String value) {
         if (value == null) {
     throw new NullPointerException();
   }
@@ -1136,7 +1172,7 @@ public final class MessageProto {
       }
 
       // optional .Message.ActionType action = 8 [default = DEFAULT];
-      private com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType action_ = com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType.DEFAULT;
+      private ActionType action_ = ActionType.DEFAULT;
       /**
        * <code>optional .Message.ActionType action = 8 [default = DEFAULT];</code>
        */
@@ -1146,13 +1182,13 @@ public final class MessageProto {
       /**
        * <code>optional .Message.ActionType action = 8 [default = DEFAULT];</code>
        */
-      public com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType getAction() {
+      public ActionType getAction() {
         return action_;
       }
       /**
        * <code>optional .Message.ActionType action = 8 [default = DEFAULT];</code>
        */
-      public Builder setAction(com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType value) {
+      public Builder setAction(ActionType value) {
         if (value == null) {
           throw new NullPointerException();
         }
@@ -1166,7 +1202,7 @@ public final class MessageProto {
        */
       public Builder clearAction() {
         bitField0_ = (bitField0_ & ~0x00000080);
-        action_ = com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType.DEFAULT;
+        action_ = ActionType.DEFAULT;
         onChanged();
         return this;
       }
@@ -1195,16 +1231,18 @@ public final class MessageProto {
   private static com.google.protobuf.Descriptors.FileDescriptor
       descriptor;
   static {
-    java.lang.String[] descriptorData = {
-      "\n\rMessage.proto\"\223\002\n\007Message\022\017\n\007crcCode\030\001" +
+    String[] descriptorData = {
+      "\n\rMessage.proto\"\332\002\n\007Message\022\017\n\007crcCode\030\001" +
       " \001(\005\022\016\n\006length\030\002 \001(\005\022\021\n\tsessionID\030\003 \001(\003\022" +
       "\014\n\004type\030\004 \001(\005\022\020\n\010priority\030\005 \001(\005\022\n\n\002id\030\006 " +
       "\001(\003\022\014\n\004info\030\007 \001(\t\022,\n\006action\030\010 \001(\0162\023.Mess" +
-      "age.ActionType:\007DEFAULT\"l\n\nActionType\022\007\n" +
-      "\003ADD\020\001\022\022\n\016APPLYFORSUBMIT\020\002\022\021\n\rAPPROVESUB" +
-      "MIT\020\003\022\n\n\006CANCEL\020\004\022\013\n\007SUCCESS\020\005\022\010\n\004FAIL\020\006" +
-      "\022\013\n\007DEFAULT\020\007B1\n!com.coconason.dtf.commo" +
-      "n.protobufB\014MessageProto"
+      "age.ActionType:\007DEFAULT\"\262\001\n\nActionType\022\007" +
+      "\n\003ADD\020\001\022\022\n\016APPLYFORSUBMIT\020\002\022\021\n\rAPPROVESU" +
+      "BMIT\020\003\022\n\n\006CANCEL\020\004\022\013\n\007SUCCESS\020\005\022\010\n\004FAIL\020" +
+      "\006\022\013\n\007DEFAULT\020\007\022\r\n\tLOGIN_REQ\020\010\022\016\n\nLOGIN_R" +
+      "ESP\020\t\022\021\n\rHEARTBEAT_REQ\020\n\022\022\n\016HEARTBEAT_RE" +
+      "SP\020\013B1\n!com.coconason.dtf.common.protobu",
+      "fB\014MessageProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -1216,7 +1254,7 @@ public final class MessageProto {
           internal_static_Message_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_Message_descriptor,
-              new java.lang.String[] { "CrcCode", "Length", "SessionID", "Type", "Priority", "Id", "Info", "Action", });
+              new String[] { "CrcCode", "Length", "SessionID", "Type", "Priority", "Id", "Info", "Action", });
           return null;
         }
       };

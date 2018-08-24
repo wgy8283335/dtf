@@ -1,6 +1,7 @@
 package com.coconason.dtf.server.protobufserver;
 
-import com.coconason.dtf.common.constant.MessageType;
+import com.coconason.dtf.common.protobuf.MessageProto;
+import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
@@ -15,7 +16,7 @@ public class HeartBeatRespHandler extends ChannelInboundHandlerAdapter
     {
 
         MessageProto.Message message = (MessageProto.Message) msg;
-        if (message.getLength() != 2 && message.getType() == MessageType.HEARTBEAT_REQ)
+        if (message.getLength() != 2 && message.getAction() == ActionType.HEARTBEAT_REQ)
         {
             System.out.println("Receive client heart beat message");
             ctx.writeAndFlush(buildHeartBeat());
@@ -39,7 +40,7 @@ public class HeartBeatRespHandler extends ChannelInboundHandlerAdapter
     private MessageProto.Message buildHeartBeat()
     {
         MessageProto.Message.Builder builder = MessageProto.Message.newBuilder();
-        builder.setType(MessageType.HEARTBEAT_RESP);
+        builder.setAction(ActionType.HEARTBEAT_RESP);
         return builder.build();
     }
 }

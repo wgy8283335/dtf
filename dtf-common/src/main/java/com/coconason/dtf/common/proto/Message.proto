@@ -16,7 +16,7 @@ message Message{
 
     optional string info=7;
 
-    optional ActionType action=DEFAULT;
+    optional ActionType action=8[default = DEFAULT];
 
     enum ActionType{
         ADD = 1;
@@ -26,5 +26,9 @@ message Message{
         SUCCESS = 5;
         FAIL = 6;
         DEFAULT = 7;
+        LOGIN_REQ = 8;
+        LOGIN_RESP = 9;
+        HEARTBEAT_REQ = 10;
+        HEARTBEAT_RESP = 11;
     }
 }

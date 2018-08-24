@@ -8,7 +8,6 @@ import com.coconason.dtf.client.core.dbconnection.LockAndCondition;
 import com.coconason.dtf.client.core.dbconnection.ThreadsInfo;
 import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
 import com.coconason.dtf.common.constant.MessageType;
-import com.coconason.dtf.common.protobuf.MessageProto;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
