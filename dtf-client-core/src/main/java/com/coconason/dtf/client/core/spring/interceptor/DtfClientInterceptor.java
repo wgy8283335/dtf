@@ -37,7 +37,7 @@ public class DtfClientInterceptor {
         HttpServletRequest request = requestAttributes == null ? null : ((ServletRequestAttributes) requestAttributes).getRequest();
         String info = request == null ? null : request.getHeader("info");
         String groupId = info == null ? null : JSONObject.parseObject(info).get("groupId").toString();
-        String groupMemberId = info == null ? null : JSONObject.parseObject(info).get("groupMemberId").toString();
+        Integer groupMemberId = info == null ? null : (Integer)JSONObject.parseObject(info).get("groupMemberId");
         return aspectHandler.before(groupId,groupMemberId,joinPoint);
     }
 }

@@ -1,7 +1,6 @@
 package com.coconason.dtf.client.core.dbconnection;
 
-import com.coconason.dtf.client.core.constants.DBOperationType;
-
+import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 
@@ -12,15 +11,15 @@ import java.util.concurrent.locks.Lock;
 public class LockAndCondition {
     private Lock lock;
     private Condition condition;
-    private volatile DBOperationType state = DBOperationType.COMMIT;
+    private volatile ActionType state = ActionType.APPLYFORSUBMIT;
 
-    public LockAndCondition(Lock lock,DBOperationType state) {
+    public LockAndCondition(Lock lock,ActionType state) {
         this.state = state;
         this.lock = lock;
         this.condition = lock.newCondition();
     }
 
-    public DBOperationType getState() {
+    public ActionType getState() {
         return state;
     }
 

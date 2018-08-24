@@ -5,7 +5,11 @@ import com.coconason.dtf.client.core.beans.TransactionGroupInfo;
 import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
 import com.coconason.dtf.client.core.nettyclient.messagequeue.TransactionMessageQueue;
 import com.coconason.dtf.client.core.nettyclient.protobufclient.ClientTransactionHandler;
+import com.coconason.dtf.client.core.nettyclient.protobufclient.NettyService;
 import com.coconason.dtf.client.core.utils.GroupidGenerator;
+import com.coconason.dtf.client.core.utils.UuidGenerator;
+import com.coconason.dtf.common.protobuf.MessageProto;
+import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +26,10 @@ public class AspectHandler {
 
     @Autowired
     TransactionMessageQueue queue;
+    @Autowired
+    NettyService nettyService;
 
-    public Object before(String groupId, String groupMemberId,ProceedingJoinPoint point) throws Throwable {
+    public Object before(String groupId, Integer groupMemberId,ProceedingJoinPoint point) throws Throwable {
         MethodSignature signature = (MethodSignature) point.getSignature();
         Method method = signature.getMethod();
         Class<?> clazz = point.getTarget().getClass();
@@ -36,7 +42,6 @@ public class AspectHandler {
         }
         //declare one transaction group
         TransactionGroupInfo groupInfo;
-        TransactionServiceInfo serviceInfo;
         //1.When the service is creator,should create groupId and store in public object.
         //2.Then execute the program.And if the program has transactional operation in database,
         //should use database proxy to send transaction information to the transaction server.
@@ -53,7 +58,10 @@ public class AspectHandler {
             //ClientTransactionHandler clientTransactionHandler = new ClientTransactionHandler();
             //serviceInfo = new TransactionServiceInfo(groupInfo.getGroupId(),groupInfo.getGroupMemberId(),"","","");
             //clientTransactionHandler.sendMsg(serviceInfo);
-            queue.put(new TransactionServiceInfo(groupInfo.getGroupId(),"1",method,args));
+            queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), ActionType.ADD,groupInfo.getGroupId(),1,method,args));
+            //4.Send confirm message to netty server, in oreder to commit all transaction in the service
+            nettyService.sendMsg(new TransactionServiceInfo(UuidGenerator.generateUuid(), ActionType.APPLYFORSUBMIT,groupInfo.getGroupId().toString(),groupInfo.getGroupMembers()));
+
         }
         //1.When the service is follower,execute the program.And if the program has transactional operation in database,
         //should use database proxy to send transaction information to the transaction server.
@@ -68,7 +76,10 @@ public class AspectHandler {
             //2.ClientTransactionHandler clientTransactionHandler = new ClientTransactionHandler();
             //serviceInfo = new TransactionServiceInfo(groupInfo.getGroupId(),groupInfo.getGroupMemberId(),"","","");
             //clientTransactionHandler.sendMsg(serviceInfo);
-            queue.put(new TransactionServiceInfo(groupId,groupMemberId,method,args));
+            queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), ActionType.ADD,groupId,groupMemberId,method,args));
+
+
+
         }
 
         return null;

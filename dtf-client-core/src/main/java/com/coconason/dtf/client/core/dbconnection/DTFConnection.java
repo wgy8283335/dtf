@@ -1,8 +1,5 @@
 package com.coconason.dtf.client.core.dbconnection;
 
-import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
-import com.coconason.dtf.client.core.constants.DBOperationType;
-import com.coconason.dtf.client.core.nettyclient.messagequeue.TransactionMessageQueue;
 import com.coconason.dtf.client.core.utils.UuidGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,8 +9,6 @@ import java.sql.*;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**

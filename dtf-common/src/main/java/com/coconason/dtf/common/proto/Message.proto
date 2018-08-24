@@ -16,7 +16,7 @@ message Message{
 
     optional string info=7;
 
-    optional int32 action=8;
+    optional ActionType action=DEFAULT;
 
     enum ActionType{
         ADD = 1;
@@ -25,5 +25,6 @@ message Message{
         CANCEL = 4;
         SUCCESS = 5;
         FAIL = 6;
+        DEFAULT = 7;
     }
 }
