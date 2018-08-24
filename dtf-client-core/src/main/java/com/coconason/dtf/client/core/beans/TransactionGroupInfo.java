@@ -8,9 +8,11 @@ import java.util.List;
  * @date: 2018/8/21-13:31
  */
 public class TransactionGroupInfo {
+
+    private final static ThreadLocal<TransactionGroupInfo> current = new ThreadLocal<>();
+
     private String groupId;
     private List<Integer> groupMembers;
-    private String groupMemberId;
 
     public TransactionGroupInfo(String groupId) {
         this.groupId = groupId;
@@ -18,7 +20,6 @@ public class TransactionGroupInfo {
     }
 
     public void addMemeber(Integer memberId){
-        groupMemberId = memberId.toString();
         groupMembers.add(memberId);
     }
 
@@ -30,7 +31,11 @@ public class TransactionGroupInfo {
         return groupMembers;
     }
 
-    public String getGroupMemberId() {
-        return groupMemberId;
+    public static TransactionGroupInfo getCurrent(){
+        return current.get();
+    }
+
+    public static void setCurrent(TransactionGroupInfo transactionGroupInfo){
+        current.set(transactionGroupInfo);
     }
 }

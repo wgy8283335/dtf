@@ -1,5 +1,6 @@
 package com.coconason.dtf.client.core.spring.http;
 
+import com.coconason.dtf.client.core.beans.TransactionGroupInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpRequest;
@@ -7,6 +8,7 @@ import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @Author: Jason
@@ -18,15 +20,15 @@ public class DtfHttpRequestInterceptor implements ClientHttpRequestInterceptor {
 
     @Override
     public ClientHttpResponse intercept(HttpRequest httpRequest, byte[] bytes, ClientHttpRequestExecution clientHttpRequestExecution) throws IOException {
-//        TxTransactionLocal txTransactionLocal = TxTransactionLocal.current();
-//        String groupId = txTransactionLocal == null ? null : txTransactionLocal.getGroupId();
-//
-//        logger.debug("DTF-SpringCloud TxGroup info -> groupId:"+groupId);
-//
-//        if(txTransactionLocal!=null) {
-//            httpRequest.getHeaders().add("tx-group", groupId);
-//        }
-//        return clientHttpRequestExecution.execute(httpRequest,bytes);
-        return null;
+        TransactionGroupInfo transactionGroupInfo = TransactionGroupInfo.getCurrent();
+        String groupId = transactionGroupInfo == null ? null : transactionGroupInfo.getGroupId();
+        logger.debug("DTF-SpringCloud TxGroup info -> groupId:"+groupId);
+        if(transactionGroupInfo!=null) {
+            httpRequest.getHeaders().add("groupId", groupId);
+        }
+        ClientHttpResponse response = clientHttpRequestExecution.execute(httpRequest,bytes);
+        List<String> responseGroupMemberIdList = response.getHeaders().get("responseGroupMemberIdList");
+        List<String> responseGroupId = response.getHeaders().get("responseGroupId");
+        return response;
     }
 }

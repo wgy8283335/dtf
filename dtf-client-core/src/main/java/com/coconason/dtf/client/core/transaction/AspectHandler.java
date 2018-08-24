@@ -46,28 +46,30 @@ public class AspectHandler {
             //1.
             groupInfo = new TransactionGroupInfo(GroupidGenerator.getStringId(0,0));
             groupInfo.addMemeber(1);
+            TransactionGroupInfo.setCurrent(groupInfo);
             //2.
             point.proceed();
             //3.
             //ClientTransactionHandler clientTransactionHandler = new ClientTransactionHandler();
             //serviceInfo = new TransactionServiceInfo(groupInfo.getGroupId(),groupInfo.getGroupMemberId(),"","","");
             //clientTransactionHandler.sendMsg(serviceInfo);
-            queue.put(new TransactionServiceInfo(groupInfo.getGroupId(),groupInfo.getGroupMemberId(),method,args));
+            queue.put(new TransactionServiceInfo(groupInfo.getGroupId(),"1",method,args));
         }
         //1.When the service is follower,execute the program.And if the program has transactional operation in database,
         //should use database proxy to send transaction information to the transaction server.
         //2.And listen the response from server.
         //If the response is submit,submit transaction by database proxy.If the response is cancel,cancel transaction by database proxy.
         else{
-            //2.
+            groupInfo = new TransactionGroupInfo(groupId);
+            groupInfo.addMemeber(groupMemberId);
+            TransactionGroupInfo.setCurrent(groupInfo);
+            //1.
             point.proceed();
-            //3.
-            //ClientTransactionHandler clientTransactionHandler = new ClientTransactionHandler();
+            //2.ClientTransactionHandler clientTransactionHandler = new ClientTransactionHandler();
             //serviceInfo = new TransactionServiceInfo(groupInfo.getGroupId(),groupInfo.getGroupMemberId(),"","","");
             //clientTransactionHandler.sendMsg(serviceInfo);
             queue.put(new TransactionServiceInfo(groupId,groupMemberId,method,args));
         }
-
 
         return null;
     }
