@@ -3,6 +3,7 @@ package com.coconason.dtf.client.core.nettyclient.protobufclient;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
+import com.coconason.dtf.client.core.dbconnection.DBOperationType;
 import com.coconason.dtf.client.core.dbconnection.LockAndCondition;
 import com.coconason.dtf.client.core.dbconnection.ThreadsInfo;
 import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
@@ -37,14 +38,20 @@ public class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 
 		MessageProto.Message message = (MessageProto.Message) msg;
 		JSONObject map = JSON.parseObject(message.getInfo());
+		ActionType action = message.getAction();
 		LockAndCondition lc = threadsInfo.get(map.get("threadId").toString());
-		ActionType state = lc.getState();
-		//1.If notified to be commit
-		if(state == ActionType.SUCCESS){
-			lc.signal();
-		}
-		//2.If notified to be rollback
-		else if(state == ActionType.FAIL){
+		DBOperationType state = lc.getState();
+		if(action==ActionType.SUCCESS){
+			//1.If notified to be commit
+			if(state == DBOperationType.COMMIT){
+				lc.signal();
+			}
+			//2.If notified to be rollback
+			else if(state == DBOperationType.ROLLBACK){
+				lc.signal();
+			}
+		}else if(action==ActionType.FAIL){
+			lc.setState(DBOperationType.ROLLBACK);
 			lc.signal();
 		}
 		ctx.fireChannelRead(msg);

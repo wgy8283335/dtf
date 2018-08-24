@@ -11,16 +11,20 @@ import java.util.concurrent.locks.Lock;
 public class LockAndCondition {
     private Lock lock;
     private Condition condition;
-    private volatile ActionType state = ActionType.APPLYFORSUBMIT;
+    private volatile DBOperationType state = DBOperationType.DEFAULT;
 
-    public LockAndCondition(Lock lock,ActionType state) {
+    public LockAndCondition(Lock lock,DBOperationType state) {
         this.state = state;
         this.lock = lock;
         this.condition = lock.newCondition();
     }
 
-    public ActionType getState() {
+    public DBOperationType getState() {
         return state;
+    }
+
+    public void setState(DBOperationType state) {
+        this.state = state;
     }
 
     public void await() {

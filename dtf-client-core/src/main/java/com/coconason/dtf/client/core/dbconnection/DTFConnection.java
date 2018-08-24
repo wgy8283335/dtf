@@ -4,7 +4,6 @@ import com.coconason.dtf.client.core.utils.UuidGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import java.sql.*;
 import java.util.Map;
 import java.util.Properties;
@@ -23,7 +22,7 @@ public class DTFConnection implements Connection {
 
     private boolean readOnly;
 
-    private volatile DBOperationType state = DBOperationType.COMMIT;
+    private volatile DBOperationType state = DBOperationType.DEFAULT;
 
     private boolean hasClose = false;
 
