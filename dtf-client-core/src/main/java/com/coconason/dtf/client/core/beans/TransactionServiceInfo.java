@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @Author: Jason
@@ -46,11 +47,11 @@ public class TransactionServiceInfo {
         info.put("args",args);
         this.action = action;
     }
-    public TransactionServiceInfo(String id, ActionType action, String groupId, List<Integer> groupMemberList) {
+    public TransactionServiceInfo(String id, ActionType action, String groupId, Set<Integer> groupMemberSet) {
         this.id = id;
         this.info = new JSONObject();
         info.put("groupId",groupId);
-        info.put("groupMemberList",groupMemberList.toString());
+        info.put("groupMemberSet",groupMemberSet.toString());
         this.action = action;
     }
 

@@ -21,6 +21,14 @@ public class TransactionGroupInfo {
         this.groupMembers = new HashSet<>();
     }
 
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
+
+    public void setGroupMembers(Set<Integer> groupMembers) {
+        this.groupMembers = groupMembers;
+    }
+
     public void addMemeber(Integer memberId){
         groupMembers.add(memberId);
     }

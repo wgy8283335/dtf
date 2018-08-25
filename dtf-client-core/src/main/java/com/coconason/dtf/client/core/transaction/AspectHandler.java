@@ -47,10 +47,11 @@ public class AspectHandler {
         //If success, submit transaction by database proxy.If fail,cancel transaction by database proxy.
         if(groupId == null){
             //1.
-            groupInfo = new TransactionGroupInfo(GroupidGenerator.getStringId(0,0));
+            String groupIdTemp = GroupidGenerator.getStringId(0,0);
+            groupInfo = new TransactionGroupInfo(groupIdTemp);
             groupInfo.addMemeber(1);
             TransactionGroupInfo.setCurrent(groupInfo);
-            TransactionServiceInfo.setCurrent(new TransactionServiceInfo(UuidGenerator.generateUuid(), ActionType.ADD,groupInfo.getGroupId(),1,method,args));
+            TransactionServiceInfo.setCurrent(new TransactionServiceInfo(UuidGenerator.generateUuid(), ActionType.ADD,groupInfo.getGroupId(),Integer.valueOf(groupIdTemp),method,args));
             //2.
             point.proceed();
 
@@ -60,7 +61,8 @@ public class AspectHandler {
             //clientTransactionHandler.sendMsg(serviceInfo);
             //queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), ActionType.ADD,groupInfo.getGroupId(),1,method,args));
             //4.Send confirm message to netty server, in oreder to commit all transaction in the service
-            nettyService.sendMsg(new TransactionServiceInfo(UuidGenerator.generateUuid(), ActionType.APPLYFORSUBMIT,groupInfo.getGroupId().toString(),groupInfo.getGroupMembers()));
+            queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), ActionType.APPLYFORSUBMIT,groupInfo.getGroupId().toString(),groupInfo.getGroupMembers()));
+            //nettyService.sendMsg(new TransactionServiceInfo(UuidGenerator.generateUuid(), ActionType.APPLYFORSUBMIT,groupInfo.getGroupId().toString(),groupInfo.getGroupMembers()));
 
         }
         //1.When the service is follower,execute the program.And if the program has transactional operation in database,

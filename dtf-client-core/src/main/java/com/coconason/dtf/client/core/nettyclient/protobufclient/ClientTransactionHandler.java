@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
+import java.util.Set;
 
 @Component
 public class ClientTransactionHandler extends ChannelInboundHandlerAdapter
@@ -69,7 +70,12 @@ public class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 	}
 
 	public void sendMsg(TransactionServiceInfo serviceInfo) {
-		sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString(),serviceInfo.getInfo().get("groupMemeberId").toString(),(Method) serviceInfo.getInfo().get("method"),(Object[]) serviceInfo.getInfo().get("args"));
+		if(serviceInfo.getAction() == ActionType.ADD){
+			sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString(),serviceInfo.getInfo().get("groupMemeberId").toString(),(Method) serviceInfo.getInfo().get("method"),(Object[]) serviceInfo.getInfo().get("args"));
+		}else if(serviceInfo.getAction() == ActionType.APPLYFORSUBMIT){
+			sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString(),(Set)serviceInfo.getInfo().get("groupMemeberSet"));
+		}
+
 	}
 
 	public void sendMsg(String id,ActionType action,String groupId, String groupMemeberId, Method method,Object[] args){
@@ -79,6 +85,19 @@ public class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 		info.put("groupMemeberId",groupMemeberId);
 		info.put("method",method);
 		info.put("args",args);
+		builder.setInfo(info.toJSONString());
+		builder.setId(Integer.valueOf(id));
+		builder.setAction(action);
+		MessageProto.Message message = builder.build();
+		System.out.println("Send transaction message:\n" + message);
+		ctx.writeAndFlush(message);
+	}
+
+	public void sendMsg(String id,ActionType action,String groupId, Set groupMemeberSet){
+		MessageProto.Message.Builder builder= MessageProto.Message.newBuilder();
+		JSONObject info = new JSONObject();
+		info.put("groupId",groupId);
+		info.put("groupMemeberSet",groupMemeberSet);
 		builder.setInfo(info.toJSONString());
 		builder.setId(Integer.valueOf(id));
 		builder.setAction(action);

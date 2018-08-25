@@ -9,6 +9,7 @@ import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @Author: Jason
@@ -27,8 +28,10 @@ public class DtfHttpRequestInterceptor implements ClientHttpRequestInterceptor {
             httpRequest.getHeaders().add("groupId", groupId);
         }
         ClientHttpResponse response = clientHttpRequestExecution.execute(httpRequest,bytes);
-        List<String> responseGroupMemberIdList = response.getHeaders().get("responseGroupMemberIdList");
-        List<String> responseGroupId = response.getHeaders().get("responseGroupId");
+        Set<Integer> responseGroupMembers = (Set)response.getHeaders().get("groupMembers");
+        String responseGroupId = response.getHeaders().get("groupId").get(0);
+        transactionGroupInfo.setGroupMembers(responseGroupMembers);
+        transactionGroupInfo.setGroupId(responseGroupId);
         return response;
     }
 }
