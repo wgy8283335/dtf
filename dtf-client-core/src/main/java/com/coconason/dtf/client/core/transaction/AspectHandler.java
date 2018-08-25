@@ -6,7 +6,7 @@ import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
 import com.coconason.dtf.client.core.nettyclient.messagequeue.TransactionMessageQueue;
 import com.coconason.dtf.client.core.nettyclient.protobufclient.NettyService;
 import com.coconason.dtf.client.core.utils.GroupidGenerator;
-import com.coconason.dtf.client.core.utils.UuidGenerator;
+import com.coconason.dtf.common.utils.UuidGenerator;
 import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;

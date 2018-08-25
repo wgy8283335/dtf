@@ -1,12 +1,8 @@
 package com.coconason.dtf.client.core.dbconnection;
 
-import com.coconason.dtf.client.core.utils.UuidGenerator;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @Author: Jason

@@ -2,7 +2,7 @@ package com.coconason.dtf.client.core.dbconnection;
 
 import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
 import com.coconason.dtf.client.core.nettyclient.messagequeue.TransactionMessageQueue;
-import com.coconason.dtf.client.core.utils.UuidGenerator;
+import com.coconason.dtf.common.utils.UuidGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

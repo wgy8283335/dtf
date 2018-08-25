@@ -4,7 +4,6 @@ import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -18,7 +17,7 @@ public class LoginAuthRespHandler extends ChannelInboundHandlerAdapter
     private String[] writeList = { "/127.0.0.1" };
 
     // 已经登录的IP缓存，防止重复登录
-    private Map<String, Boolean> nodeCheck = new ConcurrentHashMap<>();
+    private Map<String, Boolean> nodeCheck = new ConcurrentHashMap();
 
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception

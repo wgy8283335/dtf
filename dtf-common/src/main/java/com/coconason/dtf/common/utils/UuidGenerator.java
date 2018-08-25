@@ -1,4 +1,4 @@
-package com.coconason.dtf.client.core.utils;
+package com.coconason.dtf.common.utils;
 
 import java.util.UUID;
 

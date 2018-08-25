@@ -6,8 +6,8 @@ import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
 import com.coconason.dtf.client.core.dbconnection.DBOperationType;
 import com.coconason.dtf.client.core.dbconnection.LockAndCondition;
 import com.coconason.dtf.client.core.dbconnection.ThreadsInfo;
+import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
-import com.coconason.dtf.common.constant.MessageType;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +40,7 @@ public class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 		ActionType action = message.getAction();
 		LockAndCondition lc = threadsInfo.get(map.get("threadId").toString());
 		DBOperationType state = lc.getState();
-		if(action==ActionType.SUCCESS){
+		if(action==ActionType.APPROVESUBMIT){
 			//1.If notified to be commit
 			if(state == DBOperationType.COMMIT){
 				lc.signal();
@@ -49,7 +49,7 @@ public class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 			else if(state == DBOperationType.ROLLBACK){
 				lc.signal();
 			}
-		}else if(action==ActionType.FAIL){
+		}else if(action==ActionType.CANCEL){
 			lc.setState(DBOperationType.ROLLBACK);
 			lc.signal();
 		}
@@ -74,7 +74,6 @@ public class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 
 	public void sendMsg(String id,ActionType action,String groupId, String groupMemeberId, Method method,Object[] args){
 		MessageProto.Message.Builder builder= MessageProto.Message.newBuilder();
-		builder.setType(MessageType.TRANSACTION_REQ);
 		JSONObject info = new JSONObject();
 		info.put("groupId",groupId);
 		info.put("groupMemeberId",groupMemeberId);
@@ -87,4 +86,6 @@ public class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 		System.out.println("Send transaction message:\n" + message);
 		ctx.writeAndFlush(message);
 	}
+
+
 }
