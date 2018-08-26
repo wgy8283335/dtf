@@ -19,7 +19,6 @@ public class DtfHttpResponseInterceptor extends HandlerInterceptorAdapter{
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable ModelAndView modelAndView) throws Exception {
         TransactionGroupInfo groupInfo = TransactionGroupInfo.getCurrent();
         //set groupInfo in the head.
-        response.setHeader("groupId",groupInfo.getGroupId());
-        response.setHeader("groupMembers",groupInfo.getGroupMembers().toString());
+        response.setHeader("groupInfo",groupInfo.toString());
     }
 }

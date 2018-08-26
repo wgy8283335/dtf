@@ -21,17 +21,18 @@ public class DtfHttpRequestInterceptor implements ClientHttpRequestInterceptor {
 
     @Override
     public ClientHttpResponse intercept(HttpRequest httpRequest, byte[] bytes, ClientHttpRequestExecution clientHttpRequestExecution) throws IOException {
+
         TransactionGroupInfo transactionGroupInfo = TransactionGroupInfo.getCurrent();
-        String groupId = transactionGroupInfo == null ? null : transactionGroupInfo.getGroupId();
-        logger.debug("DTF-SpringCloud TxGroup info -> groupId:"+groupId);
+        logger.debug("DTF-SpringCloud TxGroup info -> groupId:"+transactionGroupInfo.toString());
         if(transactionGroupInfo!=null) {
-            httpRequest.getHeaders().add("groupId", groupId);
+            httpRequest.getHeaders().add("groupInfo", transactionGroupInfo.toString());
         }
+
         ClientHttpResponse response = clientHttpRequestExecution.execute(httpRequest,bytes);
-        Set<Integer> responseGroupMembers = (Set)response.getHeaders().get("groupMembers");
-        String responseGroupId = response.getHeaders().get("groupId").get(0);
-        transactionGroupInfo.setGroupMembers(responseGroupMembers);
-        transactionGroupInfo.setGroupId(responseGroupId);
+
+        TransactionGroupInfo responseTransactionGroupInfo = TransactionGroupInfo.parse(response.getHeaders().get("groupInfo").get(0));
+        transactionGroupInfo.addMemebers(responseTransactionGroupInfo.getGroupMembers());
+
         return response;
     }
 }

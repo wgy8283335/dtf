@@ -1,6 +1,7 @@
 package com.coconason.dtf.client.core.spring.interceptor;
 
 import com.alibaba.fastjson.JSONObject;
+import com.coconason.dtf.client.core.beans.TransactionGroupInfo;
 import com.coconason.dtf.client.core.transaction.AspectHandler;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -35,9 +36,8 @@ public class DtfClientInterceptor {
         //If the model is follower the request would not be null.
         RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
         HttpServletRequest request = requestAttributes == null ? null : ((ServletRequestAttributes) requestAttributes).getRequest();
-        String info = request == null ? null : request.getHeader("info");
-        String groupId = info == null ? null : JSONObject.parseObject(info).get("groupId").toString();
-        Integer groupMemberId = info == null ? null : (Integer)JSONObject.parseObject(info).get("groupMemberId");
-        return aspectHandler.before(groupId,groupMemberId,joinPoint);
+        String info = request == null ? null : request.getHeader("groupInfo");
+        TransactionGroupInfo transactionGroupInfo = request == null ? null:TransactionGroupInfo.parse(info);
+        return aspectHandler.before(transactionGroupInfo,joinPoint);
     }
 }

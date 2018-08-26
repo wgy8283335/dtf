@@ -3,6 +3,7 @@ package com.coconason.dtf.client.core.transaction;
 import com.coconason.dtf.client.core.annotation.DtfTransaction;
 import com.coconason.dtf.client.core.beans.TransactionGroupInfo;
 import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
+import com.coconason.dtf.client.core.constant.Member;
 import com.coconason.dtf.client.core.nettyclient.messagequeue.TransactionMessageQueue;
 import com.coconason.dtf.client.core.nettyclient.protobufclient.NettyService;
 import com.coconason.dtf.client.core.utils.GroupidGenerator;
@@ -27,7 +28,7 @@ public class AspectHandler {
     @Autowired
     NettyService nettyService;
 
-    public Object before(String groupId, Integer groupMemberId,ProceedingJoinPoint point) throws Throwable {
+    public Object before(TransactionGroupInfo transactionGroupInfo,ProceedingJoinPoint point) throws Throwable {
         MethodSignature signature = (MethodSignature) point.getSignature();
         Method method = signature.getMethod();
         Class<?> clazz = point.getTarget().getClass();
@@ -45,16 +46,14 @@ public class AspectHandler {
         //should use database proxy to send transaction information to the transaction server.
         //3.At the end send submit request to the server, and listen the response from server.
         //If success, submit transaction by database proxy.If fail,cancel transaction by database proxy.
-        if(groupId == null){
+        if(transactionGroupInfo == null){
             //1.
             String groupIdTemp = GroupidGenerator.getStringId(0,0);
-            groupInfo = new TransactionGroupInfo(groupIdTemp);
-            groupInfo.addMemeber(1);
+            groupInfo = new TransactionGroupInfo(groupIdTemp, Member.ORIGNAL_ID);
             TransactionGroupInfo.setCurrent(groupInfo);
             TransactionServiceInfo.setCurrent(new TransactionServiceInfo(UuidGenerator.generateUuid(), ActionType.ADD,groupInfo.getGroupId(),Integer.valueOf(groupIdTemp),method,args));
             //2.
             point.proceed();
-
             //3.
             //ClientTransactionHandler clientTransactionHandler = new ClientTransactionHandler();
             //serviceInfo = new TransactionServiceInfo(groupInfo.getGroupId(),groupInfo.getGroupMemberId(),"","","");
@@ -63,28 +62,27 @@ public class AspectHandler {
             //4.Send confirm message to netty server, in oreder to commit all transaction in the service
             queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), ActionType.APPLYFORSUBMIT,groupInfo.getGroupId().toString(),groupInfo.getGroupMembers()));
             //nettyService.sendMsg(new TransactionServiceInfo(UuidGenerator.generateUuid(), ActionType.APPLYFORSUBMIT,groupInfo.getGroupId().toString(),groupInfo.getGroupMembers()));
-
         }
         //1.When the service is follower,execute the program.And if the program has transactional operation in database,
         //should use database proxy to send transaction information to the transaction server.
         //2.And listen the response from server.
         //If the response is submit,submit transaction by database proxy.If the response is cancel,cancel transaction by database proxy.
         else{
-            groupInfo = new TransactionGroupInfo(groupId);
-            groupInfo.addMemeber(groupMemberId);
-            TransactionGroupInfo.setCurrent(groupInfo);
-            TransactionServiceInfo.setCurrent(new TransactionServiceInfo(UuidGenerator.generateUuid(), ActionType.ADD,groupId,groupMemberId,method,args));
+            //if the thread does not have transactionGroupInfo,set current transaction group information
+            if(TransactionGroupInfo.getCurrent()!=null){
+                TransactionGroupInfo.setCurrent(transactionGroupInfo);
+            }
+            //if the thread does not have transactionServiceInfo,set current transaction service information
+            if(TransactionServiceInfo.getCurrent()!=null){
+                TransactionServiceInfo.setCurrent(new TransactionServiceInfo(UuidGenerator.generateUuid(), ActionType.ADD,transactionGroupInfo.getGroupId(),transactionGroupInfo.getMemberId(),method,args));
+            }
             //1.
             point.proceed();
             //2.ClientTransactionHandler clientTransactionHandler = new ClientTransactionHandler();
             //serviceInfo = new TransactionServiceInfo(groupInfo.getGroupId(),groupInfo.getGroupMemberId(),"","","");
             //clientTransactionHandler.sendMsg(serviceInfo);
            // queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), ActionType.ADD,groupId,groupMemberId,method,args));
-
-
-
         }
-
         return null;
     }
 }
