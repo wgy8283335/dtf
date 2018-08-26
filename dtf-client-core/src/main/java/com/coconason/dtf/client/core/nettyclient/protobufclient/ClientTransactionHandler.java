@@ -37,9 +37,10 @@ public class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 	{
 
 		MessageProto.Message message = (MessageProto.Message) msg;
+		Long id = message.getId();
 		JSONObject map = JSON.parseObject(message.getInfo());
 		ActionType action = message.getAction();
-		LockAndCondition lc = threadsInfo.get(map.get("threadId").toString());
+		LockAndCondition lc = threadsInfo.get(map.get("groupId").toString());
 		DBOperationType state = lc.getState();
 		if(action==ActionType.APPROVESUBMIT){
 			//1.If notified to be commit

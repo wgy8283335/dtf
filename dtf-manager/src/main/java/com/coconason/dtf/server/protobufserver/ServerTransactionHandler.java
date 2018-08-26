@@ -5,11 +5,14 @@ import com.coconason.dtf.common.utils.UuidGenerator;
 import com.coconason.dtf.server.cache.MessageCache;
 import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
 import com.coconason.dtf.common.protobuf.MessageProto;
+import com.coconason.dtf.server.message.TransactionMessageForAdding;
 import com.coconason.dtf.server.message.TransactionMessageForSubmit;
 import com.coconason.dtf.server.message.TransactionMessageGroup;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -46,13 +49,13 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
             case ADD:
                 //store the message in the cache.
                 //check whether the group exits in the cache
-                TransactionMessageGroup group = new TransactionMessageGroup(message);
+                TransactionMessageGroup group = new TransactionMessageGroup(message,ctx);
                 TransactionMessageGroup element = (TransactionMessageGroup)messageCache.get(group.getGroupId());
                 if(element==null){
                     messageCache.put(group.getGroupId(),group);
                 }else{
                     element.getMemberList().add(group.getMemberList().get(0));
-                    element.getMemberSet().add(group.getMemberList().get(0).getGroupMemeberId());
+                    element.getMemberSet().add(group.getMemberList().get(0).getGroupMemberId());
                 }
                 break;
             case APPLYFORSUBMIT:
@@ -62,14 +65,19 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
                 Set setFromMessage =tmfs.getMemberSet();
                 TransactionMessageGroup elementFromCache = (TransactionMessageGroup)messageCache.get(tmfs.getGroupId());
                 Set setFromCache = elementFromCache.getMemberSet();
+                List<TransactionMessageForAdding> memberList = elementFromCache.getMemberList();
                 //check whether the member from message has the same element as the member from cache.
                 setFromMessage.removeAll(setFromCache);
                 if(setFromMessage.isEmpty()){
-                    //success
-                    snedMsg(UuidGenerator.generateUuid(),ActionType.APPROVESUBMIT);
+                    for (TransactionMessageForAdding messageForAdding: memberList) {
+                        //success
+                        snedMsg(elementFromCache.getGroupId(),ActionType.APPROVESUBMIT,messageForAdding.getCtx());
+                    }
                 }else{
-                    //fail
-                    snedMsg(UuidGenerator.generateUuid(),ActionType.CANCEL);
+                    for (TransactionMessageForAdding messageForAdding: memberList) {
+                        //fail
+                        snedMsg(UuidGenerator.generateUuid(), ActionType.CANCEL,messageForAdding.getCtx());
+                    }
                 }
                 //Send response to other members of the group.Clear all messages of the transaction in the cache.
 
@@ -80,7 +88,7 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
         }
     }
 
-    private void snedMsg(String id,ActionType action) throws Exception{
+    private void snedMsg(String id,ActionType action,ChannelHandlerContext ctx) throws Exception{
         MessageProto.Message.Builder builder= MessageProto.Message.newBuilder();
         builder.setId(Integer.valueOf(id));
         builder.setAction(action);

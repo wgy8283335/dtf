@@ -2,6 +2,8 @@ package com.coconason.dtf.server.message;
 
 import com.alibaba.fastjson.JSONObject;
 import com.coconason.dtf.common.protobuf.MessageProto;
+import io.netty.channel.ChannelHandlerContext;
+
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -34,20 +36,20 @@ public class TransactionMessageGroup {
         return memberSet;
     }
 
-    public TransactionMessageGroup(MessageProto.Message message){
+    public TransactionMessageGroup(MessageProto.Message message, ChannelHandlerContext ctx){
         JSONObject info = JSONObject.parseObject(message.getInfo());
         String groupId = info.get("groupId").toString();
         this.groupId = groupId;
         String groupMemeberId = info.get("groupMemeberId").toString();
         Method method = (Method) info.get("method");
         Object[] args = (Object[]) info.get("args");
-        TransactionMessageForAdding tmfa = new TransactionMessageForAdding(groupMemeberId,method,args);
+        TransactionMessageForAdding tmfa = new TransactionMessageForAdding(groupMemeberId,ctx,method,args);
         addMemberToGroup(tmfa);
     }
 
     public void addMemberToGroup(TransactionMessageForAdding e){
         memberList.add(e);
-        memberSet.add(e.getGroupMemeberId());
+        memberSet.add(e.getGroupMemberId());
     }
 
 

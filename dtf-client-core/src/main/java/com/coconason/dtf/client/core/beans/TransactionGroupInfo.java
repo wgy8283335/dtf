@@ -45,8 +45,8 @@ public class TransactionGroupInfo {
         this.groupMembers = groupMembers;
     }
 
-    public void addNewMemeber(Integer memberId){
-        this.memberId = memberId+1;
+    public void addNewMemeber(){
+        this.memberId++;
         groupMembers.add(this.memberId);
     }
 

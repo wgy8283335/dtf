@@ -70,6 +70,7 @@ public class AspectHandler {
         else{
             //if the thread does not have transactionGroupInfo,set current transaction group information
             if(TransactionGroupInfo.getCurrent()!=null){
+                transactionGroupInfo.addNewMemeber();
                 TransactionGroupInfo.setCurrent(transactionGroupInfo);
             }
             //if the thread does not have transactionServiceInfo,set current transaction service information

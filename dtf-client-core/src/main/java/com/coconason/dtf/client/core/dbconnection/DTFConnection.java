@@ -1,5 +1,6 @@
 package com.coconason.dtf.client.core.dbconnection;
 
+import com.alibaba.fastjson.JSONObject;
 import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
 import com.coconason.dtf.client.core.nettyclient.messagequeue.TransactionMessageQueue;
 import com.coconason.dtf.common.utils.UuidGenerator;
@@ -78,7 +79,9 @@ public class DTFConnection implements Connection {
                 try {
                     //2. Use lock condition to wait for signaling.
                     LockAndCondition lc = new LockAndCondition(new ReentrantLock(),state);
-                    threadsInfo.put(UuidGenerator.generateUuid(),lc);
+                    TransactionServiceInfo transactionServiceInfo = TransactionServiceInfo.getCurrent();
+                    JSONObject map = transactionServiceInfo.getInfo();
+                    threadsInfo.put(map.get("groupId").toString(),lc);
                     queue.put(TransactionServiceInfo.getCurrent());
                     lc.await();
                     //3. After signaling, if success commit or rollback, otherwise skip the committing.
