@@ -1,8 +1,8 @@
 package com.coconason.dtf.client.core.nettyclient.protobufclient;
 
-import com.coconason.dtf.common.constant.MessageType;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import com.coconason.dtf.common.protobuf.MessageProto;
 
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -20,7 +20,7 @@ public class HeartBeatReqHandler extends ChannelInboundHandlerAdapter
 		MessageProto.Message message = (MessageProto.Message) msg;
 		if (message.getLength() != 2)
 		{
-			if (message.getType() == MessageType.LOGIN_RESP)
+			if (message.getAction() == MessageProto.Message.ActionType.LOGIN_RESP)
 			{
 				if (heartBeat == null)
 				{
@@ -30,7 +30,7 @@ public class HeartBeatReqHandler extends ChannelInboundHandlerAdapter
 							TimeUnit.MILLISECONDS);
 				}
 			}
-			else if (message.getType() == MessageType.HEARTBEAT_RESP)
+			else if (message.getAction() == MessageProto.Message.ActionType.HEARTBEAT_RESP)
 			{
 				System.out.println("Client receive server heart beat message :" + message);
 			}
@@ -89,7 +89,7 @@ public class HeartBeatReqHandler extends ChannelInboundHandlerAdapter
 	private MessageProto.Message buildHeartBeat()
 	{
 		MessageProto.Message.Builder builder = MessageProto.Message.newBuilder();
-		builder.setType(MessageType.HEARTBEAT_REQ);
+		builder.setAction(MessageProto.Message.ActionType.HEARTBEAT_REQ);
 		return builder.build();
 	}
 
