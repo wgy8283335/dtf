@@ -12,6 +12,7 @@
         <module>dtf-client-core</module>
         <module>dtf-manager</module>
         <module>dtf-common</module>
+        <module>springdemo2</module>
     </modules>
 
     <properties>

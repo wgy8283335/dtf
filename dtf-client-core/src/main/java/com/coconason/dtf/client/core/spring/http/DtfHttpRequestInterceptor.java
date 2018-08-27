@@ -7,6 +7,8 @@ import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.stereotype.Component;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
@@ -15,6 +17,7 @@ import java.util.Set;
  * @Author: Jason
  * @date: 2018/8/10-10:20
  */
+@Component
 public class DtfHttpRequestInterceptor implements ClientHttpRequestInterceptor {
 
     private Logger logger = LoggerFactory.getLogger(DtfHttpRequestInterceptor.class);
