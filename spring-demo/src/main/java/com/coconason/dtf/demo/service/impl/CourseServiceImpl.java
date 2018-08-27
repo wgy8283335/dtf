@@ -8,11 +8,13 @@ import com.coconason.dtf.demo.po.Course;
 import com.coconason.dtf.demo.po.Teacher;
 import com.coconason.dtf.demo.service.ICourseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * @Author: Jason
  * @date: 2018/8/27-15:08
  */
+@Service
 public class CourseServiceImpl implements ICourseService {
 
     @Autowired

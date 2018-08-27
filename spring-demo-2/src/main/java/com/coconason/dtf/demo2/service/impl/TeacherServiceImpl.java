@@ -1,17 +1,18 @@
 package com.coconason.dtf.demo2.service.impl;
 
-import com.coconason.dtf.client.core.spring.client.RestClient;
 import com.coconason.dtf.demo2.constant.ErrorCode;
 import com.coconason.dtf.demo2.dao.TeacherMapper;
 import com.coconason.dtf.demo2.model.DemoResult;
 import com.coconason.dtf.demo2.po.Teacher;
 import com.coconason.dtf.demo2.service.ITeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * @Author: Jason
  * @date: 2018/8/27-15:08
  */
+@Service
 public class TeacherServiceImpl implements ITeacherService {
 
     @Autowired

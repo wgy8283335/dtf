@@ -22,13 +22,13 @@ public class TransactionNettyListener implements ApplicationContextAware{
     TransactionMessageSender sender;
 
     @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException{
         nettyService.start();
         try{
             Thread.sleep(5000);
+            sender.sendMessage();
         }catch (Exception e){
             e.printStackTrace();
         }
-        sender.sendMessage();
     }
 }
