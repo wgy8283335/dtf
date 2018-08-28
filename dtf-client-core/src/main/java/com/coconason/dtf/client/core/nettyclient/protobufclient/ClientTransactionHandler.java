@@ -37,12 +37,11 @@ public class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 	{
 
 		MessageProto.Message message = (MessageProto.Message) msg;
-		Long id = message.getId();
-		JSONObject map = JSON.parseObject(message.getInfo());
 		ActionType action = message.getAction();
-		LockAndCondition lc = threadsInfo.get(map.get("groupId").toString());
-		DBOperationType state = lc.getState();
 		if(action==ActionType.APPROVESUBMIT){
+			JSONObject map = JSONObject.parseObject(message.getInfo().toString());
+			LockAndCondition lc = threadsInfo.get(map.get("groupId").toString());
+			DBOperationType state = lc.getState();
 			//1.If notified to be commit
 			if(state == DBOperationType.COMMIT){
 				lc.signal();
@@ -52,6 +51,9 @@ public class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 				lc.signal();
 			}
 		}else if(action==ActionType.CANCEL){
+			JSONObject map = JSONObject.parseObject(message.getInfo().toString());
+			LockAndCondition lc = threadsInfo.get(map.get("groupId").toString());
+			DBOperationType state = lc.getState();
 			lc.setState(DBOperationType.ROLLBACK);
 			lc.signal();
 		}

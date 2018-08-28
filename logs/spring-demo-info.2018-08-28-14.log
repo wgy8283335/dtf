@@ -1,0 +1,174 @@
+2018-08-28 14:32:05.563 [main] INFO  [com.coconason.dtf.demo.SpringDemoApplication:50] [,] - Starting SpringDemoApplication on LAPTOP-T23126JQ with PID 12960 (C:\Users\wgy\IdeaProjects\dtf\spring-demo\target\classes started by wgy in C:\Users\wgy\IdeaProjects\dtf)
+2018-08-28 14:32:05.569 [main] INFO  [com.coconason.dtf.demo.SpringDemoApplication:659] [,] - No active profile set, falling back to default profiles: default
+2018-08-28 14:32:05.643 [main] INFO  [org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext:590] [,] - Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@4b2c5e02: startup date [Tue Aug 28 14:32:05 CST 2018]; root of context hierarchy
+2018-08-28 14:32:06.223 [main] WARN  [org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext:558] [,] - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanDefinitionStoreException: Failed to process import candidates for configuration class [com.coconason.dtf.demo.SpringDemoApplication]; nested exception is java.io.FileNotFoundException: class path resource [nettyserver.properties] cannot be opened because it does not exist
+2018-08-28 14:32:06.229 [main] INFO  [org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener:101] [,] - 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2018-08-28 14:33:21.273 [main] INFO  [com.coconason.dtf.demo2.SpringDemo2Application:50] [,] - Starting SpringDemo2Application on LAPTOP-T23126JQ with PID 21576 (C:\Users\wgy\IdeaProjects\dtf\spring-demo-2\target\classes started by wgy in C:\Users\wgy\IdeaProjects\dtf)
+2018-08-28 14:33:21.280 [main] INFO  [com.coconason.dtf.demo2.SpringDemo2Application:659] [,] - No active profile set, falling back to default profiles: default
+2018-08-28 14:33:21.369 [main] INFO  [org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext:590] [,] - Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@376a0d86: startup date [Tue Aug 28 14:33:21 CST 2018]; root of context hierarchy
+2018-08-28 14:33:21.962 [main] WARN  [org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext:558] [,] - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanDefinitionStoreException: Failed to process import candidates for configuration class [com.coconason.dtf.demo2.SpringDemo2Application]; nested exception is java.io.FileNotFoundException: class path resource [nettyserver.properties] cannot be opened because it does not exist
+2018-08-28 14:33:21.968 [main] INFO  [org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener:101] [,] - 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2018-08-28 14:35:37.593 [main] INFO  [com.coconason.dtf.demo.SpringDemoApplication:50] [,] - Starting SpringDemoApplication on LAPTOP-T23126JQ with PID 17140 (C:\Users\wgy\IdeaProjects\dtf\spring-demo\target\classes started by wgy in C:\Users\wgy\IdeaProjects\dtf)
+2018-08-28 14:35:37.601 [main] INFO  [com.coconason.dtf.demo.SpringDemoApplication:659] [,] - No active profile set, falling back to default profiles: default
+2018-08-28 14:35:37.685 [main] INFO  [org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext:590] [,] - Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@64ec96c6: startup date [Tue Aug 28 14:35:37 CST 2018]; root of context hierarchy
+2018-08-28 14:35:38.319 [main] WARN  [org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext:558] [,] - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanDefinitionStoreException: Failed to process import candidates for configuration class [com.coconason.dtf.demo.SpringDemoApplication]; nested exception is java.io.FileNotFoundException: class path resource [nettyserver.properties] cannot be opened because it does not exist
+2018-08-28 14:35:38.328 [main] INFO  [org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener:101] [,] - 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2018-08-28 14:38:05.247 [main] INFO  [com.coconason.dtf.demo.SpringDemoApplication:50] [,] - Starting SpringDemoApplication on LAPTOP-T23126JQ with PID 12908 (C:\Users\wgy\IdeaProjects\dtf\spring-demo\target\classes started by wgy in C:\Users\wgy\IdeaProjects\dtf)
+2018-08-28 14:38:05.248 [main] INFO  [com.coconason.dtf.demo.SpringDemoApplication:659] [,] - No active profile set, falling back to default profiles: default
+2018-08-28 14:38:05.308 [main] INFO  [org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext:590] [,] - Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@3336e6b6: startup date [Tue Aug 28 14:38:05 CST 2018]; root of context hierarchy
+2018-08-28 14:38:05.834 [main] WARN  [org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext:558] [,] - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanDefinitionStoreException: Failed to process import candidates for configuration class [com.coconason.dtf.demo.SpringDemoApplication]; nested exception is java.io.FileNotFoundException: class path resource [nettyserver.properties] cannot be opened because it does not exist
+2018-08-28 14:47:30.065 [main] INFO  [com.coconason.dtf.demo.SpringDemoApplication:50] [,] - Starting SpringDemoApplication on LAPTOP-T23126JQ with PID 22032 (C:\Users\wgy\IdeaProjects\dtf\spring-demo\target\classes started by wgy in C:\Users\wgy\IdeaProjects\dtf)
+2018-08-28 14:47:30.067 [main] INFO  [com.coconason.dtf.demo.SpringDemoApplication:659] [,] - No active profile set, falling back to default profiles: default
+2018-08-28 14:47:30.137 [main] INFO  [org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext:590] [,] - Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@cd1e646: startup date [Tue Aug 28 14:47:30 CST 2018]; root of context hierarchy
+2018-08-28 14:47:30.700 [main] WARN  [org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext:558] [,] - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanDefinitionStoreException: Failed to process import candidates for configuration class [com.coconason.dtf.demo.SpringDemoApplication]; nested exception is java.io.FileNotFoundException: class path resource [nettyserver.properties] cannot be opened because it does not exist
+2018-08-28 14:47:30.741 [main] ERROR [org.springframework.boot.SpringApplication:842] [,] - Application run failed
+org.springframework.beans.factory.BeanDefinitionStoreException: Failed to process import candidates for configuration class [com.coconason.dtf.demo.SpringDemoApplication]; nested exception is java.io.FileNotFoundException: class path resource [nettyserver.properties] cannot be opened because it does not exist
+	at org.springframework.context.annotation.ConfigurationClassParser.processImports(ConfigurationClassParser.java:648) ~[spring-context-5.0.7.RELEASE.jar:5.0.7.RELEASE]
+	at org.springframework.context.annotation.ConfigurationClassParser.lambda$processDeferredImportSelectors$2(ConfigurationClassParser.java:567) ~[spring-context-5.0.7.RELEASE.jar:5.0.7.RELEASE]
+	at java.util.ArrayList.forEach(ArrayList.java:1257) ~[?:1.8.0_161]
+	at org.springframework.context.annotation.ConfigurationClassParser.processDeferredImportSelectors(ConfigurationClassParser.java:563) ~[spring-context-5.0.7.RELEASE.jar:5.0.7.RELEASE]
+	at org.springframework.context.annotation.ConfigurationClassParser.parse(ConfigurationClassParser.java:188) ~[spring-context-5.0.7.RELEASE.jar:5.0.7.RELEASE]
+	at org.springframework.context.annotation.ConfigurationClassPostProcessor.processConfigBeanDefinitions(ConfigurationClassPostProcessor.java:316) ~[spring-context-5.0.7.RELEASE.jar:5.0.7.RELEASE]
+	at org.springframework.context.annotation.ConfigurationClassPostProcessor.postProcessBeanDefinitionRegistry(ConfigurationClassPostProcessor.java:233) ~[spring-context-5.0.7.RELEASE.jar:5.0.7.RELEASE]
+	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanDefinitionRegistryPostProcessors(PostProcessorRegistrationDelegate.java:273) ~[spring-context-5.0.7.RELEASE.jar:5.0.7.RELEASE]
+	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(PostProcessorRegistrationDelegate.java:93) ~[spring-context-5.0.7.RELEASE.jar:5.0.7.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.invokeBeanFactoryPostProcessors(AbstractApplicationContext.java:694) ~[spring-context-5.0.7.RELEASE.jar:5.0.7.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:532) ~[spring-context-5.0.7.RELEASE.jar:5.0.7.RELEASE]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:140) ~[spring-boot-2.0.3.RELEASE.jar:2.0.3.RELEASE]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:759) ~[spring-boot-2.0.3.RELEASE.jar:2.0.3.RELEASE]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:395) ~[spring-boot-2.0.3.RELEASE.jar:2.0.3.RELEASE]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:327) ~[spring-boot-2.0.3.RELEASE.jar:2.0.3.RELEASE]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1255) ~[spring-boot-2.0.3.RELEASE.jar:2.0.3.RELEASE]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1243) ~[spring-boot-2.0.3.RELEASE.jar:2.0.3.RELEASE]
+	at com.coconason.dtf.demo.SpringDemoApplication.main(SpringDemoApplication.java:18) ~[classes/:?]
+Caused by: java.io.FileNotFoundException: class path resource [nettyserver.properties] cannot be opened because it does not exist
+	at org.springframework.core.io.ClassPathResource.getInputStream(ClassPathResource.java:180) ~[spring-core-5.0.7.RELEASE.jar:5.0.7.RELEASE]
+	at org.springframework.core.io.support.EncodedResource.getInputStream(EncodedResource.java:159) ~[spring-core-5.0.7.RELEASE.jar:5.0.7.RELEASE]
+	at org.springframework.core.io.support.PropertiesLoaderUtils.fillProperties(PropertiesLoaderUtils.java:99) ~[spring-core-5.0.7.RELEASE.jar:5.0.7.RELEASE]
+	at org.springframework.core.io.support.PropertiesLoaderUtils.fillProperties(PropertiesLoaderUtils.java:73) ~[spring-core-5.0.7.RELEASE.jar:5.0.7.RELEASE]
+	at org.springframework.core.io.support.PropertiesLoaderUtils.loadProperties(PropertiesLoaderUtils.java:59) ~[spring-core-5.0.7.RELEASE.jar:5.0.7.RELEASE]
+	at org.springframework.core.io.support.ResourcePropertySource.<init>(ResourcePropertySource.java:67) ~[spring-core-5.0.7.RELEASE.jar:5.0.7.RELEASE]
+	at org.springframework.core.io.support.DefaultPropertySourceFactory.createPropertySource(DefaultPropertySourceFactory.java:37) ~[spring-core-5.0.7.RELEASE.jar:5.0.7.RELEASE]
+	at org.springframework.context.annotation.ConfigurationClassParser.processPropertySource(ConfigurationClassParser.java:453) ~[spring-context-5.0.7.RELEASE.jar:5.0.7.RELEASE]
+	at org.springframework.context.annotation.ConfigurationClassParser.doProcessConfigurationClass(ConfigurationClassParser.java:272) ~[spring-context-5.0.7.RELEASE.jar:5.0.7.RELEASE]
+	at org.springframework.context.annotation.ConfigurationClassParser.processConfigurationClass(ConfigurationClassParser.java:245) ~[spring-context-5.0.7.RELEASE.jar:5.0.7.RELEASE]
+	at org.springframework.context.annotation.ConfigurationClassParser.parse(ConfigurationClassParser.java:194) ~[spring-context-5.0.7.RELEASE.jar:5.0.7.RELEASE]
+	at org.springframework.context.annotation.ConfigurationClassParser.doProcessConfigurationClass(ConfigurationClassParser.java:296) ~[spring-context-5.0.7.RELEASE.jar:5.0.7.RELEASE]
+	at org.springframework.context.annotation.ConfigurationClassParser.processConfigurationClass(ConfigurationClassParser.java:245) ~[spring-context-5.0.7.RELEASE.jar:5.0.7.RELEASE]
+	at org.springframework.context.annotation.ConfigurationClassParser.processImports(ConfigurationClassParser.java:638) ~[spring-context-5.0.7.RELEASE.jar:5.0.7.RELEASE]
+	... 17 more
+2018-08-28 14:51:07.512 [main] INFO  [com.coconason.dtf.demo.SpringDemoApplication:50] [,] - Starting SpringDemoApplication on LAPTOP-T23126JQ with PID 19904 (C:\Users\wgy\IdeaProjects\dtf\spring-demo\target\classes started by wgy in C:\Users\wgy\IdeaProjects\dtf)
+2018-08-28 14:51:07.513 [main] INFO  [com.coconason.dtf.demo.SpringDemoApplication:659] [,] - No active profile set, falling back to default profiles: default
+2018-08-28 14:51:07.576 [main] INFO  [org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext:590] [,] - Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@6b6776cb: startup date [Tue Aug 28 14:51:07 CST 2018]; root of context hierarchy
+2018-08-28 14:51:08.082 [main] WARN  [org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext:558] [,] - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanDefinitionStoreException: Failed to process import candidates for configuration class [com.coconason.dtf.demo.SpringDemoApplication]; nested exception is java.io.FileNotFoundException: class path resource [nettyserver.properties] cannot be opened because it does not exist
+2018-08-28 14:57:28.064 [main] INFO  [com.coconason.dtf.demo.SpringDemoApplication:50] [,] - Starting SpringDemoApplication on LAPTOP-T23126JQ with PID 18660 (C:\Users\wgy\IdeaProjects\dtf\spring-demo\target\classes started by wgy in C:\Users\wgy\IdeaProjects\dtf)
+2018-08-28 14:57:28.065 [main] INFO  [com.coconason.dtf.demo.SpringDemoApplication:659] [,] - No active profile set, falling back to default profiles: default
+2018-08-28 14:57:28.171 [main] INFO  [org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext:590] [,] - Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@2a7ed1f: startup date [Tue Aug 28 14:57:28 CST 2018]; root of context hierarchy
+2018-08-28 14:57:28.679 [main] WARN  [org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext:558] [,] - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanDefinitionStoreException: Failed to process import candidates for configuration class [com.coconason.dtf.demo.SpringDemoApplication]; nested exception is java.io.FileNotFoundException: class path resource [nettyserver.properties] cannot be opened because it does not exist
+2018-08-28 14:58:31.088 [main] INFO  [com.coconason.dtf.demo.SpringDemoApplication:50] [,] - Starting SpringDemoApplication on LAPTOP-T23126JQ with PID 10096 (C:\Users\wgy\IdeaProjects\dtf\spring-demo\target\classes started by wgy in C:\Users\wgy\IdeaProjects\dtf)
+2018-08-28 14:58:31.090 [main] INFO  [com.coconason.dtf.demo.SpringDemoApplication:659] [,] - No active profile set, falling back to default profiles: default
+2018-08-28 14:58:31.151 [main] INFO  [org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext:590] [,] - Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@43015c69: startup date [Tue Aug 28 14:58:31 CST 2018]; root of context hierarchy
+2018-08-28 14:58:32.029 [main] INFO  [org.springframework.integration.config.IntegrationRegistrar:349] [,] - No bean named 'integrationHeaderChannelRegistry' has been explicitly defined. Therefore, a default DefaultHeaderChannelRegistry will be created.
+2018-08-28 14:58:32.334 [main] INFO  [org.springframework.integration.config.DefaultConfiguringBeanFactoryPostProcessor:130] [,] - No bean named 'errorChannel' has been explicitly defined. Therefore, a default PublishSubscribeChannel will be created.
+2018-08-28 14:58:32.353 [main] INFO  [org.springframework.integration.config.DefaultConfiguringBeanFactoryPostProcessor:158] [,] - No bean named 'taskScheduler' has been explicitly defined. Therefore, a default ThreadPoolTaskScheduler will be created.
+2018-08-28 14:58:32.569 [main] INFO  [org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker:328] [,] - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$9b5a9d04] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-08-28 14:58:32.731 [main] INFO  [org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker:328] [,] - Bean 'org.springframework.integration.config.IntegrationManagementConfiguration' of type [org.springframework.integration.config.IntegrationManagementConfiguration$$EnhancerBySpringCGLIB$$64c5833] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-08-28 14:58:32.781 [main] INFO  [org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker:328] [,] - Bean 'org.springframework.integration.dsl.context.IntegrationFlowContext' of type [org.springframework.integration.dsl.context.IntegrationFlowContext] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-08-28 14:58:33.230 [main] INFO  [org.springframework.boot.web.embedded.tomcat.TomcatWebServer:91] [,] - Tomcat initialized with port(s): 8081 (http)
+2018-08-28 14:58:33.248 [main] INFO  [org.apache.coyote.http11.Http11NioProtocol:180] [,] - Initializing ProtocolHandler ["http-nio-8081"]
+2018-08-28 14:58:33.260 [main] INFO  [org.apache.catalina.core.StandardService:180] [,] - Starting service [Tomcat]
+2018-08-28 14:58:33.261 [main] INFO  [org.apache.catalina.core.StandardEngine:180] [,] - Starting Servlet Engine: Apache Tomcat/8.5.31
+2018-08-28 14:58:33.268 [localhost-startStop-1] INFO  [org.apache.catalina.core.AprLifecycleListener:180] [,] - The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [C:\Program Files\Java\jdk1.8.0_161\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Python27\;C:\Python27\Scripts;C:\Python27;C:\ProgramData\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\NetSarang;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\system32\WBEM;C:\Program Files\TortoiseSVN\bin;C:\Program Files\IDM Computer Solutions\UltraEdit;C:\Program Files (x86)\scala\bin;C:\Program Files\Java\jdk1.8.0_161\bin;C:\Program Files\Java\jdk1.8.0_161\jre\bin;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Windows Kits\8.1\Windows Performance Toolkit\;C:\Program Files\apache-maven-3.5.2-bin\apache-maven-3.5.2\bin;C:\WINDOWS\System32\OpenSSH\;"D:\ProgramData\Anaconda3;";"D:\ProgramData\Anaconda3\Scripts;";"D:\ProgramData\Anaconda3\Library\mingw-w64\bin;";"D:\ProgramData\Anaconda3\Library\usr\bin;";"D:\ProgramData\Anaconda3\Library\bin;";C:\spark\spark-1.6.0-bin-hadoop2.6\bin;C:\hadoop\hadoop-2.6.0\bin;C:\spark\spark-1.6.0-bin-hadoop2.6\python\lib\py4j-0.9-src.zip;C:\spark\spark-1.6.0-bin-hadoop2.6\python\lib\pyspark.zip;C:\Python27;C:\Users\wgy\AppData\Local\Microsoft\WindowsApps;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\Users\wgy\AppData\Local\Google\Cloud SDK\google-cloud-sdk\bin;C:\Program Files\apache-maven-3.5.2-bin\apache-maven-3.5.2\bin;C:\Users\wgy\AppData\Local\GitHubDesktop\bin;C:\Users\wgy\AppData\Local\Microsoft\WindowsApps;C:\spark\spark-1.6.0-bin-hadoop2.6\bin;C:\hadoop\hadoop-2.6.0;;.]
+2018-08-28 14:58:33.392 [localhost-startStop-1] INFO  [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]:180] [,] - Initializing Spring embedded WebApplicationContext
+2018-08-28 14:58:33.392 [localhost-startStop-1] INFO  [org.springframework.web.context.ContextLoader:285] [,] - Root WebApplicationContext: initialization completed in 2245 ms
+2018-08-28 14:58:33.584 [localhost-startStop-1] INFO  [org.springframework.boot.web.servlet.ServletRegistrationBean:186] [,] - Servlet dispatcherServlet mapped to [/]
+2018-08-28 14:58:33.590 [localhost-startStop-1] INFO  [org.springframework.boot.web.servlet.FilterRegistrationBean:245] [,] - Mapping filter: 'characterEncodingFilter' to: [/*]
+2018-08-28 14:58:33.591 [localhost-startStop-1] INFO  [org.springframework.boot.web.servlet.FilterRegistrationBean:245] [,] - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2018-08-28 14:58:33.591 [localhost-startStop-1] INFO  [org.springframework.boot.web.servlet.FilterRegistrationBean:245] [,] - Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2018-08-28 14:58:33.591 [localhost-startStop-1] INFO  [org.springframework.boot.web.servlet.FilterRegistrationBean:245] [,] - Mapping filter: 'requestContextFilter' to: [/*]
+2018-08-28 14:58:35.223 [nioEventLoopGroup-2-1] WARN  [io.netty.channel.DefaultChannelPipeline:151] [,] - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+com.alibaba.fastjson.JSONException: syntax error, pos 1, json : login_ok
+	at com.alibaba.fastjson.parser.DefaultJSONParser.parse(DefaultJSONParser.java:1394) ~[fastjson-1.2.38.jar:?]
+	at com.alibaba.fastjson.parser.DefaultJSONParser.parse(DefaultJSONParser.java:1287) ~[fastjson-1.2.38.jar:?]
+	at com.alibaba.fastjson.JSON.parse(JSON.java:139) ~[fastjson-1.2.38.jar:?]
+	at com.alibaba.fastjson.JSON.parse(JSON.java:130) ~[fastjson-1.2.38.jar:?]
+	at com.alibaba.fastjson.JSON.parseObject(JSON.java:206) ~[fastjson-1.2.38.jar:?]
+	at com.coconason.dtf.client.core.nettyclient.protobufclient.ClientTransactionHandler.channelRead(ClientTransactionHandler.java:41) ~[classes/:?]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at com.coconason.dtf.client.core.nettyclient.protobufclient.LoginAuthReqHandler.channelRead(LoginAuthReqHandler.java:33) ~[classes/:?]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.handler.timeout.IdleStateHandler.channelRead(IdleStateHandler.java:286) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.handler.codec.MessageToMessageDecoder.channelRead(MessageToMessageDecoder.java:102) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.fireChannelRead(ByteToMessageDecoder.java:310) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:284) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1434) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:965) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:163) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:647) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:582) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:499) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:461) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:884) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at java.lang.Thread.run(Thread.java:748) [?:1.8.0_161]
+2018-08-28 14:59:30.177 [nioEventLoopGroup-2-2] WARN  [io.netty.channel.DefaultChannelPipeline:151] [,] - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+com.alibaba.fastjson.JSONException: syntax error, pos 1, json : login_ok
+	at com.alibaba.fastjson.parser.DefaultJSONParser.parse(DefaultJSONParser.java:1394) ~[fastjson-1.2.38.jar:?]
+	at com.alibaba.fastjson.parser.DefaultJSONParser.parse(DefaultJSONParser.java:1287) ~[fastjson-1.2.38.jar:?]
+	at com.alibaba.fastjson.JSON.parse(JSON.java:139) ~[fastjson-1.2.38.jar:?]
+	at com.alibaba.fastjson.JSON.parse(JSON.java:130) ~[fastjson-1.2.38.jar:?]
+	at com.alibaba.fastjson.JSON.parseObject(JSON.java:206) ~[fastjson-1.2.38.jar:?]
+	at com.coconason.dtf.client.core.nettyclient.protobufclient.ClientTransactionHandler.channelRead(ClientTransactionHandler.java:41) ~[classes/:?]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at com.coconason.dtf.client.core.nettyclient.protobufclient.LoginAuthReqHandler.channelRead(LoginAuthReqHandler.java:33) ~[classes/:?]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.handler.timeout.IdleStateHandler.channelRead(IdleStateHandler.java:286) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.handler.codec.MessageToMessageDecoder.channelRead(MessageToMessageDecoder.java:102) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.fireChannelRead(ByteToMessageDecoder.java:310) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:284) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1434) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:965) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:163) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:647) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:582) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:499) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:461) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:884) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30) ~[netty-all-4.1.25.Final.jar:4.1.25.Final]
+	at java.lang.Thread.run(Thread.java:748) [?:1.8.0_161]

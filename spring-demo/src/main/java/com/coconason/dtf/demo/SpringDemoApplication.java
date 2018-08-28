@@ -3,12 +3,14 @@ package com.coconason.dtf.demo;
 import com.coconason.dtf.client.core.dbconnection.DTFDataSourceProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import javax.sql.DataSource;
 import org.springframework.core.env.Environment;
 import com.alibaba.druid.pool.DruidDataSource;
 
+@EnableAutoConfiguration
 @SpringBootApplication
 public class SpringDemoApplication {
 

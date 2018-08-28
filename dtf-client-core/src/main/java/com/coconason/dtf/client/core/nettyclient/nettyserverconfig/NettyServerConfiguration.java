@@ -10,7 +10,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 @Component
-@PropertySource("classpath:nettyserver.properties")
+@PropertySource("classpath:application.properties")
 public class NettyServerConfiguration {
     @Value(value="${nettyserver.host}")
     private String host;

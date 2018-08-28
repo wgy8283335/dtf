@@ -26,8 +26,8 @@ public class HeartBeatReqHandler extends ChannelInboundHandlerAdapter
 				{
 					heartBeat = ctx.executor().scheduleAtFixedRate(new HeartBeatTask(ctx),
 							0,
-							5000,
-							TimeUnit.MILLISECONDS);
+							30,
+							TimeUnit.SECONDS);
 				}
 			}
 			else if (message.getAction() == MessageProto.Message.ActionType.HEARTBEAT_RESP)
