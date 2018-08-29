@@ -12,7 +12,7 @@ message Message{
 
     optional int32 priority=5;
 
-    optional int64 id=6;
+    optional string id=6;
 
     optional string info=7;
 

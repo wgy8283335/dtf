@@ -1,6 +1,5 @@
 package com.coconason.dtf.client.core.nettyclient.protobufclient;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
 import com.coconason.dtf.client.core.dbconnection.DBOperationType;
@@ -89,7 +88,7 @@ public class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 		info.put("method",method);
 		info.put("args",args);
 		builder.setInfo(info.toJSONString());
-		builder.setId(Integer.valueOf(id));
+		builder.setId(id);
 		builder.setAction(action);
 		MessageProto.Message message = builder.build();
 		System.out.println("Send transaction message:\n" + message);
@@ -102,7 +101,7 @@ public class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 		info.put("groupId",groupId);
 		info.put("groupMemeberSet",groupMemeberSet);
 		builder.setInfo(info.toJSONString());
-		builder.setId(Integer.valueOf(id));
+		builder.setId(id);
 		builder.setAction(action);
 		MessageProto.Message message = builder.build();
 		System.out.println("Send transaction message:\n" + message);

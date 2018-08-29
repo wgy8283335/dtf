@@ -1,7 +1,6 @@
 package com.coconason.dtf.demo2.message;
 
 import com.alibaba.fastjson.JSONObject;
-import com.coconason.dtf.common.protobuf.MessageProto;
 import io.netty.channel.ChannelHandlerContext;
 
 import java.lang.reflect.Method;

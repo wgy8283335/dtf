@@ -3,7 +3,6 @@ package com.coconason.dtf.demo2.protobufserver;
 import com.coconason.dtf.common.utils.UuidGenerator;
 import com.coconason.dtf.demo2.cache.MessageCache;
 import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
-import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.demo2.message.TransactionMessageForAdding;
 import com.coconason.dtf.demo2.message.TransactionMessageForSubmit;
 import com.coconason.dtf.demo2.message.TransactionMessageGroup;

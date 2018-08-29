@@ -61,15 +61,20 @@ public final class MessageProto {
      */
     int getPriority();
 
-    // optional int64 id = 6;
+    // optional string id = 6;
     /**
-     * <code>optional int64 id = 6;</code>
+     * <code>optional string id = 6;</code>
      */
     boolean hasId();
     /**
-     * <code>optional int64 id = 6;</code>
+     * <code>optional string id = 6;</code>
      */
-    long getId();
+    String getId();
+    /**
+     * <code>optional string id = 6;</code>
+     */
+    com.google.protobuf.ByteString
+        getIdBytes();
 
     // optional string info = 7;
     /**
@@ -172,9 +177,9 @@ public final class MessageProto {
               priority_ = input.readInt32();
               break;
             }
-            case 48: {
+            case 50: {
               bitField0_ |= 0x00000020;
-              id_ = input.readInt64();
+              id_ = input.readBytes();
               break;
             }
             case 58: {
@@ -476,20 +481,47 @@ public final class MessageProto {
       return priority_;
     }
 
-    // optional int64 id = 6;
+    // optional string id = 6;
     public static final int ID_FIELD_NUMBER = 6;
-    private long id_;
+    private Object id_;
     /**
-     * <code>optional int64 id = 6;</code>
+     * <code>optional string id = 6;</code>
      */
     public boolean hasId() {
       return ((bitField0_ & 0x00000020) == 0x00000020);
     }
     /**
-     * <code>optional int64 id = 6;</code>
+     * <code>optional string id = 6;</code>
      */
-    public long getId() {
-      return id_;
+    public String getId() {
+      Object ref = id_;
+      if (ref instanceof String) {
+        return (String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          id_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string id = 6;</code>
+     */
+    public com.google.protobuf.ByteString
+        getIdBytes() {
+      Object ref = id_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (String) ref);
+        id_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
 
     // optional string info = 7;
@@ -557,7 +589,7 @@ public final class MessageProto {
       sessionID_ = 0L;
       type_ = 0;
       priority_ = 0;
-      id_ = 0L;
+      id_ = "";
       info_ = "";
       action_ = ActionType.DEFAULT;
     }
@@ -589,7 +621,7 @@ public final class MessageProto {
         output.writeInt32(5, priority_);
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        output.writeInt64(6, id_);
+        output.writeBytes(6, getIdBytes());
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
         output.writeBytes(7, getInfoBytes());
@@ -628,7 +660,7 @@ public final class MessageProto {
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(6, id_);
+          .computeBytesSize(6, getIdBytes());
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
         size += com.google.protobuf.CodedOutputStream
@@ -764,7 +796,7 @@ public final class MessageProto {
         bitField0_ = (bitField0_ & ~0x00000008);
         priority_ = 0;
         bitField0_ = (bitField0_ & ~0x00000010);
-        id_ = 0L;
+        id_ = "";
         bitField0_ = (bitField0_ & ~0x00000020);
         info_ = "";
         bitField0_ = (bitField0_ & ~0x00000040);
@@ -862,7 +894,9 @@ public final class MessageProto {
           setPriority(other.getPriority());
         }
         if (other.hasId()) {
-          setId(other.getId());
+          bitField0_ |= 0x00000020;
+          id_ = other.id_;
+          onChanged();
         }
         if (other.hasInfo()) {
           bitField0_ |= 0x00000040;
@@ -1064,35 +1098,76 @@ public final class MessageProto {
         return this;
       }
 
-      // optional int64 id = 6;
-      private long id_ ;
+      // optional string id = 6;
+      private Object id_ = "";
       /**
-       * <code>optional int64 id = 6;</code>
+       * <code>optional string id = 6;</code>
        */
       public boolean hasId() {
         return ((bitField0_ & 0x00000020) == 0x00000020);
       }
       /**
-       * <code>optional int64 id = 6;</code>
+       * <code>optional string id = 6;</code>
        */
-      public long getId() {
-        return id_;
+      public String getId() {
+        Object ref = id_;
+        if (!(ref instanceof String)) {
+          String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          id_ = s;
+          return s;
+        } else {
+          return (String) ref;
+        }
       }
       /**
-       * <code>optional int64 id = 6;</code>
+       * <code>optional string id = 6;</code>
        */
-      public Builder setId(long value) {
-        bitField0_ |= 0x00000020;
+      public com.google.protobuf.ByteString
+          getIdBytes() {
+        Object ref = id_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (String) ref);
+          id_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string id = 6;</code>
+       */
+      public Builder setId(
+          String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
         id_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int64 id = 6;</code>
+       * <code>optional string id = 6;</code>
        */
       public Builder clearId() {
         bitField0_ = (bitField0_ & ~0x00000020);
-        id_ = 0L;
+        id_ = getDefaultInstance().getId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string id = 6;</code>
+       */
+      public Builder setIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+        id_ = value;
         onChanged();
         return this;
       }
@@ -1235,7 +1310,7 @@ public final class MessageProto {
       "\n\rMessage.proto\"\332\002\n\007Message\022\017\n\007crcCode\030\001" +
       " \001(\005\022\016\n\006length\030\002 \001(\005\022\021\n\tsessionID\030\003 \001(\003\022" +
       "\014\n\004type\030\004 \001(\005\022\020\n\010priority\030\005 \001(\005\022\n\n\002id\030\006 " +
-      "\001(\003\022\014\n\004info\030\007 \001(\t\022,\n\006action\030\010 \001(\0162\023.Mess" +
+      "\001(\t\022\014\n\004info\030\007 \001(\t\022,\n\006action\030\010 \001(\0162\023.Mess" +
       "age.ActionType:\007DEFAULT\"\262\001\n\nActionType\022\007" +
       "\n\003ADD\020\001\022\022\n\016APPLYFORSUBMIT\020\002\022\021\n\rAPPROVESU" +
       "BMIT\020\003\022\n\n\006CANCEL\020\004\022\013\n\007SUCCESS\020\005\022\010\n\004FAIL\020" +
