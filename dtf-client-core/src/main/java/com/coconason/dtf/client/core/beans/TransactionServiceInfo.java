@@ -38,7 +38,7 @@ public class TransactionServiceInfo {
         current.set(transactionServiceInfo);
     }
 
-    public TransactionServiceInfo(String id, ActionType action, String groupId, Integer groupMemeberId, Method method, Object[] args) {
+    public TransactionServiceInfo(String id, ActionType action, String groupId, Long groupMemeberId, Method method, Object[] args) {
         this.id = id;
         this.info = new JSONObject();
         info.put("groupId",groupId);
@@ -47,7 +47,7 @@ public class TransactionServiceInfo {
         info.put("args",args);
         this.action = action;
     }
-    public TransactionServiceInfo(String id, ActionType action, String groupId, Set<Integer> groupMemberSet) {
+    public TransactionServiceInfo(String id, ActionType action, String groupId, Set<Long> groupMemberSet) {
         this.id = id;
         this.info = new JSONObject();
         info.put("groupId",groupId);

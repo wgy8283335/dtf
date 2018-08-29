@@ -141,11 +141,11 @@ public class GroupidGenerator {
     }
     //==============================Test=============================================
     /** 测试 */
-    public static void main(String[] args) {
-        for (int i = 0; i < 1000; i++) {
-            long id = GroupidGenerator.getId(0,0);
-            System.out.println(Long.toBinaryString(id));
-            System.out.println(id);
-        }
-    }
+//    public static void main(String[] args) {
+//        for (int i = 0; i < 1000; i++) {
+//            long id = GroupidGenerator.getId(0,0);
+//            System.out.println(Long.toBinaryString(id));
+//            System.out.println(id);
+//        }
+//    }
 }

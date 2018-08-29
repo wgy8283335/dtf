@@ -12,28 +12,28 @@ public class TransactionGroupInfo {
     private final static ThreadLocal<TransactionGroupInfo> current = new ThreadLocal<>();
 
     private String groupId;
-    private Integer memberId;
-    private Set<Integer> groupMembers;
+    private Long memberId;
+    private Set<Long> groupMembers;
 
-    public TransactionGroupInfo(String groupId,Integer memberId) {
+    public TransactionGroupInfo(String groupId,Long memberId) {
         this.groupId = groupId;
         this.groupMembers = new HashSet<>();
         this.memberId = memberId;
         this.groupMembers.add(memberId);
     }
 
-    public TransactionGroupInfo(String groupId,Integer memberId, Set<Integer> groupMembers) {
+    public TransactionGroupInfo(String groupId,Long memberId, Set<Long> groupMembers) {
         this.groupId = groupId;
         this.memberId = memberId;
         this.groupMembers = groupMembers;
     }
 
-    public TransactionGroupInfo(String groupId, Set<Integer> groupMembers) {
+    public TransactionGroupInfo(String groupId, Set<Long> groupMembers) {
         this.groupId = groupId;
         this.groupMembers = groupMembers;
     }
 
-    public void setMemberId(Integer memberId) {
+    public void setMemberId(Long memberId) {
         this.memberId = memberId;
     }
 
@@ -41,7 +41,7 @@ public class TransactionGroupInfo {
         this.groupId = groupId;
     }
 
-    public void setGroupMembers(Set<Integer> groupMembers) {
+    public void setGroupMembers(Set<Long> groupMembers) {
         this.groupMembers = groupMembers;
     }
 
@@ -50,15 +50,15 @@ public class TransactionGroupInfo {
         groupMembers.add(this.memberId);
     }
 
-    public void addMemeber(Integer memberId){
+    public void addMemeber(Long memberId){
         groupMembers.add(memberId);
     }
 
-    public void addMemebers(Set<Integer> tempSet){
+    public void addMemebers(Set<Long> tempSet){
         groupMembers.addAll(tempSet);
     }
 
-    public Integer getMemberId() {
+    public Long getMemberId() {
         return memberId;
     }
 
@@ -66,7 +66,7 @@ public class TransactionGroupInfo {
         return groupId;
     }
 
-    public Set<Integer> getGroupMembers() {
+    public Set<Long> getGroupMembers() {
         return groupMembers;
     }
 
@@ -82,7 +82,7 @@ public class TransactionGroupInfo {
     public String toString() {
         StringBuffer buffer = new StringBuffer(groupId);
         buffer.append(memberId);
-        for(Integer member:groupMembers){
+        for(Long member:groupMembers){
             buffer.append("-");
             buffer.append(member);
         }
@@ -92,10 +92,10 @@ public class TransactionGroupInfo {
     public static TransactionGroupInfo parse(String value){
         String[] array = value.split("-");
         String groupId = array[0];
-        Integer memberId = Integer.valueOf(array[1]);
-        Set<Integer> groupMembers = new HashSet<>();
+        Long memberId = Long.valueOf(array[1]);
+        Set<Long> groupMembers = new HashSet<>();
         for(int i=2; i<array.length;i++){
-            groupMembers.add(Integer.valueOf(array[i]));
+            groupMembers.add(Long.valueOf(array[i]));
         }
         TransactionGroupInfo transactionGroupInfo = new TransactionGroupInfo(groupId,memberId,groupMembers);
         return null;

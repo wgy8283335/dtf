@@ -5,5 +5,5 @@ package com.coconason.dtf.client.core.constant;
  * @date: 2018/8/26-11:05
  */
 public class Member {
-    public static Integer ORIGNAL_ID = 1;
+    public static Long ORIGNAL_ID = 1L;
 }

@@ -42,7 +42,8 @@ public class NettyService {
 
     public synchronized void start(){
         try{
-            connect(nettyServerConfiguration.getHost(),nettyServerConfiguration.getPort());
+            //connect(nettyServerConfiguration.getHost(),nettyServerConfiguration.getPort());
+            executorService.execute(new ConnectRunnable(nettyServerConfiguration.getHost(),nettyServerConfiguration.getPort()));
         }catch (Exception e){
             System.out.println("Exception-----> \n" + e);
         }

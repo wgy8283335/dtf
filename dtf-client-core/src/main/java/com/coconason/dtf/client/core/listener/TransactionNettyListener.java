@@ -26,7 +26,7 @@ public class TransactionNettyListener implements ApplicationContextAware{
         nettyService.start();
         try{
             Thread.sleep(5000);
-            sender.sendMessage();
+            sender.startSendMessage();
         }catch (Exception e){
             e.printStackTrace();
         }

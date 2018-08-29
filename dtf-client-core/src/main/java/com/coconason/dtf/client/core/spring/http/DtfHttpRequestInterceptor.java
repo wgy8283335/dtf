@@ -32,10 +32,11 @@ public class DtfHttpRequestInterceptor implements ClientHttpRequestInterceptor {
         }
 
         ClientHttpResponse response = clientHttpRequestExecution.execute(httpRequest,bytes);
-
-        TransactionGroupInfo responseTransactionGroupInfo = TransactionGroupInfo.parse(response.getHeaders().get("groupInfo").get(0));
-        transactionGroupInfo.addMemebers(responseTransactionGroupInfo.getGroupMembers());
-
+        List<String> groupInfoStringList = response.getHeaders().get("groupInfo");
+        if(groupInfoStringList != null){
+            TransactionGroupInfo responseTransactionGroupInfo = TransactionGroupInfo.parse(groupInfoStringList.get(0));
+            transactionGroupInfo.addMemebers(responseTransactionGroupInfo.getGroupMembers());
+        }
         return response;
     }
 }

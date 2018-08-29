@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class CourseController {
+
     @Autowired
     ICourseService courseService;
 
     @RequestMapping(value="/add_course_info",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
     public DemoResult addCourseInfo(@RequestBody Course course) throws Exception{
         DemoResult demoResult = courseService.addCourseInfo(course);
-
         return demoResult;
     }
 }

@@ -11,6 +11,8 @@ import com.coconason.dtf.common.utils.UuidGenerator;
 import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,7 +53,7 @@ public class AspectHandler {
             String groupIdTemp = GroupidGenerator.getStringId(0,0);
             groupInfo = new TransactionGroupInfo(groupIdTemp, Member.ORIGNAL_ID);
             TransactionGroupInfo.setCurrent(groupInfo);
-            TransactionServiceInfo.setCurrent(new TransactionServiceInfo(UuidGenerator.generateUuid(), ActionType.ADD,groupInfo.getGroupId(),Integer.valueOf(groupIdTemp),method,args));
+            TransactionServiceInfo.setCurrent(new TransactionServiceInfo(UuidGenerator.generateUuid(), ActionType.ADD,groupInfo.getGroupId(),Long.valueOf(groupIdTemp),method,args));
             //2.
             point.proceed();
             //3.
