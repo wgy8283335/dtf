@@ -1,6 +1,7 @@
 package com.coconason.dtf.demo2.message;
 
 import com.alibaba.fastjson.JSONObject;
+import com.coconason.dtf.common.protobuf.MessageProto;
 
 import java.util.Set;
 

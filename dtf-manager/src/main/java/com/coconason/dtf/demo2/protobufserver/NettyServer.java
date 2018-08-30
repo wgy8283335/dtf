@@ -1,5 +1,6 @@
 package com.coconason.dtf.demo2.protobufserver;
 
+import com.coconason.dtf.common.protobuf.MessageProto;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -45,6 +46,7 @@ public class NettyServer
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception
                         {
+                            // NettyMessageDecoder设置了单条消息最大值1MB,可以防止消息过大导致的内存溢出或者畸形码流，引发解码错位或内存分配失败
                             //ch.pipeline().addLast(new NettyMessageDecoder(1024 * 1024, 4, 4, -8, 0));
                             //ch.pipeline().addLast(new NettyMessageEncoder());
                             ch.pipeline().addLast(new ProtobufVarint32FrameDecoder());
@@ -59,7 +61,6 @@ public class NettyServer
                     });
 
             ChannelFuture f = b.bind(18080).sync();
-
             System.out.println("Netty Server start ok! post is 18080");
             f.channel().closeFuture().sync();
         }

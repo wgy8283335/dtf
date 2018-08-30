@@ -53,7 +53,7 @@ public class AspectHandler {
             String groupIdTemp = GroupidGenerator.getStringId(0,0);
             groupInfo = new TransactionGroupInfo(groupIdTemp, Member.ORIGNAL_ID);
             TransactionGroupInfo.setCurrent(groupInfo);
-            TransactionServiceInfo.setCurrent(new TransactionServiceInfo(UuidGenerator.generateUuid(), ActionType.ADD,groupInfo.getGroupId(),Long.valueOf(groupIdTemp),method,args));
+            TransactionServiceInfo.setCurrent(new TransactionServiceInfo(UuidGenerator.generateUuid(), ActionType.ADD,groupInfo.getGroupId(),groupInfo.getMemberId(),method,args));
             //2.
             point.proceed();
             //3.
@@ -62,7 +62,7 @@ public class AspectHandler {
             //clientTransactionHandler.sendMsg(serviceInfo);
             //queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), ActionType.ADD,groupInfo.getGroupId(),1,method,args));
             //4.Send confirm message to netty server, in oreder to commit all transaction in the service
-            queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), ActionType.APPLYFORSUBMIT,groupInfo.getGroupId().toString(),groupInfo.getGroupMembers()));
+            queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), ActionType.APPLYFORSUBMIT,groupInfo.getGroupId(),groupInfo.getGroupMembers()));
             //nettyService.sendMsg(new TransactionServiceInfo(UuidGenerator.generateUuid(), ActionType.APPLYFORSUBMIT,groupInfo.getGroupId().toString(),groupInfo.getGroupMembers()));
         }
         //1.When the service is follower,execute the program.And if the program has transactional operation in database,

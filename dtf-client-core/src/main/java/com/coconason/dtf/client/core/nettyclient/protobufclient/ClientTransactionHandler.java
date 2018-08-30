@@ -10,6 +10,7 @@ import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
@@ -22,12 +23,18 @@ public class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 	@Autowired
 	ThreadsInfo threadsInfo;
 
-	private ChannelHandlerContext ctx;
+	@Autowired
+	ApplicationContext applicationContext;
+
+	ChannelHandlerContext ctx;
 
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception
 	{
+
+		super.channelActive(ctx);
 		this.ctx = ctx;
+		System.out.println("新建链接-->"+this.ctx);
 		//sendMsg("90000","1","http://com.ping.test/pang","get","{id:90999}");
 	}
 
@@ -108,5 +115,11 @@ public class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 		ctx.writeAndFlush(message);
 	}
 
+	public ChannelHandlerContext getCtx() {
+		return ctx;
+	}
 
+	public void setCtx(ChannelHandlerContext ctx) {
+		this.ctx = ctx;
+	}
 }

@@ -1,5 +1,7 @@
 package com.coconason.dtf.client.core.dbconnection;
 
+import com.coconason.dtf.client.core.nettyclient.messagequeue.TransactionMessageQueue;
+
 import javax.sql.DataSource;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -15,20 +17,32 @@ public class DTFDataSourceProxy implements DataSource{
 
     private DataSource dataSource;
 
+    private ThreadsInfo threadsInfo;
+
+    private TransactionMessageQueue queue;
+
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
     @Override
     public Connection getConnection() throws SQLException {
-        Connection connection = new DTFConnection(dataSource.getConnection());
+        Connection connection = new DTFConnection(dataSource.getConnection(),threadsInfo,queue);
         return connection;
     }
 
     @Override
     public Connection getConnection(String username, String password) throws SQLException {
-        Connection connection = new DTFConnection(dataSource.getConnection(username,password));
+        Connection connection = new DTFConnection(dataSource.getConnection(username,password),threadsInfo,queue);
         return connection;
+    }
+
+    public void setThreadsInfo(ThreadsInfo threadsInfo) {
+        this.threadsInfo = threadsInfo;
+    }
+
+    public void setQueue(TransactionMessageQueue queue) {
+        this.queue = queue;
     }
 
     @Override

@@ -81,6 +81,7 @@ public class TransactionGroupInfo {
     @Override
     public String toString() {
         StringBuffer buffer = new StringBuffer(groupId);
+        buffer.append("-");
         buffer.append(memberId);
         for(Long member:groupMembers){
             buffer.append("-");
@@ -98,6 +99,6 @@ public class TransactionGroupInfo {
             groupMembers.add(Long.valueOf(array[i]));
         }
         TransactionGroupInfo transactionGroupInfo = new TransactionGroupInfo(groupId,memberId,groupMembers);
-        return null;
+        return transactionGroupInfo;
     }
 }

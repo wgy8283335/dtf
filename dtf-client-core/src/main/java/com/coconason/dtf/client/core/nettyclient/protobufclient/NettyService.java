@@ -66,7 +66,7 @@ public class NettyService {
                 ch.pipeline().addLast(new ProtobufEncoder());
                 ch.pipeline().addLast(new ReadTimeoutHandler(50));
                 ch.pipeline().addLast(new LoginAuthReqHandler());
-                ch.pipeline().addLast(new ClientTransactionHandler());
+                ch.pipeline().addLast(clientTransactionHandler);
                 ch.pipeline().addLast(new HeartBeatReqHandler());
                     }
                 });

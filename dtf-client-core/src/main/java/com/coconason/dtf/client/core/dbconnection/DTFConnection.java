@@ -7,6 +7,8 @@ import com.coconason.dtf.common.utils.UuidGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import java.sql.*;
 import java.util.Map;
 import java.util.Properties;
@@ -23,20 +25,24 @@ public class DTFConnection implements Connection {
 
     private Connection connection;
 
-    private boolean readOnly;
+    private boolean readOnly = false;
 
     private volatile DBOperationType state = DBOperationType.DEFAULT;
 
     private boolean hasClose = false;
 
-    @Autowired
-    ThreadsInfo threadsInfo;
+    private ThreadsInfo threadsInfo;
 
-    @Autowired
-    TransactionMessageQueue queue;
+    private TransactionMessageQueue queue;
 
     public DTFConnection(Connection connection) {
         this.connection = connection;
+    }
+
+    public DTFConnection(Connection connection,ThreadsInfo threadsInfo,TransactionMessageQueue queue) {
+        this.connection = connection;
+        this.threadsInfo = threadsInfo;
+        this.queue = queue;
     }
 
     @Override

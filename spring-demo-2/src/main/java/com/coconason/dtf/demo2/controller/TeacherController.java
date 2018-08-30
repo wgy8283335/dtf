@@ -19,8 +19,8 @@ public class TeacherController {
     @Autowired
     ITeacherService teacherService;
 
-    @RequestMapping(value="/set_sc_info",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
-    public DemoResult setCourseInfo(@RequestBody Teacher teacher) throws Exception{
+    @RequestMapping(value="/set_teacher_info",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
+    public DemoResult setTeacherInfo(@RequestBody Teacher teacher) throws Exception{
         DemoResult demoResult = teacherService.addTeacherInfo(teacher);
         return demoResult;
     }

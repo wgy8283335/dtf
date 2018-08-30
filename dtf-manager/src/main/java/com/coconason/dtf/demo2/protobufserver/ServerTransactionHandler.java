@@ -1,5 +1,6 @@
 package com.coconason.dtf.demo2.protobufserver;
 
+import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.common.utils.UuidGenerator;
 import com.coconason.dtf.demo2.cache.MessageCache;
 import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
@@ -87,7 +88,7 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
 
     private void snedMsg(String id,ActionType action,ChannelHandlerContext ctx) throws Exception{
         MessageProto.Message.Builder builder= MessageProto.Message.newBuilder();
-        builder.setId(Integer.valueOf(id));
+        builder.setId(id);
         builder.setAction(action);
         MessageProto.Message message = builder.build();
         System.out.println("Send transaction message:\n" + message);

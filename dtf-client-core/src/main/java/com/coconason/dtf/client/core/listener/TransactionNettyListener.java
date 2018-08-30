@@ -25,7 +25,7 @@ public class TransactionNettyListener implements ApplicationContextAware{
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException{
         nettyService.start();
         try{
-            Thread.sleep(5000);
+            Thread.sleep(15000);
             sender.startSendMessage();
         }catch (Exception e){
             e.printStackTrace();

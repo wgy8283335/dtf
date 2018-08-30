@@ -1,5 +1,7 @@
 package com.coconason.dtf.client.core.nettyclient.messagequeue;
 
+import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
+import com.coconason.dtf.client.core.nettyclient.protobufclient.ClientTransactionHandler;
 import com.coconason.dtf.client.core.nettyclient.protobufclient.NettyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,16 +24,13 @@ public class TransactionMessageSender {
     @Autowired
     NettyService service;
 
+    //@Autowired
+    //ClientTransactionHandler clientTransactionHandler;
+
     private ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(1);
 
     public void startSendMessage() throws InterruptedException{
         executorService.execute(new sendMessageRunnable());
-    }
-
-    public void sendMessage() throws InterruptedException{
-        while(true){
-            service.sendMsg(queue.take());
-        }
     }
 
     private class sendMessageRunnable implements Runnable {
@@ -44,4 +43,11 @@ public class TransactionMessageSender {
             }
         }
     }
+
+    public void sendMessage() throws InterruptedException{
+        while(true){
+            service.sendMsg(queue.take());
+        }
+    }
+
 }

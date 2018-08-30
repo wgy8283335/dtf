@@ -30,7 +30,6 @@ public class DtfHttpRequestInterceptor implements ClientHttpRequestInterceptor {
         if(transactionGroupInfo!=null) {
             httpRequest.getHeaders().add("groupInfo", transactionGroupInfo.toString());
         }
-
         ClientHttpResponse response = clientHttpRequestExecution.execute(httpRequest,bytes);
         List<String> groupInfoStringList = response.getHeaders().get("groupInfo");
         if(groupInfoStringList != null){
