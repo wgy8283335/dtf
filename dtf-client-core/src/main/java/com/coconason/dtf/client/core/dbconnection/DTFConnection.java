@@ -89,6 +89,7 @@ public class DTFConnection implements Connection {
                     JSONObject map = transactionServiceInfo.getInfo();
                     threadsInfo.put(map.get("groupId").toString(),lc);
                     queue.put(TransactionServiceInfo.getCurrent());
+                    System.out.println("queue is Empty or not"+queue.isEmpty());
                     lc.await();
                     //3. After signaling, if success commit or rollback, otherwise skip the committing.
                     if(state == DBOperationType.COMMIT){

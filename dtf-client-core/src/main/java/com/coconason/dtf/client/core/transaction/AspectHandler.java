@@ -71,12 +71,12 @@ public class AspectHandler {
         //If the response is submit,submit transaction by database proxy.If the response is cancel,cancel transaction by database proxy.
         else{
             //if the thread does not have transactionGroupInfo,set current transaction group information
-            if(TransactionGroupInfo.getCurrent()!=null){
+            if(TransactionGroupInfo.getCurrent()==null){
                 transactionGroupInfo.addNewMemeber();
                 TransactionGroupInfo.setCurrent(transactionGroupInfo);
             }
             //if the thread does not have transactionServiceInfo,set current transaction service information
-            if(TransactionServiceInfo.getCurrent()!=null){
+            if(TransactionServiceInfo.getCurrent()==null){
                 TransactionServiceInfo.setCurrent(new TransactionServiceInfo(UuidGenerator.generateUuid(), ActionType.ADD,transactionGroupInfo.getGroupId(),transactionGroupInfo.getMemberId(),method,args));
             }
             //1.
