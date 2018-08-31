@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import java.sql.*;
 import java.util.Map;
 import java.util.Properties;
-import java.util.concurrent.Executor;
+import java.util.concurrent.*;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -34,6 +34,10 @@ public class DTFConnection implements Connection {
     private ThreadsInfo threadsInfo;
 
     private TransactionMessageQueue queue;
+
+    private TransactionServiceInfo transactionServiceInfo;
+
+    private ExecutorService executorService = Executors.newCachedThreadPool();
 
     public DTFConnection(Connection connection) {
         this.connection = connection;
@@ -79,42 +83,43 @@ public class DTFConnection implements Connection {
             hasClose = false;
             return;
         }
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
+        transactionServiceInfo = TransactionServiceInfo.getCurrent();
+        Thread thread = new Thread(new SubmitRunnable());
+        thread.start();
+    }
+
+    private class SubmitRunnable implements Runnable{
+        @Override
+        public void run() {
+            try {
+                //2. Use lock condition to wait for signaling.
+                LockAndCondition lc = new LockAndCondition(new ReentrantLock(),state);
+                JSONObject map = transactionServiceInfo.getInfo();
+                threadsInfo.put(map.get("groupId").toString(),lc);
+                queue.put(transactionServiceInfo);
+                System.out.println("queue is Empty or not"+queue.isEmpty());
+                lc.await();
+                //3. After signaling, if success commit or rollback, otherwise skip the committing.
+                if(state == DBOperationType.COMMIT){
+                    connection.commit();
+                }else if(state == DBOperationType.ROLLBACK){
+                    connection.rollback();
+                }
+            } catch (Exception e) {
                 try {
-                    //2. Use lock condition to wait for signaling.
-                    LockAndCondition lc = new LockAndCondition(new ReentrantLock(),state);
-                    TransactionServiceInfo transactionServiceInfo = TransactionServiceInfo.getCurrent();
-                    JSONObject map = transactionServiceInfo.getInfo();
-                    threadsInfo.put(map.get("groupId").toString(),lc);
-                    queue.put(TransactionServiceInfo.getCurrent());
-                    System.out.println("queue is Empty or not"+queue.isEmpty());
-                    lc.await();
-                    //3. After signaling, if success commit or rollback, otherwise skip the committing.
-                    if(state == DBOperationType.COMMIT){
-                        connection.commit();
-                    }else if(state == DBOperationType.ROLLBACK){
-                        connection.rollback();
-                    }
-                } catch (Exception e) {
-                    try {
-                        connection.rollback();
-                    } catch (SQLException e1) {
-                        e1.printStackTrace();
-                    }
-                } finally {
-                    try {
-                        //4. close the connection.
-                        connection.close();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
+                    connection.rollback();
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+            } finally {
+                try {
+                    //4. close the connection.
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
             }
-        };
-        Thread thread = new Thread(runnable);
-        thread.start();
+        }
     }
 
     @Override

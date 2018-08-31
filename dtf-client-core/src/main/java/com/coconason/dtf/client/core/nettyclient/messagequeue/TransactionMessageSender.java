@@ -46,6 +46,7 @@ public class TransactionMessageSender {
 
     public void sendMessage() throws InterruptedException{
         while(true){
+            System.out.println("TransactionMessageSender.sendMessage()--service.sendMsg(queue.take())");
             service.sendMsg(queue.take());
         }
     }

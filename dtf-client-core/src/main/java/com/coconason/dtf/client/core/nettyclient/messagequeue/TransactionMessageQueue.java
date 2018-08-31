@@ -12,7 +12,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 @Component
 public class TransactionMessageQueue {
-    private final LinkedBlockingQueue<TransactionServiceInfo> messageQueue = new LinkedBlockingQueue<>();
+    private final LinkedBlockingQueue<TransactionServiceInfo> messageQueue = new LinkedBlockingQueue<>(Integer.MAX_VALUE);
 
     public void put(TransactionServiceInfo info) throws InterruptedException{
         System.out.println("put TransactionServiceInfo is "+info);
