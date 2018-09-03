@@ -45,8 +45,6 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
     {
         MessageProto.Message message = (MessageProto.Message) msg;
         ActionType actionType = message.getAction();
-        System.out.println("Receive transaction message:\n" + message+Thread.currentThread().getName());
-        System.out.println(messageCache.getSize());
         switch (actionType){
             case ADD:
                 //store the message in the cache.
@@ -93,8 +91,6 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
                 Set setFromCache = elementFromCache.getMemberSet();
                 List<TransactionMessageForAdding> memberList = elementFromCache.getMemberList();
                 //check whether the member from message has the same element as the member from cache.
-                System.out.println("setFromMessage"+setFromMessage.toString());
-                System.out.println("setFromCache"+setFromCache.toString());
                 setFromMessage.removeAll(setFromCache);
                 if(setFromMessage.isEmpty()){
                     for (TransactionMessageForAdding messageForAdding: memberList) {
