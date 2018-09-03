@@ -3,6 +3,8 @@ package com.coconason.dtf.demo2.message;
 import com.alibaba.fastjson.JSONObject;
 import com.coconason.dtf.common.protobuf.MessageProto;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -33,6 +35,6 @@ public class TransactionMessageForSubmit {
         JSONObject info = JSONObject.parseObject(message.getInfo());
         String groupId = info.get("groupId").toString();
         this.groupId = groupId;
-        this.memberSet = (Set)info.get("groupMemeberSet");
+        this.memberSet =  new HashSet<String>(Arrays.asList(info.get("groupMemeberSet").toString()));
     }
 }

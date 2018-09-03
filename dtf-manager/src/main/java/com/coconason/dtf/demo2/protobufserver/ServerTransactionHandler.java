@@ -20,10 +20,13 @@ import java.util.Set;
  */
 public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
 
-    @Autowired
     MessageCache messageCache;
 
     private ChannelHandlerContext ctx;
+
+    public ServerTransactionHandler(MessageCache messageCache) {
+        this.messageCache = messageCache;
+    }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception
@@ -48,12 +51,13 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
                 //store the message in the cache.
                 //check whether the group exits in the cache
                 TransactionMessageGroup group = new TransactionMessageGroup(message,ctx);
-                TransactionMessageGroup element = (TransactionMessageGroup)messageCache.get(group.getGroupId());
+                Object element = messageCache.get(group.getGroupId());
                 if(element==null){
                     messageCache.put(group.getGroupId(),group);
                 }else{
-                    element.getMemberList().add(group.getMemberList().get(0));
-                    element.getMemberSet().add(group.getMemberList().get(0).getGroupMemberId());
+                    TransactionMessageGroup transactionMessageGroup = (TransactionMessageGroup) element;
+                    transactionMessageGroup.getMemberList().add(group.getMemberList().get(0));
+                    transactionMessageGroup.getMemberSet().add(group.getMemberList().get(0).getGroupMemberId());
                 }
                 break;
             case APPLYFORSUBMIT:

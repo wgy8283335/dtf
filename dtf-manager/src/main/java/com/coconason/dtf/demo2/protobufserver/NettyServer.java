@@ -1,6 +1,7 @@
 package com.coconason.dtf.demo2.protobufserver;
 
 import com.coconason.dtf.common.protobuf.MessageProto;
+import com.coconason.dtf.demo2.cache.MessageCache;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -33,6 +34,7 @@ public class NettyServer
     {
         EventLoopGroup boss = new NioEventLoopGroup();
         EventLoopGroup work = new NioEventLoopGroup();
+        final MessageCache messageCache = new MessageCache();
         try
         {
             ServerBootstrap b = new ServerBootstrap();
@@ -55,7 +57,7 @@ public class NettyServer
                             ch.pipeline().addLast(new ProtobufEncoder());
                             ch.pipeline().addLast(new ReadTimeoutHandler(50));
                             ch.pipeline().addLast(new LoginAuthRespHandler());
-                            ch.pipeline().addLast(new ServerTransactionHandler());
+                            ch.pipeline().addLast(new ServerTransactionHandler(messageCache));
                             ch.pipeline().addLast(new HeartBeatRespHandler());
                         }
                     });

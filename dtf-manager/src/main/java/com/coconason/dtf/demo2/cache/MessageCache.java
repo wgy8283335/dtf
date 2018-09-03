@@ -10,17 +10,23 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class MessageCache {
-    private final Cache<String,Object> cache = CacheBuilder.newBuilder().maximumSize(1000000L).build();
 
-    public Object get(String id){
+    public MessageCache() {
+        cache = CacheBuilder.newBuilder().maximumSize(1000000L).build();
+    }
+
+    private Cache<Object,Object> cache;
+
+    public Object get(Object id){
         return cache.getIfPresent(id);
     }
 
-    public void put(String id,Object msg){
+    public void put(Object id,Object msg){
         cache.put(id, msg);
     }
 
-    public void clear(String id){
+    public void clear(Object id){
         cache.invalidate(id);
     }
+
 }

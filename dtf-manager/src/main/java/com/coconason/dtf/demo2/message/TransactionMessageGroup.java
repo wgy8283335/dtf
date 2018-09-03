@@ -41,8 +41,8 @@ public class TransactionMessageGroup {
         String groupId = info.get("groupId").toString();
         this.groupId = groupId;
         String groupMemeberId = info.get("groupMemeberId").toString();
-        Method method = (Method) info.get("method");
-        Object[] args = (Object[]) info.get("args");
+        String method = info.get("method").toString();
+        String args = info.get("args").toString();
         TransactionMessageForAdding tmfa = new TransactionMessageForAdding(groupMemeberId,ctx,method,args);
         addMemberToGroup(tmfa);
     }

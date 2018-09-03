@@ -11,10 +11,10 @@ import java.lang.reflect.Method;
 public class TransactionMessageForAdding {
     private String groupMemberId;
     private ChannelHandlerContext ctx;
-    private Method method;
-    private Object[] args;
+    private String method;
+    private String args;
 
-    public TransactionMessageForAdding(String groupMemberId, ChannelHandlerContext ctx, Method method, Object[] args) {
+    public TransactionMessageForAdding(String groupMemberId, ChannelHandlerContext ctx, String method, String args) {
         this.groupMemberId = groupMemberId;
         this.ctx = ctx;
         this.method = method;
@@ -29,11 +29,11 @@ public class TransactionMessageForAdding {
         return ctx;
     }
 
-    public Method getMethod() {
+    public String getMethod() {
         return method;
     }
 
-    public Object[] getArgs() {
+    public String getArgs() {
         return args;
     }
 }
