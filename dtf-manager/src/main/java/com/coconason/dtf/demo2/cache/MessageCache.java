@@ -1,5 +1,6 @@
 package com.coconason.dtf.demo2.cache;
 
+import com.coconason.dtf.demo2.message.TransactionMessageGroup;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import org.springframework.stereotype.Component;
@@ -23,6 +24,18 @@ public class MessageCache {
 
     public synchronized void put(Object id,Object msg){
         cache.put(id, msg);
+    }
+
+    public synchronized void putDependsOnCondition(TransactionMessageGroup group){
+        Object element = cache.getIfPresent(group.getGroupId());
+        if(element==null){
+            cache.put(group.getGroupId(),group);
+        }else{
+            TransactionMessageGroup transactionMessageGroup = (TransactionMessageGroup) element;
+            transactionMessageGroup.getMemberList().add(group.getMemberList().get(0));
+            transactionMessageGroup.getMemberSet().add(group.getMemberList().get(0).getGroupMemberId());
+            cache.put(transactionMessageGroup.getGroupId(),transactionMessageGroup);
+        }
     }
 
     public long getSize(){

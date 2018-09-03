@@ -2,20 +2,17 @@ package com.coconason.dtf.demo2.protobufserver;
 
 import com.alibaba.fastjson.JSONObject;
 import com.coconason.dtf.common.protobuf.MessageProto;
+import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
 import com.coconason.dtf.common.utils.UuidGenerator;
 import com.coconason.dtf.demo2.cache.MessageCache;
-import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
 import com.coconason.dtf.demo2.message.TransactionMessageForAdding;
 import com.coconason.dtf.demo2.message.TransactionMessageForSubmit;
 import com.coconason.dtf.demo2.message.TransactionMessageGroup;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @Author: Jason
@@ -55,42 +52,11 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
                 //store the message in the cache.
                 //check whether the group exits in the cache
                 TransactionMessageGroup group = new TransactionMessageGroup(message,ctx);
-                Object element = messageCache.get(group.getGroupId());
-                if(element==null){
-                    messageCache.put(group.getGroupId(),group);
-                }else{
-                    TransactionMessageGroup transactionMessageGroup = (TransactionMessageGroup) element;
-                    transactionMessageGroup.getMemberList().add(group.getMemberList().get(0));
-                    transactionMessageGroup.getMemberSet().add(group.getMemberList().get(0).getGroupMemberId());
-                    messageCache.put(transactionMessageGroup.getGroupId(),transactionMessageGroup);
-                }
+                messageCache.putDependsOnCondition(group);
                 break;
             case APPLYFORSUBMIT:
                 Thread thread = new Thread(new ApplyForRunnable(message));
                 thread.start();
-
-//                //check the transaction in the cache.If success,return success message.
-//                //If fail, return failed message.
-//                TransactionMessageForSubmit tmfs = new TransactionMessageForSubmit(message);
-//                Set setFromMessage =tmfs.getMemberSet();
-//                TransactionMessageGroup elementFromCache = (TransactionMessageGroup)messageCache.get(tmfs.getGroupId());
-//                Set setFromCache = elementFromCache.getMemberSet();
-//                List<TransactionMessageForAdding> memberList = elementFromCache.getMemberList();
-//                //check whether the member from message has the same element as the member from cache.
-//                setFromMessage.removeAll(setFromCache);
-//                if(setFromMessage.isEmpty()){
-//                    for (TransactionMessageForAdding messageForAdding: memberList) {
-//                        //success
-//                        snedMsg(elementFromCache.getGroupId(),ActionType.APPROVESUBMIT,messageForAdding.getCtx());
-//                    }
-//                }else{
-//                    for (TransactionMessageForAdding messageForAdding: memberList) {
-//                        //fail
-//                        snedMsg(UuidGenerator.generateUuid(), ActionType.CANCEL,messageForAdding.getCtx());
-//                    }
-//                }
-//                //Send response to other members of the group.Clear all messages of the transaction in the cache.
-//                messageCache.clear(tmfs.getGroupId());
                 break;
             default:
                 ctx.fireChannelRead(msg);
