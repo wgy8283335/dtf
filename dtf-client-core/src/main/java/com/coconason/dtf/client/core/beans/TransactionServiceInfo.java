@@ -38,11 +38,11 @@ public class TransactionServiceInfo {
         current.set(transactionServiceInfo);
     }
 
-    public TransactionServiceInfo(String id, ActionType action, String groupId, Long groupMemeberId, Method method, Object[] args) {
+    public TransactionServiceInfo(String id, ActionType action, String groupId, Long groupMemberId, Method method, Object[] args) {
         this.id = id;
         this.info = new JSONObject();
         info.put("groupId",groupId);
-        info.put("groupMemeberId",groupMemeberId);
+        info.put("groupMemberId",groupMemberId);
         info.put("method",method);
         info.put("args",args);
         this.action = action;

@@ -82,18 +82,18 @@ public class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 
 	public void sendMsg(TransactionServiceInfo serviceInfo) {
 		if(serviceInfo.getAction() == ActionType.ADD){
-			sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString(),serviceInfo.getInfo().get("groupMemeberId").toString(),(Method) serviceInfo.getInfo().get("method"),(Object[]) serviceInfo.getInfo().get("args"));
+			sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString(),serviceInfo.getInfo().get("groupMemberId").toString(),(Method) serviceInfo.getInfo().get("method"),(Object[]) serviceInfo.getInfo().get("args"));
 		}else if(serviceInfo.getAction() == ActionType.APPLYFORSUBMIT){
-			sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString(),(Set)serviceInfo.getInfo().get("groupMemeberSet"));
+			sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString(),serviceInfo.getInfo().get("groupMemberSet").toString());
 		}
 
 	}
 
-	public void sendMsg(String id,ActionType action,String groupId, String groupMemeberId, Method method,Object[] args){
+	public void sendMsg(String id,ActionType action,String groupId, String groupMemberId, Method method,Object[] args){
 		MessageProto.Message.Builder builder= MessageProto.Message.newBuilder();
 		JSONObject info = new JSONObject();
 		info.put("groupId",groupId);
-		info.put("groupMemeberId",groupMemeberId);
+		info.put("groupMemberId",groupMemberId);
 		info.put("method",method);
 		info.put("args",args);
 		builder.setInfo(info.toJSONString());
@@ -104,11 +104,11 @@ public class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 		ctx.writeAndFlush(message);
 	}
 
-	public void sendMsg(String id,ActionType action,String groupId, Set groupMemeberSet){
+	public void sendMsg(String id,ActionType action,String groupId, String groupMemberSet){
 		MessageProto.Message.Builder builder= MessageProto.Message.newBuilder();
 		JSONObject info = new JSONObject();
 		info.put("groupId",groupId);
-		info.put("groupMemeberSet",groupMemeberSet);
+		info.put("groupMemberSet",groupMemberSet);
 		builder.setInfo(info.toJSONString());
 		builder.setId(id);
 		builder.setAction(action);

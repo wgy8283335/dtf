@@ -1,5 +1,6 @@
 package com.coconason.dtf.demo2.protobufserver;
 
+import com.alibaba.fastjson.JSONObject;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.common.utils.UuidGenerator;
 import com.coconason.dtf.demo2.cache.MessageCache;
@@ -11,8 +12,10 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @Author: Jason
@@ -45,7 +48,8 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
     {
         MessageProto.Message message = (MessageProto.Message) msg;
         ActionType actionType = message.getAction();
-        System.out.println("Receive transaction message:\n" + message);
+        System.out.println("Receive transaction message:\n" + message+Thread.currentThread().getName());
+        System.out.println(messageCache.getSize());
         switch (actionType){
             case ADD:
                 //store the message in the cache.
@@ -58,17 +62,73 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
                     TransactionMessageGroup transactionMessageGroup = (TransactionMessageGroup) element;
                     transactionMessageGroup.getMemberList().add(group.getMemberList().get(0));
                     transactionMessageGroup.getMemberSet().add(group.getMemberList().get(0).getGroupMemberId());
+                    messageCache.put(transactionMessageGroup.getGroupId(),transactionMessageGroup);
                 }
                 break;
             case APPLYFORSUBMIT:
-                //check the transaction in the cache.If success,return success message.
-                //If fail, return failed message.
+                Thread thread = new Thread(new ApplyForRunnable(message));
+                thread.start();
+
+//                //check the transaction in the cache.If success,return success message.
+//                //If fail, return failed message.
+//                TransactionMessageForSubmit tmfs = new TransactionMessageForSubmit(message);
+//                Set setFromMessage =tmfs.getMemberSet();
+//                TransactionMessageGroup elementFromCache = (TransactionMessageGroup)messageCache.get(tmfs.getGroupId());
+//                Set setFromCache = elementFromCache.getMemberSet();
+//                List<TransactionMessageForAdding> memberList = elementFromCache.getMemberList();
+//                //check whether the member from message has the same element as the member from cache.
+//                setFromMessage.removeAll(setFromCache);
+//                if(setFromMessage.isEmpty()){
+//                    for (TransactionMessageForAdding messageForAdding: memberList) {
+//                        //success
+//                        snedMsg(elementFromCache.getGroupId(),ActionType.APPROVESUBMIT,messageForAdding.getCtx());
+//                    }
+//                }else{
+//                    for (TransactionMessageForAdding messageForAdding: memberList) {
+//                        //fail
+//                        snedMsg(UuidGenerator.generateUuid(), ActionType.CANCEL,messageForAdding.getCtx());
+//                    }
+//                }
+//                //Send response to other members of the group.Clear all messages of the transaction in the cache.
+//                messageCache.clear(tmfs.getGroupId());
+                break;
+            default:
+                ctx.fireChannelRead(msg);
+        }
+    }
+
+    private void snedMsg(String groupId,ActionType action,ChannelHandlerContext ctx) throws Exception{
+        MessageProto.Message.Builder builder= MessageProto.Message.newBuilder();
+        JSONObject info = new JSONObject();
+        info.put("groupId",groupId);
+        builder.setInfo(info.toJSONString());
+        builder.setId(UuidGenerator.generateUuid());
+        builder.setAction(action);
+        MessageProto.Message message = builder.build();
+        System.out.println("Send transaction message:\n" + message);
+        ctx.writeAndFlush(message);
+    }
+
+    class ApplyForRunnable implements Runnable{
+
+        private MessageProto.Message message;
+
+        public ApplyForRunnable(MessageProto.Message message) {
+            this.message = message;
+        }
+
+        @Override
+        public void run() {
+            try{
+                Thread.sleep(10000);
                 TransactionMessageForSubmit tmfs = new TransactionMessageForSubmit(message);
                 Set setFromMessage =tmfs.getMemberSet();
                 TransactionMessageGroup elementFromCache = (TransactionMessageGroup)messageCache.get(tmfs.getGroupId());
                 Set setFromCache = elementFromCache.getMemberSet();
                 List<TransactionMessageForAdding> memberList = elementFromCache.getMemberList();
                 //check whether the member from message has the same element as the member from cache.
+                System.out.println("setFromMessage"+setFromMessage.toString());
+                System.out.println("setFromCache"+setFromCache.toString());
                 setFromMessage.removeAll(setFromCache);
                 if(setFromMessage.isEmpty()){
                     for (TransactionMessageForAdding messageForAdding: memberList) {
@@ -78,24 +138,14 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
                 }else{
                     for (TransactionMessageForAdding messageForAdding: memberList) {
                         //fail
-                        snedMsg(UuidGenerator.generateUuid(), ActionType.CANCEL,messageForAdding.getCtx());
+                        snedMsg(elementFromCache.getGroupId(), ActionType.CANCEL,messageForAdding.getCtx());
                     }
                 }
                 //Send response to other members of the group.Clear all messages of the transaction in the cache.
-
                 messageCache.clear(tmfs.getGroupId());
-                break;
-            default:
-                ctx.fireChannelRead(msg);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
-    }
-
-    private void snedMsg(String id,ActionType action,ChannelHandlerContext ctx) throws Exception{
-        MessageProto.Message.Builder builder= MessageProto.Message.newBuilder();
-        builder.setId(id);
-        builder.setAction(action);
-        MessageProto.Message message = builder.build();
-        System.out.println("Send transaction message:\n" + message);
-        ctx.writeAndFlush(message);
     }
 }

@@ -40,10 +40,10 @@ public class TransactionMessageGroup {
         JSONObject info = JSONObject.parseObject(message.getInfo());
         String groupId = info.get("groupId").toString();
         this.groupId = groupId;
-        String groupMemeberId = info.get("groupMemeberId").toString();
+        String groupMemberId = info.get("groupMemberId").toString();
         String method = info.get("method").toString();
         String args = info.get("args").toString();
-        TransactionMessageForAdding tmfa = new TransactionMessageForAdding(groupMemeberId,ctx,method,args);
+        TransactionMessageForAdding tmfa = new TransactionMessageForAdding(groupMemberId,ctx,method,args);
         addMemberToGroup(tmfa);
     }
 

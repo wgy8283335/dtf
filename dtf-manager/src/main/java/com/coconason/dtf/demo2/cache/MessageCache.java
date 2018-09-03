@@ -17,12 +17,16 @@ public class MessageCache {
 
     private Cache<Object,Object> cache;
 
-    public Object get(Object id){
+    public synchronized Object get(Object id){
         return cache.getIfPresent(id);
     }
 
-    public void put(Object id,Object msg){
+    public synchronized void put(Object id,Object msg){
         cache.put(id, msg);
+    }
+
+    public long getSize(){
+        return cache.size();
     }
 
     public void clear(Object id){
