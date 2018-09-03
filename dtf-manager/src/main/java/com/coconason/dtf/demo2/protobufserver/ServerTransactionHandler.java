@@ -86,7 +86,7 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
         @Override
         public void run() {
             try{
-                Thread.sleep(10000);
+                Thread.sleep(1000);
                 TransactionMessageForSubmit tmfs = new TransactionMessageForSubmit(message);
                 Set setFromMessage =tmfs.getMemberSet();
                 TransactionMessageGroup elementFromCache = (TransactionMessageGroup)messageCache.get(tmfs.getGroupId());
