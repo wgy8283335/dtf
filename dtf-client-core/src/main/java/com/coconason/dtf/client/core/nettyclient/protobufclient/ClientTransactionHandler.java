@@ -75,7 +75,13 @@ public class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 				break;
 			case ActionType.WHOLE_SUCCESS_STRONG_VALUE:
 				LockAndCondition secondlc = secondThreadsInfo.get(map.get("groupId").toString());
+				secondlc.setState(DBOperationType.WHOLESUCCESS);
 				secondlc.signal();
+				break;
+			case ActionType.WHOLE_FAIL_STRONG_VALUE:
+				LockAndCondition secondlc2 = secondThreadsInfo.get(map.get("groupId").toString());
+				secondlc2.setState(DBOperationType.WHOLEFAIL);
+				secondlc2.signal();
 				break;
 			case ActionType.CANCEL_VALUE:
 				lc.setState(DBOperationType.ROLLBACK);

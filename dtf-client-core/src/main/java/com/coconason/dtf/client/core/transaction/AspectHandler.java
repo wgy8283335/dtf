@@ -84,6 +84,10 @@ public class AspectHandler {
                     secondThreadsInfo.put(TransactionGroupInfo.getCurrent().getGroupId(), secondlc);
                     queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), ActionType.APPLYFORSUBMIT_STRONG, TransactionGroupInfo.getCurrent().getGroupId(), TransactionGroupInfo.getCurrent().getGroupMembers()));
                     secondlc.await();
+                    LockAndCondition secondlc2 = secondThreadsInfo.get(TransactionGroupInfo.getCurrent().getGroupId());
+                    if(secondlc2.getState() == DBOperationType.WHOLEFAIL){
+                        throw new Exception("Distributed transaction failed");
+                    }
                     break;
                 default:
                     break;
