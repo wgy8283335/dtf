@@ -17,7 +17,7 @@ public class TransactionMessageGroup {
     private String groupId;
     private final List<TransactionMessageForAdding> memberList = new ArrayList<TransactionMessageForAdding>();
     private final Set<String> memberSet = new HashSet<String>();
-
+    private ChannelHandlerContext ctxForSubmitting;
 
     public String getGroupId() {
         return groupId;
@@ -51,5 +51,11 @@ public class TransactionMessageGroup {
         memberSet.add(e.getGroupMemberId());
     }
 
+    public void setCtxForSubmitting(ChannelHandlerContext ctxForSubmitting) {
+        this.ctxForSubmitting = ctxForSubmitting;
+    }
 
+    public ChannelHandlerContext getCtxForSubmitting() {
+        return ctxForSubmitting;
+    }
 }

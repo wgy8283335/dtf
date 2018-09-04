@@ -45,20 +45,55 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
     {
         MessageProto.Message message = (MessageProto.Message) msg;
         ActionType actionType = message.getAction();
+        TransactionMessageGroup groupTemp = (TransactionMessageGroup)messageCache.get(JSONObject.parseObject(message.getInfo()).get("groupId"));
+        String memberId = JSONObject.parseObject(message.getInfo()).get("memberId").toString();
         switch (actionType){
             case ADD:
                 //store the message in the cache.
                 //check whether the group exits in the cache
-                TransactionMessageGroup group = new TransactionMessageGroup(message,ctx);
-                messageCache.putDependsOnCondition(group);
+                messageCache.putDependsOnCondition(new TransactionMessageGroup(message,ctx));
                 break;
             case APPLYFORSUBMIT:
-                Thread thread = new Thread(new ApplyForRunnable(message));
-                thread.start();
+                groupTemp.setCtxForSubmitting(ctx);
+                messageCache.put(groupTemp.getGroupId(),groupTemp);
+                new Thread(new ApplyForRunnable(message,ActionType.APPLYFORSUBMIT)).start();
+                break;
+            case ADD_STRONG:
+                //store the message in the cache.
+                //check whether the group exits in the cache
+                messageCache.putDependsOnCondition(new TransactionMessageGroup(message,ctx));
+                break;
+            case APPLYFORSUBMIT_STRONG:
+                groupTemp.setCtxForSubmitting(ctx);
+                messageCache.put(groupTemp.getGroupId(),groupTemp);
+                new Thread(new ApplyForRunnable(message,ActionType.APPLYFORSUBMIT_STRONG)).start();
+                break;
+            case SUB_SUCCESS_STRONG:
+                //1.check the group.If all of members are success,reply to the creator.
+                List<TransactionMessageForAdding> memberList = groupTemp.getMemberList();
+                for(TransactionMessageForAdding member:memberList){
+                    if(memberId.equals(member.getGroupMemberId())){
+                        member.setCommited(true);
+                    }
+                }
+                boolean flag = true;
+                for(TransactionMessageForAdding member:memberList){
+                    if(!member.isCommited()){
+                        flag = false;
+                        break;
+                    }
+                }
+                if(flag == true){
+                    snedMsg(groupTemp.getGroupId(),ActionType.WHOLE_SUCCESS_STRONG,groupTemp.getCtxForSubmitting());
+                }
+                break;
+            case SUB_FAIL_STRONG:
+                snedMsg(groupTemp.getGroupId(),ActionType.WHOLE_FAIL_STRONG,groupTemp.getCtxForSubmitting());
                 break;
             default:
-                ctx.fireChannelRead(msg);
+                break;
         }
+        ctx.fireChannelRead(msg);
     }
 
     private void snedMsg(String groupId,ActionType action,ChannelHandlerContext ctx) throws Exception{
@@ -77,8 +112,11 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
 
         private MessageProto.Message message;
 
-        public ApplyForRunnable(MessageProto.Message message) {
+        private ActionType actionType;
+
+        public ApplyForRunnable(MessageProto.Message message,ActionType actionType) {
             this.message = message;
+            this.actionType = actionType;
         }
 
         @Override
@@ -95,7 +133,7 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
                 if(setFromMessage.isEmpty()){
                     for (TransactionMessageForAdding messageForAdding: memberList) {
                         //success
-                        snedMsg(elementFromCache.getGroupId(),ActionType.APPROVESUBMIT,messageForAdding.getCtx());
+                        snedMsg(elementFromCache.getGroupId(),actionType,messageForAdding.getCtx());
                     }
                 }else{
                     for (TransactionMessageForAdding messageForAdding: memberList) {

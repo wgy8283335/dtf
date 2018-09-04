@@ -2,8 +2,8 @@ package com.coconason.dtf.client.core.beans;
 
 import com.alibaba.fastjson.JSONObject;
 import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
+
 import java.lang.reflect.Method;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -52,6 +52,15 @@ public class TransactionServiceInfo {
         this.info = new JSONObject();
         info.put("groupId",groupId);
         info.put("groupMemberSet",groupMemberSet.toString());
+        this.action = action;
+    }
+
+    public TransactionServiceInfo(String id, ActionType action, String groupId, Set<Long> groupMemberSet,Long memberId) {
+        this.id = id;
+        this.info = new JSONObject();
+        info.put("groupId",groupId);
+        info.put("groupMemberSet",groupMemberSet.toString());
+        info.put("memberId",memberId.toString());
         this.action = action;
     }
 

@@ -2,7 +2,6 @@ package com.coconason.dtf.demo.service.impl;
 
 import com.coconason.dtf.client.core.annotation.DtfTransaction;
 import com.coconason.dtf.client.core.spring.client.RestClient;
-import com.coconason.dtf.demo.constant.ErrorCode;
 import com.coconason.dtf.demo.dao.CourseMapper;
 import com.coconason.dtf.demo.model.DemoResult;
 import com.coconason.dtf.demo.po.Course;

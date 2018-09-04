@@ -1,6 +1,5 @@
 package com.coconason.dtf.client.core.spring.interceptor;
 
-import com.alibaba.fastjson.JSONObject;
 import com.coconason.dtf.client.core.beans.TransactionGroupInfo;
 import com.coconason.dtf.client.core.transaction.AspectHandler;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -11,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+
 import javax.servlet.http.HttpServletRequest;
 
 /**

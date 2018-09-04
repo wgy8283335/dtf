@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
 import com.coconason.dtf.client.core.dbconnection.DBOperationType;
 import com.coconason.dtf.client.core.dbconnection.LockAndCondition;
+import com.coconason.dtf.client.core.dbconnection.SecondThreadsInfo;
 import com.coconason.dtf.client.core.dbconnection.ThreadsInfo;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
@@ -23,6 +24,9 @@ public class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 
 	@Autowired
 	ThreadsInfo threadsInfo;
+
+	@Autowired
+	SecondThreadsInfo secondThreadsInfo;
 
 	@Autowired
 	ApplicationContext applicationContext;
@@ -45,26 +49,62 @@ public class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 
 		MessageProto.Message message = (MessageProto.Message) msg;
 		ActionType action = message.getAction();
-		if(action==ActionType.APPROVESUBMIT){
-			JSONObject map = JSONObject.parseObject(message.getInfo().toString());
-			LockAndCondition lc = threadsInfo.get(map.get("groupId").toString());
-			DBOperationType state = lc.getState();
-			//1.If notified to be commit
-			if(state == DBOperationType.COMMIT){
+		JSONObject map = JSONObject.parseObject(message.getInfo().toString());
+		LockAndCondition lc = threadsInfo.get(map.get("groupId").toString());
+		DBOperationType state = lc.getState();
+		switch (action.getNumber()){
+			case ActionType.APPROVESUBMIT_VALUE:
+				//1.If notified to be commit
+				if(state == DBOperationType.COMMIT){
+					lc.signal();
+				}
+				//2.If notified to be rollback
+				else if(state == DBOperationType.ROLLBACK){
+					lc.signal();
+				}
+				break;
+			case ActionType.APPROVESUBMIT_STRONG_VALUE:
+				//1.If notified to be commit
+				if(state == DBOperationType.COMMIT){
+					lc.signal();
+				}
+				//2.If notified to be rollback
+				else if(state == DBOperationType.ROLLBACK){
+					lc.signal();
+				}
+				break;
+			case ActionType.WHOLE_SUCCESS_STRONG_VALUE:
+				LockAndCondition secondlc = secondThreadsInfo.get(map.get("groupId").toString());
+				secondlc.signal();
+				break;
+			case ActionType.CANCEL_VALUE:
+				lc.setState(DBOperationType.ROLLBACK);
 				lc.signal();
-			}
-			//2.If notified to be rollback
-			else if(state == DBOperationType.ROLLBACK){
-				lc.signal();
-			}
-		}else if(action==ActionType.CANCEL){
-			JSONObject map = JSONObject.parseObject(message.getInfo().toString());
-			LockAndCondition lc = threadsInfo.get(map.get("groupId").toString());
-			DBOperationType state = lc.getState();
-			lc.setState(DBOperationType.ROLLBACK);
-			lc.signal();
+				break;
+			default:
+				ctx.fireChannelRead(msg);
+				break;
 		}
-		ctx.fireChannelRead(msg);
+//		if(action==ActionType.APPROVESUBMIT){
+//			JSONObject map = JSONObject.parseObject(message.getInfo().toString());
+//			LockAndCondition lc = threadsInfo.get(map.get("groupId").toString());
+//			DBOperationType state = lc.getState();
+//			//1.If notified to be commit
+//			if(state == DBOperationType.COMMIT){
+//				lc.signal();
+//			}
+//			//2.If notified to be rollback
+//			else if(state == DBOperationType.ROLLBACK){
+//				lc.signal();
+//			}
+//		}else if(action==ActionType.CANCEL){
+//			JSONObject map = JSONObject.parseObject(message.getInfo().toString());
+//			LockAndCondition lc = threadsInfo.get(map.get("groupId").toString());
+//			DBOperationType state = lc.getState();
+//			lc.setState(DBOperationType.ROLLBACK);
+//			lc.signal();
+//		}
+//		ctx.fireChannelRead(msg);
 	}
 
 	@Override
@@ -80,11 +120,28 @@ public class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 	}
 
 	public void sendMsg(TransactionServiceInfo serviceInfo) {
-		if(serviceInfo.getAction() == ActionType.ADD){
-			sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString(),serviceInfo.getInfo().get("groupMemberId").toString(),(Method) serviceInfo.getInfo().get("method"),(Object[]) serviceInfo.getInfo().get("args"));
-		}else if(serviceInfo.getAction() == ActionType.APPLYFORSUBMIT){
-			sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString(),serviceInfo.getInfo().get("groupMemberSet").toString());
+		int actionTypeValue = serviceInfo.getAction().getNumber();
+		switch (actionTypeValue){
+			case ActionType.ADD_VALUE:
+				sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString(),serviceInfo.getInfo().get("groupMemberId").toString(),(Method) serviceInfo.getInfo().get("method"),(Object[]) serviceInfo.getInfo().get("args"));
+				break;
+			case ActionType.APPLYFORSUBMIT_VALUE:
+				sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString(),serviceInfo.getInfo().get("groupMemberSet").toString());
+				break;
+			case ActionType.ADD_STRONG_VALUE:
+				sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString(),serviceInfo.getInfo().get("groupMemberId").toString(),(Method) serviceInfo.getInfo().get("method"),(Object[]) serviceInfo.getInfo().get("args"));
+				break;
+			case ActionType.APPLYFORSUBMIT_STRONG_VALUE:
+				sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString(),serviceInfo.getInfo().get("groupMemberSet").toString());
+				break;
+			default:
+				break;
 		}
+//		if(serviceInfo.getAction() == ActionType.ADD){
+//			sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString(),serviceInfo.getInfo().get("groupMemberId").toString(),(Method) serviceInfo.getInfo().get("method"),(Object[]) serviceInfo.getInfo().get("args"));
+//		}else if(serviceInfo.getAction() == ActionType.APPLYFORSUBMIT){
+//			sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString(),serviceInfo.getInfo().get("groupMemberSet").toString());
+//		}
 
 	}
 

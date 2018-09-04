@@ -10,5 +10,6 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 public @interface DtfTransaction {
-
+    //SYNC_FINAL、SYNC_STRONG、ASYNC_FINAL
+    String type() default "SYNC_FINAL";
 }

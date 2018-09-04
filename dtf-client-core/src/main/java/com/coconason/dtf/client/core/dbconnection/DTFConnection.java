@@ -1,8 +1,11 @@
 package com.coconason.dtf.client.core.dbconnection;
 
 import com.alibaba.fastjson.JSONObject;
+import com.coconason.dtf.client.core.beans.TransactionGroupInfo;
 import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
 import com.coconason.dtf.client.core.nettyclient.messagequeue.TransactionMessageQueue;
+import com.coconason.dtf.common.protobuf.MessageProto;
+import com.coconason.dtf.common.utils.UuidGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -104,22 +107,31 @@ public class DTFConnection implements Connection {
                 if(state == DBOperationType.COMMIT){
                     System.out.println("提交");
                     connection.commit();
-
+                    if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG){
+                        queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_SUCCESS_STRONG, TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers(),TransactionGroupInfo.getCurrent().getMemberId()));
+                    }
                 }else if(state == DBOperationType.ROLLBACK){
                     System.out.println("回滚");
                     connection.rollback();
+                    if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG){
+                        queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL_STRONG, TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
+                    }
                 }
             } catch (Exception e) {
                 try {
                     connection.rollback();
-                } catch (SQLException e1) {
-                    e1.printStackTrace();
+                    if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG){
+                        queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL_STRONG, TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
+                    }
+                    e.printStackTrace();
+                } catch (Exception exception) {
+                    exception.printStackTrace();
                 }
             } finally {
                 try {
                     //4. close the connection.
                     connection.close();
-                } catch (SQLException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
