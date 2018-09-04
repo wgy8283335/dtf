@@ -3,16 +3,15 @@ package com.coconason.dtf.client.core.dbconnection;
 import com.alibaba.fastjson.JSONObject;
 import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
 import com.coconason.dtf.client.core.nettyclient.messagequeue.TransactionMessageQueue;
-import com.coconason.dtf.common.utils.UuidGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.sql.*;
 import java.util.Map;
 import java.util.Properties;
-import java.util.concurrent.*;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -105,6 +104,7 @@ public class DTFConnection implements Connection {
                 if(state == DBOperationType.COMMIT){
                     System.out.println("提交");
                     connection.commit();
+
                 }else if(state == DBOperationType.ROLLBACK){
                     System.out.println("回滚");
                     connection.rollback();

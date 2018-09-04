@@ -286,6 +286,34 @@ public final class MessageProto {
        * <code>HEARTBEAT_RESP = 11;</code>
        */
       HEARTBEAT_RESP(10, 11),
+      /**
+       * <code>ADD_STRONG = 12;</code>
+       */
+      ADD_STRONG(11, 12),
+      /**
+       * <code>APPLYFORSUBMIT_STRONG = 13;</code>
+       */
+      APPLYFORSUBMIT_STRONG(12, 13),
+      /**
+       * <code>APPROVESUBMIT_STRONG = 14;</code>
+       */
+      APPROVESUBMIT_STRONG(13, 14),
+      /**
+       * <code>SUB_SUCCESS_STRONG = 15;</code>
+       */
+      SUB_SUCCESS_STRONG(14, 15),
+      /**
+       * <code>SUB_FAIL_STRONG = 16;</code>
+       */
+      SUB_FAIL_STRONG(15, 16),
+      /**
+       * <code>WHOLE_SUCCESS_STRONG = 17;</code>
+       */
+      WHOLE_SUCCESS_STRONG(16, 17),
+      /**
+       * <code>WHOLE_FAIL_STRONG = 18;</code>
+       */
+      WHOLE_FAIL_STRONG(17, 18),
       ;
 
       /**
@@ -332,6 +360,34 @@ public final class MessageProto {
        * <code>HEARTBEAT_RESP = 11;</code>
        */
       public static final int HEARTBEAT_RESP_VALUE = 11;
+      /**
+       * <code>ADD_STRONG = 12;</code>
+       */
+      public static final int ADD_STRONG_VALUE = 12;
+      /**
+       * <code>APPLYFORSUBMIT_STRONG = 13;</code>
+       */
+      public static final int APPLYFORSUBMIT_STRONG_VALUE = 13;
+      /**
+       * <code>APPROVESUBMIT_STRONG = 14;</code>
+       */
+      public static final int APPROVESUBMIT_STRONG_VALUE = 14;
+      /**
+       * <code>SUB_SUCCESS_STRONG = 15;</code>
+       */
+      public static final int SUB_SUCCESS_STRONG_VALUE = 15;
+      /**
+       * <code>SUB_FAIL_STRONG = 16;</code>
+       */
+      public static final int SUB_FAIL_STRONG_VALUE = 16;
+      /**
+       * <code>WHOLE_SUCCESS_STRONG = 17;</code>
+       */
+      public static final int WHOLE_SUCCESS_STRONG_VALUE = 17;
+      /**
+       * <code>WHOLE_FAIL_STRONG = 18;</code>
+       */
+      public static final int WHOLE_FAIL_STRONG_VALUE = 18;
 
 
       public final int getNumber() { return value; }
@@ -349,6 +405,13 @@ public final class MessageProto {
           case 9: return LOGIN_RESP;
           case 10: return HEARTBEAT_REQ;
           case 11: return HEARTBEAT_RESP;
+          case 12: return ADD_STRONG;
+          case 13: return APPLYFORSUBMIT_STRONG;
+          case 14: return APPROVESUBMIT_STRONG;
+          case 15: return SUB_SUCCESS_STRONG;
+          case 16: return SUB_FAIL_STRONG;
+          case 17: return WHOLE_SUCCESS_STRONG;
+          case 18: return WHOLE_FAIL_STRONG;
           default: return null;
         }
       }
@@ -1307,17 +1370,21 @@ public final class MessageProto {
       descriptor;
   static {
     String[] descriptorData = {
-      "\n\rMessage.proto\"\332\002\n\007Message\022\017\n\007crcCode\030\001" +
+      "\n\rMessage.proto\"\375\003\n\007Message\022\017\n\007crcCode\030\001" +
       " \001(\005\022\016\n\006length\030\002 \001(\005\022\021\n\tsessionID\030\003 \001(\003\022" +
       "\014\n\004type\030\004 \001(\005\022\020\n\010priority\030\005 \001(\005\022\n\n\002id\030\006 " +
       "\001(\t\022\014\n\004info\030\007 \001(\t\022,\n\006action\030\010 \001(\0162\023.Mess" +
-      "age.ActionType:\007DEFAULT\"\262\001\n\nActionType\022\007" +
+      "age.ActionType:\007DEFAULT\"\325\002\n\nActionType\022\007" +
       "\n\003ADD\020\001\022\022\n\016APPLYFORSUBMIT\020\002\022\021\n\rAPPROVESU" +
       "BMIT\020\003\022\n\n\006CANCEL\020\004\022\013\n\007SUCCESS\020\005\022\010\n\004FAIL\020" +
       "\006\022\013\n\007DEFAULT\020\007\022\r\n\tLOGIN_REQ\020\010\022\016\n\nLOGIN_R" +
       "ESP\020\t\022\021\n\rHEARTBEAT_REQ\020\n\022\022\n\016HEARTBEAT_RE" +
-      "SP\020\013B1\n!com.coconason.dtf.common.protobu",
-      "fB\014MessageProto"
+      "SP\020\013\022\016\n\nADD_STRONG\020\014\022\031\n\025APPLYFORSUBMIT_S",
+      "TRONG\020\r\022\030\n\024APPROVESUBMIT_STRONG\020\016\022\026\n\022SUB" +
+      "_SUCCESS_STRONG\020\017\022\023\n\017SUB_FAIL_STRONG\020\020\022\030" +
+      "\n\024WHOLE_SUCCESS_STRONG\020\021\022\025\n\021WHOLE_FAIL_S" +
+      "TRONG\020\022B1\n!com.coconason.dtf.common.prot" +
+      "obufB\014MessageProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {

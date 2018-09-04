@@ -30,5 +30,12 @@ message Message{
         LOGIN_RESP = 9;
         HEARTBEAT_REQ = 10;
         HEARTBEAT_RESP = 11;
+        ADD_STRONG = 12;
+        APPLYFORSUBMIT_STRONG = 13;
+        APPROVESUBMIT_STRONG = 14;
+        SUB_SUCCESS_STRONG = 15;
+        SUB_FAIL_STRONG = 16;
+        WHOLE_SUCCESS_STRONG = 17;
+        WHOLE_FAIL_STRONG = 18;
     }
 }

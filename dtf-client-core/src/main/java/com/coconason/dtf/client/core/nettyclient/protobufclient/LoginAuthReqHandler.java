@@ -1,6 +1,5 @@
 package com.coconason.dtf.client.core.nettyclient.protobufclient;
 
-import com.coconason.dtf.common.protobuf.MessageProto;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 

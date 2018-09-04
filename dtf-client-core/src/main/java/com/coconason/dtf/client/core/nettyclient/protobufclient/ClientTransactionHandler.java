@@ -5,7 +5,6 @@ import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
 import com.coconason.dtf.client.core.dbconnection.DBOperationType;
 import com.coconason.dtf.client.core.dbconnection.LockAndCondition;
 import com.coconason.dtf.client.core.dbconnection.ThreadsInfo;
-import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -15,7 +14,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
-import java.util.Set;
 
 @Component
 @ChannelHandler.Sharable
