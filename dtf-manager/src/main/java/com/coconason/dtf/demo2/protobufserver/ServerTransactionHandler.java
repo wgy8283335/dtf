@@ -1,6 +1,7 @@
 package com.coconason.dtf.demo2.protobufserver;
 
 import com.alibaba.fastjson.JSONObject;
+import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
 import com.coconason.dtf.common.utils.UuidGenerator;
 import com.coconason.dtf.demo2.cache.MessageCache;
