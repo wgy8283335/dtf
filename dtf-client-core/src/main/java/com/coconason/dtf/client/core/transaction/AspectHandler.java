@@ -4,8 +4,6 @@ import com.coconason.dtf.client.core.annotation.DtfTransaction;
 import com.coconason.dtf.client.core.beans.TransactionGroupInfo;
 import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
 import com.coconason.dtf.client.core.constant.Member;
-import com.coconason.dtf.client.core.dbconnection.DBOperationType;
-import com.coconason.dtf.client.core.dbconnection.LockAndCondition;
 import com.coconason.dtf.client.core.dbconnection.SecondThreadsInfo;
 import com.coconason.dtf.client.core.nettyclient.messagequeue.TransactionMessageQueue;
 import com.coconason.dtf.client.core.nettyclient.protobufclient.NettyService;
@@ -19,7 +17,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Method;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @Author: Jason
@@ -50,7 +47,7 @@ public class AspectHandler {
             transactional = clazz.getAnnotation(Transactional.class);
         }
         //declare one transaction group
-        TransactionGroupInfo groupInfo;
+        //TransactionGroupInfo groupInfo;
         //1.When the service is creator,should create groupId and store in public object.
         //2.Then execute the program.And if the program has transactional operation in database,
         //should use database proxy to send transaction information to the transaction server.
@@ -59,7 +56,7 @@ public class AspectHandler {
         if(transactionGroupInfo == null) {
             //1.
             String groupIdTemp = GroupidGenerator.getStringId(0, 0);
-            groupInfo = new TransactionGroupInfo(groupIdTemp, Member.ORIGNAL_ID);
+            TransactionGroupInfo groupInfo = new TransactionGroupInfo(groupIdTemp, Member.ORIGNAL_ID);
             TransactionGroupInfo.setCurrent(groupInfo);
             switch (transactionType) {
                 case "SYNC_FINAL":
@@ -80,18 +77,20 @@ public class AspectHandler {
                     break;
                 case "SYNC_STRONG":
                     //4.wait for confirm from the server and use lock condition to wait for signaling.
-                    LockAndCondition secondlc = new LockAndCondition(new ReentrantLock(), DBOperationType.DEFAULT);
-                    secondThreadsInfo.put(TransactionGroupInfo.getCurrent().getGroupId(), secondlc);
+//                    LockAndCondition secondlc = new LockAndCondition(new ReentrantLock(), DBOperationType.DEFAULT);
+//                    secondThreadsInfo.put(TransactionGroupInfo.getCurrent().getGroupId(), secondlc);
                     queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), ActionType.APPLYFORSUBMIT_STRONG, TransactionGroupInfo.getCurrent().getGroupId(), TransactionGroupInfo.getCurrent().getGroupMembers()));
-                    secondlc.await();
-                    LockAndCondition secondlc2 = secondThreadsInfo.get(TransactionGroupInfo.getCurrent().getGroupId());
-                    if(secondlc2.getState() == DBOperationType.WHOLEFAIL){
-                        throw new Exception("Distributed transaction failed");
-                    }
+//                    secondlc.await();
+//                    LockAndCondition secondlc2 = secondThreadsInfo.get(TransactionGroupInfo.getCurrent().getGroupId());
+//                    if(secondlc2.getState() == DBOperationType.WHOLEFAIL){
+//                        throw new Exception("Distributed transaction failed");
+//                    }
+
                     break;
                 default:
                     break;
             }
+            System.out.println("test this is before dbconnection close");
         }
         //1.When the service is follower,execute the program.And if the program has transactional operation in database,
         //should use database proxy to send transaction information to the transaction server.
@@ -115,7 +114,6 @@ public class AspectHandler {
                     default:
                         break;
                 }
-
             }
             point.proceed();
         }

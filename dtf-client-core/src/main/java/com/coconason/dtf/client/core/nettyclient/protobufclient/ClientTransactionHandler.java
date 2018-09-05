@@ -40,7 +40,6 @@ public class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 		super.channelActive(ctx);
 		this.ctx = ctx;
 		System.out.println("新建链接-->"+this.ctx);
-		//sendMsg("90000","1","http://com.ping.test/pang","get","{id:90999}");
 	}
 
 	@Override
@@ -49,11 +48,16 @@ public class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 
 		MessageProto.Message message = (MessageProto.Message) msg;
 		ActionType action = message.getAction();
-		JSONObject map = JSONObject.parseObject(message.getInfo().toString());
-		LockAndCondition lc = threadsInfo.get(map.get("groupId").toString());
-		DBOperationType state = lc.getState();
-		switch (action.getNumber()){
-			case ActionType.APPROVESUBMIT_VALUE:
+		JSONObject map=null;
+		LockAndCondition lc=null;
+		DBOperationType state=null;
+		if(action != ActionType.HEARTBEAT_REQ&&action != ActionType.HEARTBEAT_RESP&&action != ActionType.LOGIN_REQ&&action != ActionType.LOGIN_RESP){
+			map = JSONObject.parseObject(message.getInfo().toString());
+			lc = threadsInfo.get(map.get("groupId").toString());
+			state = lc.getState();
+		}
+		switch (action){
+			case APPROVESUBMIT:
 				//1.If notified to be commit
 				if(state == DBOperationType.COMMIT){
 					lc.signal();
@@ -63,7 +67,7 @@ public class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 					lc.signal();
 				}
 				break;
-			case ActionType.APPROVESUBMIT_STRONG_VALUE:
+			case APPROVESUBMIT_STRONG:
 				//1.If notified to be commit
 				if(state == DBOperationType.COMMIT){
 					lc.signal();
@@ -73,24 +77,24 @@ public class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 					lc.signal();
 				}
 				break;
-			case ActionType.WHOLE_SUCCESS_STRONG_VALUE:
+			case WHOLE_SUCCESS_STRONG:
 				LockAndCondition secondlc = secondThreadsInfo.get(map.get("groupId").toString());
 				secondlc.setState(DBOperationType.WHOLESUCCESS);
 				secondlc.signal();
 				break;
-			case ActionType.WHOLE_FAIL_STRONG_VALUE:
+			case WHOLE_FAIL_STRONG:
 				LockAndCondition secondlc2 = secondThreadsInfo.get(map.get("groupId").toString());
 				secondlc2.setState(DBOperationType.WHOLEFAIL);
 				secondlc2.signal();
 				break;
-			case ActionType.CANCEL_VALUE:
+			case CANCEL:
 				lc.setState(DBOperationType.ROLLBACK);
 				lc.signal();
 				break;
 			default:
-				ctx.fireChannelRead(msg);
 				break;
 		}
+		ctx.fireChannelRead(msg);
 //		if(action==ActionType.APPROVESUBMIT){
 //			JSONObject map = JSONObject.parseObject(message.getInfo().toString());
 //			LockAndCondition lc = threadsInfo.get(map.get("groupId").toString());
@@ -126,29 +130,29 @@ public class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 	}
 
 	public void sendMsg(TransactionServiceInfo serviceInfo) {
-		int actionTypeValue = serviceInfo.getAction().getNumber();
-		switch (actionTypeValue){
-			case ActionType.ADD_VALUE:
+		ActionType actionType = serviceInfo.getAction();
+		switch (actionType){
+			case ADD:
 				sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString(),serviceInfo.getInfo().get("groupMemberId").toString(),(Method) serviceInfo.getInfo().get("method"),(Object[]) serviceInfo.getInfo().get("args"));
 				break;
-			case ActionType.APPLYFORSUBMIT_VALUE:
+			case APPLYFORSUBMIT:
 				sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString(),serviceInfo.getInfo().get("groupMemberSet").toString());
 				break;
-			case ActionType.ADD_STRONG_VALUE:
+			case ADD_STRONG:
 				sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString(),serviceInfo.getInfo().get("groupMemberId").toString(),(Method) serviceInfo.getInfo().get("method"),(Object[]) serviceInfo.getInfo().get("args"));
 				break;
-			case ActionType.APPLYFORSUBMIT_STRONG_VALUE:
+			case APPLYFORSUBMIT_STRONG:
+				sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString(),serviceInfo.getInfo().get("groupMemberSet").toString());
+				break;
+			case SUB_SUCCESS_STRONG:
+				sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString(),serviceInfo.getInfo().get("groupMemberSet").toString(),serviceInfo.getInfo().get("memberId").toString());
+				break;
+			case SUB_FAIL_STRONG:
 				sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString(),serviceInfo.getInfo().get("groupMemberSet").toString());
 				break;
 			default:
 				break;
 		}
-//		if(serviceInfo.getAction() == ActionType.ADD){
-//			sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString(),serviceInfo.getInfo().get("groupMemberId").toString(),(Method) serviceInfo.getInfo().get("method"),(Object[]) serviceInfo.getInfo().get("args"));
-//		}else if(serviceInfo.getAction() == ActionType.APPLYFORSUBMIT){
-//			sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString(),serviceInfo.getInfo().get("groupMemberSet").toString());
-//		}
-
 	}
 
 	public void sendMsg(String id,ActionType action,String groupId, String groupMemberId, Method method,Object[] args){
@@ -171,6 +175,20 @@ public class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 		JSONObject info = new JSONObject();
 		info.put("groupId",groupId);
 		info.put("groupMemberSet",groupMemberSet);
+		builder.setInfo(info.toJSONString());
+		builder.setId(id);
+		builder.setAction(action);
+		MessageProto.Message message = builder.build();
+		System.out.println("Send transaction message:\n" + message);
+		ctx.writeAndFlush(message);
+	}
+
+	public void sendMsg(String id,ActionType action,String groupId, String groupMemberSet,String memberId){
+		MessageProto.Message.Builder builder= MessageProto.Message.newBuilder();
+		JSONObject info = new JSONObject();
+		info.put("groupId",groupId);
+		info.put("groupMemberSet",groupMemberSet);
+		info.put("memberId",memberId);
 		builder.setInfo(info.toJSONString());
 		builder.setId(id);
 		builder.setAction(action);

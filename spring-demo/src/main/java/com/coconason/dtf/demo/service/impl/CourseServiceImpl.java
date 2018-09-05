@@ -24,18 +24,14 @@ public class CourseServiceImpl implements ICourseService {
     private RestClient restClient;
 
     @Override
-    @DtfTransaction
+    @DtfTransaction(type="SYNC_STRONG")
     @Transactional
     public DemoResult addCourseInfo(Course course) throws Exception {
-//        if(courseMapper.insertSelective(course)>0){
-            courseMapper.insertSelective(course);
-            Teacher teacher = new Teacher();
-            teacher.setT(1);
-            teacher.setTname("林俊生");
-            restClient.sendPost("http://localhost:8082/set_teacher_info",teacher);
-            return new DemoResult().ok();
-//        }else{
-//            return new DemoResult().build(ErrorCode.SYS_ERROR.value(),ErrorCode.SYS_ERROR.msg());
-//        }
+        courseMapper.insertSelective(course);
+        Teacher teacher = new Teacher();
+        teacher.setT(1);
+        teacher.setTname("Lin");
+        restClient.sendPost("http://localhost:8082/set_teacher_info",teacher);
+        return new DemoResult().ok();
     }
 }

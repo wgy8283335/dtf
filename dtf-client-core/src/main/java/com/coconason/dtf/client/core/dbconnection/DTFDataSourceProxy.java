@@ -21,6 +21,9 @@ public class DTFDataSourceProxy implements DataSource{
 
     private TransactionMessageQueue queue;
 
+    private SecondThreadsInfo secondThreadsInfo;
+
+
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
     }
@@ -33,15 +36,19 @@ public class DTFDataSourceProxy implements DataSource{
         this.queue = queue;
     }
 
+    public void setSecondThreadsInfo(SecondThreadsInfo secondThreadsInfo) {
+        this.secondThreadsInfo = secondThreadsInfo;
+    }
+
     @Override
     public Connection getConnection() throws SQLException {
-        Connection connection = new DTFConnection(dataSource.getConnection(),threadsInfo,queue);
+        Connection connection = new DTFConnection(dataSource.getConnection(),threadsInfo,queue,secondThreadsInfo);
         return connection;
     }
 
     @Override
     public Connection getConnection(String username, String password) throws SQLException {
-        Connection connection = new DTFConnection(dataSource.getConnection(username,password),threadsInfo,queue);
+        Connection connection = new DTFConnection(dataSource.getConnection(username,password),threadsInfo,queue,secondThreadsInfo);
         return connection;
     }
 

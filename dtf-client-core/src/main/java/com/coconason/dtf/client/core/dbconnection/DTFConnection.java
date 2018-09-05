@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import java.sql.*;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -39,16 +40,19 @@ public class DTFConnection implements Connection {
 
     private TransactionServiceInfo transactionServiceInfo;
 
+    private SecondThreadsInfo secondThreadsInfo;
+
     private ExecutorService executorService = Executors.newCachedThreadPool();
 
     public DTFConnection(Connection connection) {
         this.connection = connection;
     }
 
-    public DTFConnection(Connection connection,ThreadsInfo threadsInfo,TransactionMessageQueue queue) {
+    public DTFConnection(Connection connection,ThreadsInfo threadsInfo,TransactionMessageQueue queue,SecondThreadsInfo secondThreadsInfo) {
         this.connection = connection;
         this.threadsInfo = threadsInfo;
         this.queue = queue;
+        this.secondThreadsInfo = secondThreadsInfo;
     }
 
     @Override
@@ -86,20 +90,30 @@ public class DTFConnection implements Connection {
             return;
         }
         transactionServiceInfo = TransactionServiceInfo.getCurrent();
-        Thread thread = new Thread(new SubmitRunnable());
+        Thread thread = new Thread(new SubmitRunnable(TransactionGroupInfo.getCurrent()));
         thread.start();
+        //new SubmitRunnable(TransactionGroupInfo.getCurrent()).run();
     }
 
     private class SubmitRunnable implements Runnable{
+        private TransactionGroupInfo transactionGroupInfo;
+
+        public SubmitRunnable(TransactionGroupInfo transactionGroupInfo) {
+            this.transactionGroupInfo = transactionGroupInfo;
+        }
+
         @Override
         public void run() {
+            String groupId = transactionGroupInfo.getGroupId();
+            Set groupMembers = transactionGroupInfo.getGroupMembers();
+            Long memberId = transactionGroupInfo.getMemberId();
             try {
                 //2. Use lock condition to wait for signaling.
                 LockAndCondition lc = new LockAndCondition(new ReentrantLock(),state);
                 JSONObject map = transactionServiceInfo.getInfo();
                 threadsInfo.put(map.get("groupId").toString(),lc);
                 queue.put(transactionServiceInfo);
-                System.out.println("queue is Empty or not"+queue.isEmpty());
+                System.out.println("transactionServiceInfo action is -------------"+transactionServiceInfo.getAction());
                 lc.await();
                 //3. After signaling, if success commit or rollback, otherwise skip the committing.
                 System.out.println("Thread.currentThread().getName()--------------"+Thread.currentThread().getName());
@@ -107,21 +121,22 @@ public class DTFConnection implements Connection {
                 if(state == DBOperationType.COMMIT){
                     System.out.println("提交");
                     connection.commit();
-                    if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG){
-                        queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_SUCCESS_STRONG, TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers(),TransactionGroupInfo.getCurrent().getMemberId()));
+                    if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG&&memberId!=1){
+                        queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_SUCCESS_STRONG, groupId,groupMembers,memberId));
                     }
                 }else if(state == DBOperationType.ROLLBACK){
                     System.out.println("回滚");
                     connection.rollback();
                     if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG){
-                        queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL_STRONG, TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
+                        queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL_STRONG, groupId,groupMembers));
                     }
                 }
             } catch (Exception e) {
                 try {
                     connection.rollback();
                     if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG){
-                        queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL_STRONG, TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
+                        //queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL_STRONG, TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
+                        queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL_STRONG, groupId,groupMembers));
                     }
                     e.printStackTrace();
                 } catch (Exception exception) {
@@ -129,6 +144,18 @@ public class DTFConnection implements Connection {
                 }
             } finally {
                 try {
+                    //if memberId is 1,means the thread is the creator thread.
+                    if(memberId==1){
+                        LockAndCondition secondlc = new LockAndCondition(new ReentrantLock(), DBOperationType.DEFAULT);
+                        secondThreadsInfo.put(groupId, secondlc);
+                        queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_SUCCESS_STRONG, groupId,groupMembers,memberId));
+                        secondlc.await();
+                        LockAndCondition secondlc2 = secondThreadsInfo.get(groupId);
+                        if(secondlc2.getState() == DBOperationType.WHOLEFAIL){
+                            throw new Exception("Distributed transaction failed");
+                        }
+                        System.out.println("DTFConenction finished---------------------------------");
+                    }
                     //4. close the connection.
                     connection.close();
                 } catch (Exception e) {

@@ -2,6 +2,7 @@ package com.coconason.dtf.demo2;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.coconason.dtf.client.core.dbconnection.DTFDataSourceProxy;
+import com.coconason.dtf.client.core.dbconnection.SecondThreadsInfo;
 import com.coconason.dtf.client.core.dbconnection.ThreadsInfo;
 import com.coconason.dtf.client.core.nettyclient.messagequeue.TransactionMessageQueue;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +10,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import javax.sql.DataSource;
 import org.springframework.core.env.Environment;
+
+import javax.sql.DataSource;
 
 @EnableAutoConfiguration
 @SpringBootApplication
@@ -28,6 +30,9 @@ public class SpringDemo2Application {
 
 	@Autowired
 	private TransactionMessageQueue queue;
+
+	@Autowired
+	private SecondThreadsInfo secondThreadsInfo;
 
 	@Bean
 	public DataSource dataSource() {
@@ -48,6 +53,7 @@ public class SpringDemo2Application {
 		dataSourceProxy.setDataSource(dataSource);
 		dataSourceProxy.setThreadsInfo(threadsInfo);
 		dataSourceProxy.setQueue(queue);
+		dataSourceProxy.setSecondThreadsInfo(secondThreadsInfo);
 		return dataSourceProxy;
 	}
 }
