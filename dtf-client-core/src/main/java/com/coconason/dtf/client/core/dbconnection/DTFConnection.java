@@ -3,6 +3,7 @@ package com.coconason.dtf.client.core.dbconnection;
 import com.alibaba.fastjson.JSONObject;
 import com.coconason.dtf.client.core.beans.TransactionGroupInfo;
 import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
+import com.coconason.dtf.client.core.beans.TransactionType;
 import com.coconason.dtf.client.core.nettyclient.messagequeue.TransactionMessageQueue;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.common.utils.UuidGenerator;
@@ -92,7 +93,28 @@ public class DTFConnection implements Connection {
         transactionServiceInfo = TransactionServiceInfo.getCurrent();
         Thread thread = new Thread(new SubmitRunnable(TransactionGroupInfo.getCurrent()));
         thread.start();
-        //new SubmitRunnable(TransactionGroupInfo.getCurrent()).run();
+
+        try {
+            TransactionGroupInfo transactionGroupInfo = TransactionGroupInfo.getCurrent();
+            String groupId = transactionGroupInfo.getGroupId();
+            //Set groupMembers = transactionGroupInfo.getGroupMembers();
+            Long memberId = transactionGroupInfo.getMemberId();
+            //if memberId is 1,means the thread is the creator thread.
+            if(memberId==1 && TransactionType.getCurrent().getTransactionType()=="SYNC_STRONG"){
+                LockAndCondition secondlc = new LockAndCondition(new ReentrantLock(), DBOperationType.DEFAULT);
+                secondThreadsInfo.put(groupId, secondlc);
+                secondlc.await();
+                LockAndCondition secondlc2 = secondThreadsInfo.get(groupId);
+                if(secondlc2.getState() == DBOperationType.WHOLEFAIL){
+                    throw new Exception("Distributed transaction failed");
+                }
+                System.out.println("DTFConenction finished---------------------------------");
+                //4. close the connection.
+                connection.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private class SubmitRunnable implements Runnable{
@@ -114,6 +136,9 @@ public class DTFConnection implements Connection {
                 threadsInfo.put(map.get("groupId").toString(),lc);
                 queue.put(transactionServiceInfo);
                 System.out.println("transactionServiceInfo action is -------------"+transactionServiceInfo.getAction());
+                if(memberId == 1){
+                    queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT_STRONG,groupId,groupMembers));
+                }
                 lc.await();
                 //3. After signaling, if success commit or rollback, otherwise skip the committing.
                 System.out.println("Thread.currentThread().getName()--------------"+Thread.currentThread().getName());
@@ -121,7 +146,7 @@ public class DTFConnection implements Connection {
                 if(state == DBOperationType.COMMIT){
                     System.out.println("提交");
                     connection.commit();
-                    if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG&&memberId!=1){
+                    if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG){
                         queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_SUCCESS_STRONG, groupId,groupMembers,memberId));
                     }
                 }else if(state == DBOperationType.ROLLBACK){
@@ -144,20 +169,10 @@ public class DTFConnection implements Connection {
                 }
             } finally {
                 try {
-                    //if memberId is 1,means the thread is the creator thread.
-                    if(memberId==1){
-                        LockAndCondition secondlc = new LockAndCondition(new ReentrantLock(), DBOperationType.DEFAULT);
-                        secondThreadsInfo.put(groupId, secondlc);
-                        queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_SUCCESS_STRONG, groupId,groupMembers,memberId));
-                        secondlc.await();
-                        LockAndCondition secondlc2 = secondThreadsInfo.get(groupId);
-                        if(secondlc2.getState() == DBOperationType.WHOLEFAIL){
-                            throw new Exception("Distributed transaction failed");
-                        }
+                    if(memberId!=1) {
                         System.out.println("DTFConenction finished---------------------------------");
+                        connection.close();
                     }
-                    //4. close the connection.
-                    connection.close();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

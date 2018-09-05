@@ -22,6 +22,7 @@ public class TeacherController {
     @RequestMapping(value="/set_teacher_info",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
     public DemoResult setTeacherInfo(@RequestBody Teacher teacher) throws Exception{
         DemoResult demoResult = teacherService.addTeacherInfo(teacher);
+        System.out.println("TeacherController finished---------------------");
         return demoResult;
     }
 }

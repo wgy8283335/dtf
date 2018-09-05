@@ -3,6 +3,7 @@ package com.coconason.dtf.client.core.transaction;
 import com.coconason.dtf.client.core.annotation.DtfTransaction;
 import com.coconason.dtf.client.core.beans.TransactionGroupInfo;
 import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
+import com.coconason.dtf.client.core.beans.TransactionType;
 import com.coconason.dtf.client.core.constant.Member;
 import com.coconason.dtf.client.core.dbconnection.SecondThreadsInfo;
 import com.coconason.dtf.client.core.nettyclient.messagequeue.TransactionMessageQueue;
@@ -41,7 +42,8 @@ public class AspectHandler {
         Method currentMethod = clazz.getMethod(method.getName(), method.getParameterTypes());
         DtfTransaction transaction = currentMethod.getAnnotation(DtfTransaction.class);
         //transactionType has:SYNC_FINAL、SYNC_STRONG、ASYNC_FINAL
-        String transactionType = transaction.type();
+        TransactionType transactionType = new TransactionType(transaction.type());
+        TransactionType.setCurrent(transactionType);
         Transactional transactional = currentMethod.getAnnotation(Transactional.class);
         if (transactional == null) {
             transactional = clazz.getAnnotation(Transactional.class);
@@ -58,7 +60,7 @@ public class AspectHandler {
             String groupIdTemp = GroupidGenerator.getStringId(0, 0);
             TransactionGroupInfo groupInfo = new TransactionGroupInfo(groupIdTemp, Member.ORIGNAL_ID);
             TransactionGroupInfo.setCurrent(groupInfo);
-            switch (transactionType) {
+            switch (transactionType.getTransactionType()) {
                 case "SYNC_FINAL":
                     TransactionServiceInfo.setCurrent(new TransactionServiceInfo(UuidGenerator.generateUuid(), ActionType.ADD, groupInfo.getGroupId(), groupInfo.getMemberId(), method, args));
                     break;
@@ -71,7 +73,7 @@ public class AspectHandler {
             //2.
             point.proceed();
             //3.Send confirm message to netty server, in order to commit all transaction in the service
-            switch (transactionType) {
+            switch (transactionType.getTransactionType()) {
                 case "SYNC_FINAL":
                     queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), ActionType.APPLYFORSUBMIT, TransactionGroupInfo.getCurrent().getGroupId(), TransactionGroupInfo.getCurrent().getGroupMembers()));
                     break;
@@ -79,7 +81,7 @@ public class AspectHandler {
                     //4.wait for confirm from the server and use lock condition to wait for signaling.
 //                    LockAndCondition secondlc = new LockAndCondition(new ReentrantLock(), DBOperationType.DEFAULT);
 //                    secondThreadsInfo.put(TransactionGroupInfo.getCurrent().getGroupId(), secondlc);
-                    queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), ActionType.APPLYFORSUBMIT_STRONG, TransactionGroupInfo.getCurrent().getGroupId(), TransactionGroupInfo.getCurrent().getGroupMembers()));
+                    //queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), ActionType.APPLYFORSUBMIT_STRONG, TransactionGroupInfo.getCurrent().getGroupId(), TransactionGroupInfo.getCurrent().getGroupMembers()));
 //                    secondlc.await();
 //                    LockAndCondition secondlc2 = secondThreadsInfo.get(TransactionGroupInfo.getCurrent().getGroupId());
 //                    if(secondlc2.getState() == DBOperationType.WHOLEFAIL){
@@ -104,7 +106,7 @@ public class AspectHandler {
             }
             //if the thread does not have transactionServiceInfo,set current transaction service information
             if(TransactionServiceInfo.getCurrent()==null){
-                switch (transactionType){
+                switch (transactionType.getTransactionType()){
                     case "SYNC_FINAL":
                         TransactionServiceInfo.setCurrent(new TransactionServiceInfo(UuidGenerator.generateUuid(), ActionType.ADD,transactionGroupInfo.getGroupId(),transactionGroupInfo.getMemberId(),method,args));
                         break;

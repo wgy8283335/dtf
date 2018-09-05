@@ -24,7 +24,8 @@ public class CourseServiceImpl implements ICourseService {
     private RestClient restClient;
 
     @Override
-    @DtfTransaction(type="SYNC_STRONG")
+    //@DtfTransaction(type="SYNC_STRONG")
+    @DtfTransaction
     @Transactional
     public DemoResult addCourseInfo(Course course) throws Exception {
         courseMapper.insertSelective(course);
