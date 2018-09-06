@@ -28,6 +28,7 @@ public class NettyServer
     public static void main(String[] args) throws Exception
     {
         new NettyServer().bind();
+
     }
 
     public void bind() throws Exception

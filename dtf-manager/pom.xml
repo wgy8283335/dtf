@@ -12,6 +12,11 @@
     <artifactId>dtf-manager</artifactId>
     <dependencies>
         <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>5.0.7.RELEASE</version>
+        </dependency>
+        <dependency>
             <groupId>com.coconason</groupId>
             <artifactId>dtf-common</artifactId>
             <version>0.1</version>
