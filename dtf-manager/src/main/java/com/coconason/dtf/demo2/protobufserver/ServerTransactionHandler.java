@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
 import com.coconason.dtf.common.utils.UuidGenerator;
+import com.coconason.dtf.demo2.cache.MessageAsyncQueue;
 import com.coconason.dtf.demo2.cache.MessageCache;
 import com.coconason.dtf.demo2.message.TransactionMessageForAdding;
 import com.coconason.dtf.demo2.message.TransactionMessageForSubmit;
@@ -11,6 +12,7 @@ import com.coconason.dtf.demo2.message.TransactionMessageGroup;
 import com.coconason.dtf.demo2.message.TransactionMessageGroupAsync;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Set;
@@ -23,13 +25,13 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
 
     MessageCache messageCache;
 
-    MessageCache messageCacheAsync;
+    @Autowired
+    MessageAsyncQueue messageAsyncQueue;
 
     private ChannelHandlerContext ctx;
 
-    public ServerTransactionHandler(MessageCache messageCache,MessageCache messageCacheAsync) {
+    public ServerTransactionHandler(MessageCache messageCache) {
         this.messageCache = messageCache;
-        this.messageCacheAsync = messageCacheAsync;
     }
 
     @Override
@@ -95,8 +97,8 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
                 break;
             case ADD_ASYNC:
                 TransactionMessageGroupAsync transactionMessageGroupAsync = TransactionMessageGroupAsync.parse(message);
-                messageCacheAsync.put(transactionMessageGroupAsync.getGroupId(),transactionMessageGroupAsync);
-                snedMsg(transactionMessageGroupAsync.getGroupId(),ActionType.ADD_SUCCESS_ASYNC,ctx);
+                messageAsyncQueue.offer(transactionMessageGroupAsync);
+                //snedMsg(transactionMessageGroupAsync.getGroupId(),ActionType.ADD_SUCCESS_ASYNC,ctx);
                 break;
             default:
                 break;

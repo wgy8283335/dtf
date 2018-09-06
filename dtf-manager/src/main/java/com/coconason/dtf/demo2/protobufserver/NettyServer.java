@@ -35,7 +35,6 @@ public class NettyServer
         EventLoopGroup boss = new NioEventLoopGroup();
         EventLoopGroup work = new NioEventLoopGroup();
         final MessageCache messageCache = new MessageCache();
-        final MessageCache messageCacheAsync = new MessageCache();
         try
         {
             ServerBootstrap b = new ServerBootstrap();
@@ -58,7 +57,7 @@ public class NettyServer
                             ch.pipeline().addLast(new ProtobufEncoder());
                             ch.pipeline().addLast(new ReadTimeoutHandler(50));
                             ch.pipeline().addLast(new LoginAuthRespHandler());
-                            ch.pipeline().addLast(new ServerTransactionHandler(messageCache,messageCacheAsync));
+                            ch.pipeline().addLast(new ServerTransactionHandler(messageCache));
                             ch.pipeline().addLast(new HeartBeatRespHandler());
                         }
                     });
