@@ -5,7 +5,6 @@ import com.coconason.dtf.demo2.message.TransactionMessageGroup;
 import com.coconason.dtf.demo2.message.TransactionMessageGroupAsync;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import org.springframework.stereotype.Component;
 
 import java.util.Set;
 
@@ -13,7 +12,6 @@ import java.util.Set;
  * @Author: Jason
  * @date: 2018/8/24-16:34
  */
-@Component
 public class MessageCache {
 
     public MessageCache() {

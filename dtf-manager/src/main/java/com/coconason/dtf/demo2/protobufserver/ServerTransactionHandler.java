@@ -6,14 +6,9 @@ import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
 import com.coconason.dtf.common.utils.UuidGenerator;
 import com.coconason.dtf.demo2.cache.MessageAsyncQueue;
 import com.coconason.dtf.demo2.cache.MessageCache;
-import com.coconason.dtf.demo2.message.TransactionMessageForAdding;
-import com.coconason.dtf.demo2.message.TransactionMessageForSubmit;
-import com.coconason.dtf.demo2.message.TransactionMessageGroup;
-import com.coconason.dtf.demo2.message.TransactionMessageGroupAsync;
+import com.coconason.dtf.demo2.message.*;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import org.springframework.beans.factory.annotation.Autowired;
-import com.coconason.dtf.demo2.message.MessageInfo;
 
 import java.util.List;
 import java.util.Set;
@@ -26,13 +21,13 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
 
     MessageCache messageCache;
 
-    @Autowired
     MessageAsyncQueue messageAsyncQueue;
 
     private ChannelHandlerContext ctx;
 
-    public ServerTransactionHandler(MessageCache messageCache) {
+    public ServerTransactionHandler(MessageCache messageCache,MessageAsyncQueue messageAsyncQueue) {
         this.messageCache = messageCache;
+        this.messageAsyncQueue = messageAsyncQueue;
     }
 
     @Override

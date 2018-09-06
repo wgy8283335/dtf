@@ -1,6 +1,7 @@
 package com.coconason.dtf.demo2.protobufserver;
 
 import com.coconason.dtf.common.protobuf.MessageProto;
+import com.coconason.dtf.demo2.cache.MessageAsyncQueue;
 import com.coconason.dtf.demo2.cache.MessageCache;
 import com.coconason.dtf.demo2.service.Consumer;
 import io.netty.bootstrap.ServerBootstrap;
@@ -28,16 +29,18 @@ public class NettyServer
 
     public static void main(String[] args) throws Exception
     {
-        new NettyServer().bind();
-        new Thread(new Consumer()).start();
-
+        MessageAsyncQueue messageAsyncQueue = new MessageAsyncQueue();
+        Thread thread = new Thread(new Consumer(messageAsyncQueue));
+        thread.start();
+        new NettyServer().bind(messageAsyncQueue);
     }
 
-    public void bind() throws Exception
+    public void bind(MessageAsyncQueue messageAsyncQueueTemp) throws Exception
     {
         EventLoopGroup boss = new NioEventLoopGroup();
         EventLoopGroup work = new NioEventLoopGroup();
         final MessageCache messageCache = new MessageCache();
+        final MessageAsyncQueue messageAsyncQueue = messageAsyncQueueTemp;
         try
         {
             ServerBootstrap b = new ServerBootstrap();
@@ -60,7 +63,7 @@ public class NettyServer
                             ch.pipeline().addLast(new ProtobufEncoder());
                             ch.pipeline().addLast(new ReadTimeoutHandler(50));
                             ch.pipeline().addLast(new LoginAuthRespHandler());
-                            ch.pipeline().addLast(new ServerTransactionHandler(messageCache));
+                            ch.pipeline().addLast(new ServerTransactionHandler(messageCache,messageAsyncQueue));
                             ch.pipeline().addLast(new HeartBeatRespHandler());
                         }
                     });
