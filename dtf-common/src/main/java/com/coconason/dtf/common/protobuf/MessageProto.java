@@ -314,6 +314,18 @@ public final class MessageProto {
        * <code>WHOLE_FAIL_STRONG = 18;</code>
        */
       WHOLE_FAIL_STRONG(17, 18),
+      /**
+       * <code>ADD_ASYNC = 19;</code>
+       */
+      ADD_ASYNC(18, 19),
+      /**
+       * <code>ADD_SUCCESS_ASYNC = 20;</code>
+       */
+      ADD_SUCCESS_ASYNC(19, 20),
+      /**
+       * <code>ADD_FAIL_ASYNC = 21;</code>
+       */
+      ADD_FAIL_ASYNC(20, 21),
       ;
 
       /**
@@ -388,6 +400,18 @@ public final class MessageProto {
        * <code>WHOLE_FAIL_STRONG = 18;</code>
        */
       public static final int WHOLE_FAIL_STRONG_VALUE = 18;
+      /**
+       * <code>ADD_ASYNC = 19;</code>
+       */
+      public static final int ADD_ASYNC_VALUE = 19;
+      /**
+       * <code>ADD_SUCCESS_ASYNC = 20;</code>
+       */
+      public static final int ADD_SUCCESS_ASYNC_VALUE = 20;
+      /**
+       * <code>ADD_FAIL_ASYNC = 21;</code>
+       */
+      public static final int ADD_FAIL_ASYNC_VALUE = 21;
 
 
       public final int getNumber() { return value; }
@@ -412,6 +436,9 @@ public final class MessageProto {
           case 16: return SUB_FAIL_STRONG;
           case 17: return WHOLE_SUCCESS_STRONG;
           case 18: return WHOLE_FAIL_STRONG;
+          case 19: return ADD_ASYNC;
+          case 20: return ADD_SUCCESS_ASYNC;
+          case 21: return ADD_FAIL_ASYNC;
           default: return null;
         }
       }
@@ -1370,11 +1397,11 @@ public final class MessageProto {
       descriptor;
   static {
     String[] descriptorData = {
-      "\n\rMessage.proto\"\375\003\n\007Message\022\017\n\007crcCode\030\001" +
+      "\n\rMessage.proto\"\267\004\n\007Message\022\017\n\007crcCode\030\001" +
       " \001(\005\022\016\n\006length\030\002 \001(\005\022\021\n\tsessionID\030\003 \001(\003\022" +
       "\014\n\004type\030\004 \001(\005\022\020\n\010priority\030\005 \001(\005\022\n\n\002id\030\006 " +
       "\001(\t\022\014\n\004info\030\007 \001(\t\022,\n\006action\030\010 \001(\0162\023.Mess" +
-      "age.ActionType:\007DEFAULT\"\325\002\n\nActionType\022\007" +
+      "age.ActionType:\007DEFAULT\"\217\003\n\nActionType\022\007" +
       "\n\003ADD\020\001\022\022\n\016APPLYFORSUBMIT\020\002\022\021\n\rAPPROVESU" +
       "BMIT\020\003\022\n\n\006CANCEL\020\004\022\013\n\007SUCCESS\020\005\022\010\n\004FAIL\020" +
       "\006\022\013\n\007DEFAULT\020\007\022\r\n\tLOGIN_REQ\020\010\022\016\n\nLOGIN_R" +
@@ -1383,8 +1410,9 @@ public final class MessageProto {
       "TRONG\020\r\022\030\n\024APPROVESUBMIT_STRONG\020\016\022\026\n\022SUB" +
       "_SUCCESS_STRONG\020\017\022\023\n\017SUB_FAIL_STRONG\020\020\022\030" +
       "\n\024WHOLE_SUCCESS_STRONG\020\021\022\025\n\021WHOLE_FAIL_S" +
-      "TRONG\020\022B1\n!com.coconason.dtf.common.prot" +
-      "obufB\014MessageProto"
+      "TRONG\020\022\022\r\n\tADD_ASYNC\020\023\022\025\n\021ADD_SUCCESS_AS" +
+      "YNC\020\024\022\022\n\016ADD_FAIL_ASYNC\020\025B1\n!com.coconas" +
+      "on.dtf.common.protobufB\014MessageProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {

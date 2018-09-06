@@ -8,6 +8,7 @@ import com.coconason.dtf.demo2.cache.MessageCache;
 import com.coconason.dtf.demo2.message.TransactionMessageForAdding;
 import com.coconason.dtf.demo2.message.TransactionMessageForSubmit;
 import com.coconason.dtf.demo2.message.TransactionMessageGroup;
+import com.coconason.dtf.demo2.message.TransactionMessageGroupAsync;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
@@ -22,10 +23,13 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
 
     MessageCache messageCache;
 
+    MessageCache messageCacheAsync;
+
     private ChannelHandlerContext ctx;
 
-    public ServerTransactionHandler(MessageCache messageCache) {
+    public ServerTransactionHandler(MessageCache messageCache,MessageCache messageCacheAsync) {
         this.messageCache = messageCache;
+        this.messageCacheAsync = messageCacheAsync;
     }
 
     @Override
@@ -88,6 +92,11 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
                 TransactionMessageGroup groupTemp1 = (TransactionMessageGroup)messageCache.get(JSONObject.parseObject(message.getInfo()).get("groupId"));
                 snedMsg(groupTemp1.getGroupId(),ActionType.WHOLE_FAIL_STRONG,groupTemp1.getCtxForSubmitting());
                 messageCache.clear(groupTemp1.getGroupId());
+                break;
+            case ADD_ASYNC:
+                TransactionMessageGroupAsync transactionMessageGroupAsync = TransactionMessageGroupAsync.parse(message);
+                messageCacheAsync.put(transactionMessageGroupAsync.getGroupId(),transactionMessageGroupAsync);
+                snedMsg(transactionMessageGroupAsync.getGroupId(),ActionType.ADD_SUCCESS_ASYNC,ctx);
                 break;
             default:
                 break;

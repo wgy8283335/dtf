@@ -37,5 +37,8 @@ message Message{
         SUB_FAIL_STRONG = 16;
         WHOLE_SUCCESS_STRONG = 17;
         WHOLE_FAIL_STRONG = 18;
+        ADD_ASYNC = 19;
+        ADD_SUCCESS_ASYNC = 20;
+        ADD_FAIL_ASYNC = 21;
     }
 }

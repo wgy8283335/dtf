@@ -73,26 +73,9 @@ public class AspectHandler {
             //2.
             point.proceed();
             //3.Send confirm message to netty server, in order to commit all transaction in the service
-            switch (transactionType.getTransactionType()) {
-                case "SYNC_FINAL":
-                    queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), ActionType.APPLYFORSUBMIT, TransactionGroupInfo.getCurrent().getGroupId(), TransactionGroupInfo.getCurrent().getGroupMembers()));
-                    break;
-                case "SYNC_STRONG":
-                    //4.wait for confirm from the server and use lock condition to wait for signaling.
-//                    LockAndCondition secondlc = new LockAndCondition(new ReentrantLock(), DBOperationType.DEFAULT);
-//                    secondThreadsInfo.put(TransactionGroupInfo.getCurrent().getGroupId(), secondlc);
-                    //queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), ActionType.APPLYFORSUBMIT_STRONG, TransactionGroupInfo.getCurrent().getGroupId(), TransactionGroupInfo.getCurrent().getGroupMembers()));
-//                    secondlc.await();
-//                    LockAndCondition secondlc2 = secondThreadsInfo.get(TransactionGroupInfo.getCurrent().getGroupId());
-//                    if(secondlc2.getState() == DBOperationType.WHOLEFAIL){
-//                        throw new Exception("Distributed transaction failed");
-//                    }
-
-                    break;
-                default:
-                    break;
+            if("SYNC_FINAL".equals(transactionType.getTransactionType())){
+                queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), ActionType.APPLYFORSUBMIT, TransactionGroupInfo.getCurrent().getGroupId(), TransactionGroupInfo.getCurrent().getGroupMembers()));
             }
-            System.out.println("test this is before dbconnection close");
         }
         //1.When the service is follower,execute the program.And if the program has transactional operation in database,
         //should use database proxy to send transaction information to the transaction server.

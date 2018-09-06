@@ -2,10 +2,7 @@ package com.coconason.dtf.client.core.nettyclient.protobufclient;
 
 import com.alibaba.fastjson.JSONObject;
 import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
-import com.coconason.dtf.client.core.dbconnection.DBOperationType;
-import com.coconason.dtf.client.core.dbconnection.LockAndCondition;
-import com.coconason.dtf.client.core.dbconnection.SecondThreadsInfo;
-import com.coconason.dtf.client.core.dbconnection.ThreadsInfo;
+import com.coconason.dtf.client.core.dbconnection.*;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
 import io.netty.channel.ChannelHandler;
@@ -27,6 +24,9 @@ public class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 
 	@Autowired
 	SecondThreadsInfo secondThreadsInfo;
+
+	@Autowired
+	ThirdThreadsInfo thirdThreadsInfo;
 
 	@Autowired
 	ApplicationContext applicationContext;
@@ -91,30 +91,20 @@ public class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 				lc.setState(DBOperationType.ROLLBACK);
 				lc.signal();
 				break;
+			case ADD_SUCCESS_ASYNC:
+				LockAndCondition thirdlc = thirdThreadsInfo.get(map.get("groupId").toString());
+				thirdlc.setState(DBOperationType.ASYNCSUCCESS);
+				thirdlc.signal();
+				break;
+			case ADD_FAIL_ASYNC:
+				LockAndCondition thirdlc2 = thirdThreadsInfo.get(map.get("groupId").toString());
+				thirdlc2.setState(DBOperationType.ASYNCFAIL);
+				thirdlc2.signal();
+				break;
 			default:
 				break;
 		}
 		ctx.fireChannelRead(msg);
-//		if(action==ActionType.APPROVESUBMIT){
-//			JSONObject map = JSONObject.parseObject(message.getInfo().toString());
-//			LockAndCondition lc = threadsInfo.get(map.get("groupId").toString());
-//			DBOperationType state = lc.getState();
-//			//1.If notified to be commit
-//			if(state == DBOperationType.COMMIT){
-//				lc.signal();
-//			}
-//			//2.If notified to be rollback
-//			else if(state == DBOperationType.ROLLBACK){
-//				lc.signal();
-//			}
-//		}else if(action==ActionType.CANCEL){
-//			JSONObject map = JSONObject.parseObject(message.getInfo().toString());
-//			LockAndCondition lc = threadsInfo.get(map.get("groupId").toString());
-//			DBOperationType state = lc.getState();
-//			lc.setState(DBOperationType.ROLLBACK);
-//			lc.signal();
-//		}
-//		ctx.fireChannelRead(msg);
 	}
 
 	@Override
@@ -150,9 +140,27 @@ public class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 			case SUB_FAIL_STRONG:
 				sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString(),serviceInfo.getInfo().get("groupMemberSet").toString());
 				break;
+			case ADD_ASYNC:
+				sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString(),serviceInfo.getInfo().get("groupMemberId").toString(),serviceInfo.getInfo().get("url").toString(),serviceInfo.getInfo().get("obj"));
+				break;
 			default:
 				break;
 		}
+	}
+
+	public void sendMsg(String id,ActionType action,String groupId, String groupMemberId, String url,Object obj){
+		MessageProto.Message.Builder builder= MessageProto.Message.newBuilder();
+		JSONObject info = new JSONObject();
+		info.put("groupId",groupId);
+		info.put("groupMemberId",groupMemberId);
+		info.put("url",url);
+		info.put("obj",obj);
+		builder.setInfo(info.toJSONString());
+		builder.setId(id);
+		builder.setAction(action);
+		MessageProto.Message message = builder.build();
+		System.out.println("Send transaction message:\n" + message);
+		ctx.writeAndFlush(message);
 	}
 
 	public void sendMsg(String id,ActionType action,String groupId, String groupMemberId, Method method,Object[] args){
