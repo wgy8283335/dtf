@@ -11,4 +11,6 @@ import com.coconason.dtf.demo.po.Course;
 public interface ICourseService {
     DemoResult addCourseInfo(Course course) throws Exception;
 
+    DemoResult addCourseInfoAsync(Course course) throws Exception;
+
 }

@@ -2,6 +2,7 @@ package com.coconason.dtf.demo.service.impl;
 
 import com.coconason.dtf.client.core.annotation.DtfTransaction;
 import com.coconason.dtf.client.core.spring.client.RestClient;
+import com.coconason.dtf.client.core.spring.client.RestClientAsync;
 import com.coconason.dtf.demo.dao.CourseMapper;
 import com.coconason.dtf.demo.model.DemoResult;
 import com.coconason.dtf.demo.po.Course;
@@ -22,11 +23,13 @@ public class CourseServiceImpl implements ICourseService {
     private CourseMapper courseMapper;
     @Autowired
     private RestClient restClient;
+    @Autowired
+    private RestClientAsync restClientAsync;
 
     @Override
-    //@DtfTransaction(type="SYNC_STRONG")
+    @DtfTransaction(type="SYNC_STRONG")
     //@DtfTransaction
-    @DtfTransaction(type="ASYNC_FINAL")
+    //@DtfTransaction(type="ASYNC_FINAL")
     @Transactional
     public DemoResult addCourseInfo(Course course) throws Exception {
         courseMapper.insertSelective(course);
@@ -34,6 +37,18 @@ public class CourseServiceImpl implements ICourseService {
         teacher.setT(1);
         teacher.setTname("Lin");
         restClient.sendPost("http://localhost:8082/set_teacher_info",teacher);
+        return new DemoResult().ok();
+    }
+
+    @Override
+    @DtfTransaction(type="ASYNC_FINAL")
+    @Transactional
+    public DemoResult addCourseInfoAsync(Course course) throws Exception {
+        courseMapper.insertSelective(course);
+        Teacher teacher = new Teacher();
+        teacher.setT(2);
+        teacher.setTname("Yun");
+        restClientAsync.sendPost("http://localhost:8082/set_teacher_info_async",teacher);
         return new DemoResult().ok();
     }
 }

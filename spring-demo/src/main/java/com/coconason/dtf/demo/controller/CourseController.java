@@ -26,4 +26,11 @@ public class CourseController {
         System.out.println("CourseController finished---------------------");
         return demoResult;
     }
+
+    @RequestMapping(value="/add_course_info_async",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
+    public DemoResult addCourseInfoAsync(@RequestBody Course course) throws Exception{
+        DemoResult demoResult = courseService.addCourseInfoAsync(course);
+        System.out.println("CourseController finished---------------------");
+        return demoResult;
+    }
 }
