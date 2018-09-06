@@ -25,7 +25,8 @@ public class CourseServiceImpl implements ICourseService {
 
     @Override
     //@DtfTransaction(type="SYNC_STRONG")
-    @DtfTransaction
+    //@DtfTransaction
+    @DtfTransaction(type="ASYNC_FINAL")
     @Transactional
     public DemoResult addCourseInfo(Course course) throws Exception {
         courseMapper.insertSelective(course);

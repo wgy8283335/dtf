@@ -2,6 +2,7 @@ package com.coconason.dtf.demo2.protobufserver;
 
 import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.demo2.cache.MessageCache;
+import com.coconason.dtf.demo2.service.Consumer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -28,6 +29,7 @@ public class NettyServer
     public static void main(String[] args) throws Exception
     {
         new NettyServer().bind();
+        new Thread(new Consumer()).start();
 
     }
 

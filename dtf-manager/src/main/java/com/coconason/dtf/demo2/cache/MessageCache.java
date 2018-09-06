@@ -1,9 +1,13 @@
 package com.coconason.dtf.demo2.cache;
 
+import com.coconason.dtf.demo2.message.MessageInfo;
 import com.coconason.dtf.demo2.message.TransactionMessageGroup;
+import com.coconason.dtf.demo2.message.TransactionMessageGroupAsync;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import org.springframework.stereotype.Component;
+
+import java.util.Set;
 
 /**
  * @Author: Jason
@@ -35,6 +39,20 @@ public class MessageCache {
             transactionMessageGroup.getMemberList().add(group.getMemberList().get(0));
             transactionMessageGroup.getMemberSet().add(group.getMemberList().get(0).getGroupMemberId());
             cache.put(transactionMessageGroup.getGroupId(),transactionMessageGroup);
+        }
+    }
+
+    public synchronized void putDependsOnConditionAsync(TransactionMessageGroupAsync groupAsync){
+        Object element = cache.getIfPresent(groupAsync.getGroupId());
+        if(element==null){
+            cache.put(groupAsync.getGroupId(),groupAsync);
+        }else{
+            TransactionMessageGroupAsync transactionMessageGroupAsync = (TransactionMessageGroupAsync)element;
+            Set<MessageInfo> memberSet = groupAsync.getMemberSet();
+            for(MessageInfo messageInfo:memberSet){
+                transactionMessageGroupAsync.addMember(messageInfo.getMemberId(),messageInfo.getUrl(),messageInfo.getObj());
+            }
+            cache.put(transactionMessageGroupAsync.getGroupId(),transactionMessageGroupAsync);
         }
     }
 

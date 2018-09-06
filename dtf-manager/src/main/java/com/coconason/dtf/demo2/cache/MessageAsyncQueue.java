@@ -1,6 +1,6 @@
 package com.coconason.dtf.demo2.cache;
 
-import com.coconason.dtf.demo2.message.TransactionMessageGroupAsync;
+import com.coconason.dtf.demo2.message.MessageInfo;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -11,13 +11,13 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 @Component
 public class MessageAsyncQueue {
-    private ConcurrentLinkedQueue<TransactionMessageGroupAsync> queue= new ConcurrentLinkedQueue<TransactionMessageGroupAsync>();
+    private ConcurrentLinkedQueue<MessageInfo> queue= new ConcurrentLinkedQueue<MessageInfo>();
 
-    public boolean offer(TransactionMessageGroupAsync groupAsync){
-        return queue.offer(groupAsync);
+    public boolean offer(MessageInfo messageInfo){
+        return queue.offer(messageInfo);
     }
 
-    public TransactionMessageGroupAsync poll(){
+    public MessageInfo poll(){
         return queue.poll();
     }
 }

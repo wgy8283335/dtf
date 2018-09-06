@@ -13,6 +13,7 @@ import com.coconason.dtf.demo2.message.TransactionMessageGroupAsync;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
+import com.coconason.dtf.demo2.message.MessageInfo;
 
 import java.util.List;
 import java.util.Set;
@@ -97,8 +98,11 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
                 break;
             case ADD_ASYNC:
                 TransactionMessageGroupAsync transactionMessageGroupAsync = TransactionMessageGroupAsync.parse(message);
-                messageAsyncQueue.offer(transactionMessageGroupAsync);
-                //snedMsg(transactionMessageGroupAsync.getGroupId(),ActionType.ADD_SUCCESS_ASYNC,ctx);
+                messageCache.putDependsOnConditionAsync(transactionMessageGroupAsync);
+                for(MessageInfo messageInfo :transactionMessageGroupAsync.getMemberSet()){
+                    messageAsyncQueue.offer(messageInfo);
+                }
+                snedMsg(transactionMessageGroupAsync.getGroupId(),ActionType.ADD_SUCCESS_ASYNC,ctx);
                 break;
             default:
                 break;

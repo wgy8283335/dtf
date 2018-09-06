@@ -22,7 +22,8 @@ public class TeacherServiceImpl implements ITeacherService {
 
     @Override
     //@DtfTransaction(type="SYNC_STRONG")
-    @DtfTransaction
+    //@DtfTransaction
+    @DtfTransaction(type="ASYNC_FINAL")
     @Transactional
     public DemoResult addTeacherInfo(Teacher teacher) throws Exception {
         if(teacherMapper.insertSelective(teacher)>0){
