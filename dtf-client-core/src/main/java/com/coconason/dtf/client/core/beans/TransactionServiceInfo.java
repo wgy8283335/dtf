@@ -57,6 +57,14 @@ public class TransactionServiceInfo {
         info.put("args",args);
         this.action = action;
     }
+
+    public TransactionServiceInfo(String id, ActionType action, String groupId) {
+        this.id = id;
+        this.info = new JSONObject();
+        info.put("groupId",groupId);
+        this.action = action;
+    }
+
     public TransactionServiceInfo(String id, ActionType action, String groupId, Set<Long> groupMemberSet) {
         this.id = id;
         this.info = new JSONObject();

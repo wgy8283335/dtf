@@ -76,6 +76,9 @@ public class AspectHandler {
             if("SYNC_FINAL".equals(transactionType.getTransactionType())){
                 queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), ActionType.APPLYFORSUBMIT, TransactionGroupInfo.getCurrent().getGroupId(), TransactionGroupInfo.getCurrent().getGroupMembers()));
             }
+            if("ASYNC_FINAL".equals(transactionType.getTransactionType())&&TransactionGroupInfo.getCurrent().getMemberId()==1){
+                nettyService.sendMsg(new TransactionServiceInfo(UuidGenerator.generateUuid(), ActionType.ASYNC_COMMIT, TransactionGroupInfo.getCurrent().getGroupId()));
+            }
         }
         //1.When the service is follower,execute the program.And if the program has transactional operation in database,
         //should use database proxy to send transaction information to the transaction server.

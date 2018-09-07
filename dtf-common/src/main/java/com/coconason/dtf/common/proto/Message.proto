@@ -40,5 +40,7 @@ message Message{
         ADD_ASYNC = 19;
         ADD_SUCCESS_ASYNC = 20;
         ADD_FAIL_ASYNC = 21;
+        ASYNC_COMMIT = 22;
+        ASYNC_CANCEL = 23;
     }
 }

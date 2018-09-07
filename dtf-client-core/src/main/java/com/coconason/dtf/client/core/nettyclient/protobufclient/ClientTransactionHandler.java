@@ -143,9 +143,23 @@ public class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 			case ADD_ASYNC:
 				sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString(),serviceInfo.getInfo().get("groupMemberId").toString(),serviceInfo.getInfo().get("url").toString(),serviceInfo.getInfo().get("obj"));
 				break;
+			case ASYNC_COMMIT:
+				sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString());
 			default:
 				break;
 		}
+	}
+
+	public void sendMsg(String id,ActionType action,String groupId){
+		MessageProto.Message.Builder builder= MessageProto.Message.newBuilder();
+		JSONObject info = new JSONObject();
+		info.put("groupId",groupId);
+		builder.setInfo(info.toJSONString());
+		builder.setId(id);
+		builder.setAction(action);
+		MessageProto.Message message = builder.build();
+		System.out.println("Send transaction message:\n" + message);
+		ctx.writeAndFlush(message);
 	}
 
 	public void sendMsg(String id,ActionType action,String groupId, String groupMemberId, String url,Object obj){
