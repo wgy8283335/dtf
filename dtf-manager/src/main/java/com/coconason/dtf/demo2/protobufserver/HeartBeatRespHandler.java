@@ -14,7 +14,6 @@ public class HeartBeatRespHandler extends ChannelInboundHandlerAdapter
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception
     {
-
         MessageProto.Message message = (MessageProto.Message) msg;
         if (message.getLength() != 2 && message.getAction() == ActionType.HEARTBEAT_REQ)
         {

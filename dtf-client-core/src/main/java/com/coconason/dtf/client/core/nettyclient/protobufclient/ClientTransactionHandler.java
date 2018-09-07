@@ -51,6 +51,7 @@ public class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 		JSONObject map=null;
 		LockAndCondition lc=null;
 		DBOperationType state=null;
+
 		if(action == ActionType.APPROVESUBMIT||action == ActionType.APPROVESUBMIT_STRONG||action == ActionType.CANCEL){
 			map = JSONObject.parseObject(message.getInfo().toString());
 			lc = threadsInfo.get(map.get("groupId").toString());
@@ -78,11 +79,13 @@ public class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 				}
 				break;
 			case WHOLE_SUCCESS_STRONG:
+				map = JSONObject.parseObject(message.getInfo().toString());
 				LockAndCondition secondlc = secondThreadsInfo.get(map.get("groupId").toString());
 				secondlc.setState(DBOperationType.WHOLESUCCESS);
 				secondlc.signal();
 				break;
 			case WHOLE_FAIL_STRONG:
+				map = JSONObject.parseObject(message.getInfo().toString());
 				LockAndCondition secondlc2 = secondThreadsInfo.get(map.get("groupId").toString());
 				secondlc2.setState(DBOperationType.WHOLEFAIL);
 				secondlc2.signal();

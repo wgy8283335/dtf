@@ -1,14 +1,12 @@
 package com.coconason.dtf.client.core.nettyclient.messagequeue;
 
 import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
-import com.coconason.dtf.client.core.nettyclient.protobufclient.ClientTransactionHandler;
 import com.coconason.dtf.client.core.nettyclient.protobufclient.NettyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @Author: Jason
@@ -46,8 +44,8 @@ public class TransactionMessageSender {
 
     public void sendMessage() throws InterruptedException{
         while(true){
-            System.out.println("TransactionMessageSender.sendMessage()--service.sendMsg(queue.take())");
-            service.sendMsg(queue.take());
+            TransactionServiceInfo info = queue.take();
+            service.sendMsg(info);
         }
     }
 

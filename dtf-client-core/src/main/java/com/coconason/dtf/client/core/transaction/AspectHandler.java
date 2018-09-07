@@ -93,10 +93,10 @@ public class AspectHandler {
                 }
                 //2.
                 point.proceed();
-                //3.Send confirm message to netty server, in order to commit all transaction in the service
-                if("SYNC_FINAL".equals(transactionType.getTransactionType())){
-                    queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT, TransactionGroupInfo.getCurrent().getGroupId(), TransactionGroupInfo.getCurrent().getGroupMembers()));
-                }
+//                //3.Send confirm message to netty server, in order to commit all transaction in the service
+//                if("SYNC_FINAL".equals(transactionType.getTransactionType())){
+//                    queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT, TransactionGroupInfo.getCurrent().getGroupId(), TransactionGroupInfo.getCurrent().getGroupMembers()));
+//                }
             }
             //1.When the service is follower,execute the program.And if the program has transactional operation in database,
             //should use database proxy to send transaction information to the transaction server.
@@ -104,6 +104,7 @@ public class AspectHandler {
             //If the response is submit,submit transaction by database proxy.If the response is cancel,cancel transaction by database proxy.
             else{
                 //if the thread does not have transactionGroupInfo,set current transaction group information
+                TransactionGroupInfo temp = TransactionGroupInfo.getCurrent();
                 if(TransactionGroupInfo.getCurrent()==null){
                     transactionGroupInfo.addNewMemeber();
                     TransactionGroupInfo.setCurrent(transactionGroupInfo);
