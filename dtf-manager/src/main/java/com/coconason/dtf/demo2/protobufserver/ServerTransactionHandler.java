@@ -7,7 +7,7 @@ import com.coconason.dtf.common.utils.UuidGenerator;
 import com.coconason.dtf.demo2.cache.MessageAsyncQueue;
 import com.coconason.dtf.demo2.cache.MessageCache;
 import com.coconason.dtf.demo2.message.*;
-import com.coconason.dtf.demo2.utils.HttpClientUtil;
+import com.coconason.dtf.demo2.service.SendRunnable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
@@ -103,13 +103,8 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
             case ASYNC_COMMIT:
                 JSONObject map = JSONObject.parseObject(message.getInfo());
                 String groupId = map.get("groupId").toString();
-                TransactionMessageGroupAsync theMessageGroupAsync = (TransactionMessageGroupAsync)messageCache.get(groupId);
-                Set<MessageInfo> theMemberSet = theMessageGroupAsync.getMemberSet();
-                for(MessageInfo messageInfo :theMemberSet){
-                    String url= messageInfo.getUrl();
-                    String obj = messageInfo.getObj().toString();
-                    String result = HttpClientUtil.doPostJson(url,obj);
-                }
+                Thread thread = new Thread(new SendRunnable(messageCache,groupId));
+                thread.start();
                 break;
             default:
                 break;
