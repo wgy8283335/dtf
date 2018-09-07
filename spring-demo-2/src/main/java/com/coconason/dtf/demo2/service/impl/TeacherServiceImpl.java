@@ -21,9 +21,8 @@ public class TeacherServiceImpl implements ITeacherService {
     private TeacherMapper teacherMapper;
 
     @Override
-    @DtfTransaction(type="SYNC_STRONG")
-    //@DtfTransaction
-    //@DtfTransaction(type="ASYNC_FINAL")
+    //@DtfTransaction(type="SYNC_STRONG")
+    @DtfTransaction
     @Transactional
     public DemoResult addTeacherInfo(Teacher teacher) throws Exception {
         if(teacherMapper.insertSelective(teacher)>0){
