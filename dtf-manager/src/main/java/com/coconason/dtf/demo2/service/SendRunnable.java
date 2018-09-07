@@ -31,7 +31,7 @@ public class SendRunnable implements Runnable{
             for(MessageInfo messageInfo :theMemberSet){
                 String url= messageInfo.getUrl();
                 String obj = messageInfo.getObj().toString();
-                HttpClientUtil.doPostJson(url,obj);
+                HttpClientUtil.doPostJson(url,obj,groupId);
             }
         }catch (Exception e){
             e.printStackTrace();

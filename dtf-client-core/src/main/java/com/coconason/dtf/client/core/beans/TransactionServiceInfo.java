@@ -48,6 +48,15 @@ public class TransactionServiceInfo {
         this.action = action;
     }
 
+    public TransactionServiceInfo(String id, ActionType action, String groupId, String url, Object obj) {
+        this.id = id;
+        this.info = new JSONObject();
+        info.put("groupId",groupId);
+        info.put("url",url);
+        info.put("obj",obj);
+        this.action = action;
+    }
+
     public TransactionServiceInfo(String id, ActionType action, String groupId, Long groupMemberId, Method method, Object[] args) {
         this.id = id;
         this.info = new JSONObject();

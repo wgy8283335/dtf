@@ -9,7 +9,7 @@ import com.coconason.dtf.client.core.dbconnection.SecondThreadsInfo;
 import com.coconason.dtf.client.core.nettyclient.messagequeue.TransactionMessageQueue;
 import com.coconason.dtf.client.core.nettyclient.protobufclient.NettyService;
 import com.coconason.dtf.client.core.utils.GroupidGenerator;
-import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
+import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.common.utils.UuidGenerator;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
@@ -33,7 +33,7 @@ public class AspectHandler {
     @Autowired
     SecondThreadsInfo secondThreadsInfo;
 
-    public Object before(TransactionGroupInfo transactionGroupInfo,ProceedingJoinPoint point) throws Throwable {
+    public Object before(String info,ProceedingJoinPoint point) throws Throwable {
 
         MethodSignature signature = (MethodSignature) point.getSignature();
         Method method = signature.getMethod();
@@ -55,55 +55,74 @@ public class AspectHandler {
         //should use database proxy to send transaction information to the transaction server.
         //3.At the end send submit request to the server, and listen the response from server.
         //If success, submit transaction by database proxy.If fail,cancel transaction by database proxy.
-        if(transactionGroupInfo == null) {
-            //1.
-            String groupIdTemp = GroupidGenerator.getStringId(0, 0);
-            TransactionGroupInfo groupInfo = new TransactionGroupInfo(groupIdTemp, Member.ORIGNAL_ID);
-            TransactionGroupInfo.setCurrent(groupInfo);
-            switch (transactionType.getTransactionType()) {
-                case "SYNC_FINAL":
-                    TransactionServiceInfo.setCurrent(new TransactionServiceInfo(UuidGenerator.generateUuid(), ActionType.ADD, groupInfo.getGroupId(), groupInfo.getMemberId(), method, args));
-                    break;
-                case "SYNC_STRONG":
-                    TransactionServiceInfo.setCurrent(new TransactionServiceInfo(UuidGenerator.generateUuid(), ActionType.ADD_STRONG, groupInfo.getGroupId(), groupInfo.getMemberId(), method, args));
-                    break;
-                default:
-                    break;
+        if("ASYNC_FINAL".equals(transactionType.getTransactionType())){
+            if(info==null) {
+                //1.
+                String groupIdTemp = GroupidGenerator.getStringId(0, 0);
+                TransactionGroupInfo groupInfo = new TransactionGroupInfo(groupIdTemp, Member.ORIGNAL_ID);
+                TransactionGroupInfo.setCurrent(groupInfo);
+                //2.
+                point.proceed();
+                //3.Send confirm message to netty server, in order to commit all transaction in the service
+                nettyService.sendMsg(new TransactionServiceInfo(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.ASYNC_COMMIT, TransactionGroupInfo.getCurrent().getGroupId()));
+            }else{
+                //if the thread does not have transactionGroupInfo,set current transaction group information
+//                if(TransactionGroupInfo.getCurrent()==null){
+//                    transactionGroupInfo.addNewMemeber();
+//                    TransactionGroupInfo.setCurrent(transactionGroupInfo);
+//                }
+                //if the thread does not have transactionServiceInfo,set current transaction service information
+                point.proceed();
             }
-            //2.
-            point.proceed();
-            //3.Send confirm message to netty server, in order to commit all transaction in the service
-            if("SYNC_FINAL".equals(transactionType.getTransactionType())){
-                queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), ActionType.APPLYFORSUBMIT, TransactionGroupInfo.getCurrent().getGroupId(), TransactionGroupInfo.getCurrent().getGroupMembers()));
-            }
-            if("ASYNC_FINAL".equals(transactionType.getTransactionType())&&TransactionGroupInfo.getCurrent().getMemberId()==1){
-                nettyService.sendMsg(new TransactionServiceInfo(UuidGenerator.generateUuid(), ActionType.ASYNC_COMMIT, TransactionGroupInfo.getCurrent().getGroupId()));
-            }
-        }
-        //1.When the service is follower,execute the program.And if the program has transactional operation in database,
-        //should use database proxy to send transaction information to the transaction server.
-        //2.And listen the response from server.
-        //If the response is submit,submit transaction by database proxy.If the response is cancel,cancel transaction by database proxy.
-        else{
-            //if the thread does not have transactionGroupInfo,set current transaction group information
-            if(TransactionGroupInfo.getCurrent()==null){
-                transactionGroupInfo.addNewMemeber();
-                TransactionGroupInfo.setCurrent(transactionGroupInfo);
-            }
-            //if the thread does not have transactionServiceInfo,set current transaction service information
-            if(TransactionServiceInfo.getCurrent()==null){
-                switch (transactionType.getTransactionType()){
+        }else{
+            TransactionGroupInfo transactionGroupInfo = info == null ? null:TransactionGroupInfo.parse(info);
+            if(transactionGroupInfo == null) {
+                //1.
+                String groupIdTemp = GroupidGenerator.getStringId(0, 0);
+                TransactionGroupInfo groupInfo = new TransactionGroupInfo(groupIdTemp, Member.ORIGNAL_ID);
+                TransactionGroupInfo.setCurrent(groupInfo);
+                switch (transactionType.getTransactionType()) {
                     case "SYNC_FINAL":
-                        TransactionServiceInfo.setCurrent(new TransactionServiceInfo(UuidGenerator.generateUuid(), ActionType.ADD,transactionGroupInfo.getGroupId(),transactionGroupInfo.getMemberId(),method,args));
+                        TransactionServiceInfo.setCurrent(new TransactionServiceInfo(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.ADD, groupInfo.getGroupId(), groupInfo.getMemberId(), method, args));
                         break;
                     case "SYNC_STRONG":
-                        TransactionServiceInfo.setCurrent(new TransactionServiceInfo(UuidGenerator.generateUuid(), ActionType.ADD_STRONG,transactionGroupInfo.getGroupId(),transactionGroupInfo.getMemberId(),method,args));
+                        TransactionServiceInfo.setCurrent(new TransactionServiceInfo(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.ADD_STRONG, groupInfo.getGroupId(), groupInfo.getMemberId(), method, args));
                         break;
                     default:
                         break;
                 }
+                //2.
+                point.proceed();
+                //3.Send confirm message to netty server, in order to commit all transaction in the service
+                if("SYNC_FINAL".equals(transactionType.getTransactionType())){
+                    queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT, TransactionGroupInfo.getCurrent().getGroupId(), TransactionGroupInfo.getCurrent().getGroupMembers()));
+                }
             }
-            point.proceed();
+            //1.When the service is follower,execute the program.And if the program has transactional operation in database,
+            //should use database proxy to send transaction information to the transaction server.
+            //2.And listen the response from server.
+            //If the response is submit,submit transaction by database proxy.If the response is cancel,cancel transaction by database proxy.
+            else{
+                //if the thread does not have transactionGroupInfo,set current transaction group information
+                if(TransactionGroupInfo.getCurrent()==null){
+                    transactionGroupInfo.addNewMemeber();
+                    TransactionGroupInfo.setCurrent(transactionGroupInfo);
+                }
+                //if the thread does not have transactionServiceInfo,set current transaction service information
+                if(TransactionServiceInfo.getCurrent()==null){
+                    switch (transactionType.getTransactionType()){
+                        case "SYNC_FINAL":
+                            TransactionServiceInfo.setCurrent(new TransactionServiceInfo(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.ADD,transactionGroupInfo.getGroupId(),transactionGroupInfo.getMemberId(),method,args));
+                            break;
+                        case "SYNC_STRONG":
+                            TransactionServiceInfo.setCurrent(new TransactionServiceInfo(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.ADD_STRONG,transactionGroupInfo.getGroupId(),transactionGroupInfo.getMemberId(),method,args));
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                point.proceed();
+            }
         }
         return null;
     }

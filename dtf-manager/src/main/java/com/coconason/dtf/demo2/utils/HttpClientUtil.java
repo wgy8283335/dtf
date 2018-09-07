@@ -12,7 +12,7 @@ import java.io.IOException;
 
 public class HttpClientUtil {
 
-	public static String doPostJson(String url, String json) {
+	public static String doPostJson(String url, String json,String groupId) {
 		CloseableHttpClient httpClient = HttpClients.createDefault();
 		CloseableHttpResponse response = null;
 		String resultString = "";
@@ -22,6 +22,7 @@ public class HttpClientUtil {
 			// 创建请求内容
 			StringEntity entity = new StringEntity(json, ContentType.APPLICATION_JSON);
 			httpPost.setEntity(entity);
+			httpPost.setHeader("groupInfo",groupId);
 			// 执行http请求
 			response = httpClient.execute(httpPost);
 			resultString = EntityUtils.toString(response.getEntity(), "utf-8");

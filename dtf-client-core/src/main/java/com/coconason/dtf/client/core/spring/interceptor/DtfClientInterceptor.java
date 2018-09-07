@@ -1,6 +1,5 @@
 package com.coconason.dtf.client.core.spring.interceptor;
 
-import com.coconason.dtf.client.core.beans.TransactionGroupInfo;
 import com.coconason.dtf.client.core.transaction.AspectHandler;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -31,7 +30,6 @@ public class DtfClientInterceptor {
         RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
         HttpServletRequest request = requestAttributes == null ? null : ((ServletRequestAttributes) requestAttributes).getRequest();
         String info = request == null ? null : request.getHeader("groupInfo");
-        TransactionGroupInfo transactionGroupInfo = info == null ? null:TransactionGroupInfo.parse(info);
-        return aspectHandler.before(transactionGroupInfo,joinPoint);
+        return aspectHandler.before(info,joinPoint);
     }
 }

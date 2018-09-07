@@ -34,7 +34,7 @@ public class ConsumerRunnable implements Runnable{
                     if (messageInfo.isSubmitted() == false) {
                         String url= messageInfo.getUrl();
                         String obj = messageInfo.getObj().toString();
-                        String result = HttpClientUtil.doPostJson(url,obj);
+                        String result = HttpClientUtil.doPostJson(url,obj,"");
                     }
                 }catch (Exception e){
                     e.printStackTrace();
