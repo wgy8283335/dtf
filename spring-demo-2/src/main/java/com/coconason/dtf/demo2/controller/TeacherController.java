@@ -28,6 +28,7 @@ public class TeacherController {
 
     @RequestMapping(value="/set_teacher_info_async",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
     public DemoResult setTeacherInfoAsync(@RequestBody Teacher teacher) throws Exception{
+        System.out.println("TeacherController Async begin---------------------");
         DemoResult demoResult = teacherService.addTeacherInfoAsync(teacher);
         System.out.println("TeacherController Async finished---------------------");
         return demoResult;

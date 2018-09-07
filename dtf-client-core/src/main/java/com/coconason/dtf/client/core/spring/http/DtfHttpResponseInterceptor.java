@@ -18,7 +18,10 @@ public class DtfHttpResponseInterceptor extends HandlerInterceptorAdapter{
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable ModelAndView modelAndView) throws Exception {
         TransactionGroupInfo groupInfo = TransactionGroupInfo.getCurrent();
-        //set groupInfo in the head.
-        response.setHeader("groupInfo",groupInfo.toString());
+        if(groupInfo == null){
+        }else{
+            //set groupInfo in the head.
+            response.setHeader("groupInfo",groupInfo.toString());
+        }
     }
 }

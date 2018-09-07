@@ -1,5 +1,6 @@
 package com.coconason.dtf.demo2.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.coconason.dtf.demo2.cache.MessageAsyncQueue;
 import com.coconason.dtf.demo2.message.MessageInfo;
 import org.springframework.web.client.RestTemplate;
@@ -24,20 +25,26 @@ public class Consumer implements Runnable{
                 messageInfo = messageAsyncQueue.poll();
             }
             System.out.println("Consumer Start----------------------------------------");
-            if(messageInfo!=null){
+            if(messageInfo==null){
                 try{
-                    if (messageInfo.isSubmitted() == false) {
-                        RestTemplate restTemplate = new RestTemplate();
-                        String result = restTemplate.postForObject(messageInfo.getUrl(), messageInfo.getObj(), String.class);
-                    }
+                    Thread.sleep(10000);
                 }catch (Exception e){
-                    messageAsyncQueue.offer(messageInfo);
+                    e.printStackTrace();
                 }
             }else{
                 try{
-                    Thread.sleep(30000);
+                    if (messageInfo.isSubmitted() == false) {
+                        RestTemplate restTemplate = new RestTemplate();
+                        String url= messageInfo.getUrl();
+                        JSONObject obj = (JSONObject)messageInfo.getObj();
+                        //restTemplate.postForObject(url, obj, String.class);
+                        restTemplate.postForLocation(url, obj);
+                    }
                 }catch (Exception e){
                     e.printStackTrace();
+                    //messageAsyncQueue.offer(messageInfo);
+                }finally {
+                    messageInfo = null;
                 }
             }
         }

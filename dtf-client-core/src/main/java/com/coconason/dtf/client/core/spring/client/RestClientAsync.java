@@ -50,7 +50,8 @@ public class RestClientAsync {
             TransactionServiceInfo transactionServiceInfo = new TransactionServiceInfo(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.ADD_ASYNC, groupInfo.getGroupId(), groupInfo.getMemberId(), url, object);
             nettyService.sendMsg(transactionServiceInfo);
             lc.await();
-            while(lc.getState()==DBOperationType.ASYNCFAIL){
+            LockAndCondition lc2 = thirdThreadsInfo.get(groupInfo.getGroupId());
+            while(lc2.getState()==DBOperationType.ASYNCFAIL){
                 nettyService.sendMsg(transactionServiceInfo);
                 try{
                     Thread.sleep(30000);

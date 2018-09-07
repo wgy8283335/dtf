@@ -51,7 +51,7 @@ public class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 		JSONObject map=null;
 		LockAndCondition lc=null;
 		DBOperationType state=null;
-		if(action != ActionType.HEARTBEAT_REQ&&action != ActionType.HEARTBEAT_RESP&&action != ActionType.LOGIN_REQ&&action != ActionType.LOGIN_RESP){
+		if(action == ActionType.APPROVESUBMIT||action == ActionType.APPROVESUBMIT_STRONG||action == ActionType.CANCEL){
 			map = JSONObject.parseObject(message.getInfo().toString());
 			lc = threadsInfo.get(map.get("groupId").toString());
 			state = lc.getState();
@@ -92,12 +92,12 @@ public class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 				lc.signal();
 				break;
 			case ADD_SUCCESS_ASYNC:
-				LockAndCondition thirdlc = thirdThreadsInfo.get(map.get("groupId").toString());
+				LockAndCondition thirdlc = thirdThreadsInfo.get(JSONObject.parseObject(message.getInfo().toString()).get("groupId").toString());
 				thirdlc.setState(DBOperationType.ASYNCSUCCESS);
 				thirdlc.signal();
 				break;
 			case ADD_FAIL_ASYNC:
-				LockAndCondition thirdlc2 = thirdThreadsInfo.get(map.get("groupId").toString());
+				LockAndCondition thirdlc2 = thirdThreadsInfo.get(JSONObject.parseObject(message.getInfo().toString()).get("groupId").toString());
 				thirdlc2.setState(DBOperationType.ASYNCFAIL);
 				thirdlc2.signal();
 				break;

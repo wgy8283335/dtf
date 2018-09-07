@@ -91,29 +91,33 @@ public class DTFConnection implements Connection {
             return;
         }
         transactionServiceInfo = TransactionServiceInfo.getCurrent();
-        Thread thread = new Thread(new SubmitRunnable(TransactionGroupInfo.getCurrent()));
-        thread.start();
-
-        try {
-            TransactionGroupInfo transactionGroupInfo = TransactionGroupInfo.getCurrent();
-            String groupId = transactionGroupInfo.getGroupId();
-            //Set groupMembers = transactionGroupInfo.getGroupMembers();
-            Long memberId = transactionGroupInfo.getMemberId();
-            //if memberId is 1,means the thread is the creator thread.
-            if(memberId==1 && TransactionType.getCurrent().getTransactionType()=="SYNC_STRONG"){
-                LockAndCondition secondlc = new LockAndCondition(new ReentrantLock(), DBOperationType.DEFAULT);
-                secondThreadsInfo.put(groupId, secondlc);
-                secondlc.await();
-                LockAndCondition secondlc2 = secondThreadsInfo.get(groupId);
-                if(secondlc2.getState() == DBOperationType.WHOLEFAIL){
-                    throw new Exception("Distributed transaction failed");
+        if("SYNC_FINAL".equals(TransactionType.getCurrent().getTransactionType())||"SYNC_STRONG".equals(TransactionType.getCurrent().getTransactionType())) {
+            Thread thread = new Thread(new SubmitRunnable(TransactionGroupInfo.getCurrent()));
+            thread.start();
+            try {
+                TransactionGroupInfo transactionGroupInfo = TransactionGroupInfo.getCurrent();
+                String groupId = transactionGroupInfo.getGroupId();
+                //Set groupMembers = transactionGroupInfo.getGroupMembers();
+                Long memberId = transactionGroupInfo.getMemberId();
+                //if memberId is 1,means the thread is the creator thread.
+                if (memberId == 1 && "SYNC_STRONG".equals(TransactionType.getCurrent().getTransactionType())) {
+                    LockAndCondition secondlc = new LockAndCondition(new ReentrantLock(), DBOperationType.DEFAULT);
+                    secondThreadsInfo.put(groupId, secondlc);
+                    secondlc.await();
+                    LockAndCondition secondlc2 = secondThreadsInfo.get(groupId);
+                    if (secondlc2.getState() == DBOperationType.WHOLEFAIL) {
+                        throw new Exception("Distributed transaction failed");
+                    }
+                    System.out.println("DTFConenction finished---------------------------------");
+                    //4. close the connection.
+                    connection.close();
                 }
-                System.out.println("DTFConenction finished---------------------------------");
-                //4. close the connection.
-                connection.close();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        }else{
+            connection.commit();
+            connection.close();
         }
     }
 
