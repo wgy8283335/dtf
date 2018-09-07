@@ -4,7 +4,6 @@ import com.coconason.dtf.demo.model.DemoResult;
 import com.coconason.dtf.demo.po.Course;
 import com.coconason.dtf.demo.service.ICourseService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,17 +19,15 @@ public class CourseController {
     @Autowired
     ICourseService courseService;
 
-    @RequestMapping(value="/add_course_info",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value="/add_course_info",method = RequestMethod.POST)
     public DemoResult addCourseInfo(@RequestBody Course course) throws Exception{
         DemoResult demoResult = courseService.addCourseInfo(course);
-        System.out.println("CourseController finished---------------------");
         return demoResult;
     }
 
-    @RequestMapping(value="/add_course_info_async",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value="/add_course_info_async",method = RequestMethod.POST)
     public DemoResult addCourseInfoAsync(@RequestBody Course course) throws Exception{
         DemoResult demoResult = courseService.addCourseInfoAsync(course);
-        System.out.println("CourseController finished---------------------");
         return demoResult;
     }
 }
