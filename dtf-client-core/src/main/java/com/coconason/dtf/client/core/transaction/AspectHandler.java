@@ -97,6 +97,13 @@ public class AspectHandler {
 //                if("SYNC_FINAL".equals(transactionType.getTransactionType())){
 //                    queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT, TransactionGroupInfo.getCurrent().getGroupId(), TransactionGroupInfo.getCurrent().getGroupMembers()));
 //                }
+                if(TransactionGroupInfo.getCurrent().getMemberId() == 1){
+                    if(MessageProto.Message.ActionType.ADD==TransactionServiceInfo.getCurrent().getAction()){
+                        queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT,TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
+                    }else if(MessageProto.Message.ActionType.ADD_STRONG==TransactionServiceInfo.getCurrent().getAction()){
+                        queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT_STRONG,TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
+                    }
+                }
             }
             //1.When the service is follower,execute the program.And if the program has transactional operation in database,
             //should use database proxy to send transaction information to the transaction server.

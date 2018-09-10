@@ -139,14 +139,13 @@ public class DTFConnection implements Connection {
                 System.out.println("Thread.currentThread().getName()--------------"+Thread.currentThread().getName());
                 queue.put(transactionServiceInfo);
                 System.out.println("transactionServiceInfo action is -------------"+transactionServiceInfo.getAction());
-                if(memberId == 1){
-                    if(MessageProto.Message.ActionType.ADD==transactionServiceInfo.getAction()){
-                        queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT,groupId,groupMembers));
-                    }else if(MessageProto.Message.ActionType.ADD_STRONG==transactionServiceInfo.getAction()){
-                        queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT_STRONG,groupId,groupMembers));
-                    }
-
-                }
+//                if(memberId == 1){
+//                    if(MessageProto.Message.ActionType.ADD==transactionServiceInfo.getAction()){
+//                        queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT,groupId,groupMembers));
+//                    }else if(MessageProto.Message.ActionType.ADD_STRONG==transactionServiceInfo.getAction()){
+//                        queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT_STRONG,groupId,groupMembers));
+//                    }
+//                }
                 lc.await();
                 //3. After signaling, if success commit or rollback, otherwise skip the committing.
                 System.out.println("Thread.currentThread().getName()--------------"+Thread.currentThread().getName());
@@ -177,7 +176,7 @@ public class DTFConnection implements Connection {
                 }
             } finally {
                 try {
-                    if(memberId!=1&&transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG) {
+                    if(memberId!=1&&(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG)||transactionServiceInfo.getAction()== MessageProto.Message.ActionType.CANCEL) {
                         System.out.println("DTFConenction finished---------------------------------");
                         connection.close();
                     }

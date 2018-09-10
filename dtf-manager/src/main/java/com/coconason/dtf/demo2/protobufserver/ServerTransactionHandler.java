@@ -150,21 +150,23 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
                 messageCache.put(elementFromCache.getGroupId(),elementFromCache);
                 List<TransactionMessageForAdding> memberList = elementFromCache.getMemberList();
                 //check whether the member from message has the same element as the member from cache.
-                setFromMessage.removeAll(setFromCache);
-                if(setFromMessage.isEmpty()){
-                    for (TransactionMessageForAdding messageForAdding: memberList) {
-                        //success
-                        snedMsg(elementFromCache.getGroupId()+messageForAdding.getGroupMemberId(),actionType,messageForAdding.getCtx());
+                if(!setFromMessage.isEmpty()){
+                    setFromMessage.removeAll(setFromCache);
+                    if(setFromMessage.isEmpty()){
+                        for (TransactionMessageForAdding messageForAdding: memberList) {
+                            //success
+                            snedMsg(elementFromCache.getGroupId()+messageForAdding.getGroupMemberId(),actionType,messageForAdding.getCtx());
+                        }
+                    }else{
+                        for (TransactionMessageForAdding messageForAdding: memberList) {
+                            //fail
+                            snedMsg(elementFromCache.getGroupId(), ActionType.CANCEL,messageForAdding.getCtx());
+                        }
                     }
-                }else{
-                    for (TransactionMessageForAdding messageForAdding: memberList) {
-                        //fail
-                        snedMsg(elementFromCache.getGroupId(), ActionType.CANCEL,messageForAdding.getCtx());
+                    if(actionType == ActionType.APPROVESUBMIT){
+                        //Send response to other members of the group.Clear all messages of the transaction in the cache.
+                        messageCache.clear(tmfs.getGroupId());
                     }
-                }
-                if(actionType == ActionType.APPROVESUBMIT){
-                    //Send response to other members of the group.Clear all messages of the transaction in the cache.
-                    messageCache.clear(tmfs.getGroupId());
                 }
             }catch (Exception e){
                 e.printStackTrace();
