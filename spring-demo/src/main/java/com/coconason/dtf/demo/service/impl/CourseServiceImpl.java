@@ -36,6 +36,10 @@ public class CourseServiceImpl implements ICourseService {
         teacher.setT(1);
         teacher.setTname("Lin");
         restClient.sendPost("http://localhost:8082/set_teacher_info",teacher);
+        Teacher teacher1 = new Teacher();
+        teacher1.setT(2);
+        teacher1.setTname("Yun");
+        restClient.sendPost("http://localhost:8082/set_teacher_info",teacher1);
         return new DemoResult().ok();
     }
 

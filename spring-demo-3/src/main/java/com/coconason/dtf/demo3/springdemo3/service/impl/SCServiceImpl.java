@@ -6,7 +6,6 @@ import com.coconason.dtf.client.core.spring.client.RestClientAsync;
 import com.coconason.dtf.demo3.springdemo3.dao.ScMapper;
 import com.coconason.dtf.demo3.springdemo3.model.DemoResult;
 import com.coconason.dtf.demo3.springdemo3.po.Sc;
-import com.coconason.dtf.demo3.springdemo3.po.Teacher;
 import com.coconason.dtf.demo3.springdemo3.service.ISCService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,10 +31,6 @@ public class SCServiceImpl implements ISCService {
     @Transactional
     public DemoResult addSCInfo(Sc sc) throws Exception {
         scMapper.insertSelective(sc);
-        Teacher teacher = new Teacher();
-        teacher.setT(1);
-        teacher.setTname("Lin");
-        restClient.sendPost("http://localhost:8082/set_teacher_info",teacher);
         return new DemoResult().ok();
     }
 
@@ -44,10 +39,6 @@ public class SCServiceImpl implements ISCService {
     @Transactional
     public DemoResult addSCInfoAsync(Sc sc) throws Exception {
         scMapper.insertSelective(sc);
-        Teacher teacher = new Teacher();
-        teacher.setT(2);
-        teacher.setTname("Yun");
-        restClientAsync.sendPost("http://localhost:8082/set_teacher_info_async",teacher);
         return new DemoResult().ok();
     }
 }
