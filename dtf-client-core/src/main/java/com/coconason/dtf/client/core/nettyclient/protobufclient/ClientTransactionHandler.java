@@ -54,6 +54,7 @@ public class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 
 		if(action == ActionType.APPROVESUBMIT||action == ActionType.APPROVESUBMIT_STRONG||action == ActionType.CANCEL){
 			map = JSONObject.parseObject(message.getInfo().toString());
+			//groupId=gourpId+memberId
 			lc = threadsInfo.get(map.get("groupId").toString());
 			state = lc.getState();
 		}

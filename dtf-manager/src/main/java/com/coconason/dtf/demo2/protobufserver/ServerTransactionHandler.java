@@ -154,7 +154,7 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
                 if(setFromMessage.isEmpty()){
                     for (TransactionMessageForAdding messageForAdding: memberList) {
                         //success
-                        snedMsg(elementFromCache.getGroupId(),actionType,messageForAdding.getCtx());
+                        snedMsg(elementFromCache.getGroupId()+messageForAdding.getGroupMemberId(),actionType,messageForAdding.getCtx());
                     }
                 }else{
                     for (TransactionMessageForAdding messageForAdding: memberList) {

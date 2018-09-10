@@ -135,7 +135,8 @@ public class DTFConnection implements Connection {
                 //2. Use lock condition to wait for signaling.
                 LockAndCondition lc = new LockAndCondition(new ReentrantLock(),state);
                 JSONObject map = transactionServiceInfo.getInfo();
-                threadsInfo.put(map.get("groupId").toString(),lc);
+                threadsInfo.put(map.get("groupId").toString()+memberId,lc);
+                System.out.println("Thread.currentThread().getName()--------------"+Thread.currentThread().getName());
                 queue.put(transactionServiceInfo);
                 System.out.println("transactionServiceInfo action is -------------"+transactionServiceInfo.getAction());
                 if(memberId == 1){

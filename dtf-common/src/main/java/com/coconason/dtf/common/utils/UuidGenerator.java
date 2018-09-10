@@ -12,4 +12,9 @@ public class UuidGenerator {
         String uuid = UUID.randomUUID().toString().replace("-", "");
         return uuid;
     }
+
+    public static long generateLongId(){
+        return System.currentTimeMillis();
+    }
+
 }

@@ -105,12 +105,12 @@ public class AspectHandler {
             else{
                 //if the thread does not have transactionGroupInfo,set current transaction group information
                 TransactionGroupInfo temp = TransactionGroupInfo.getCurrent();
-                if(TransactionGroupInfo.getCurrent()==null){
+                if(temp==null){
                     transactionGroupInfo.addNewMemeber();
                     TransactionGroupInfo.setCurrent(transactionGroupInfo);
                 }
                 //if the thread does not have transactionServiceInfo,set current transaction service information
-                if(TransactionServiceInfo.getCurrent()==null){
+                if(temp==null){
                     switch (transactionType.getTransactionType()){
                         case "SYNC_FINAL":
                             TransactionServiceInfo.setCurrent(new TransactionServiceInfo(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.ADD,transactionGroupInfo.getGroupId(),transactionGroupInfo.getMemberId(),method,args));

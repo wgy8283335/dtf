@@ -1,5 +1,7 @@
 package com.coconason.dtf.client.core.beans;
 
+import com.coconason.dtf.common.utils.UuidGenerator;
+
 import java.util.Set;
 import java.util.HashSet;
 
@@ -46,7 +48,8 @@ public class TransactionGroupInfo {
     }
 
     public void addNewMemeber(){
-        this.memberId++;
+        //this.memberId++;
+        this.memberId = UuidGenerator.generateLongId();
         groupMembers.add(this.memberId);
     }
 
