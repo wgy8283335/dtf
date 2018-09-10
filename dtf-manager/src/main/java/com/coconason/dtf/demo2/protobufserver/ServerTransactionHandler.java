@@ -65,6 +65,8 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
             case APPLYFORSUBMIT_STRONG:
                 new Thread(new ApplyForRunnable(message,ActionType.APPROVESUBMIT_STRONG,ctx)).start();
                 break;
+            case CANCEL:
+                new Thread(new ApplyForRunnable(message,ActionType.CANCEL,ctx)).start();
             case SUB_SUCCESS_STRONG:
                 String memberId = JSONObject.parseObject(message.getInfo()).get("memberId").toString();
                 TransactionMessageGroup groupTemp = (TransactionMessageGroup)messageCache.get(JSONObject.parseObject(message.getInfo()).get("groupId"));
