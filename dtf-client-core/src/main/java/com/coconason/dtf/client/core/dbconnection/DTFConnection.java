@@ -139,13 +139,6 @@ public class DTFConnection implements Connection {
                 System.out.println("Thread.currentThread().getName()--------------"+Thread.currentThread().getName());
                 queue.put(transactionServiceInfo);
                 System.out.println("transactionServiceInfo action is -------------"+transactionServiceInfo.getAction());
-//                if(memberId == 1){
-//                    if(MessageProto.Message.ActionType.ADD==transactionServiceInfo.getAction()){
-//                        queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT,groupId,groupMembers));
-//                    }else if(MessageProto.Message.ActionType.ADD_STRONG==transactionServiceInfo.getAction()){
-//                        queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT_STRONG,groupId,groupMembers));
-//                    }
-//                }
                 lc.await();
                 //3. After signaling, if success commit or rollback, otherwise skip the committing.
                 System.out.println("Thread.currentThread().getName()--------------"+Thread.currentThread().getName());
@@ -168,7 +161,6 @@ public class DTFConnection implements Connection {
                 try {
                     connection.rollback();
                     if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG){
-                        //queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL_STRONG, TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
                         queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL_STRONG, groupId,groupMembers));
                     }
                     e.printStackTrace();

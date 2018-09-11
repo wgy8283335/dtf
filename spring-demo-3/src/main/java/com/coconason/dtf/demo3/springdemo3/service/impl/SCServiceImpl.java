@@ -26,11 +26,11 @@ public class SCServiceImpl implements ISCService {
     private RestClientAsync restClientAsync;
 
     @Override
-    //w@DtfTransaction(type="SYNC_STRONG")
-    @DtfTransaction
+    @DtfTransaction(type="SYNC_STRONG")
+    //@DtfTransaction
     @Transactional
     public DemoResult addSCInfo(Sc sc) throws Exception {
-        //int i = 6/0;
+        int i = 6/0;
         scMapper.insertSelective(sc);
         return new DemoResult().ok();
     }
