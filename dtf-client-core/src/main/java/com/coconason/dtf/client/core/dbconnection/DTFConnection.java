@@ -150,6 +150,7 @@ public class DTFConnection implements Connection {
                 //3. After signaling, if success commit or rollback, otherwise skip the committing.
                 System.out.println("Thread.currentThread().getName()--------------"+Thread.currentThread().getName());
                 System.out.println("继续执行--------------");
+                state = threadsInfo.get(map.get("groupId").toString()+memberId).getState();
                 if(state == DBOperationType.COMMIT){
                     System.out.println("提交");
                     connection.commit();

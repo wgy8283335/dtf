@@ -162,7 +162,7 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
                     }else{
                         for (TransactionMessageForAdding messageForAdding: memberList) {
                             //fail
-                            snedMsg(elementFromCache.getGroupId(), ActionType.CANCEL,messageForAdding.getCtx());
+                            snedMsg(elementFromCache.getGroupId()+messageForAdding.getGroupMemberId(), ActionType.CANCEL,messageForAdding.getCtx());
                         }
                     }
                     if(actionType == ActionType.APPROVESUBMIT){

@@ -30,8 +30,8 @@ public class SCServiceImpl implements ISCService {
     @DtfTransaction
     @Transactional
     public DemoResult addSCInfo(Sc sc) throws Exception {
+        //int i = 6/0;
         scMapper.insertSelective(sc);
-        int i = 6/0;
         return new DemoResult().ok();
     }
 
