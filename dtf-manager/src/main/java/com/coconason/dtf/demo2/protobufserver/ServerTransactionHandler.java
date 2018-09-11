@@ -97,9 +97,6 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
             case ADD_ASYNC:
                 TransactionMessageGroupAsync transactionMessageGroupAsync = TransactionMessageGroupAsync.parse(message);
                 messageCache.putDependsOnConditionAsync(transactionMessageGroupAsync);
-//                for(MessageInfo messageInfo :transactionMessageGroupAsync.getMemberSet()){
-//                    messageAsyncQueue.offer(messageInfo);
-//                }
                 snedMsg(transactionMessageGroupAsync.getGroupId(),ActionType.ADD_SUCCESS_ASYNC,ctx);
                 break;
             case ASYNC_COMMIT:

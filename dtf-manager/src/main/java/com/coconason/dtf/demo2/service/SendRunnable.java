@@ -31,7 +31,12 @@ public class SendRunnable implements Runnable{
             for(MessageInfo messageInfo :theMemberSet){
                 String url= messageInfo.getUrl();
                 String obj = messageInfo.getObj().toString();
-                HttpClientUtil.doPostJson(url,obj,groupId);
+                try{
+                    HttpClientUtil.doPostJson(url,obj,groupId);
+                }catch (Exception e){
+                    //if fail put the info of the service into a cache,and there will be another thread to check and execute.
+                    e.printStackTrace();
+                }
             }
         }catch (Exception e){
             e.printStackTrace();
