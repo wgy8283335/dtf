@@ -35,10 +35,12 @@ public class ConsumerRunnable implements Runnable{
                         String url= messageInfo.getUrl();
                         String obj = messageInfo.getObj().toString();
                         String result = HttpClientUtil.doPostJson(url,obj,"");
+                        messageInfo.setSubmitted(true);
                     }
                 }catch (Exception e){
                     e.printStackTrace();
-                    //messageAsyncQueue.offer(messageInfo);
+                    messageInfo.setSubmitted(false);
+                    messageAsyncQueue.offer(messageInfo);
                 }finally {
                     messageInfo = null;
                 }

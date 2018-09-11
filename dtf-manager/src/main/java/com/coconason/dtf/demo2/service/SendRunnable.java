@@ -1,5 +1,6 @@
 package com.coconason.dtf.demo2.service;
 
+import com.coconason.dtf.demo2.cache.MessageAsyncQueue;
 import com.coconason.dtf.demo2.cache.MessageCache;
 import com.coconason.dtf.demo2.message.MessageInfo;
 import com.coconason.dtf.demo2.message.TransactionMessageGroupAsync;
@@ -17,9 +18,12 @@ public class SendRunnable implements Runnable{
 
     private String groupId;
 
-    public SendRunnable(MessageCache messageCache,String groupId) {
+    private MessageAsyncQueue messageAsyncQueue;
+
+    public SendRunnable(MessageCache messageCache,String groupId,MessageAsyncQueue messageAsyncQueue) {
         this.messageCache = messageCache;
         this.groupId = groupId;
+        this.messageAsyncQueue = messageAsyncQueue;
     }
 
     @Override
@@ -33,8 +37,10 @@ public class SendRunnable implements Runnable{
                 String obj = messageInfo.getObj().toString();
                 try{
                     HttpClientUtil.doPostJson(url,obj,groupId);
+                    messageInfo.setSubmitted(true);
                 }catch (Exception e){
                     //if fail put the info of the service into a cache,and there will be another thread to check and execute.
+                    messageAsyncQueue.offer(messageInfo);
                     e.printStackTrace();
                 }
             }

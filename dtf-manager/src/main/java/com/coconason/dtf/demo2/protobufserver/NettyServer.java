@@ -3,6 +3,7 @@ package com.coconason.dtf.demo2.protobufserver;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.demo2.cache.MessageAsyncQueue;
 import com.coconason.dtf.demo2.cache.MessageCache;
+import com.coconason.dtf.demo2.service.ConsumerRunnable;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -29,8 +30,8 @@ public class NettyServer
     public static void main(String[] args) throws Exception
     {
         MessageAsyncQueue messageAsyncQueue = new MessageAsyncQueue();
-//        Thread thread = new Thread(new ConsumerRunnable(messageAsyncQueue));
-//        thread.start();
+        Thread thread = new Thread(new ConsumerRunnable(messageAsyncQueue));
+        thread.start();
         new NettyServer().bind(messageAsyncQueue);
     }
 

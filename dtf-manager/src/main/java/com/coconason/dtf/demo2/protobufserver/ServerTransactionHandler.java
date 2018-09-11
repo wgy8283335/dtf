@@ -102,7 +102,7 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
             case ASYNC_COMMIT:
                 JSONObject map = JSONObject.parseObject(message.getInfo());
                 String groupId = map.get("groupId").toString();
-                Thread thread = new Thread(new SendRunnable(messageCache,groupId));
+                Thread thread = new Thread(new SendRunnable(messageCache,groupId,messageAsyncQueue));
                 thread.start();
                 break;
             default:
