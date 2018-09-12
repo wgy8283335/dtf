@@ -36,4 +36,25 @@ public class MessageInfo{
     public void setSubmitted(boolean submitted) {
         isSubmitted = submitted;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {return true;}
+        if (o == null || getClass() != o.getClass()) {return false;}
+        MessageInfo that = (MessageInfo) o;
+        if (isSubmitted() != that.isSubmitted()) {return false;}
+        if (getMemberId() != null ? !getMemberId().equals(that.getMemberId()) : that.getMemberId() != null)
+        {return false;}
+        if (getUrl() != null ? !getUrl().equals(that.getUrl()) : that.getUrl() != null) {return false;}
+        return getObj() != null ? getObj().equals(that.getObj()) : that.getObj() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getMemberId() != null ? getMemberId().hashCode() : 0;
+        result = 31 * result + (isSubmitted() ? 1 : 0);
+        result = 31 * result + (getUrl() != null ? getUrl().hashCode() : 0);
+        result = 31 * result + (getObj() != null ? getObj().hashCode() : 0);
+        return result;
+    }
 }

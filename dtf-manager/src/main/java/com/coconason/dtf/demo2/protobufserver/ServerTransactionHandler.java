@@ -99,12 +99,10 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
                 try{
                     transactionMessageGroupAsync = TransactionMessageGroupAsync.parse(message);
                     messageCache.putDependsOnConditionAsync(transactionMessageGroupAsync);
-                    int i = 6/0;
                     snedMsg(transactionMessageGroupAsync.getGroupId(),ActionType.ADD_SUCCESS_ASYNC,ctx);
                 }catch (Exception e) {
                     snedMsg(transactionMessageGroupAsync.getGroupId(),ActionType.ADD_FAIL_ASYNC,ctx);
                 }
-
                 break;
             case ASYNC_COMMIT:
                 JSONObject map = JSONObject.parseObject(message.getInfo());

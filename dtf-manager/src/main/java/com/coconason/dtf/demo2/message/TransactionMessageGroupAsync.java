@@ -38,4 +38,31 @@ public class TransactionMessageGroupAsync {
         return transactionMessageGroupAsync;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        boolean result = true;
+        if(o==null){
+            return false;
+        }
+        TransactionMessageGroupAsync temp =  (TransactionMessageGroupAsync) o;
+        if(temp.getGroupId()==null||this.getGroupId()==null||(!this.groupId.equals(temp.getGroupId()))){
+            return false;
+        }
+        if(memberSet != null){
+            memberSet.removeAll(temp.getMemberSet());
+            if(!memberSet.isEmpty()){
+                return false;
+            }
+        }else if(memberSet==null||temp.getMemberSet()==null){
+            return false;
+        }
+        return result;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getGroupId() != null ? getGroupId().hashCode() : 0;
+        result = 31 * result + (getMemberSet() != null ? getMemberSet().hashCode() : 0);
+        return result;
+    }
 }

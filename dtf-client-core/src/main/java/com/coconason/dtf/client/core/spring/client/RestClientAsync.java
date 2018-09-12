@@ -52,8 +52,13 @@ public class RestClientAsync {
             lc.await();
             LockAndCondition lc2 = thirdThreadsInfo.get(groupInfo.getGroupId());
             while(lc2.getState()==DBOperationType.ASYNCFAIL){
-                nettyService.sendMsg(transactionServiceInfo);
-                lc2.await();
+                try{
+                    Thread.sleep(5000);
+                    nettyService.sendMsg(transactionServiceInfo);
+                    lc2.await();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         }
     }

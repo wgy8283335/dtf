@@ -41,11 +41,14 @@ public class MessageCache {
     }
 
     public synchronized void putDependsOnConditionAsync(TransactionMessageGroupAsync groupAsync){
-        Object element = cache.getIfPresent(groupAsync.getGroupId());
-        if(element==null){
+        Object o = cache.getIfPresent(groupAsync.getGroupId());
+        if(o==null){
             cache.put(groupAsync.getGroupId(),groupAsync);
         }else{
-            TransactionMessageGroupAsync transactionMessageGroupAsync = (TransactionMessageGroupAsync)element;
+            TransactionMessageGroupAsync transactionMessageGroupAsync = (TransactionMessageGroupAsync)o;
+            if(transactionMessageGroupAsync.equals(groupAsync)){
+                return;
+            }
             Set<MessageInfo> memberSet = groupAsync.getMemberSet();
             for(MessageInfo messageInfo:memberSet){
                 transactionMessageGroupAsync.addMember(messageInfo.getMemberId(),messageInfo.getUrl(),messageInfo.getObj());
