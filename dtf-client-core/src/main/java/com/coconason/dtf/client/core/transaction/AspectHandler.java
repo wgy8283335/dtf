@@ -42,7 +42,7 @@ public class AspectHandler {
         Method currentMethod = clazz.getMethod(method.getName(), method.getParameterTypes());
         DtfTransaction transaction = currentMethod.getAnnotation(DtfTransaction.class);
         //transactionType has:SYNC_FINAL、SYNC_STRONG、ASYNC_FINAL
-        TransactionType transactionType = new TransactionType(transaction.type());
+        TransactionType transactionType = TransactionType.newInstance(transaction.type());
         TransactionType.setCurrent(transactionType);
         Transactional transactional = currentMethod.getAnnotation(Transactional.class);
         if (transactional == null) {
@@ -55,7 +55,7 @@ public class AspectHandler {
         //should use database proxy to send transaction information to the transaction server.
         //3.At the end send submit request to the server, and listen the response from server.
         //If success, submit transaction by database proxy.If fail,cancel transaction by database proxy.
-        if("ASYNC_FINAL".equals(transactionType.getTransactionType())){
+        if(TransactionType.ASYNC_FINAL == transactionType){
             if(info==null) {
                 //1.
                 String groupIdTemp = GroupidGenerator.getStringId(0, 0);
@@ -81,11 +81,11 @@ public class AspectHandler {
                 String groupIdTemp = GroupidGenerator.getStringId(0, 0);
                 TransactionGroupInfo groupInfo = TransactionGroupInfo.newInstanceWithGroupidMemid(groupIdTemp, Member.ORIGNAL_ID);
                 TransactionGroupInfo.setCurrent(groupInfo);
-                switch (transactionType.getTransactionType()) {
-                    case "SYNC_FINAL":
+                switch (transactionType) {
+                    case SYNC_FINAL:
                         TransactionServiceInfo.setCurrent(TransactionServiceInfo.newInstanceForSyncAdd(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.ADD, groupInfo.getGroupId(), groupInfo.getMemberId(), method, args));
                         break;
-                    case "SYNC_STRONG":
+                    case SYNC_STRONG:
                         TransactionServiceInfo.setCurrent(TransactionServiceInfo.newInstanceForSyncAdd(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.ADD_STRONG, groupInfo.getGroupId(), groupInfo.getMemberId(), method, args));
                         break;
                     default:
@@ -129,11 +129,11 @@ public class AspectHandler {
                 }
                 //if the thread does not have transactionServiceInfo,set current transaction service information
                 if(temp==null){
-                    switch (transactionType.getTransactionType()){
-                        case "SYNC_FINAL":
+                    switch (transactionType){
+                        case SYNC_FINAL:
                             TransactionServiceInfo.setCurrent(TransactionServiceInfo.newInstanceForSyncAdd(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.ADD,transactionGroupInfo.getGroupId(),transactionGroupInfo.getMemberId(),method,args));
                             break;
-                        case "SYNC_STRONG":
+                        case SYNC_STRONG:
                             TransactionServiceInfo.setCurrent(TransactionServiceInfo.newInstanceForSyncAdd(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.ADD_STRONG,transactionGroupInfo.getGroupId(),transactionGroupInfo.getMemberId(),method,args));
                             break;
                         default:

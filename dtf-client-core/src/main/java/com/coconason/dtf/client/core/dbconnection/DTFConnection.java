@@ -91,14 +91,14 @@ public class DTFConnection implements Connection {
             return;
         }
         transactionServiceInfo = TransactionServiceInfo.getCurrent();
-        if("SYNC_FINAL".equals(TransactionType.getCurrent().getTransactionType())||"SYNC_STRONG".equals(TransactionType.getCurrent().getTransactionType())) {
+        if(TransactionType.SYNC_FINAL==TransactionType.getCurrent()||TransactionType.SYNC_STRONG==TransactionType.getCurrent()) {
             Thread thread = new Thread(new SubmitRunnable(TransactionGroupInfo.getCurrent()));
             thread.start();
             try {
                 TransactionGroupInfo transactionGroupInfo = TransactionGroupInfo.getCurrent();
                 String groupId = transactionGroupInfo.getGroupId();
                 Long memberId = transactionGroupInfo.getMemberId();
-                if (memberId == 1 && "SYNC_STRONG".equals(TransactionType.getCurrent().getTransactionType())) {
+                if (memberId == 1 && TransactionType.SYNC_STRONG==TransactionType.getCurrent()) {
                     LockAndCondition secondlc = new LockAndCondition(new ReentrantLock(), DBOperationType.DEFAULT);
                     secondThreadsInfo.put(groupId, secondlc);
                     secondlc.await();

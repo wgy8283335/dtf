@@ -4,13 +4,29 @@ package com.coconason.dtf.client.core.beans;
  * @Author: Jason
  * @date: 2018/9/5-15:15
  */
-public class TransactionType {
+public enum TransactionType {
+    //SYNC_FINAL,SYNC_STRONG,SYNC_STRONG
+    SYNC_FINAL("SYNC_FINAL"),SYNC_STRONG("SYNC_STRONG"),ASYNC_FINAL("ASYNC_FINAL");
+
     private final static ThreadLocal<TransactionType> current = new ThreadLocal<>();
-    //SYNC_FINAL、SYNC_STRONG、ASYNC_FINAL
+
     private String transactionType;
 
-    public TransactionType(String transactionType) {
+    TransactionType(String transactionType) {
         this.transactionType = transactionType;
+    }
+
+    public static TransactionType newInstance(String type){
+        switch (type){
+            case "SYNC_FINAL":
+                return SYNC_FINAL;
+            case "SYNC_STRONG":
+                return SYNC_STRONG;
+            case "ASYNC_FINAL":
+                return ASYNC_FINAL;
+            default:
+                return null;
+        }
     }
 
     public String getTransactionType() {
