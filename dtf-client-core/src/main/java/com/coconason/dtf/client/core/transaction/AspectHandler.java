@@ -59,7 +59,7 @@ public class AspectHandler {
             if(info==null) {
                 //1.
                 String groupIdTemp = GroupidGenerator.getStringId(0, 0);
-                TransactionGroupInfo groupInfo = new TransactionGroupInfo(groupIdTemp, Member.ORIGNAL_ID);
+                TransactionGroupInfo groupInfo = TransactionGroupInfo.newInstanceWithGroupidMemid(groupIdTemp, Member.ORIGNAL_ID);
                 TransactionGroupInfo.setCurrent(groupInfo);
                 //2.
                 point.proceed();
@@ -79,7 +79,7 @@ public class AspectHandler {
             if(transactionGroupInfo == null) {
                 //1.
                 String groupIdTemp = GroupidGenerator.getStringId(0, 0);
-                TransactionGroupInfo groupInfo = new TransactionGroupInfo(groupIdTemp, Member.ORIGNAL_ID);
+                TransactionGroupInfo groupInfo = TransactionGroupInfo.newInstanceWithGroupidMemid(groupIdTemp, Member.ORIGNAL_ID);
                 TransactionGroupInfo.setCurrent(groupInfo);
                 switch (transactionType.getTransactionType()) {
                     case "SYNC_FINAL":
