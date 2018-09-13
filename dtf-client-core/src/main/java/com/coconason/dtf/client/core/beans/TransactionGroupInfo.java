@@ -22,13 +22,6 @@ public class TransactionGroupInfo {
         groupMembers.add(memberId);
         return new TransactionGroupInfo(groupId, memberId, groupMembers);
     }
-//
-//    public TransactionGroupInfo(String groupId,Long memberId) {
-//        this.groupId = groupId;
-//        this.groupMembers = new HashSet<>();
-//        this.memberId = memberId;
-//        this.groupMembers.add(memberId);
-//    }
 
     private TransactionGroupInfo(String groupId,Long memberId, Set<Long> groupMembers) {
         this.groupId = groupId;
@@ -36,32 +29,15 @@ public class TransactionGroupInfo {
         this.groupMembers = groupMembers;
     }
 
-//    public TransactionGroupInfo(String groupId, Set<Long> groupMembers) {
-//        this.groupId = groupId;
-//        this.groupMembers = groupMembers;
-//    }
-
-//    public void setMemberId(Long memberId) {
-//        this.memberId = memberId;
-//    }
-
     public void setGroupId(String groupId) {
         this.groupId = groupId;
     }
-
-//    public void setGroupMembers(Set<Long> groupMembers) {
-//        this.groupMembers = groupMembers;
-//    }
 
     public void addNewMemeber(){
         //this.memberId++;
         this.memberId = UuidGenerator.generateLongId();
         groupMembers.add(this.memberId);
     }
-
-//    public void addMemeber(Long memberId){
-//        groupMembers.add(memberId);
-//    }
 
     public void addMemebers(Set<Long> tempSet){
         groupMembers.addAll(tempSet);
