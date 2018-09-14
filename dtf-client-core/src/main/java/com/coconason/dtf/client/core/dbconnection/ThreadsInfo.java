@@ -1,25 +1,27 @@
 package com.coconason.dtf.client.core.dbconnection;
 
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import java.util.concurrent.ConcurrentHashMap;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 
 /**
  * @Author: Jason
  * @date: 2018/8/22-11:09
  */
 @Component(value="threadsInfo")
-@Scope(value="prototype")
 public class ThreadsInfo {
-    private final ConcurrentHashMap<String,LockAndCondition> threadInfoMap = new ConcurrentHashMap<>();
 
-    public void put(String key,LockAndCondition lc){
-        threadInfoMap.put(key,lc);
+    private Cache<String,LockAndCondition> cache;
+
+    public ThreadsInfo() {
+        cache = CacheBuilder.newBuilder().maximumSize(1000000L).build();
     }
 
-    public LockAndCondition get(String key){
-        return threadInfoMap.get(key);
+    public synchronized LockAndCondition get(String id){
+        return cache.getIfPresent(id);
     }
 
+    public synchronized void put(String id,LockAndCondition msg){
+        cache.put(id, msg);
+    }
 }
