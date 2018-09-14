@@ -1,7 +1,6 @@
 package com.coconason.dtf.demo2.cache;
 
 import com.coconason.dtf.demo2.message.MessageInfo;
-import com.coconason.dtf.demo2.message.TransactionMessageGroup;
 import com.coconason.dtf.demo2.message.TransactionMessageGroupAsync;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -12,32 +11,20 @@ import java.util.Set;
  * @Author: Jason
  * @date: 2018/8/24-16:34
  */
-public class MessageCache {
+public class MessageAsyncCache {
 
-    public MessageCache() {
+    private Cache<String,TransactionMessageGroupAsync> cache;
+
+    public MessageAsyncCache() {
         cache = CacheBuilder.newBuilder().maximumSize(1000000L).build();
     }
 
-    private Cache<Object,Object> cache;
-
-    public synchronized Object get(Object id){
+    public synchronized TransactionMessageGroupAsync get(String id){
         return cache.getIfPresent(id);
     }
 
-    public synchronized void put(Object id,Object msg){
+    public synchronized void put(String id,TransactionMessageGroupAsync msg){
         cache.put(id, msg);
-    }
-
-    public synchronized void putDependsOnCondition(TransactionMessageGroup group){
-        Object element = cache.getIfPresent(group.getGroupId());
-        if(element==null){
-            cache.put(group.getGroupId(),group);
-        }else{
-            TransactionMessageGroup transactionMessageGroup = (TransactionMessageGroup) element;
-            transactionMessageGroup.getMemberList().add(group.getMemberList().get(0));
-            transactionMessageGroup.getMemberSet().add(group.getMemberList().get(0).getGroupMemberId());
-            cache.put(transactionMessageGroup.getGroupId(),transactionMessageGroup);
-        }
     }
 
     public synchronized void putDependsOnConditionAsync(TransactionMessageGroupAsync groupAsync){

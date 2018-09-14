@@ -1,7 +1,7 @@
 package com.coconason.dtf.demo2.service;
 
+import com.coconason.dtf.demo2.cache.MessageAsyncCache;
 import com.coconason.dtf.demo2.cache.MessageAsyncQueue;
-import com.coconason.dtf.demo2.cache.MessageCache;
 import com.coconason.dtf.demo2.message.MessageInfo;
 import com.coconason.dtf.demo2.message.TransactionMessageGroupAsync;
 import com.coconason.dtf.demo2.utils.HttpClientUtil;
@@ -14,14 +14,14 @@ import java.util.Set;
  */
 public class SendRunnable implements Runnable{
 
-    private MessageCache messageCache;
+    private MessageAsyncCache messageAsyncCache;
 
     private String groupId;
 
     private MessageAsyncQueue messageAsyncQueue;
 
-    public SendRunnable(MessageCache messageCache,String groupId,MessageAsyncQueue messageAsyncQueue) {
-        this.messageCache = messageCache;
+    public SendRunnable(MessageAsyncCache messageAsyncCache, String groupId, MessageAsyncQueue messageAsyncQueue) {
+        this.messageAsyncCache = messageAsyncCache;
         this.groupId = groupId;
         this.messageAsyncQueue = messageAsyncQueue;
     }
@@ -30,7 +30,7 @@ public class SendRunnable implements Runnable{
     public void run() {
         try{
             Thread.sleep(5000);
-            TransactionMessageGroupAsync theMessageGroupAsync = (TransactionMessageGroupAsync)messageCache.get(groupId);
+            TransactionMessageGroupAsync theMessageGroupAsync = (TransactionMessageGroupAsync) messageAsyncCache.get(groupId);
             Set<MessageInfo> theMemberSet = theMessageGroupAsync.getMemberSet();
             for(MessageInfo messageInfo :theMemberSet){
                 String url= messageInfo.getUrl();
