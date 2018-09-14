@@ -97,7 +97,7 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
                 }
                 break;
             case SUB_FAIL_STRONG:
-                TransactionMessageGroup groupTemp1 = (TransactionMessageGroup) messageSyncCache.get(JSONObject.parseObject(message.getInfo()).get("groupId").toString());
+                TransactionMessageGroup groupTemp1 = messageSyncCache.get(JSONObject.parseObject(message.getInfo()).get("groupId").toString());
                 snedMsg(groupTemp1.getGroupId(),ActionType.WHOLE_FAIL_STRONG,groupTemp1.getCtxForSubmitting());
                 messageSyncCache.clear(groupTemp1.getGroupId());
                 break;
@@ -155,7 +155,7 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
                 Thread.sleep(1000);
                 TransactionMessageForSubmit tmfs = new TransactionMessageForSubmit(message);
                 Set setFromMessage =tmfs.getMemberSet();
-                TransactionMessageGroup elementFromCache = (TransactionMessageGroup) messageSyncCache.get(tmfs.getGroupId());
+                TransactionMessageGroup elementFromCache = messageSyncCache.get(tmfs.getGroupId());
                 Set setFromCache = elementFromCache.getMemberSet();
                 elementFromCache.setCtxForSubmitting(ctx);
                 messageSyncCache.put(elementFromCache.getGroupId(),elementFromCache);
