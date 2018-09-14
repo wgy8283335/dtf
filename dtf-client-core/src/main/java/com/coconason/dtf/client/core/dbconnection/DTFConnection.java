@@ -106,7 +106,6 @@ public class DTFConnection implements Connection {
                     if (secondlc2.getState() == DBOperationType.WHOLEFAIL) {
                         throw new Exception("Distributed transaction failed");
                     }
-                    System.out.println("DTFConenction finished---------------------------------");
                     //4. close the connection.
                     connection.close();
                 }
@@ -136,13 +135,9 @@ public class DTFConnection implements Connection {
                 LockAndCondition lc = new LockAndCondition(new ReentrantLock(),state);
                 JSONObject map = transactionServiceInfo.getInfo();
                 threadsInfo.put(map.get("groupId").toString()+memberId,lc);
-                System.out.println("Thread.currentThread().getName()--------------"+Thread.currentThread().getName());
                 queue.put(transactionServiceInfo);
-                System.out.println("transactionServiceInfo action is -------------"+transactionServiceInfo.getAction());
                 lc.await();
                 //3. After signaling, if success commit or rollback, otherwise skip the committing.
-                System.out.println("Thread.currentThread().getName()--------------"+Thread.currentThread().getName());
-                System.out.println("继续执行--------------");
                 state = threadsInfo.get(map.get("groupId").toString()+memberId).getState();
                 if(state == DBOperationType.COMMIT){
                     System.out.println("提交");
@@ -170,7 +165,6 @@ public class DTFConnection implements Connection {
             } finally {
                 try {
                     if(memberId!=1&&(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG)||transactionServiceInfo.getAction()== MessageProto.Message.ActionType.CANCEL) {
-                        System.out.println("DTFConenction finished---------------------------------");
                         connection.close();
                     }
                 } catch (Exception e) {

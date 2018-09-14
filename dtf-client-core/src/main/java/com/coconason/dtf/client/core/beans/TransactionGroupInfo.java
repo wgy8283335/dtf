@@ -34,7 +34,6 @@ public class TransactionGroupInfo {
     }
 
     public void addNewMemeber(){
-        //this.memberId++;
         this.memberId = UuidGenerator.generateLongId();
         groupMembers.add(this.memberId);
     }

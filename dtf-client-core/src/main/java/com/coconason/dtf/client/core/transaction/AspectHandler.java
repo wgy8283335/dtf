@@ -43,7 +43,6 @@ public class AspectHandler {
         Object[] args = point.getArgs();
         Method currentMethod = clazz.getMethod(method.getName(), method.getParameterTypes());
         DtfTransaction transaction = currentMethod.getAnnotation(DtfTransaction.class);
-        //transactionType has:SYNC_FINAL、SYNC_STRONG、ASYNC_FINAL
         TransactionType transactionType = TransactionType.newInstance(transaction.type());
         TransactionType.setCurrent(transactionType);
         Transactional transactional = currentMethod.getAnnotation(Transactional.class);
@@ -112,11 +111,6 @@ public class AspectHandler {
                         }
                     }
                 }
-//                //3.Send confirm message to netty server, in order to commit all transaction in the service
-//                if("SYNC_FINAL".equals(transactionType.getTransactionType())){
-//                    queue.put(new TransactionServiceInfo(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT, TransactionGroupInfo.getCurrent().getGroupId(), TransactionGroupInfo.getCurrent().getGroupMembers()));
-//                }
-
             }
             //1.When the service is follower,execute the program.And if the program has transactional operation in database,
             //should use database proxy to send transaction information to the transaction server.

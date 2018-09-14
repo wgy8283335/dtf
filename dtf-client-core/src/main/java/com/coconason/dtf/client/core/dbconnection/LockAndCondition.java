@@ -1,6 +1,5 @@
 package com.coconason.dtf.client.core.dbconnection;
 
-import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 

@@ -22,9 +22,6 @@ public class TransactionMessageSender {
     @Autowired
     NettyService service;
 
-    //@Autowired
-    //ClientTransactionHandler clientTransactionHandler;
-
     private ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(1);
 
     public void startSendMessage() throws InterruptedException{

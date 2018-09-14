@@ -12,7 +12,6 @@ public class LoginAuthReqHandler extends ChannelInboundHandlerAdapter
 	{
 		MessageProto.Message message = buildLoginReq();
 		ctx.writeAndFlush(message);
-		System.out.println("客户端发送握手请求：" + message);
 		ctx.fireChannelActive();
 	}
 
