@@ -21,7 +21,7 @@ public class DTFDataSourceProxy implements DataSource{
 
     private TransactionMessageQueue queue;
 
-    private SecondThreadsInfo secondThreadsInfo;
+    private ThreadsInfo secondThreadsInfo;
 
 
     public void setDataSource(DataSource dataSource) {
@@ -36,7 +36,7 @@ public class DTFDataSourceProxy implements DataSource{
         this.queue = queue;
     }
 
-    public void setSecondThreadsInfo(SecondThreadsInfo secondThreadsInfo) {
+    public void setSecondThreadsInfo(ThreadsInfo secondThreadsInfo) {
         this.secondThreadsInfo = secondThreadsInfo;
     }
 

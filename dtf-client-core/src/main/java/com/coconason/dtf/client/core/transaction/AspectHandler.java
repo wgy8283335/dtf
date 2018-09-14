@@ -5,7 +5,7 @@ import com.coconason.dtf.client.core.beans.TransactionGroupInfo;
 import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
 import com.coconason.dtf.client.core.beans.TransactionType;
 import com.coconason.dtf.client.core.constant.Member;
-import com.coconason.dtf.client.core.dbconnection.SecondThreadsInfo;
+import com.coconason.dtf.client.core.dbconnection.ThreadsInfo;
 import com.coconason.dtf.client.core.nettyclient.messagequeue.TransactionMessageQueue;
 import com.coconason.dtf.client.core.nettyclient.protobufclient.NettyService;
 import com.coconason.dtf.client.core.utils.GroupidGenerator;
@@ -14,6 +14,7 @@ import com.coconason.dtf.common.utils.UuidGenerator;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,7 +32,8 @@ public class AspectHandler {
     @Autowired
     NettyService nettyService;
     @Autowired
-    SecondThreadsInfo secondThreadsInfo;
+    @Qualifier("threadsInfo")
+    ThreadsInfo secondThreadsInfo;
 
     public Object before(String info,ProceedingJoinPoint point) throws Throwable {
 

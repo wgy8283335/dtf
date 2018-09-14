@@ -41,7 +41,7 @@ public class DTFConnection implements Connection {
 
     private TransactionServiceInfo transactionServiceInfo;
 
-    private SecondThreadsInfo secondThreadsInfo;
+    private ThreadsInfo secondThreadsInfo;
 
     private ExecutorService executorService = Executors.newCachedThreadPool();
 
@@ -49,7 +49,7 @@ public class DTFConnection implements Connection {
         this.connection = connection;
     }
 
-    public DTFConnection(Connection connection,ThreadsInfo threadsInfo,TransactionMessageQueue queue,SecondThreadsInfo secondThreadsInfo) {
+    public DTFConnection(Connection connection,ThreadsInfo threadsInfo,TransactionMessageQueue queue,ThreadsInfo secondThreadsInfo) {
         this.connection = connection;
         this.threadsInfo = threadsInfo;
         this.queue = queue;

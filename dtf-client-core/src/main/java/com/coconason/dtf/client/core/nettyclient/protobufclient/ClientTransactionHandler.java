@@ -9,6 +9,7 @@ import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
@@ -20,13 +21,16 @@ public class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 {
 
 	@Autowired
+	@Qualifier("threadsInfo")
 	ThreadsInfo threadsInfo;
 
 	@Autowired
-	SecondThreadsInfo secondThreadsInfo;
+	@Qualifier("threadsInfo")
+	ThreadsInfo secondThreadsInfo;
 
 	@Autowired
-	ThirdThreadsInfo thirdThreadsInfo;
+	@Qualifier("threadsInfo")
+	ThreadsInfo thirdThreadsInfo;
 
 	@Autowired
 	ApplicationContext applicationContext;
