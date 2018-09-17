@@ -32,19 +32,19 @@ public class NettyServer
     public static void main(String[] args) throws Exception
     {
         MessageAsyncQueue messageAsyncQueue = new MessageAsyncQueue();
-        Thread thread = new Thread(new ConsumerRunnable(messageAsyncQueue));
-        thread.start();
-        new NettyServer().bind(messageAsyncQueue);
+        ThreadPoolForServer threadPoolForServer = new ThreadPoolForServer();
+        threadPoolForServer.addTask(new ConsumerRunnable(messageAsyncQueue));
+        new NettyServer().bind(messageAsyncQueue,threadPoolForServer);
     }
 
-    public void bind(MessageAsyncQueue messageAsyncQueueTemp) throws Exception
+    public void bind(MessageAsyncQueue messageAsyncQueueTemp,ThreadPoolForServer threadPoolForServerTemp) throws Exception
     {
         EventLoopGroup boss = new NioEventLoopGroup();
         EventLoopGroup work = new NioEventLoopGroup();
         final MessageSyncCache messageSyncCache = new MessageSyncCache();
         final MessageAsyncCache messageAsyncCache = new MessageAsyncCache();
         final MessageAsyncQueue messageAsyncQueue = messageAsyncQueueTemp;
-        final ThreadPoolForServer threadPoolForServer = new ThreadPoolForServer();
+        final ThreadPoolForServer threadPoolForServer = threadPoolForServerTemp;
         try
         {
             ServerBootstrap b = new ServerBootstrap();
@@ -58,9 +58,6 @@ public class NettyServer
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception
                         {
-                            // NettyMessageDecoder设置了单条消息最大值1MB,可以防止消息过大导致的内存溢出或者畸形码流，引发解码错位或内存分配失败
-                            //ch.pipeline().addLast(new NettyMessageDecoder(1024 * 1024, 4, 4, -8, 0));
-                            //ch.pipeline().addLast(new NettyMessageEncoder());
                             ch.pipeline().addLast(new ProtobufVarint32FrameDecoder());
                             ch.pipeline().addLast(new ProtobufDecoder(MessageProto.Message.getDefaultInstance()));
                             ch.pipeline().addLast(new ProtobufVarint32LengthFieldPrepender());
