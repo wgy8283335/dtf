@@ -5,6 +5,7 @@ import com.coconason.dtf.demo2.cache.MessageAsyncCache;
 import com.coconason.dtf.demo2.cache.MessageAsyncQueue;
 import com.coconason.dtf.demo2.cache.MessageSyncCache;
 import com.coconason.dtf.demo2.service.ConsumerRunnable;
+import com.coconason.dtf.demo2.threadpools.ThreadPoolForServer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -43,6 +44,7 @@ public class NettyServer
         final MessageSyncCache messageSyncCache = new MessageSyncCache();
         final MessageAsyncCache messageAsyncCache = new MessageAsyncCache();
         final MessageAsyncQueue messageAsyncQueue = messageAsyncQueueTemp;
+        final ThreadPoolForServer threadPoolForServer = new ThreadPoolForServer();
         try
         {
             ServerBootstrap b = new ServerBootstrap();
@@ -65,7 +67,7 @@ public class NettyServer
                             ch.pipeline().addLast(new ProtobufEncoder());
                             ch.pipeline().addLast(new ReadTimeoutHandler(50));
                             ch.pipeline().addLast(new LoginAuthRespHandler());
-                            ch.pipeline().addLast(new ServerTransactionHandler(messageSyncCache,messageAsyncCache,messageAsyncQueue));
+                            ch.pipeline().addLast(new ServerTransactionHandler(messageSyncCache,messageAsyncCache,messageAsyncQueue,threadPoolForServer));
                             ch.pipeline().addLast(new HeartBeatRespHandler());
                         }
                     });

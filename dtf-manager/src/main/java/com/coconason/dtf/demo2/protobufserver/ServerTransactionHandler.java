@@ -12,6 +12,7 @@ import com.coconason.dtf.demo2.message.TransactionMessageForSubmit;
 import com.coconason.dtf.demo2.message.TransactionMessageGroup;
 import com.coconason.dtf.demo2.message.TransactionMessageGroupAsync;
 import com.coconason.dtf.demo2.service.SendRunnable;
+import com.coconason.dtf.demo2.threadpools.ThreadPoolForServer;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
@@ -32,10 +33,13 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
 
     private ChannelHandlerContext ctx;
 
-    public ServerTransactionHandler(MessageSyncCache messageSyncCache,MessageAsyncCache messageAsyncCache , MessageAsyncQueue messageAsyncQueue) {
+    private ThreadPoolForServer threadPoolForServer;
+
+    public ServerTransactionHandler(MessageSyncCache messageSyncCache,MessageAsyncCache messageAsyncCache , MessageAsyncQueue messageAsyncQueue, ThreadPoolForServer threadPoolForServer) {
         this.messageSyncCache = messageSyncCache;
         this.messageAsyncQueue = messageAsyncQueue;
         this.messageAsyncCache = messageAsyncCache;
+        this.threadPoolForServer = threadPoolForServer;
     }
 
     @Override
@@ -62,7 +66,7 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
                 messageSyncCache.putDependsOnCondition(new TransactionMessageGroup(message,ctx));
                 break;
             case APPLYFORSUBMIT:
-                new Thread(new ApplyForRunnable(message,ActionType.APPROVESUBMIT,ctx)).start();
+                threadPoolForServer.addTask(new ApplyForRunnable(message,ActionType.APPROVESUBMIT,ctx));
                 break;
             case ADD_STRONG:
                 //store the message in the cache.
@@ -70,10 +74,10 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
                 messageSyncCache.putDependsOnCondition(new TransactionMessageGroup(message,ctx));
                 break;
             case APPLYFORSUBMIT_STRONG:
-                new Thread(new ApplyForRunnable(message,ActionType.APPROVESUBMIT_STRONG,ctx)).start();
+                threadPoolForServer.addTask(new ApplyForRunnable(message,ActionType.APPROVESUBMIT_STRONG,ctx));
                 break;
             case CANCEL:
-                new Thread(new ApplyForRunnable(message,ActionType.CANCEL,ctx)).start();
+                threadPoolForServer.addTask(new ApplyForRunnable(message,ActionType.CANCEL,ctx));
             case SUB_SUCCESS_STRONG:
                 String memberId = JSONObject.parseObject(message.getInfo()).get("memberId").toString();
                 TransactionMessageGroup groupTemp = (TransactionMessageGroup) messageSyncCache.get(JSONObject.parseObject(message.getInfo()).get("groupId").toString());
@@ -114,8 +118,7 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
             case ASYNC_COMMIT:
                 JSONObject map = JSONObject.parseObject(message.getInfo());
                 String groupId = map.get("groupId").toString();
-                Thread thread = new Thread(new SendRunnable(messageAsyncCache,groupId,messageAsyncQueue));
-                thread.start();
+                threadPoolForServer.addTask(new SendRunnable(messageAsyncCache,groupId,messageAsyncQueue));
                 break;
             default:
                 break;
