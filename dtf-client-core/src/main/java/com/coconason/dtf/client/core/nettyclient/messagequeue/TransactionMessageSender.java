@@ -2,11 +2,9 @@ package com.coconason.dtf.client.core.nettyclient.messagequeue;
 
 import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
 import com.coconason.dtf.client.core.nettyclient.protobufclient.NettyService;
+import com.coconason.dtf.client.core.threadpools.ThreadPoolForClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
  * @Author: Jason
@@ -22,10 +20,14 @@ public class TransactionMessageSender {
     @Autowired
     NettyService service;
 
-    private ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(1);
+    @Autowired
+    ThreadPoolForClient threadPoolForClient;
+
+    //private ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(1);
 
     public void startSendMessage() throws InterruptedException{
-        executorService.execute(new sendMessageRunnable());
+        //executorService.execute(new sendMessageRunnable());
+        threadPoolForClient.addTask(new sendMessageRunnable());
     }
 
     private class sendMessageRunnable implements Runnable {

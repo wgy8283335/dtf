@@ -2,6 +2,7 @@ package com.coconason.dtf.client.core.nettyclient.protobufclient;
 
 import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
 import com.coconason.dtf.client.core.nettyclient.nettyserverconfig.NettyServerConfiguration;
+import com.coconason.dtf.client.core.threadpools.ThreadPoolForClient;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
@@ -19,8 +20,6 @@ import io.netty.handler.timeout.ReadTimeoutHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -33,7 +32,10 @@ public class NettyService {
     @Autowired
     ClientTransactionHandler clientTransactionHandler;
 
-    private ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(1);
+    //private ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(1);
+
+    @Autowired
+    ThreadPoolForClient threadPoolForClient;
 
     private EventLoopGroup group = new NioEventLoopGroup();
 
@@ -42,7 +44,8 @@ public class NettyService {
 
     public synchronized void start(){
         try{
-            executorService.execute(new ConnectRunnable(nettyServerConfiguration.getHost(),nettyServerConfiguration.getPort()));
+            //executorService.execute(new ConnectRunnable(nettyServerConfiguration.getHost(),nettyServerConfiguration.getPort()));
+            threadPoolForClient.addTask(new ConnectRunnable(nettyServerConfiguration.getHost(),nettyServerConfiguration.getPort()));
         }catch (Exception e){
             System.out.println("Exception-----> \n" + e);
         }
@@ -74,7 +77,8 @@ public class NettyService {
             f.channel().closeFuture().sync();
         }finally{
             // 发起重连操作
-            executorService.execute(new ConnectRunnable(host,port));
+            //executorService.execute(new ConnectRunnable(host,port));
+            threadPoolForClient.addTask(new ConnectRunnable(host,port));
         }
     }
 

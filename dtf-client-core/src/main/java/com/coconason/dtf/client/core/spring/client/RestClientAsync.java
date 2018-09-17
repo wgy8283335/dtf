@@ -6,6 +6,7 @@ import com.coconason.dtf.client.core.dbconnection.DBOperationType;
 import com.coconason.dtf.client.core.dbconnection.LockAndCondition;
 import com.coconason.dtf.client.core.dbconnection.ThreadsInfo;
 import com.coconason.dtf.client.core.nettyclient.protobufclient.NettyService;
+import com.coconason.dtf.client.core.threadpools.ThreadPoolForClient;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.common.utils.UuidGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +29,14 @@ public class RestClientAsync {
     @Qualifier("threadsInfo")
     ThreadsInfo thirdThreadsInfo;
 
+    @Autowired
+    ThreadPoolForClient threadPoolForClient;
+
     public void sendPost(String url, Object object){
         AsyncSubmitRunnable asyncSubmitRunnable = new AsyncSubmitRunnable(TransactionGroupInfo.getCurrent(),url,object);
-        Thread thread = new Thread(asyncSubmitRunnable);
-        thread.start();
+        //Thread thread = new Thread(asyncSubmitRunnable);
+        //thread.start();
+        threadPoolForClient.addTask(asyncSubmitRunnable);
     }
 
     private class AsyncSubmitRunnable implements Runnable{

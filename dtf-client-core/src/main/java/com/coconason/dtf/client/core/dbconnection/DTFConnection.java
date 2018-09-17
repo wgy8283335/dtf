@@ -5,10 +5,12 @@ import com.coconason.dtf.client.core.beans.TransactionGroupInfo;
 import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
 import com.coconason.dtf.client.core.beans.TransactionType;
 import com.coconason.dtf.client.core.nettyclient.messagequeue.TransactionMessageQueue;
+import com.coconason.dtf.client.core.threadpools.ThreadPoolForClient;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.common.utils.UuidGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.*;
 import java.util.Map;
@@ -46,6 +48,9 @@ public class DTFConnection implements Connection {
     private ThreadsInfo secondThreadsInfo;
 
     private ExecutorService executorService = Executors.newCachedThreadPool();
+
+    @Autowired
+    ThreadPoolForClient threadPoolForClient;
 
     public DTFConnection(Connection connection) {
         this.connection = connection;
@@ -94,8 +99,9 @@ public class DTFConnection implements Connection {
         }
         transactionServiceInfo = TransactionServiceInfo.getCurrent();
         if(TransactionType.SYNC_FINAL==TransactionType.getCurrent()||TransactionType.SYNC_STRONG==TransactionType.getCurrent()) {
-            Thread thread = new Thread(new SubmitRunnable(TransactionGroupInfo.getCurrent()));
-            thread.start();
+            //Thread thread = new Thread(new SubmitRunnable(TransactionGroupInfo.getCurrent()));
+            //thread.start();
+            threadPoolForClient.addTask(new SubmitRunnable(TransactionGroupInfo.getCurrent()));
             try {
                 TransactionGroupInfo transactionGroupInfo = TransactionGroupInfo.getCurrent();
                 String groupId = transactionGroupInfo.getGroupId();
