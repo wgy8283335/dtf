@@ -19,7 +19,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.locks.ReentrantLock;
 
-import static com.coconason.dtf.client.core.constants.Member.ORIGNAL_ID;
+import static com.coconason.dtf.client.core.constants.Member.ORIGINAL_ID;
 
 /**
  * @Author: Jason
@@ -100,7 +100,7 @@ public class DTFConnection implements Connection {
                 TransactionGroupInfo transactionGroupInfo = TransactionGroupInfo.getCurrent();
                 String groupId = transactionGroupInfo.getGroupId();
                 Long memberId = transactionGroupInfo.getMemberId();
-                if (ORIGNAL_ID.equals(memberId) && TransactionType.SYNC_STRONG==TransactionType.getCurrent()) {
+                if (ORIGINAL_ID.equals(memberId) && TransactionType.SYNC_STRONG==TransactionType.getCurrent()) {
                     LockAndCondition secondlc = new LockAndCondition(new ReentrantLock(), DBOperationType.DEFAULT);
                     secondThreadsInfo.put(groupId, secondlc);
                     secondlc.await();

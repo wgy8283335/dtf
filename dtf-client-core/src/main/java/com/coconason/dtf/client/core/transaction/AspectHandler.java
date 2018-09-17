@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Method;
 
-import static com.coconason.dtf.client.core.constants.Member.ORIGNAL_ID;
+import static com.coconason.dtf.client.core.constants.Member.ORIGINAL_ID;
 
 /**
  * @Author: Jason
@@ -61,7 +61,7 @@ public class AspectHandler {
             if(info==null) {
                 //1.
                 String groupIdTemp = GroupidGenerator.getStringId(0, 0);
-                TransactionGroupInfo groupInfo = TransactionGroupInfo.newInstanceWithGroupidMemid(groupIdTemp, ORIGNAL_ID);
+                TransactionGroupInfo groupInfo = TransactionGroupInfo.newInstanceWithGroupidMemid(groupIdTemp, ORIGINAL_ID);
                 TransactionGroupInfo.setCurrent(groupInfo);
                 //2.
                 point.proceed();
@@ -75,7 +75,7 @@ public class AspectHandler {
             if(transactionGroupInfo == null) {
                 //1.
                 String groupIdTemp = GroupidGenerator.getStringId(0, 0);
-                TransactionGroupInfo groupInfo = TransactionGroupInfo.newInstanceWithGroupidMemid(groupIdTemp, ORIGNAL_ID);
+                TransactionGroupInfo groupInfo = TransactionGroupInfo.newInstanceWithGroupidMemid(groupIdTemp, ORIGINAL_ID);
                 TransactionGroupInfo.setCurrent(groupInfo);
                 switch (transactionType) {
                     case SYNC_FINAL:
@@ -90,7 +90,7 @@ public class AspectHandler {
                 //2.
                 try {
                     point.proceed();
-                    if(ORIGNAL_ID.equals(TransactionGroupInfo.getCurrent().getMemberId())){
+                    if(ORIGINAL_ID.equals(TransactionGroupInfo.getCurrent().getMemberId())){
                         if(MessageProto.Message.ActionType.ADD==TransactionServiceInfo.getCurrent().getAction()){
                             queue.put(TransactionServiceInfo.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT,TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
                         }else if(MessageProto.Message.ActionType.ADD_STRONG==TransactionServiceInfo.getCurrent().getAction()){
@@ -98,7 +98,7 @@ public class AspectHandler {
                         }
                     }
                 }catch (Exception e){
-                    if(ORIGNAL_ID.equals(TransactionGroupInfo.getCurrent().getMemberId())){
+                    if(ORIGINAL_ID.equals(TransactionGroupInfo.getCurrent().getMemberId())){
                         if(MessageProto.Message.ActionType.ADD==TransactionServiceInfo.getCurrent().getAction()){
                             queue.put(TransactionServiceInfo.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.CANCEL,TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
                         }else if(MessageProto.Message.ActionType.ADD_STRONG==TransactionServiceInfo.getCurrent().getAction()){
