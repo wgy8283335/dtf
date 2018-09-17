@@ -44,41 +44,9 @@ public class NettyService {
 
     public synchronized void start(){
         try{
-            //executorService.execute(new ConnectRunnable(nettyServerConfiguration.getHost(),nettyServerConfiguration.getPort()));
             threadPoolForClient.addTask(new ConnectRunnable(nettyServerConfiguration.getHost(),nettyServerConfiguration.getPort()));
         }catch (Exception e){
             System.out.println("Exception-----> \n" + e);
-        }
-    }
-
-    private void connect(String host, int port) throws Exception{
-        try{
-            Bootstrap b = new Bootstrap();
-            b.group(group)
-             .option(ChannelOption.TCP_NODELAY, true)
-             .channel(NioSocketChannel.class)
-             .handler(new ChannelInitializer<SocketChannel>()
-        {
-            @Override
-            protected void initChannel(SocketChannel ch) throws Exception
-            {
-                ch.pipeline().addLast(new ProtobufVarint32FrameDecoder());
-                ch.pipeline().addLast(new ProtobufDecoder(MessageProto.Message.getDefaultInstance()));
-                ch.pipeline().addLast(new ProtobufVarint32LengthFieldPrepender());
-                ch.pipeline().addLast(new ProtobufEncoder());
-                ch.pipeline().addLast(new ReadTimeoutHandler(50));
-                ch.pipeline().addLast(new LoginAuthReqHandler());
-                ch.pipeline().addLast(clientTransactionHandler);
-                ch.pipeline().addLast(new HeartBeatReqHandler());
-                    }
-                });
-            ChannelFuture f = b.connect(host, port).sync();
-            System.out.println("connection success-----> " + host + ":" + port);
-            f.channel().closeFuture().sync();
-        }finally{
-            // 发起重连操作
-            //executorService.execute(new ConnectRunnable(host,port));
-            threadPoolForClient.addTask(new ConnectRunnable(host,port));
         }
     }
 
@@ -98,6 +66,37 @@ public class NettyService {
             }catch (Exception e){
                 e.printStackTrace();
             }
+        }
+    }
+
+    private void connect(String host, int port) throws Exception{
+        try{
+            Bootstrap b = new Bootstrap();
+            b.group(group)
+                    .option(ChannelOption.TCP_NODELAY, true)
+                    .channel(NioSocketChannel.class)
+                    .handler(new ChannelInitializer<SocketChannel>()
+                    {
+                        @Override
+                        protected void initChannel(SocketChannel ch) throws Exception
+                        {
+                            ch.pipeline().addLast(new ProtobufVarint32FrameDecoder());
+                            ch.pipeline().addLast(new ProtobufDecoder(MessageProto.Message.getDefaultInstance()));
+                            ch.pipeline().addLast(new ProtobufVarint32LengthFieldPrepender());
+                            ch.pipeline().addLast(new ProtobufEncoder());
+                            ch.pipeline().addLast(new ReadTimeoutHandler(50));
+                            ch.pipeline().addLast(new LoginAuthReqHandler());
+                            ch.pipeline().addLast(clientTransactionHandler);
+                            ch.pipeline().addLast(new HeartBeatReqHandler());
+                        }
+                    });
+            ChannelFuture f = b.connect(host, port).sync();
+            System.out.println("connection success-----> " + host + ":" + port);
+            f.channel().closeFuture().sync();
+        }finally{
+            // 发起重连操作
+            //executorService.execute(new ConnectRunnable(host,port));
+            threadPoolForClient.addTask(new ConnectRunnable(host,port));
         }
     }
 

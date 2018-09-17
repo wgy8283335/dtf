@@ -16,12 +16,10 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class ThreadPoolForClient {
 
-    @Autowired
-    private ThreadPoolForClientConfiguration threadPoolForClientConfiguration;
-
     private ExecutorService pool;
 
-    public ThreadPoolForClient() {
+    @Autowired
+    public ThreadPoolForClient(ThreadPoolForClientConfiguration threadPoolForClientConfiguration) {
         pool = new ThreadPoolExecutor(threadPoolForClientConfiguration.getCorePoolSize(),threadPoolForClientConfiguration.getMaximumPoolSize(),threadPoolForClientConfiguration.getKeepAliveTime(), TimeUnit.MILLISECONDS,new LinkedBlockingDeque<Runnable>(threadPoolForClientConfiguration.getQueueSize()),new DefaultThreadFactory("defaultThreadFactory"),new ThreadPoolExecutor.AbortPolicy());
     }
 
