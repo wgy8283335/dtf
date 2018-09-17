@@ -23,10 +23,7 @@ public class TransactionMessageSender {
     @Autowired
     ThreadPoolForClient threadPoolForClient;
 
-    //private ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(1);
-
     public void startSendMessage() throws InterruptedException{
-        //executorService.execute(new sendMessageRunnable());
         threadPoolForClient.addTask(new sendMessageRunnable());
     }
 

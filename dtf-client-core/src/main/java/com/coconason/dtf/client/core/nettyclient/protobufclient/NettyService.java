@@ -32,8 +32,6 @@ public class NettyService {
     @Autowired
     ClientTransactionHandler clientTransactionHandler;
 
-    //private ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(1);
-
     @Autowired
     ThreadPoolForClient threadPoolForClient;
 
@@ -94,8 +92,6 @@ public class NettyService {
             System.out.println("connection success-----> " + host + ":" + port);
             f.channel().closeFuture().sync();
         }finally{
-            // 发起重连操作
-            //executorService.execute(new ConnectRunnable(host,port));
             threadPoolForClient.addTask(new ConnectRunnable(host,port));
         }
     }

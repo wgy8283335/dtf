@@ -16,7 +16,6 @@ public class HeartBeatReqHandler extends ChannelInboundHandlerAdapter
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception
 	{
-		// 如果握手成功，主动发送心跳消息
 		MessageProto.Message message = (MessageProto.Message) msg;
 		if (message.getLength() != 2)
 		{
@@ -41,7 +40,7 @@ public class HeartBeatReqHandler extends ChannelInboundHandlerAdapter
 		}
 		else
 		{
-			ctx.fireExceptionCaught(new Throwable("没有Header"));
+			ctx.fireExceptionCaught(new Throwable("No Header"));
 		}
 	}
 

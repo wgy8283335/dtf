@@ -34,8 +34,6 @@ public class RestClientAsync {
 
     public void sendPost(String url, Object object){
         AsyncSubmitRunnable asyncSubmitRunnable = new AsyncSubmitRunnable(TransactionGroupInfo.getCurrent(),url,object);
-        //Thread thread = new Thread(asyncSubmitRunnable);
-        //thread.start();
         threadPoolForClient.addTask(asyncSubmitRunnable);
     }
 
@@ -60,7 +58,6 @@ public class RestClientAsync {
             LockAndCondition lc2 = thirdThreadsInfo.get(groupInfo.getGroupId());
             while(lc2.getState()==DBOperationType.ASYNCFAIL){
                 try{
-                    Thread.sleep(5000);
                     nettyService.sendMsg(transactionServiceInfo);
                     lc2.await();
                 }catch (Exception e){

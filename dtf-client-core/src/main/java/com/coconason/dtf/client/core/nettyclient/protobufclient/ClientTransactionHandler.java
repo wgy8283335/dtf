@@ -43,7 +43,7 @@ public class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 
 		super.channelActive(ctx);
 		this.ctx = ctx;
-		System.out.println("新建链接-->"+this.ctx);
+		System.out.println("create connection-->"+this.ctx);
 	}
 
 	@Override
@@ -58,7 +58,6 @@ public class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 
 		if(action == ActionType.APPROVESUBMIT||action == ActionType.APPROVESUBMIT_STRONG||action == ActionType.CANCEL){
 			map = JSONObject.parseObject(message.getInfo().toString());
-			//groupId=gourpId+memberId
 			lc = threadsInfo.get(map.get("groupId").toString());
 			state = lc.getState();
 		}

@@ -19,7 +19,6 @@ public class LoginAuthReqHandler extends ChannelInboundHandlerAdapter
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception
 	{
 		MessageProto.Message message = (MessageProto.Message) msg;
-		// 如果是握手应答消息，需要判断是否握手成功
 		if (message.getLength() != 2 && message.getAction() == MessageProto.Message.ActionType.LOGIN_RESP)
 		{
 			if (message.getLength() != 2)
@@ -28,26 +27,22 @@ public class LoginAuthReqHandler extends ChannelInboundHandlerAdapter
 				if (loginResult.equals("login_ok"))
 				{
 					System.out.println("Login is success :" + message);
-					// 透传给后面的Handler处理
 					ctx.fireChannelRead(msg);
 				}
 				else
 				{
-					// 握手失败，关闭连接
 					ctx.close();
-					System.out.println("握手失败，关闭连接");
+					System.out.println("fail,close connection");
 				}
 			}
 			else
 			{
-				// 握手失败，关闭连接
 				ctx.close();
-				System.out.println("握手失败，关闭连接");
+				System.out.println("fail,close connection");
 			}
 		}
 		else
 		{
-			// 如果不是握手应答消息，直接透传
 			ctx.fireChannelRead(msg);
 		}
 	}
