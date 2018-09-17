@@ -7,7 +7,6 @@ import com.coconason.dtf.client.core.beans.TransactionType;
 import com.coconason.dtf.client.core.dbconnection.ThreadsInfo;
 import com.coconason.dtf.client.core.nettyclient.messagequeue.TransactionMessageQueue;
 import com.coconason.dtf.client.core.nettyclient.protobufclient.NettyService;
-import com.coconason.dtf.client.core.threadpools.ThreadPoolForClient;
 import com.coconason.dtf.client.core.utils.GroupidGenerator;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.common.utils.UuidGenerator;
@@ -36,8 +35,6 @@ public class AspectHandler {
     @Autowired
     @Qualifier("threadsInfo")
     ThreadsInfo secondThreadsInfo;
-    @Autowired
-    ThreadPoolForClient threadPoolForClient;
 
     public Object before(String info,ProceedingJoinPoint point) throws Throwable {
 

@@ -1,6 +1,7 @@
 package com.coconason.dtf.client.core.dbconnection;
 
 import com.coconason.dtf.client.core.nettyclient.messagequeue.TransactionMessageQueue;
+import com.coconason.dtf.client.core.threadpools.ThreadPoolForClient;
 
 import javax.sql.DataSource;
 import java.io.PrintWriter;
@@ -23,6 +24,8 @@ public class DTFDataSourceProxy implements DataSource{
 
     private ThreadsInfo secondThreadsInfo;
 
+    private ThreadPoolForClient threadPoolForClient;
+
 
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -40,15 +43,19 @@ public class DTFDataSourceProxy implements DataSource{
         this.secondThreadsInfo = secondThreadsInfo;
     }
 
+    public void setThreadPoolForClient(ThreadPoolForClient threadPoolForClient) {
+        this.threadPoolForClient = threadPoolForClient;
+    }
+
     @Override
     public Connection getConnection() throws SQLException {
-        Connection connection = new DTFConnection(dataSource.getConnection(),threadsInfo,queue,secondThreadsInfo);
+        Connection connection = new DTFConnection(dataSource.getConnection(),threadsInfo,queue,secondThreadsInfo,threadPoolForClient);
         return connection;
     }
 
     @Override
     public Connection getConnection(String username, String password) throws SQLException {
-        Connection connection = new DTFConnection(dataSource.getConnection(username,password),threadsInfo,queue,secondThreadsInfo);
+        Connection connection = new DTFConnection(dataSource.getConnection(username,password),threadsInfo,queue,secondThreadsInfo,threadPoolForClient);
         return connection;
     }
 

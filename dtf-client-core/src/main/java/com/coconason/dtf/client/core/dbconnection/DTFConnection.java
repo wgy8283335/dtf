@@ -10,15 +10,12 @@ import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.common.utils.UuidGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.*;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.locks.ReentrantLock;
 
 import static com.coconason.dtf.client.core.constants.Member.ORIGINAL_ID;
@@ -47,20 +44,20 @@ public class DTFConnection implements Connection {
 
     private ThreadsInfo secondThreadsInfo;
 
-    private ExecutorService executorService = Executors.newCachedThreadPool();
+    //private ExecutorService executorService = Executors.newCachedThreadPool();
 
-    @Autowired
-    ThreadPoolForClient threadPoolForClient;
+    private ThreadPoolForClient threadPoolForClient;
 
     public DTFConnection(Connection connection) {
         this.connection = connection;
     }
 
-    public DTFConnection(Connection connection,ThreadsInfo threadsInfo,TransactionMessageQueue queue,ThreadsInfo secondThreadsInfo) {
+    public DTFConnection(Connection connection,ThreadsInfo threadsInfo,TransactionMessageQueue queue,ThreadsInfo secondThreadsInfo,ThreadPoolForClient threadPoolForClient) {
         this.connection = connection;
         this.threadsInfo = threadsInfo;
         this.queue = queue;
         this.secondThreadsInfo = secondThreadsInfo;
+        this.threadPoolForClient = threadPoolForClient;
     }
 
     @Override
