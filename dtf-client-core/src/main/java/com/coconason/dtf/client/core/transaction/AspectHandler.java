@@ -4,7 +4,6 @@ import com.coconason.dtf.client.core.annotation.DtfTransaction;
 import com.coconason.dtf.client.core.beans.TransactionGroupInfo;
 import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
 import com.coconason.dtf.client.core.beans.TransactionType;
-import com.coconason.dtf.client.core.constant.Member;
 import com.coconason.dtf.client.core.dbconnection.ThreadsInfo;
 import com.coconason.dtf.client.core.nettyclient.messagequeue.TransactionMessageQueue;
 import com.coconason.dtf.client.core.nettyclient.protobufclient.NettyService;
@@ -35,6 +34,8 @@ public class AspectHandler {
     @Qualifier("threadsInfo")
     ThreadsInfo secondThreadsInfo;
 
+    static final Long ORIGNAL_ID = 1L;
+
     public Object before(String info,ProceedingJoinPoint point) throws Throwable {
 
         MethodSignature signature = (MethodSignature) point.getSignature();
@@ -60,7 +61,7 @@ public class AspectHandler {
             if(info==null) {
                 //1.
                 String groupIdTemp = GroupidGenerator.getStringId(0, 0);
-                TransactionGroupInfo groupInfo = TransactionGroupInfo.newInstanceWithGroupidMemid(groupIdTemp, Member.ORIGNAL_ID);
+                TransactionGroupInfo groupInfo = TransactionGroupInfo.newInstanceWithGroupidMemid(groupIdTemp, ORIGNAL_ID);
                 TransactionGroupInfo.setCurrent(groupInfo);
                 //2.
                 point.proceed();
@@ -80,7 +81,7 @@ public class AspectHandler {
             if(transactionGroupInfo == null) {
                 //1.
                 String groupIdTemp = GroupidGenerator.getStringId(0, 0);
-                TransactionGroupInfo groupInfo = TransactionGroupInfo.newInstanceWithGroupidMemid(groupIdTemp, Member.ORIGNAL_ID);
+                TransactionGroupInfo groupInfo = TransactionGroupInfo.newInstanceWithGroupidMemid(groupIdTemp, ORIGNAL_ID);
                 TransactionGroupInfo.setCurrent(groupInfo);
                 switch (transactionType) {
                     case SYNC_FINAL:
