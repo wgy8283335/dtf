@@ -15,19 +15,19 @@ public class GroupidGenerator {
     static class SnowflakeIdWorker {
 
         // ==============================Fields===========================================
-        /** 开始时间截 (2015-01-01) */
+        /** start time stamp (2015-01-01) */
         private static final long twepoch = 1420041600000L;
 
-        /** 机器id所占的位数 */
+        /** work id bit width */
         private static final long workerIdBits = 5L;
 
-        /** 数据标识id所占的位数 */
+        /** data center id bit width */
         private static final long datacenterIdBits = 5L;
 
-        /** 支持的最大机器id，结果是31 (这个移位算法可以很快的计算出几位二进制数所能表示的最大十进制数) */
+        /** max work id is 31. bit shift operation could calculate the maximum value of the bit width*/
         private static final long maxWorkerId = -1L ^ (-1L << workerIdBits);
 
-        /** 支持的最大数据标识id，结果是31 */
+        /** max data center id is 31 */
         private static final long maxDatacenterId = -1L ^ (-1L << datacenterIdBits);
 
         /** 序列在id中占的位数 */
