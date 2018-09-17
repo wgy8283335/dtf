@@ -17,9 +17,8 @@ import java.util.concurrent.TimeUnit;
 public class ThreadPoolForClient {
 
     @Autowired
-    ThreadPoolForClientConfiguration threadPoolForClientConfiguration;
+    private ThreadPoolForClientConfiguration threadPoolForClientConfiguration;
 
-    //private ExecutorService pool = new ThreadPoolExecutor(100,1000,0L, TimeUnit.MILLISECONDS,new LinkedBlockingDeque<Runnable>(1000),new DefaultThreadFactory("defaultThreadFactory"),new ThreadPoolExecutor.AbortPolicy());
     private ExecutorService pool;
 
     public ThreadPoolForClient() {

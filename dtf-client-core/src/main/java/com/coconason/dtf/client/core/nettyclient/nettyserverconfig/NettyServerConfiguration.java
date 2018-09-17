@@ -1,14 +1,12 @@
 package com.coconason.dtf.client.core.nettyclient.nettyserverconfig;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
 /**
  * @Author: Jason
  * @date: 2018/8/22-17:22
  */
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.stereotype.Component;
-
 @Component
 @PropertySource("classpath:application.properties")
 public class NettyServerConfiguration {
