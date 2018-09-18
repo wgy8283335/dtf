@@ -30,36 +30,36 @@ public class GroupidGenerator {
         /** max data center id is 31 */
         private static final long maxDatacenterId = -1L ^ (-1L << datacenterIdBits);
 
-        /** 序列在id中占的位数 */
+        /** sequence id bit width */
         private static final long sequenceBits = 12L;
 
-        /** 机器ID向左移12位 */
+        /** worker ID shift left 12 bits */
         private static final long workerIdShift = sequenceBits;
 
-        /** 数据标识id向左移17位(12+5) */
+        /** datacenter id shift left 17 bits */
         private static final long datacenterIdShift = sequenceBits + workerIdBits;
 
-        /** 时间截向左移22位(5+5+12) */
+        /** time stamp shift left 22 bits */
         private static final long timestampLeftShift = sequenceBits + workerIdBits + datacenterIdBits;
 
-        /** 生成序列的掩码，这里为4095 (0b111111111111=0xfff=4095) */
+        /** generator sequence mask , this is 4095 (0b111111111111=0xfff=4095) */
         private static final long sequenceMask = -1L ^ (-1L << sequenceBits);
 
-        /** 工作机器ID(0~31) */
+        /** worker ID(0~31) */
         private static long workerId;
 
-        /** 数据中心ID(0~31) */
+        /** datacenter ID(0~31) */
         private static long datacenterId;
 
-        /** 毫秒内序列(0~4095) */
+        /** sequence in millisecond(0~4095) */
         private static long sequence = 0L;
 
-        /** 上次生成ID的时间截 */
+        /** the time stamp of the latest generated*/
         private static long lastTimestamp = -1L;
 
         // ==============================Methods==========================================
         /**
-         * 获得下一个ID (该方法是线程安全的)
+         * accquire a next ID (the method is thread safe)
          * @return SnowflakeId
          */
         public static long nextId(long workerIdTemp, long datacenterIdTemp) {
@@ -74,37 +74,37 @@ public class GroupidGenerator {
 
             long timestamp = timeGen();
 
-            //如果当前时间小于上一次ID生成的时间戳，说明系统时钟回退过这个时候应当抛出异常
+            //if current time is less than the last time stamp,means the system clock has been rolled back.Should throws exception.
             if (timestamp < lastTimestamp) {
                 throw new RuntimeException(
                         String.format("Clock moved backwards.  Refusing to generate id for %d milliseconds", lastTimestamp - timestamp));
             }
 
-            //如果是同一时间生成的，则进行毫秒内序列
+            //if timestamp are generated in the same time, generate sequence in millisecond.
             if (lastTimestamp == timestamp) {
                 sequence = (sequence + 1) & sequenceMask;
-                //毫秒内序列溢出
+                //over flow sequence in millisecond.
                 if (sequence == 0) {
-                    //阻塞到下一个毫秒,获得新的时间戳
+                    //block until acquire new timestamp.
                     timestamp = tilNextMillis(lastTimestamp);
                 }
             }
-            //时间戳改变，毫秒内序列重置
+            //if timestamp changed, reset sequence in millisecond.
             else {
                 sequence = 0L;
             }
 
-            //上次生成ID的时间截
+            //the timestamp of the last generated id.
             lastTimestamp = timestamp;
 
-            //移位并通过或运算拼到一起组成64位的ID
+            // calculate 64 bit id
             return ((timestamp - twepoch) << timestampLeftShift)|(datacenterId << datacenterIdShift)|(workerId << workerIdShift)|sequence;
         }
 
         /**
-         * 阻塞到下一个毫秒，直到获得新的时间戳
-         * @param lastTimestamp 上次生成ID的时间截
-         * @return 当前时间戳
+         * block until acquire new timestamp.
+         * @param lastTimestamp
+         * @return
          */
         protected static long tilNextMillis(long lastTimestamp) {
             long timestamp = timeGen();
@@ -115,8 +115,8 @@ public class GroupidGenerator {
         }
 
         /**
-         * 返回以毫秒为单位的当前时间
-         * @return 当前时间(毫秒)
+         * return current time in millisecond.
+         * @return current time in millisecond
          */
         protected static long timeGen() {
             return System.currentTimeMillis();

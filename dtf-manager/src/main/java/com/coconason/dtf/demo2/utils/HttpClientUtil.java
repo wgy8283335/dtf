@@ -10,6 +10,10 @@ import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 
+/**
+ * @Author: Jason
+ * @date: 2018/9/17-11:36
+ */
 public class HttpClientUtil {
 
 	public static String doPostJson(String url, String json,String groupId) {
@@ -17,13 +21,10 @@ public class HttpClientUtil {
 		CloseableHttpResponse response = null;
 		String resultString = "";
 		try {
-			// 创建Http Post请求
 			HttpPost httpPost = new HttpPost(url);
-			// 创建请求内容
 			StringEntity entity = new StringEntity(json, ContentType.APPLICATION_JSON);
 			httpPost.setEntity(entity);
 			httpPost.setHeader("groupInfo",groupId);
-			// 执行http请求
 			response = httpClient.execute(httpPost);
 			resultString = EntityUtils.toString(response.getEntity(), "utf-8");
 		} catch (Exception e) {
