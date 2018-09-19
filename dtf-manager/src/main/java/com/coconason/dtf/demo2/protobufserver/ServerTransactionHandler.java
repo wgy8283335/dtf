@@ -14,6 +14,7 @@ import com.coconason.dtf.demo2.message.TransactionMessageGroup;
 import com.coconason.dtf.demo2.message.TransactionMessageGroupAsync;
 import com.coconason.dtf.demo2.service.SendRunnable;
 import com.coconason.dtf.demo2.threadpools.ThreadPoolForServer;
+import com.coconason.dtf.demo2.utils.SetUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
@@ -163,63 +164,30 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
         @Override
         public void run() {
             try{
-                //Thread.sleep(1000);
-//                JSONObject info = JSONObject.parseObject(message.getInfo());
-//                Object obj = info.get("groupMemberSet");
-//                TransactionMessageForSubmit tmfs;
-//                if(obj !=null){
-//                    tmfs = new TransactionMessageForSubmit(message);
-//                }else{
-//                    String groupId = info.get("groupId").toString();
-//                    tmfs = messageForSubmitSyncCache.get(groupId);
-//                    if(tmfs == null){
-//                        return;
-//                    }
-//                }
                 JSONObject info = JSONObject.parseObject(message.getInfo());
                 String groupId = info.get("groupId").toString();
                 Object obj = info.get("groupMemberSet");
-                TransactionMessageForSubmit tmfs;
-                if(obj ==null){
-                    tmfs = messageForSubmitSyncCache.get(groupId);
-                    //return;
-                }else{
-                    tmfs = new TransactionMessageForSubmit(message);
-                }
-                if(tmfs == null){
+                TransactionMessageForSubmit tmfs = obj == null ? messageForSubmitSyncCache.get(groupId):new TransactionMessageForSubmit(message);
+                if(tmfs == null||tmfs.getMemberSet().isEmpty()||messageSyncCache.get(tmfs.getGroupId())==null){
                     return;
                 }
                 Set setFromMessage =tmfs.getMemberSet();
                 TransactionMessageGroup elementFromCache = messageSyncCache.get(tmfs.getGroupId());
-                if(elementFromCache == null){
-                    return;
-                }
                 Set setFromCache = elementFromCache.getMemberSet();
                 elementFromCache.setCtxForSubmitting(ctx);
                 messageSyncCache.put(elementFromCache.getGroupId(),elementFromCache);
                 List<TransactionMessageForAdding> memberList = elementFromCache.getMemberList();
                 //check whether the member from message has the same element as the member from cache.
                 if(!setFromMessage.isEmpty()){
-                    setFromMessage.removeAll(setFromCache);
-                    if(setFromMessage.isEmpty()){
+                    if(SetUtil.isSetEqual(setFromMessage,setFromCache)){
                         for (TransactionMessageForAdding messageForAdding: memberList) {
                             //success
-                            snedMsg(elementFromCache.getGroupId()+messageForAdding.getGroupMemberId(),actionType,messageForAdding.getCtx());
+                            snedMsg(elementFromCache.getGroupId()+messageForAdding.getGroupMemberId(),ActionType.APPROVESUBMIT_STRONG,messageForAdding.getCtx());
                         }
                         if(actionType == ActionType.ADD || actionType == ActionType.APPROVESUBMIT){
                             messageSyncCache.clear(tmfs.getGroupId());
                         }
                     }
-//                    else{
-//                        for (TransactionMessageForAdding messageForAdding: memberList) {
-//                            //fail
-//                            snedMsg(elementFromCache.getGroupId()+messageForAdding.getGroupMemberId(), ActionType.CANCEL,messageForAdding.getCtx());
-//                        }
-//                    }
-//                    if(actionType == ActionType.APPROVESUBMIT){
-//                        //Send response to other members of the group.Clear all messages of the transaction in the cache.
-//                        messageSyncCache.clear(tmfs.getGroupId());
-//                    }
                 }
             }catch (Exception e){
                 e.printStackTrace();
