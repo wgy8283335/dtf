@@ -3,6 +3,7 @@ package com.coconason.dtf.demo2.service;
 import com.coconason.dtf.demo2.cache.MessageAsyncCache;
 import com.coconason.dtf.demo2.cache.MessageAsyncQueue;
 import com.coconason.dtf.demo2.message.MessageInfo;
+import com.coconason.dtf.demo2.message.TransactionMessageForSubmit;
 import com.coconason.dtf.demo2.message.TransactionMessageGroupAsync;
 import com.coconason.dtf.demo2.utils.HttpClientUtil;
 
@@ -16,27 +17,28 @@ public class SendRunnable implements Runnable{
 
     private MessageAsyncCache messageAsyncCache;
 
-    private String groupId;
+    private TransactionMessageForSubmit transactionMessageForSubmit;
 
     private MessageAsyncQueue messageAsyncQueue;
 
-    public SendRunnable(MessageAsyncCache messageAsyncCache, String groupId, MessageAsyncQueue messageAsyncQueue) {
+    public SendRunnable(MessageAsyncCache messageAsyncCache, TransactionMessageForSubmit transactionMessageForSubmit, MessageAsyncQueue messageAsyncQueue) {
         this.messageAsyncCache = messageAsyncCache;
-        this.groupId = groupId;
+        this.transactionMessageForSubmit = transactionMessageForSubmit;
         this.messageAsyncQueue = messageAsyncQueue;
     }
 
     @Override
     public void run() {
         try{
-            Thread.sleep(5000);
-            TransactionMessageGroupAsync theMessageGroupAsync = (TransactionMessageGroupAsync) messageAsyncCache.get(groupId);
+            //Thread.sleep(5000);
+            //get the TransactionMessageGroupAsync from the messageAsyncCache
+            TransactionMessageGroupAsync theMessageGroupAsync = messageAsyncCache.get(transactionMessageForSubmit.getGroupId());
             Set<MessageInfo> theMemberSet = theMessageGroupAsync.getMemberSet();
             for(MessageInfo messageInfo :theMemberSet){
                 String url= messageInfo.getUrl();
                 String obj = messageInfo.getObj().toString();
                 try{
-                    HttpClientUtil.doPostJson(url,obj,groupId);
+                    HttpClientUtil.doPostJson(url,obj,transactionMessageForSubmit.getGroupId());
                     messageInfo.setSubmitted(true);
                 }catch (Exception e){
                     //if fail put the info of the service into a cache,and there will be another thread to check and execute.

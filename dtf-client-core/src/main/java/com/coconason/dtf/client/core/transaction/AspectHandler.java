@@ -66,7 +66,7 @@ public class AspectHandler {
                 //2.
                 point.proceed();
                 //3.Send confirm message to netty server, in order to commit all transaction in the service
-                nettyService.sendMsg(TransactionServiceInfo.newInstanceForAsyncCommit(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.ASYNC_COMMIT, TransactionGroupInfo.getCurrent().getGroupId()));
+                nettyService.sendMsg(TransactionServiceInfo.newInstanceForAsyncCommit(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.ASYNC_COMMIT, TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
             }else{
                 point.proceed();
             }

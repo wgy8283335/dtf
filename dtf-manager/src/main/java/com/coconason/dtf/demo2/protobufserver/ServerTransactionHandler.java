@@ -3,22 +3,21 @@ package com.coconason.dtf.demo2.protobufserver;
 import com.alibaba.fastjson.JSONObject;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
-import com.coconason.dtf.demo2.cache.MessageAsyncCache;
-import com.coconason.dtf.demo2.cache.MessageAsyncQueue;
-import com.coconason.dtf.demo2.cache.MessageForSubmitSyncCache;
-import com.coconason.dtf.demo2.cache.MessageSyncCache;
+import com.coconason.dtf.demo2.cache.*;
 import com.coconason.dtf.demo2.message.TransactionMessageForAdding;
 import com.coconason.dtf.demo2.message.TransactionMessageForSubmit;
 import com.coconason.dtf.demo2.message.TransactionMessageGroup;
 import com.coconason.dtf.demo2.message.TransactionMessageGroupAsync;
 import com.coconason.dtf.demo2.service.ApplyForRunnable;
-import com.coconason.dtf.demo2.utils.MessageSender;
 import com.coconason.dtf.demo2.service.SendRunnable;
 import com.coconason.dtf.demo2.threadpools.ThreadPoolForServer;
+import com.coconason.dtf.demo2.utils.MessageSender;
+import com.coconason.dtf.demo2.utils.SetUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @Author: Jason
@@ -38,12 +37,17 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
 
     private ThreadPoolForServer threadPoolForServer;
 
-    public ServerTransactionHandler(MessageSyncCache messageSyncCache,MessageAsyncCache messageAsyncCache , MessageAsyncQueue messageAsyncQueue, ThreadPoolForServer threadPoolForServer,MessageForSubmitSyncCache messageForSubmitSyncCache) {
+    private MessageForSubmitAsyncCache messageForSubmitAsyncCache;
+
+    public ServerTransactionHandler(MessageSyncCache messageSyncCache,MessageAsyncCache messageAsyncCache ,
+                                    MessageAsyncQueue messageAsyncQueue, ThreadPoolForServer threadPoolForServer,
+                                    MessageForSubmitSyncCache messageForSubmitSyncCache,MessageForSubmitAsyncCache messageForSubmitAsyncCache) {
         this.messageSyncCache = messageSyncCache;
         this.messageAsyncQueue = messageAsyncQueue;
         this.messageAsyncCache = messageAsyncCache;
         this.threadPoolForServer = threadPoolForServer;
         this.messageForSubmitSyncCache = messageForSubmitSyncCache;
+        this.messageForSubmitAsyncCache = messageForSubmitAsyncCache;
     }
 
     @Override
@@ -117,16 +121,29 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
                 TransactionMessageGroupAsync transactionMessageGroupAsync=null;
                 try{
                     transactionMessageGroupAsync = TransactionMessageGroupAsync.parse(message);
+                    //add message in messageAsyncCache
                     messageAsyncCache.putDependsOnConditionAsync(transactionMessageGroupAsync);
                     MessageSender.snedMsg(transactionMessageGroupAsync.getGroupId(),ActionType.ADD_SUCCESS_ASYNC,ctx);
                 }catch (Exception e) {
                     MessageSender.snedMsg(transactionMessageGroupAsync.getGroupId(),ActionType.ADD_FAIL_ASYNC,ctx);
                 }
+                Set setFromCacheTemp = messageAsyncCache.get(transactionMessageGroupAsync.getGroupId()).getMemberSet();
+                Set setFromMessageTemp = messageForSubmitAsyncCache.get(transactionMessageGroupAsync.getGroupId()).getMemberSet();
+                if(setFromMessageTemp!=null&&SetUtil.isSetEqual(setFromCacheTemp,setFromMessageTemp)){
+                    threadPoolForServer.addTask(new SendRunnable(messageAsyncCache,messageForSubmitAsyncCache.get(transactionMessageGroupAsync.getGroupId()),messageAsyncQueue));
+                }
                 break;
             case ASYNC_COMMIT:
                 JSONObject map = JSONObject.parseObject(message.getInfo());
                 String groupId = map.get("groupId").toString();
-                threadPoolForServer.addTask(new SendRunnable(messageAsyncCache,groupId,messageAsyncQueue));
+                TransactionMessageForSubmit transactionMessageForSubmit = new TransactionMessageForSubmit(message);
+                messageForSubmitAsyncCache.put(transactionMessageForSubmit);
+                Set setFromCache = messageAsyncCache.get(groupId).getMemberSet();
+                Set setFromMessage = transactionMessageForSubmit.getMemberSet();
+                if(SetUtil.isSetEqual(setFromCache,setFromMessage)){
+                    threadPoolForServer.addTask(new SendRunnable(messageAsyncCache,transactionMessageForSubmit,messageAsyncQueue));
+                }
+
                 break;
             default:
                 break;

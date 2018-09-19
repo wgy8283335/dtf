@@ -52,7 +52,10 @@ public class RestClientAsync {
         public void run() {
             LockAndCondition lc = new LockAndCondition(new ReentrantLock(), DBOperationType.DEFAULT);
             thirdThreadsInfo.put(groupInfo.getGroupId(),lc);
+            groupInfo.addNewMemeber();
+            TransactionGroupInfo.setCurrent(groupInfo);
             TransactionServiceInfo transactionServiceInfo = TransactionServiceInfo.newInstanceForRestful(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.ADD_ASYNC, groupInfo.getGroupId(), groupInfo.getMemberId(), url, object);
+            //TransactionServiceInfo transactionServiceInfo = TransactionServiceInfo.newInstanceForAsyncAdd(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.ADD_ASYNC, groupInfo.getGroupId(), groupInfo.getGroupMembers(), url, object);
             nettyService.sendMsg(transactionServiceInfo);
             lc.await();
             LockAndCondition lc2 = thirdThreadsInfo.get(groupInfo.getGroupId());

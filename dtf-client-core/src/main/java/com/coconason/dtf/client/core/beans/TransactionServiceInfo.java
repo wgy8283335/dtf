@@ -56,9 +56,10 @@ public class TransactionServiceInfo {
         return new TransactionServiceInfo(id,info,action);
     }
 
-    public static TransactionServiceInfo newInstanceForAsyncCommit(String id, ActionType action, String groupId){
+    public static TransactionServiceInfo newInstanceForAsyncCommit(String id, ActionType action, String groupId,Set<Long> groupMemberSet){
         JSONObject info = new JSONObject();
         info.put("groupId",groupId);
+        info.put("groupMemberSet",groupMemberSet.toString());
         return new TransactionServiceInfo(id,info,action);
     }
 
