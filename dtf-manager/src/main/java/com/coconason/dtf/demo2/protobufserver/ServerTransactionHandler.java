@@ -6,6 +6,7 @@ import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
 import com.coconason.dtf.common.utils.UuidGenerator;
 import com.coconason.dtf.demo2.cache.MessageAsyncCache;
 import com.coconason.dtf.demo2.cache.MessageAsyncQueue;
+import com.coconason.dtf.demo2.cache.MessageForSubmitSyncCache;
 import com.coconason.dtf.demo2.cache.MessageSyncCache;
 import com.coconason.dtf.demo2.message.TransactionMessageForAdding;
 import com.coconason.dtf.demo2.message.TransactionMessageForSubmit;
@@ -27,6 +28,8 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
 
     MessageSyncCache messageSyncCache;
 
+    MessageForSubmitSyncCache messageForSubmitSyncCache;
+
     MessageAsyncCache messageAsyncCache;
 
     MessageAsyncQueue messageAsyncQueue;
@@ -35,11 +38,12 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
 
     private ThreadPoolForServer threadPoolForServer;
 
-    public ServerTransactionHandler(MessageSyncCache messageSyncCache,MessageAsyncCache messageAsyncCache , MessageAsyncQueue messageAsyncQueue, ThreadPoolForServer threadPoolForServer) {
+    public ServerTransactionHandler(MessageSyncCache messageSyncCache,MessageAsyncCache messageAsyncCache , MessageAsyncQueue messageAsyncQueue, ThreadPoolForServer threadPoolForServer,MessageForSubmitSyncCache messageForSubmitSyncCache) {
         this.messageSyncCache = messageSyncCache;
         this.messageAsyncQueue = messageAsyncQueue;
         this.messageAsyncCache = messageAsyncCache;
         this.threadPoolForServer = threadPoolForServer;
+        this.messageForSubmitSyncCache = messageForSubmitSyncCache;
     }
 
     @Override
@@ -64,16 +68,20 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
                 //store the message in the cache.
                 //check whether the group exits in the cache
                 messageSyncCache.putDependsOnCondition(new TransactionMessageGroup(message,ctx));
+                threadPoolForServer.addTask(new ApplyForRunnable(message,ActionType.ADD,ctx));
                 break;
             case APPLYFORSUBMIT:
+                messageForSubmitSyncCache.put( new TransactionMessageForSubmit(message));
                 threadPoolForServer.addTask(new ApplyForRunnable(message,ActionType.APPROVESUBMIT,ctx));
                 break;
             case ADD_STRONG:
                 //store the message in the cache.
                 //check whether the group exits in the cache
                 messageSyncCache.putDependsOnCondition(new TransactionMessageGroup(message,ctx));
+                threadPoolForServer.addTask(new ApplyForRunnable(message,ActionType.ADD_STRONG,ctx));
                 break;
             case APPLYFORSUBMIT_STRONG:
+                messageForSubmitSyncCache.put( new TransactionMessageForSubmit(message));
                 threadPoolForServer.addTask(new ApplyForRunnable(message,ActionType.APPROVESUBMIT_STRONG,ctx));
                 break;
             case CANCEL:
@@ -155,10 +163,37 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
         @Override
         public void run() {
             try{
-                Thread.sleep(1000);
-                TransactionMessageForSubmit tmfs = new TransactionMessageForSubmit(message);
+                //Thread.sleep(1000);
+//                JSONObject info = JSONObject.parseObject(message.getInfo());
+//                Object obj = info.get("groupMemberSet");
+//                TransactionMessageForSubmit tmfs;
+//                if(obj !=null){
+//                    tmfs = new TransactionMessageForSubmit(message);
+//                }else{
+//                    String groupId = info.get("groupId").toString();
+//                    tmfs = messageForSubmitSyncCache.get(groupId);
+//                    if(tmfs == null){
+//                        return;
+//                    }
+//                }
+                JSONObject info = JSONObject.parseObject(message.getInfo());
+                String groupId = info.get("groupId").toString();
+                Object obj = info.get("groupMemberSet");
+                TransactionMessageForSubmit tmfs;
+                if(obj ==null){
+                    tmfs = messageForSubmitSyncCache.get(groupId);
+                    //return;
+                }else{
+                    tmfs = new TransactionMessageForSubmit(message);
+                }
+                if(tmfs == null){
+                    return;
+                }
                 Set setFromMessage =tmfs.getMemberSet();
                 TransactionMessageGroup elementFromCache = messageSyncCache.get(tmfs.getGroupId());
+                if(elementFromCache == null){
+                    return;
+                }
                 Set setFromCache = elementFromCache.getMemberSet();
                 elementFromCache.setCtxForSubmitting(ctx);
                 messageSyncCache.put(elementFromCache.getGroupId(),elementFromCache);
@@ -171,16 +206,20 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
                             //success
                             snedMsg(elementFromCache.getGroupId()+messageForAdding.getGroupMemberId(),actionType,messageForAdding.getCtx());
                         }
-                    }else{
-                        for (TransactionMessageForAdding messageForAdding: memberList) {
-                            //fail
-                            snedMsg(elementFromCache.getGroupId()+messageForAdding.getGroupMemberId(), ActionType.CANCEL,messageForAdding.getCtx());
+                        if(actionType == ActionType.ADD || actionType == ActionType.APPROVESUBMIT){
+                            messageSyncCache.clear(tmfs.getGroupId());
                         }
                     }
-                    if(actionType == ActionType.APPROVESUBMIT){
-                        //Send response to other members of the group.Clear all messages of the transaction in the cache.
-                        messageSyncCache.clear(tmfs.getGroupId());
-                    }
+//                    else{
+//                        for (TransactionMessageForAdding messageForAdding: memberList) {
+//                            //fail
+//                            snedMsg(elementFromCache.getGroupId()+messageForAdding.getGroupMemberId(), ActionType.CANCEL,messageForAdding.getCtx());
+//                        }
+//                    }
+//                    if(actionType == ActionType.APPROVESUBMIT){
+//                        //Send response to other members of the group.Clear all messages of the transaction in the cache.
+//                        messageSyncCache.clear(tmfs.getGroupId());
+//                    }
                 }
             }catch (Exception e){
                 e.printStackTrace();

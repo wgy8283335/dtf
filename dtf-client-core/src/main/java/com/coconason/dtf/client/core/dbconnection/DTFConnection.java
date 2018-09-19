@@ -96,8 +96,6 @@ public class DTFConnection implements Connection {
         }
         transactionServiceInfo = TransactionServiceInfo.getCurrent();
         if(TransactionType.SYNC_FINAL==TransactionType.getCurrent()||TransactionType.SYNC_STRONG==TransactionType.getCurrent()) {
-            //Thread thread = new Thread(new SubmitRunnable(TransactionGroupInfo.getCurrent()));
-            //thread.start();
             threadPoolForClient.addTask(new SubmitRunnable(TransactionGroupInfo.getCurrent()));
             try {
                 TransactionGroupInfo transactionGroupInfo = TransactionGroupInfo.getCurrent();

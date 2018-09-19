@@ -3,6 +3,7 @@ package com.coconason.dtf.demo2.protobufserver;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.demo2.cache.MessageAsyncCache;
 import com.coconason.dtf.demo2.cache.MessageAsyncQueue;
+import com.coconason.dtf.demo2.cache.MessageForSubmitSyncCache;
 import com.coconason.dtf.demo2.cache.MessageSyncCache;
 import com.coconason.dtf.demo2.service.ConsumerRunnable;
 import com.coconason.dtf.demo2.threadpools.ThreadPoolForServer;
@@ -43,6 +44,7 @@ public class NettyServer
         EventLoopGroup work = new NioEventLoopGroup();
         final MessageSyncCache messageSyncCache = new MessageSyncCache();
         final MessageAsyncCache messageAsyncCache = new MessageAsyncCache();
+        final MessageForSubmitSyncCache messageForSubmitSyncCache = new MessageForSubmitSyncCache();
         final MessageAsyncQueue messageAsyncQueue = messageAsyncQueueTemp;
         final ThreadPoolForServer threadPoolForServer = threadPoolForServerTemp;
         try
@@ -64,7 +66,7 @@ public class NettyServer
                             ch.pipeline().addLast(new ProtobufEncoder());
                             ch.pipeline().addLast(new ReadTimeoutHandler(50));
                             ch.pipeline().addLast(new LoginAuthRespHandler());
-                            ch.pipeline().addLast(new ServerTransactionHandler(messageSyncCache,messageAsyncCache,messageAsyncQueue,threadPoolForServer));
+                            ch.pipeline().addLast(new ServerTransactionHandler(messageSyncCache,messageAsyncCache,messageAsyncQueue,threadPoolForServer,messageForSubmitSyncCache));
                             ch.pipeline().addLast(new HeartBeatRespHandler());
                         }
                     });
