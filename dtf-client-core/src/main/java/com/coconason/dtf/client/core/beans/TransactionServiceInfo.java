@@ -14,9 +14,9 @@ public class TransactionServiceInfo {
 
     private final static ThreadLocal<TransactionServiceInfo> current = new ThreadLocal<>();
 
-    String id;
-    JSONObject info;
-    ActionType action;
+    private String id;
+    private JSONObject info;
+    private ActionType action;
 
     public String getId() {
         return id;

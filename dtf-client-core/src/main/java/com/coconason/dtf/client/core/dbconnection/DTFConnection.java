@@ -44,8 +44,6 @@ public class DTFConnection implements Connection {
 
     private ThreadsInfo secondThreadsInfo;
 
-    //private ExecutorService executorService = Executors.newCachedThreadPool();
-
     private ThreadPoolForClient threadPoolForClient;
 
     public DTFConnection(Connection connection) {

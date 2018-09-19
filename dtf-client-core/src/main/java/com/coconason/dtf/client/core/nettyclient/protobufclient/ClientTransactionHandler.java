@@ -22,20 +22,20 @@ public class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 
 	@Autowired
 	@Qualifier("threadsInfo")
-	ThreadsInfo threadsInfo;
+	private ThreadsInfo threadsInfo;
 
 	@Autowired
 	@Qualifier("threadsInfo")
-	ThreadsInfo secondThreadsInfo;
+	private ThreadsInfo secondThreadsInfo;
 
 	@Autowired
 	@Qualifier("threadsInfo")
-	ThreadsInfo thirdThreadsInfo;
+	private ThreadsInfo thirdThreadsInfo;
 
 	@Autowired
-	ApplicationContext applicationContext;
+	private ApplicationContext applicationContext;
 
-	ChannelHandlerContext ctx;
+	private ChannelHandlerContext ctx;
 
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception

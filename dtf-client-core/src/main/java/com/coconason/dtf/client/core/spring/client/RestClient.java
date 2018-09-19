@@ -14,7 +14,7 @@ import java.util.*;
 public class RestClient {
 
     @Autowired
-    ClientHttpRequestInterceptor dtfHttpRequestInterceptor;
+    private ClientHttpRequestInterceptor dtfHttpRequestInterceptor;
 
     public String sendPost(String url, Object object){
         RestTemplate restTemplate = new RestTemplate();

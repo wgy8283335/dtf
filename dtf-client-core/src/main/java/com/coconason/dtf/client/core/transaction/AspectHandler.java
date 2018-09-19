@@ -29,12 +29,12 @@ import static com.coconason.dtf.client.core.constants.Member.ORIGINAL_ID;
 public class AspectHandler {
 
     @Autowired
-    TransactionMessageQueue queue;
+    private TransactionMessageQueue queue;
     @Autowired
-    NettyService nettyService;
+    private NettyService nettyService;
     @Autowired
     @Qualifier("threadsInfo")
-    ThreadsInfo secondThreadsInfo;
+    private ThreadsInfo secondThreadsInfo;
 
     public Object before(String info,ProceedingJoinPoint point) throws Throwable {
 

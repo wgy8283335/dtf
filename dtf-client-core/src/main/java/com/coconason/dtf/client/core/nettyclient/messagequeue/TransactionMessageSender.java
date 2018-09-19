@@ -15,13 +15,13 @@ import org.springframework.stereotype.Component;
 public class TransactionMessageSender {
 
     @Autowired
-    TransactionMessageQueue queue;
+    private TransactionMessageQueue queue;
 
     @Autowired
-    NettyService service;
+    private NettyService service;
 
     @Autowired
-    ThreadPoolForClient threadPoolForClient;
+    private ThreadPoolForClient threadPoolForClient;
 
     public void startSendMessage() throws InterruptedException{
         threadPoolForClient.addTask(new sendMessageRunnable());

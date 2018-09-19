@@ -30,15 +30,15 @@ import java.util.concurrent.TimeUnit;
 public class NettyService {
 
     @Autowired
-    ClientTransactionHandler clientTransactionHandler;
+    private ClientTransactionHandler clientTransactionHandler;
 
     @Autowired
-    ThreadPoolForClient threadPoolForClient;
+    private ThreadPoolForClient threadPoolForClient;
 
     private EventLoopGroup group = new NioEventLoopGroup();
 
     @Autowired
-    NettyServerConfiguration nettyServerConfiguration;
+    private NettyServerConfiguration nettyServerConfiguration;
 
     public synchronized void start(){
         try{

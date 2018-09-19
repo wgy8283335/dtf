@@ -16,10 +16,10 @@ import org.springframework.stereotype.Service;
 public class TransactionNettyListener implements ApplicationListener<ContextRefreshedEvent>{
 
     @Autowired
-    NettyService nettyService;
+    private NettyService nettyService;
 
     @Autowired
-    TransactionMessageSender sender;
+    private TransactionMessageSender sender;
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         nettyService.start();

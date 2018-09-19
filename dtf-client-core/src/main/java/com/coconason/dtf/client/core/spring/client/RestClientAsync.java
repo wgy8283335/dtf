@@ -23,14 +23,14 @@ import java.util.concurrent.locks.ReentrantLock;
 public class RestClientAsync {
 
     @Autowired
-    NettyService nettyService;
+    private NettyService nettyService;
 
     @Autowired
     @Qualifier("threadsInfo")
-    ThreadsInfo thirdThreadsInfo;
+    private ThreadsInfo thirdThreadsInfo;
 
     @Autowired
-    ThreadPoolForClient threadPoolForClient;
+    private ThreadPoolForClient threadPoolForClient;
 
     public void sendPost(String url, Object object){
         AsyncSubmitRunnable asyncSubmitRunnable = new AsyncSubmitRunnable(TransactionGroupInfo.getCurrent(),url,object);
