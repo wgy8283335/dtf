@@ -7,6 +7,7 @@ import com.coconason.dtf.demo2.cache.MessageForSubmitSyncCache;
 import com.coconason.dtf.demo2.cache.MessageSyncCache;
 import com.coconason.dtf.demo2.service.ConsumerRunnable;
 import com.coconason.dtf.demo2.threadpools.ThreadPoolForServer;
+import com.coconason.dtf.demo2.utils.PropertiesReader;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -33,7 +34,13 @@ public class NettyServer
     public static void main(String[] args) throws Exception
     {
         MessageAsyncQueue messageAsyncQueue = new MessageAsyncQueue();
-        ThreadPoolForServer threadPoolForServer = new ThreadPoolForServer();
+        String classpath = Thread.currentThread().getContextClassLoader().getResource("").getPath();
+        PropertiesReader propertiesReader = new PropertiesReader(classpath+"config.properties");
+        ThreadPoolForServer threadPoolForServer = new ThreadPoolForServer(
+                Integer.valueOf(propertiesReader.getProperty("corePoolSize")),
+                Integer.valueOf(propertiesReader.getProperty("maximumPoolSize")),
+                Integer.valueOf(propertiesReader.getProperty("keepAliveTime")),
+                Integer.valueOf(propertiesReader.getProperty("capacity")));
         threadPoolForServer.addTask(new ConsumerRunnable(messageAsyncQueue));
         new NettyServer().bind(messageAsyncQueue,threadPoolForServer);
     }

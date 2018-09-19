@@ -14,8 +14,8 @@ import java.util.concurrent.TimeUnit;
 public class ThreadPoolForServer {
     private ExecutorService pool;
 
-    public ThreadPoolForServer() {
-        pool = new ThreadPoolExecutor(100,1000,0L, TimeUnit.MILLISECONDS,new LinkedBlockingDeque<Runnable>(1000),new DefaultThreadFactory("defaultThreadFactory"),new ThreadPoolExecutor.AbortPolicy());
+    public ThreadPoolForServer(Integer corePoolSize,Integer maximumPoolSize,Integer keepAliveTime,Integer capacity) {
+        pool = new ThreadPoolExecutor(corePoolSize,maximumPoolSize,keepAliveTime, TimeUnit.MILLISECONDS,new LinkedBlockingDeque<Runnable>(capacity),new DefaultThreadFactory("defaultThreadFactory"),new ThreadPoolExecutor.AbortPolicy());
     }
 
     public void addTask(Runnable runnable){
