@@ -42,10 +42,10 @@ public class NettyServer
                 Integer.valueOf(propertiesReader.getProperty("keepAliveTime")),
                 Integer.valueOf(propertiesReader.getProperty("capacity")));
         threadPoolForServer.addTask(new ConsumerRunnable(messageAsyncQueue));
-        new NettyServer().bind(messageAsyncQueue,threadPoolForServer);
+        new NettyServer().bind(messageAsyncQueue,threadPoolForServer,Integer.valueOf(propertiesReader.getProperty("port")));
     }
 
-    public void bind(MessageAsyncQueue messageAsyncQueueTemp,ThreadPoolForServer threadPoolForServerTemp) throws Exception
+    public void bind(MessageAsyncQueue messageAsyncQueueTemp,ThreadPoolForServer threadPoolForServerTemp,Integer port) throws Exception
     {
         EventLoopGroup boss = new NioEventLoopGroup();
         EventLoopGroup work = new NioEventLoopGroup();
@@ -78,7 +78,7 @@ public class NettyServer
                         }
                     });
 
-            ChannelFuture f = b.bind(18080).sync();
+            ChannelFuture f = b.bind(port).sync();
             System.out.println("Netty Server start ok! post is 18080");
             f.channel().closeFuture().sync();
         }
