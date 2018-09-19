@@ -26,13 +26,13 @@ import java.util.List;
  */
 public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
 
-    MessageSyncCache messageSyncCache;
+    private MessageSyncCache messageSyncCache;
 
-    MessageForSubmitSyncCache messageForSubmitSyncCache;
+    private MessageForSubmitSyncCache messageForSubmitSyncCache;
 
-    MessageAsyncCache messageAsyncCache;
+    private MessageAsyncCache messageAsyncCache;
 
-    MessageAsyncQueue messageAsyncQueue;
+    private MessageAsyncQueue messageAsyncQueue;
 
     private ChannelHandlerContext ctx;
 

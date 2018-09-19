@@ -10,7 +10,7 @@ import com.coconason.dtf.demo2.utils.HttpClientUtil;
  */
 public class ConsumerRunnable implements Runnable{
 
-    MessageAsyncQueue messageAsyncQueue;
+    private MessageAsyncQueue messageAsyncQueue;
 
     public ConsumerRunnable(MessageAsyncQueue messageAsyncQueue) {
         this.messageAsyncQueue = messageAsyncQueue;
