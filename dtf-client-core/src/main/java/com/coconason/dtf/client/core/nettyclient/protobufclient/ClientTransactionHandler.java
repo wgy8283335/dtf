@@ -151,7 +151,7 @@ public class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 				sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString(),serviceInfo.getInfo().get("groupMemberId").toString(),serviceInfo.getInfo().get("url").toString(),serviceInfo.getInfo().get("obj"));
 				break;
 			case ASYNC_COMMIT:
-				sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString());
+				sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString(),serviceInfo.getInfo().get("groupMemberSet").toString());
 				break;
 			case CANCEL:
 				sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString(),serviceInfo.getInfo().get("groupMemberSet").toString());
