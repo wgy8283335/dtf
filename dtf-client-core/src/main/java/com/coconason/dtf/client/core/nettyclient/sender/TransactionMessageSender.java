@@ -1,4 +1,4 @@
-package com.coconason.dtf.client.core.listener;
+package com.coconason.dtf.client.core.nettyclient.sender;
 
 import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
 import com.coconason.dtf.client.core.nettyclient.messagequeue.TransactionMessageQueue;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-class TransactionMessageSender {
+public class TransactionMessageSender {
 
     @Autowired
     private TransactionMessageQueue queue;
