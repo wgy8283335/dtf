@@ -1,6 +1,5 @@
 package com.coconason.dtf.client.core.listener;
 
-import com.coconason.dtf.client.core.nettyclient.messagequeue.TransactionMessageSender;
 import com.coconason.dtf.client.core.nettyclient.protobufclient.NettyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
