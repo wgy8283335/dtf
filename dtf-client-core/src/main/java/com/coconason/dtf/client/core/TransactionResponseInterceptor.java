@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
  * @date: 2018/8/23-16:02
  */
 
-class DtfHttpResponseInterceptor extends HandlerInterceptorAdapter{
+class TransactionResponseInterceptor extends HandlerInterceptorAdapter{
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable ModelAndView modelAndView) throws Exception {

@@ -14,6 +14,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class TransactionConfiguration implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new DtfHttpResponseInterceptor());
+        registry.addInterceptor(new TransactionResponseInterceptor());
     }
 }
