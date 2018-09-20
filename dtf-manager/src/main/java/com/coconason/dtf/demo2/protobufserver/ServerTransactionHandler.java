@@ -127,7 +127,7 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
                 }catch (Exception e) {
                     MessageSender.snedMsg(transactionMessageGroupAsync.getGroupId(),ActionType.ADD_FAIL_ASYNC,ctx);
                 }
-                Set setFromCacheTemp = messageAsyncCache.get(transactionMessageGroupAsync.getGroupId()).getMemberSet();
+                Set<String> setFromCacheTemp = SetUtil.setTransfer(messageAsyncCache.get(transactionMessageGroupAsync.getGroupId()).getMemberSet());
                 TransactionMessageForSubmit transactionMessageForSubmit1= messageForSubmitAsyncCache.get(transactionMessageGroupAsync.getGroupId());
                 if(transactionMessageForSubmit1!=null){
                     Set<String> setFromMessageTemp = transactionMessageForSubmit1.getMemberSet();
