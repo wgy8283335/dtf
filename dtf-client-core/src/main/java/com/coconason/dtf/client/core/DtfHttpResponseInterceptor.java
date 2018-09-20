@@ -1,4 +1,4 @@
-package com.coconason.dtf.client.core.spring.http;
+package com.coconason.dtf.client.core;
 
 import com.coconason.dtf.client.core.beans.TransactionGroupInfo;
 import org.springframework.lang.Nullable;
@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
  * @date: 2018/8/23-16:02
  */
 
-public class DtfHttpResponseInterceptor extends HandlerInterceptorAdapter{
+class DtfHttpResponseInterceptor extends HandlerInterceptorAdapter{
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable ModelAndView modelAndView) throws Exception {

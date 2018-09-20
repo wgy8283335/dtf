@@ -19,7 +19,7 @@ import java.lang.reflect.Method;
 
 @Component
 @ChannelHandler.Sharable
-public class ClientTransactionHandler extends ChannelInboundHandlerAdapter
+class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 {
 
 	@Autowired

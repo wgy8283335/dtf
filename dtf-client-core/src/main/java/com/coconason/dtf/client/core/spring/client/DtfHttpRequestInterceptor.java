@@ -1,4 +1,4 @@
-package com.coconason.dtf.client.core.spring.http;
+package com.coconason.dtf.client.core.spring.client;
 
 import com.coconason.dtf.client.core.beans.TransactionGroupInfo;
 import org.springframework.http.HttpRequest;
@@ -15,7 +15,7 @@ import java.util.List;
  * @date: 2018/8/10-10:20
  */
 @Component
-public class DtfHttpRequestInterceptor implements ClientHttpRequestInterceptor {
+class DtfHttpRequestInterceptor implements ClientHttpRequestInterceptor {
 
     @Override
     public ClientHttpResponse intercept(HttpRequest httpRequest, byte[] bytes, ClientHttpRequestExecution clientHttpRequestExecution) throws IOException {

@@ -1,6 +1,5 @@
 package com.coconason.dtf.client.core;
 
-import com.coconason.dtf.client.core.spring.http.DtfHttpResponseInterceptor;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
