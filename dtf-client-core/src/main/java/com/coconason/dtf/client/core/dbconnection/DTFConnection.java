@@ -24,7 +24,7 @@ import static com.coconason.dtf.client.core.constants.Member.ORIGINAL_ID;
  * @Author: Jason
  * @date: 2018/8/22-9:04
  */
-public final class DTFConnection implements Connection {
+public class DTFConnection implements Connection {
 
     private Logger logger = LoggerFactory.getLogger(DTFConnection.class);
 

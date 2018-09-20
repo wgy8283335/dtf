@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @PropertySource("classpath:application.properties")
-public class ThreadPoolForClientConfiguration {
+class ThreadPoolForClientConfiguration {
     @Value(value="${threadpool.corePoolSize}")
     private Integer corePoolSize;
     @Value(value="${threadpool.maximumPoolSize}")

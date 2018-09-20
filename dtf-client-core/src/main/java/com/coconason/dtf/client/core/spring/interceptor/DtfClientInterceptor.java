@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Aspect
 @Component
-public class DtfClientInterceptor {
+class DtfClientInterceptor {
 
     @Autowired
     private AspectHandler aspectHandler;
