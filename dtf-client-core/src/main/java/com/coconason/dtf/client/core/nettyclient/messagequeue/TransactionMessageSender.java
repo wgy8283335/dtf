@@ -1,11 +1,10 @@
 package com.coconason.dtf.client.core.nettyclient.messagequeue;
 
-import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
 import com.coconason.dtf.client.core.nettyclient.protobufclient.NettyService;
 import com.coconason.dtf.client.core.threadpools.ThreadPoolForClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
+import com.coconason.dtf.client.core.beans.*;
 /**
  * @Author: Jason
  * @date: 2018/8/22-8:31

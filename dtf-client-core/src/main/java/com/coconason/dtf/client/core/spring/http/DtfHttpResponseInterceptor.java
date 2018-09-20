@@ -1,6 +1,5 @@
 package com.coconason.dtf.client.core.spring.http;
 
-import com.coconason.dtf.client.core.beans.TransactionGroupInfo;
 import org.springframework.lang.Nullable;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;

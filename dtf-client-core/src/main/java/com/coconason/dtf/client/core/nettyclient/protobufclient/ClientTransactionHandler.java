@@ -2,7 +2,9 @@ package com.coconason.dtf.client.core.nettyclient.protobufclient;
 
 import com.alibaba.fastjson.JSONObject;
 import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
-import com.coconason.dtf.client.core.dbconnection.*;
+import com.coconason.dtf.client.core.dbconnection.DBOperationType;
+import com.coconason.dtf.client.core.dbconnection.LockAndCondition;
+import com.coconason.dtf.client.core.dbconnection.ThreadsInfo;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
 import io.netty.channel.ChannelHandler;

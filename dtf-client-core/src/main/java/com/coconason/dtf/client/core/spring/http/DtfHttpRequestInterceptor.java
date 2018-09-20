@@ -1,6 +1,5 @@
 package com.coconason.dtf.client.core.spring.http;
 
-import com.coconason.dtf.client.core.beans.TransactionGroupInfo;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;

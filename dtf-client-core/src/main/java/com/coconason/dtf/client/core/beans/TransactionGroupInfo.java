@@ -2,8 +2,8 @@ package com.coconason.dtf.client.core.beans;
 
 import com.coconason.dtf.common.utils.UuidGenerator;
 
-import java.util.Set;
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @Author: Jason
@@ -17,7 +17,7 @@ public class TransactionGroupInfo {
     private Long memberId;
     private Set<Long> groupMembers;
 
-    public static TransactionGroupInfo newInstanceWithGroupidMemid(String groupId,Long memberId){
+    public static TransactionGroupInfo newInstanceWithGroupidMemid(String groupId, Long memberId){
         Set groupMembers = new HashSet<>();
         groupMembers.add(memberId);
         return new TransactionGroupInfo(groupId, memberId, groupMembers);
