@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
  */
 
 @Service
-public class TransactionNettyListener implements ApplicationListener<ContextRefreshedEvent>{
+final class TransactionNettyListener implements ApplicationListener<ContextRefreshedEvent>{
 
     @Autowired
     private NettyService nettyService;

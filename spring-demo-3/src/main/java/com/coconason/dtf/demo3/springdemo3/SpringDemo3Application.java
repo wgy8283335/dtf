@@ -1,7 +1,6 @@
 package com.coconason.dtf.demo3.springdemo3;
 
 import com.alibaba.druid.pool.DruidDataSource;
-import com.coconason.dtf.client.core.dbconnection.DTFDataSourceProxy;
 import com.coconason.dtf.client.core.dbconnection.ThreadsInfo;
 import com.coconason.dtf.client.core.nettyclient.messagequeue.TransactionMessageQueue;
 import com.coconason.dtf.client.core.threadpools.ThreadPoolForClient;
