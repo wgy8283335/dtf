@@ -33,8 +33,26 @@ public class RestClientAsync {
     private ThreadPoolForClient threadPoolForClient;
 
     public void sendPost(String url, Object object){
-        AsyncSubmitRunnable asyncSubmitRunnable = new AsyncSubmitRunnable(TransactionGroupInfo.getCurrent(),url,object);
-        threadPoolForClient.addTask(asyncSubmitRunnable);
+        //AsyncSubmitRunnable asyncSubmitRunnable = new AsyncSubmitRunnable(TransactionGroupInfo.getCurrent(),url,object);
+        //threadPoolForClient.addTask(asyncSubmitRunnable);
+        TransactionGroupInfo groupInfo = TransactionGroupInfo.getCurrent();
+        LockAndCondition lc = new LockAndCondition(new ReentrantLock(), DBOperationType.DEFAULT);
+        thirdThreadsInfo.put(groupInfo.getGroupId(),lc);
+        groupInfo.addNewMemeber();
+        TransactionGroupInfo.setCurrent(groupInfo);
+        TransactionServiceInfo transactionServiceInfo = TransactionServiceInfo.newInstanceForRestful(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.ADD_ASYNC, groupInfo.getGroupId(), groupInfo.getMemberId(), url, object);
+        //TransactionServiceInfo transactionServiceInfo = TransactionServiceInfo.newInstanceForAsyncAdd(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.ADD_ASYNC, groupInfo.getGroupId(), groupInfo.getGroupMembers(), url, object);
+        nettyService.sendMsg(transactionServiceInfo);
+        lc.await();
+        LockAndCondition lc2 = thirdThreadsInfo.get(groupInfo.getGroupId());
+        while(lc2.getState()==DBOperationType.ASYNCFAIL){
+            try{
+                nettyService.sendMsg(transactionServiceInfo);
+                lc2.await();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
     }
 
     private class AsyncSubmitRunnable implements Runnable{

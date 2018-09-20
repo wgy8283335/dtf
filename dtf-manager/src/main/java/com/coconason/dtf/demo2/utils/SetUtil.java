@@ -1,5 +1,8 @@
 package com.coconason.dtf.demo2.utils;
 
+import com.coconason.dtf.demo2.message.MessageInfo;
+
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -28,7 +31,14 @@ public class SetUtil {
                 isFullEqual = false;
             }
         }
-
         return isFullEqual;
+    }
+
+    public static Set setTransfer(Set<MessageInfo> set){
+        Set<String> resultSet = new HashSet<String>();
+        for (MessageInfo messageInfo:set) {
+            resultSet.add(messageInfo.getMemberId());
+        }
+        return  resultSet;
     }
 }

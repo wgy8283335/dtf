@@ -130,12 +130,12 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
                 Set setFromCacheTemp = messageAsyncCache.get(transactionMessageGroupAsync.getGroupId()).getMemberSet();
                 TransactionMessageForSubmit transactionMessageForSubmit1= messageForSubmitAsyncCache.get(transactionMessageGroupAsync.getGroupId());
                 if(transactionMessageForSubmit1!=null){
-                    Set setFromMessageTemp = transactionMessageForSubmit1.getMemberSet();
+                    Set<String> setFromMessageTemp = transactionMessageForSubmit1.getMemberSet();
+                    setFromMessageTemp.remove("1");
                     if(setFromMessageTemp!=null&&SetUtil.isSetEqual(setFromCacheTemp,setFromMessageTemp)){
-                        threadPoolForServer.addTask(new SendRunnable(messageAsyncCache,messageForSubmitAsyncCache.get(transactionMessageGroupAsync.getGroupId()),messageAsyncQueue));
+                        threadPoolForServer.addTask(new SendRunnable(messageAsyncCache,transactionMessageForSubmit1,messageAsyncQueue));
                     }
                 }
-
                 break;
             case ASYNC_COMMIT:
                 JSONObject map = JSONObject.parseObject(message.getInfo());
@@ -144,8 +144,9 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
                 messageForSubmitAsyncCache.put(transactionMessageForSubmit);
                 TransactionMessageGroupAsync transactionMessageGroupAsync1 = messageAsyncCache.get(groupId);
                 if(transactionMessageGroupAsync1!=null){
-                    Set setFromCache = transactionMessageGroupAsync1.getMemberSet();
-                    Set setFromMessage = transactionMessageForSubmit.getMemberSet();
+                    Set<String> setFromCache = SetUtil.setTransfer(transactionMessageGroupAsync1.getMemberSet());
+                    Set<String> setFromMessage = transactionMessageForSubmit.getMemberSet();
+                    setFromMessage.remove("1");
                     if(SetUtil.isSetEqual(setFromCache,setFromMessage)){
                         threadPoolForServer.addTask(new SendRunnable(messageAsyncCache,transactionMessageForSubmit,messageAsyncQueue));
                     }
