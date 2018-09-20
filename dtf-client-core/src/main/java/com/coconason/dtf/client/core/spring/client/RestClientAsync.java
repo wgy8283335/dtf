@@ -1,5 +1,7 @@
 package com.coconason.dtf.client.core.spring.client;
 
+import com.coconason.dtf.client.core.beans.TransactionGroupInfo;
+import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
 import com.coconason.dtf.client.core.dbconnection.DBOperationType;
 import com.coconason.dtf.client.core.dbconnection.LockAndCondition;
 import com.coconason.dtf.client.core.dbconnection.ThreadsInfo;

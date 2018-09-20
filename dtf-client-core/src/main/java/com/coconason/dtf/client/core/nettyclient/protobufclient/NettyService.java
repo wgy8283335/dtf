@@ -1,5 +1,6 @@
 package com.coconason.dtf.client.core.nettyclient.protobufclient;
 
+import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
 import com.coconason.dtf.client.core.nettyclient.nettyserverconfig.NettyServerConfiguration;
 import com.coconason.dtf.client.core.threadpools.ThreadPoolForClient;
 import com.coconason.dtf.common.protobuf.MessageProto;
