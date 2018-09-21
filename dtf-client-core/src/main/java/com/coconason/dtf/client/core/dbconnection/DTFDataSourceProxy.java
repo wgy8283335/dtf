@@ -2,6 +2,7 @@ package com.coconason.dtf.client.core.dbconnection;
 
 import com.coconason.dtf.client.core.nettyclient.messagequeue.TransactionMessageQueue;
 import com.coconason.dtf.client.core.threadpools.ThreadPoolForClient;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.sql.DataSource;
 import java.io.PrintWriter;
@@ -14,18 +15,22 @@ import java.util.logging.Logger;
  * @Author: Jason
  * @date: 2018/8/21-20:16
  */
+//@Component
+//@DependsOn("dataSourceOriginal")
 public class DTFDataSourceProxy implements DataSource{
-
+    //@Resource(type = DruidAbstractDataSource.class)
+    //@Resource(name="dataSource")
+    //@Autowired
+    //@Qualifier("dataSourceOriginal")
     private DataSource dataSource;
-
+    @Autowired
     private ThreadsInfo threadsInfo;
-
+    @Autowired
     private TransactionMessageQueue queue;
-
+    @Autowired
     private ThreadsInfo secondThreadsInfo;
-
+    @Autowired
     private ThreadPoolForClient threadPoolForClient;
-
 
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -45,6 +50,11 @@ public class DTFDataSourceProxy implements DataSource{
 
     public void setThreadPoolForClient(ThreadPoolForClient threadPoolForClient) {
         this.threadPoolForClient = threadPoolForClient;
+    }
+
+
+    public DTFDataSourceProxy(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     @Override
