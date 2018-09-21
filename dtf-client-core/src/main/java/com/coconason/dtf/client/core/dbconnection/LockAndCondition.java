@@ -10,19 +10,19 @@ import java.util.concurrent.locks.Lock;
 public class LockAndCondition {
     private Lock lock;
     private Condition condition;
-    private volatile DBOperationType state = DBOperationType.DEFAULT;
+    private volatile DbOperationType state = DbOperationType.DEFAULT;
 
-    public LockAndCondition(Lock lock,DBOperationType state) {
+    public LockAndCondition(Lock lock,DbOperationType state) {
         this.state = state;
         this.lock = lock;
         this.condition = lock.newCondition();
     }
 
-    public DBOperationType getState() {
+    public DbOperationType getState() {
         return state;
     }
 
-    public void setState(DBOperationType state) {
+    public void setState(DbOperationType state) {
         this.state = state;
     }
 

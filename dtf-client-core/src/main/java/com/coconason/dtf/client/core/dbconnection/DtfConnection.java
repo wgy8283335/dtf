@@ -24,15 +24,15 @@ import static com.coconason.dtf.client.core.constants.Member.ORIGINAL_ID;
  * @Author: Jason
  * @date: 2018/8/22-9:04
  */
-public class DTFConnection implements Connection {
+public class DtfConnection implements Connection {
 
-    private Logger logger = LoggerFactory.getLogger(DTFConnection.class);
+    private Logger logger = LoggerFactory.getLogger(DtfConnection.class);
 
     private Connection connection;
 
     private boolean readOnly = false;
 
-    private volatile DBOperationType state = DBOperationType.DEFAULT;
+    private volatile DbOperationType state = DbOperationType.DEFAULT;
 
     private boolean hasClose = false;
 
@@ -46,11 +46,11 @@ public class DTFConnection implements Connection {
 
     private ThreadPoolForClient threadPoolForClient;
 
-    public DTFConnection(Connection connection) {
+    public DtfConnection(Connection connection) {
         this.connection = connection;
     }
 
-    public DTFConnection(Connection connection,ThreadsInfo threadsInfo,TransactionMessageQueue queue,ThreadsInfo secondThreadsInfo,ThreadPoolForClient threadPoolForClient) {
+    public DtfConnection(Connection connection,ThreadsInfo threadsInfo,TransactionMessageQueue queue,ThreadsInfo secondThreadsInfo,ThreadPoolForClient threadPoolForClient) {
         this.connection = connection;
         this.threadsInfo = threadsInfo;
         this.queue = queue;
@@ -65,7 +65,7 @@ public class DTFConnection implements Connection {
             return;
         }
         logger.info("commit");
-        state = DBOperationType.COMMIT;
+        state = DbOperationType.COMMIT;
         close();
         hasClose = true;
     }
@@ -77,7 +77,7 @@ public class DTFConnection implements Connection {
             return;
         }
         logger.info("rollback");
-        state = DBOperationType.ROLLBACK;
+        state = DbOperationType.ROLLBACK;
         close();
         hasClose = true;
     }
@@ -100,11 +100,11 @@ public class DTFConnection implements Connection {
                 String groupId = transactionGroupInfo.getGroupId();
                 Long memberId = transactionGroupInfo.getMemberId();
                 if (ORIGINAL_ID.equals(memberId) && TransactionType.SYNC_STRONG==TransactionType.getCurrent()) {
-                    LockAndCondition secondlc = new LockAndCondition(new ReentrantLock(), DBOperationType.DEFAULT);
+                    LockAndCondition secondlc = new LockAndCondition(new ReentrantLock(), DbOperationType.DEFAULT);
                     secondThreadsInfo.put(groupId, secondlc);
                     secondlc.await();
                     LockAndCondition secondlc2 = secondThreadsInfo.get(groupId);
-                    if (secondlc2.getState() == DBOperationType.WHOLEFAIL) {
+                    if (secondlc2.getState() == DbOperationType.WHOLEFAIL) {
                         throw new Exception("Distributed transaction failed");
                     }
                     //4. close the connection.
@@ -140,13 +140,13 @@ public class DTFConnection implements Connection {
                 lc.await();
                 //3. After signaling, if success commit or rollback, otherwise skip the committing.
                 state = threadsInfo.get(map.get("groupId").toString()+memberId).getState();
-                if(state == DBOperationType.COMMIT){
+                if(state == DbOperationType.COMMIT){
                     System.out.println("提交");
                     connection.commit();
                     if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG){
                         queue.put(TransactionServiceInfo.newInstanceForSubSccuessStrong(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_SUCCESS_STRONG, groupId,groupMembers,memberId));
                     }
-                }else if(state == DBOperationType.ROLLBACK){
+                }else if(state == DbOperationType.ROLLBACK){
                     System.out.println("回滚");
                     connection.rollback();
                     if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG){

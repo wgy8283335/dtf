@@ -1,7 +1,7 @@
 package com.coconason.dtf.client.core;
 
 import com.alibaba.druid.pool.DruidDataSource;
-import com.coconason.dtf.client.core.dbconnection.DTFDataSourceProxy;
+import com.coconason.dtf.client.core.dbconnection.DtfDataSourceProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,7 +37,7 @@ public class DataSourceProxyConfiguration{
 				dataSource.setTestWhileIdle(true);
 				dataSource.setPoolPreparedStatements(false);
 				dataSource.setDefaultAutoCommit(false);
-				return new DTFDataSourceProxy(dataSource);
+				return new DtfDataSourceProxy(dataSource);
 			default:
 				return null;
 		}

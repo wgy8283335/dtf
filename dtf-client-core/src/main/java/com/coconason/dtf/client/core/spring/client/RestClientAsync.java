@@ -2,7 +2,7 @@ package com.coconason.dtf.client.core.spring.client;
 
 import com.coconason.dtf.client.core.beans.TransactionGroupInfo;
 import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
-import com.coconason.dtf.client.core.dbconnection.DBOperationType;
+import com.coconason.dtf.client.core.dbconnection.DbOperationType;
 import com.coconason.dtf.client.core.dbconnection.LockAndCondition;
 import com.coconason.dtf.client.core.dbconnection.ThreadsInfo;
 import com.coconason.dtf.client.core.nettyclient.protobufclient.NettyService;
@@ -30,7 +30,7 @@ public class RestClientAsync {
 
     public void sendPost(String url, Object object){
         TransactionGroupInfo groupInfo = TransactionGroupInfo.getCurrent();
-        LockAndCondition lc = new LockAndCondition(new ReentrantLock(), DBOperationType.DEFAULT);
+        LockAndCondition lc = new LockAndCondition(new ReentrantLock(), DbOperationType.DEFAULT);
         thirdThreadsInfo.put(groupInfo.getGroupId(),lc);
         groupInfo.addNewMemeber();
         TransactionGroupInfo.setCurrent(groupInfo);
@@ -38,7 +38,7 @@ public class RestClientAsync {
         nettyService.sendMsg(transactionServiceInfo);
         lc.await();
         LockAndCondition lc2 = thirdThreadsInfo.get(groupInfo.getGroupId());
-        while(lc2.getState()==DBOperationType.ASYNCFAIL){
+        while(lc2.getState()== DbOperationType.ASYNCFAIL){
             try{
                 nettyService.sendMsg(transactionServiceInfo);
                 lc2.await();

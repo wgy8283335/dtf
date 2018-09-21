@@ -2,7 +2,7 @@ package com.coconason.dtf.client.core.nettyclient.protobufclient;
 
 import com.alibaba.fastjson.JSONObject;
 import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
-import com.coconason.dtf.client.core.dbconnection.DBOperationType;
+import com.coconason.dtf.client.core.dbconnection.DbOperationType;
 import com.coconason.dtf.client.core.dbconnection.LockAndCondition;
 import com.coconason.dtf.client.core.dbconnection.ThreadsInfo;
 import com.coconason.dtf.common.protobuf.MessageProto;
@@ -56,7 +56,7 @@ class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 		ActionType action = message.getAction();
 		JSONObject map=null;
 		LockAndCondition lc=null;
-		DBOperationType state=null;
+		DbOperationType state=null;
 
 		if(action == ActionType.APPROVESUBMIT||action == ActionType.APPROVESUBMIT_STRONG||action == ActionType.CANCEL){
 			map = JSONObject.parseObject(message.getInfo().toString());
@@ -66,48 +66,48 @@ class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 		switch (action){
 			case APPROVESUBMIT:
 				//1.If notified to be commit
-				if(state == DBOperationType.COMMIT){
+				if(state == DbOperationType.COMMIT){
 					lc.signal();
 				}
 				//2.If notified to be rollback
-				else if(state == DBOperationType.ROLLBACK){
+				else if(state == DbOperationType.ROLLBACK){
 					lc.signal();
 				}
 				break;
 			case APPROVESUBMIT_STRONG:
 				//1.If notified to be commit
-				if(state == DBOperationType.COMMIT){
+				if(state == DbOperationType.COMMIT){
 					lc.signal();
 				}
 				//2.If notified to be rollback
-				else if(state == DBOperationType.ROLLBACK){
+				else if(state == DbOperationType.ROLLBACK){
 					lc.signal();
 				}
 				break;
 			case WHOLE_SUCCESS_STRONG:
 				map = JSONObject.parseObject(message.getInfo().toString());
 				LockAndCondition secondlc = secondThreadsInfo.get(map.get("groupId").toString());
-				secondlc.setState(DBOperationType.WHOLESUCCESS);
+				secondlc.setState(DbOperationType.WHOLESUCCESS);
 				secondlc.signal();
 				break;
 			case WHOLE_FAIL_STRONG:
 				map = JSONObject.parseObject(message.getInfo().toString());
 				LockAndCondition secondlc2 = secondThreadsInfo.get(map.get("groupId").toString());
-				secondlc2.setState(DBOperationType.WHOLEFAIL);
+				secondlc2.setState(DbOperationType.WHOLEFAIL);
 				secondlc2.signal();
 				break;
 			case CANCEL:
-				lc.setState(DBOperationType.ROLLBACK);
+				lc.setState(DbOperationType.ROLLBACK);
 				lc.signal();
 				break;
 			case ADD_SUCCESS_ASYNC:
 				LockAndCondition thirdlc = thirdThreadsInfo.get(JSONObject.parseObject(message.getInfo().toString()).get("groupId").toString());
-				thirdlc.setState(DBOperationType.ASYNCSUCCESS);
+				thirdlc.setState(DbOperationType.ASYNCSUCCESS);
 				thirdlc.signal();
 				break;
 			case ADD_FAIL_ASYNC:
 				LockAndCondition thirdlc2 = thirdThreadsInfo.get(JSONObject.parseObject(message.getInfo().toString()).get("groupId").toString());
-				thirdlc2.setState(DBOperationType.ASYNCFAIL);
+				thirdlc2.setState(DbOperationType.ASYNCFAIL);
 				thirdlc2.signal();
 				break;
 			default:

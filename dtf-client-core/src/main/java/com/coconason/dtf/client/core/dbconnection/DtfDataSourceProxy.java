@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  */
 //@Component
 //@DependsOn("dataSourceOriginal")
-public class DTFDataSourceProxy implements DataSource{
+public class DtfDataSourceProxy implements DataSource{
     //@Resource(type = DruidAbstractDataSource.class)
     //@Resource(name="dataSource")
     //@Autowired
@@ -53,19 +53,19 @@ public class DTFDataSourceProxy implements DataSource{
     }
 
 
-    public DTFDataSourceProxy(DataSource dataSource) {
+    public DtfDataSourceProxy(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
     @Override
     public Connection getConnection() throws SQLException {
-        Connection connection = new DTFConnection(dataSource.getConnection(),threadsInfo,queue,secondThreadsInfo,threadPoolForClient);
+        Connection connection = new DtfConnection(dataSource.getConnection(),threadsInfo,queue,secondThreadsInfo,threadPoolForClient);
         return connection;
     }
 
     @Override
     public Connection getConnection(String username, String password) throws SQLException {
-        Connection connection = new DTFConnection(dataSource.getConnection(username,password),threadsInfo,queue,secondThreadsInfo,threadPoolForClient);
+        Connection connection = new DtfConnection(dataSource.getConnection(username,password),threadsInfo,queue,secondThreadsInfo,threadPoolForClient);
         return connection;
     }
 
