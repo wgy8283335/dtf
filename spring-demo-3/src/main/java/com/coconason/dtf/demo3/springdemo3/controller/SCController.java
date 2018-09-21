@@ -25,6 +25,12 @@ public class SCController {
         return demoResult;
     }
 
+    @RequestMapping(value="/add_sc_info_strong",method = RequestMethod.POST)
+    public DemoResult addSCInfoStrong(@RequestBody Sc sc) throws Exception{
+        DemoResult demoResult = scService.addSCInfoStrong(sc);
+        return demoResult;
+    }
+
     @RequestMapping(value="/add_sc_info_async",method = RequestMethod.POST)
     public DemoResult addSCInfoAsync(@RequestBody Sc sc) throws Exception{
         DemoResult demoResult = scService.addSCInfoAsync(sc);

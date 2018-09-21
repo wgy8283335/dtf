@@ -22,4 +22,11 @@ public class RestClient {
         String result = restTemplate.postForObject(url,object,String.class);
         return result;
     }
+
+    public String sendGet(String url, Object object){
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.setInterceptors(Collections.singletonList(dtfHttpRequestInterceptor));
+        String result = restTemplate.getForObject(url,String.class,object);
+        return result;
+    }
 }

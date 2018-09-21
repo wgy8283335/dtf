@@ -15,13 +15,8 @@ import java.util.logging.Logger;
  * @Author: Jason
  * @date: 2018/8/21-20:16
  */
-//@Component
-//@DependsOn("dataSourceOriginal")
+
 public class DtfDataSourceProxy implements DataSource{
-    //@Resource(type = DruidAbstractDataSource.class)
-    //@Resource(name="dataSource")
-    //@Autowired
-    //@Qualifier("dataSourceOriginal")
     private DataSource dataSource;
     @Autowired
     private ThreadsInfo threadsInfo;
@@ -31,27 +26,6 @@ public class DtfDataSourceProxy implements DataSource{
     private ThreadsInfo secondThreadsInfo;
     @Autowired
     private ThreadPoolForClient threadPoolForClient;
-
-    public void setDataSource(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
-
-    public void setThreadsInfo(ThreadsInfo threadsInfo) {
-        this.threadsInfo = threadsInfo;
-    }
-
-    public void setQueue(TransactionMessageQueue queue) {
-        this.queue = queue;
-    }
-
-    public void setSecondThreadsInfo(ThreadsInfo secondThreadsInfo) {
-        this.secondThreadsInfo = secondThreadsInfo;
-    }
-
-    public void setThreadPoolForClient(ThreadPoolForClient threadPoolForClient) {
-        this.threadPoolForClient = threadPoolForClient;
-    }
-
 
     public DtfDataSourceProxy(DataSource dataSource) {
         this.dataSource = dataSource;

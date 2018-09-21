@@ -59,6 +59,7 @@ public class DemoResult<T> implements Serializable {
         this.datum = datum;
     }
 
+
     public DemoResult build(Integer code, String message, T datum) {
         return new DemoResult(code, message, datum);
     }
@@ -73,6 +74,5 @@ public class DemoResult<T> implements Serializable {
     public DemoResult ok() {
         return new DemoResult(null);
     }
-
 
 }

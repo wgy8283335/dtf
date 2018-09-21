@@ -7,10 +7,13 @@ import com.coconason.dtf.demo2.dao.TeacherMapper;
 import com.coconason.dtf.demo2.model.DemoResult;
 import com.coconason.dtf.demo2.po.Sc;
 import com.coconason.dtf.demo2.po.Teacher;
+import com.coconason.dtf.demo2.po.TeacherExample;
 import com.coconason.dtf.demo2.service.ITeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * @Author: Jason
@@ -25,7 +28,6 @@ public class TeacherServiceImpl implements ITeacherService {
     private RestClient restClient;
 
     @Override
-    //@DtfTransaction(type="SYNC_STRONG")
     @DtfTransaction
     @Transactional
     public DemoResult addTeacherInfo(Teacher teacher) throws Exception {
@@ -44,6 +46,24 @@ public class TeacherServiceImpl implements ITeacherService {
     }
 
     @Override
+    @DtfTransaction(type="SYNC_STRONG")
+    @Transactional
+    public DemoResult addTeacherInfoStrong(Teacher teacher) throws Exception {
+        if(teacherMapper.insertSelective(teacher)>0){
+            if(teacher.getT()==2){
+                Sc sc = new Sc();
+                sc.setC(5);
+                sc.setS(7);
+                sc.setScore(95);
+                restClient.sendPost("http://localhost:8083/add_sc_info_strong",sc);
+            }
+            return new DemoResult().ok();
+        }else{
+            return new DemoResult().build(ErrorCode.SYS_ERROR.value(),ErrorCode.SYS_ERROR.msg());
+        }
+    }
+
+    @Override
     @Transactional
     public DemoResult addTeacherInfoAsync(Teacher teacher) throws Exception {
         if(teacherMapper.insertSelective(teacher)>0){
@@ -51,5 +71,17 @@ public class TeacherServiceImpl implements ITeacherService {
         }else{
             return new DemoResult().build(ErrorCode.SYS_ERROR.value(),ErrorCode.SYS_ERROR.msg());
         }
+    }
+
+    @Override
+    @DtfTransaction
+    @Transactional
+    public Teacher getTeacherInfo(int id) throws Exception {
+        TeacherExample teacherExample = new TeacherExample();
+        TeacherExample.Criteria criteria = teacherExample.createCriteria();
+        criteria.andTEqualTo(id);
+        List<Teacher> teacherList = teacherMapper.selectByExample(teacherExample);
+        Teacher teacher = teacherList.get(0);
+        return teacher;
     }
 }

@@ -36,6 +36,15 @@ public class SCServiceImpl implements ISCService {
     }
 
     @Override
+    @DtfTransaction(type="SYNC_STRONG")
+    @Transactional
+    public DemoResult addSCInfoStrong(Sc sc) throws Exception {
+        //int i = 6/0;
+        scMapper.insertSelective(sc);
+        return new DemoResult().ok();
+    }
+
+    @Override
     @Transactional
     public DemoResult addSCInfoAsync(Sc sc) throws Exception {
         scMapper.insertSelective(sc);

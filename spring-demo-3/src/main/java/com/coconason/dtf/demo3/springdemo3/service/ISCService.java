@@ -11,6 +11,8 @@ import com.coconason.dtf.demo3.springdemo3.po.Sc;
 public interface ISCService {
     DemoResult addSCInfo(Sc course) throws Exception;
 
+    DemoResult addSCInfoStrong(Sc course) throws Exception;
+
     DemoResult addSCInfoAsync(Sc course) throws Exception;
 
 }
