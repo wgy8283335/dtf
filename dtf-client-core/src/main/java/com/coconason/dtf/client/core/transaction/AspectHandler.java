@@ -135,6 +135,7 @@ public class AspectHandler {
                 result =  point.proceed();
             }
         }
-        return result;
+        //return result;
+        return null;
     }
 }
