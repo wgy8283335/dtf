@@ -72,6 +72,7 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
                 //store the message in the cache.
                 //check whether the group exits in the cache
                 messageSyncCache.putDependsOnCondition(new TransactionMessageGroup(message,ctx));
+                System.out.println("");
                 threadPoolForServer.addTask(new ApplyForRunnable(message,ActionType.ADD,ctx, messageForSubmitSyncCache, messageSyncCache));
                 break;
             case APPLYFORSUBMIT:

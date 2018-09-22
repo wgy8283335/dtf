@@ -32,6 +32,7 @@ class DtfClientInterceptor {
         String info = request == null ? null : request.getHeader("groupInfo");
         //return aspectHandler.before(info,joinPoint);
         Object result = aspectHandler.before(info,joinPoint);
+        //Thread.sleep(10000);
         return result;
     }
 }
