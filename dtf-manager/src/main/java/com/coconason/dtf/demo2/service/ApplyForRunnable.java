@@ -59,8 +59,12 @@ public class ApplyForRunnable implements Runnable{
             if(!setFromMessage.isEmpty()){
                 if(SetUtil.isSetEqual(setFromMessage,setFromCache)){
                     for (TransactionMessageForAdding messageForAdding: memberList) {
-                        //success
-                        MessageSender.snedMsg(elementFromCache.getGroupId()+messageForAdding.getGroupMemberId(),ActionType.APPROVESUBMIT_STRONG,messageForAdding.getCtx());
+                        if(actionType == ActionType.ADD || actionType == ActionType.APPROVESUBMIT){
+                            MessageSender.snedMsg(elementFromCache.getGroupId()+messageForAdding.getGroupMemberId(),ActionType.APPROVESUBMIT,messageForAdding.getCtx());
+                        }else{
+                            //success
+                            MessageSender.snedMsg(elementFromCache.getGroupId()+messageForAdding.getGroupMemberId(),ActionType.APPROVESUBMIT_STRONG,messageForAdding.getCtx());
+                        }
                     }
                     if(actionType == ActionType.ADD || actionType == ActionType.APPROVESUBMIT){
                         messageSyncCache.clear(tmfs.getGroupId());

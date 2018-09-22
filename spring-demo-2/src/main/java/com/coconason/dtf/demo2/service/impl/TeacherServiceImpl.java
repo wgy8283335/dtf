@@ -74,7 +74,7 @@ public class TeacherServiceImpl implements ITeacherService {
     }
 
     @Override
-    @DtfTransaction
+    //@DtfTransaction
     @Transactional
     public Teacher getTeacherInfo(int id) throws Exception {
         TeacherExample teacherExample = new TeacherExample();

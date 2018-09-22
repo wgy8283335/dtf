@@ -91,7 +91,7 @@ public class CourseServiceImpl implements ICourseService {
         Integer teacherId = course.getT();
         String result = restClient.sendGet("http://localhost:8082/get_teacher_info?id={1}",teacherId);
         JSONObject map = JSONObject.parseObject(result);
-        DemoResult demoResult = new DemoResult((Integer) map.get("code"),(String) map.get("message"),(Teacher) map.get("datum"));
+        DemoResult demoResult = new DemoResult().ok(map.get("datum"));
         return  demoResult;
     }
 }

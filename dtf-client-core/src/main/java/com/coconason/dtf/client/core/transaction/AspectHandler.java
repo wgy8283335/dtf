@@ -46,6 +46,7 @@ public class AspectHandler {
         DtfTransaction transaction = currentMethod.getAnnotation(DtfTransaction.class);
         TransactionType transactionType = TransactionType.newInstance(transaction.type());
         TransactionType.setCurrent(transactionType);
+        Object result = null;
         Transactional transactional = currentMethod.getAnnotation(Transactional.class);
         if (transactional == null) {
             transactional = clazz.getAnnotation(Transactional.class);
@@ -64,11 +65,11 @@ public class AspectHandler {
                 TransactionGroupInfo groupInfo = TransactionGroupInfo.newInstanceWithGroupidMemid(groupIdTemp, ORIGINAL_ID);
                 TransactionGroupInfo.setCurrent(groupInfo);
                 //2.
-                point.proceed();
+                result = point.proceed();
                 //3.Send confirm message to netty server, in order to commit all transaction in the service
                 nettyService.sendMsg(TransactionServiceInfo.newInstanceForAsyncCommit(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.ASYNC_COMMIT, TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
             }else{
-                point.proceed();
+                result = point.proceed();
             }
         }else{
             TransactionGroupInfo transactionGroupInfo = info == null ? null:TransactionGroupInfo.parse(info);
@@ -89,7 +90,7 @@ public class AspectHandler {
                 }
                 //2.
                 try {
-                    point.proceed();
+                    result = point.proceed();
                     if(ORIGINAL_ID.equals(TransactionGroupInfo.getCurrent().getMemberId())){
                         if(MessageProto.Message.ActionType.ADD==TransactionServiceInfo.getCurrent().getAction()){
                             queue.put(TransactionServiceInfo.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT,TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
@@ -131,9 +132,9 @@ public class AspectHandler {
                             break;
                     }
                 }
-                point.proceed();
+                result =  point.proceed();
             }
         }
-        return null;
+        return result;
     }
 }
