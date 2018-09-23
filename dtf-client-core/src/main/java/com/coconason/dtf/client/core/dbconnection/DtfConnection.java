@@ -32,6 +32,8 @@ public class DtfConnection implements Connection {
 
     private boolean readOnly = false;
 
+    private boolean hasRead = false;
+
     private volatile DbOperationType state = DbOperationType.DEFAULT;
 
     private boolean hasClose = false;
@@ -62,6 +64,7 @@ public class DtfConnection implements Connection {
     public void commit() throws SQLException {
         if(readOnly){
             connection.commit();
+            hasRead = true;
             return;
         }
         logger.info("commit");
@@ -74,6 +77,7 @@ public class DtfConnection implements Connection {
     public void rollback() throws SQLException {
         if(readOnly){
             connection.rollback();
+            hasRead = true;
             return;
         }
         logger.info("rollback");
@@ -84,7 +88,7 @@ public class DtfConnection implements Connection {
 
     @Override
     public void close() throws SQLException {
-        if(readOnly){
+        if(readOnly||hasRead){
             connection.close();
             return;
         }

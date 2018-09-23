@@ -81,7 +81,7 @@ public class CourseServiceImpl implements ICourseService {
     }
     @Override
     @DtfTransaction
-    @Transactional
+    @Transactional(readOnly=true)
     public DemoResult getCourseInfo(int id) throws Exception{
         CourseExample courseExample = new CourseExample();
         CourseExample.Criteria criteria = courseExample.createCriteria();

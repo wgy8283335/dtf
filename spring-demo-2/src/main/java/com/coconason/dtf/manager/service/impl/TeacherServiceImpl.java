@@ -74,8 +74,8 @@ public class TeacherServiceImpl implements ITeacherService {
     }
 
     @Override
-    //@DtfTransaction
-    @Transactional
+    @DtfTransaction
+    @Transactional(readOnly=true)
     public Teacher getTeacherInfo(int id) throws Exception {
         TeacherExample teacherExample = new TeacherExample();
         TeacherExample.Criteria criteria = teacherExample.createCriteria();
