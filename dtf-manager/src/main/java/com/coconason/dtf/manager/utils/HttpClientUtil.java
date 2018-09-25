@@ -16,7 +16,7 @@ import java.io.IOException;
  */
 public class HttpClientUtil {
 
-	public static String doPostJson(String url, String json,String groupId) {
+	public static String doPostJson(String url, String json,String groupId) throws Exception{
 		CloseableHttpClient httpClient = HttpClients.createDefault();
 		CloseableHttpResponse response = null;
 		String resultString = "";
@@ -26,9 +26,11 @@ public class HttpClientUtil {
 			httpPost.setEntity(entity);
 			httpPost.setHeader("groupInfo",groupId);
 			response = httpClient.execute(httpPost);
+			int i = 6/0;
 			resultString = EntityUtils.toString(response.getEntity(), "utf-8");
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw new Exception(e);
 		} finally {
 			try {
 				response.close();

@@ -109,7 +109,7 @@ public class DtfConnection implements Connection {
                     secondlc.await();
                     LockAndCondition secondlc2 = secondThreadsInfo.get(groupId);
                     if (secondlc2.getState() == DbOperationType.WHOLEFAIL) {
-                        throw new Exception("Distributed transaction failed");
+                        throw new Exception("Distributed transaction failed and groupId"+groupId);
                     }
                     //4. close the connection.
                     connection.close();
