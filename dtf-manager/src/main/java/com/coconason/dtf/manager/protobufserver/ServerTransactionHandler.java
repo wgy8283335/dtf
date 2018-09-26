@@ -129,11 +129,11 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
                 }
                 Set<String> setFromCacheTemp = SetUtil.setTransfer(messageAsyncCache.get(transactionMessageGroupAsync.getGroupId()).getMemberSet());
                 TransactionMessageForSubmit transactionMessageForSubmit1= messageForSubmitAsyncCache.get(transactionMessageGroupAsync.getGroupId());
-                if(transactionMessageForSubmit1!=null){
+                if (transactionMessageForSubmit1 != null) {
                     Set<String> setFromMessageTemp = transactionMessageForSubmit1.getMemberSet();
                     setFromMessageTemp.remove("1");
-                    if(setFromMessageTemp!=null&&SetUtil.isSetEqual(setFromCacheTemp,setFromMessageTemp)){
-                        threadPoolForServer.addTask(new SendRunnable(messageAsyncCache,transactionMessageForSubmit1,messageAsyncQueue));
+                    if (setFromMessageTemp != null && SetUtil.isSetEqual(setFromCacheTemp, setFromMessageTemp)) {
+                        threadPoolForServer.addTask(new SendRunnable(messageAsyncCache, transactionMessageForSubmit1, messageAsyncQueue));
                     }
                 }
                 break;
@@ -142,6 +142,7 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
                 String groupId = map.get("groupId").toString();
                 TransactionMessageForSubmit transactionMessageForSubmit = new TransactionMessageForSubmit(message);
                 messageForSubmitAsyncCache.put(transactionMessageForSubmit);
+                MessageSender.snedMsg(transactionMessageForSubmit.getGroupId(),ActionType.COMMIT_SUCCESS_ASYNC,ctx);
                 TransactionMessageGroupAsync transactionMessageGroupAsync1 = messageAsyncCache.get(groupId);
                 if(transactionMessageGroupAsync1!=null){
                     Set<String> setFromCache = SetUtil.setTransfer(transactionMessageGroupAsync1.getMemberSet());

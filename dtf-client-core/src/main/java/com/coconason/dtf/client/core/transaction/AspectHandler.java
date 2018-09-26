@@ -4,6 +4,8 @@ import com.coconason.dtf.client.core.annotation.DtfTransaction;
 import com.coconason.dtf.client.core.beans.TransactionGroupInfo;
 import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
 import com.coconason.dtf.client.core.beans.TransactionType;
+import com.coconason.dtf.client.core.dbconnection.DbOperationType;
+import com.coconason.dtf.client.core.dbconnection.LockAndCondition;
 import com.coconason.dtf.client.core.dbconnection.ThreadsInfo;
 import com.coconason.dtf.client.core.nettyclient.messagequeue.TransactionMessageQueue;
 import com.coconason.dtf.client.core.nettyclient.protobufclient.NettyService;
@@ -18,6 +20,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Method;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReentrantLock;
 
 import static com.coconason.dtf.client.core.constants.Member.ORIGINAL_ID;
 
@@ -34,7 +38,7 @@ public class AspectHandler {
     private NettyService nettyService;
     @Autowired
     @Qualifier("threadsInfo")
-    private ThreadsInfo secondThreadsInfo;
+    private ThreadsInfo asyncFinalCommitThreadsInfo;
 
     public Object before(String info,ProceedingJoinPoint point) throws Throwable {
 
@@ -68,6 +72,9 @@ public class AspectHandler {
                 result = point.proceed();
                 //3.Send confirm message to netty server, in order to commit all transaction in the service
                 nettyService.sendMsg(TransactionServiceInfo.newInstanceForAsyncCommit(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.ASYNC_COMMIT, TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
+                LockAndCondition asyncFinalCommitLc = new LockAndCondition(new ReentrantLock(), DbOperationType.DEFAULT);
+                asyncFinalCommitThreadsInfo.put(TransactionGroupInfo.getCurrent().getGroupId(), asyncFinalCommitLc);
+                waitForSignal(asyncFinalCommitLc,nettyService);
             }else{
                 result = point.proceed();
             }
@@ -78,16 +85,7 @@ public class AspectHandler {
                 String groupIdTemp = GroupidGenerator.getStringId(0, 0);
                 TransactionGroupInfo groupInfo = TransactionGroupInfo.newInstanceWithGroupidMemid(groupIdTemp, ORIGINAL_ID);
                 TransactionGroupInfo.setCurrent(groupInfo);
-                switch (transactionType) {
-                    case SYNC_FINAL:
-                        TransactionServiceInfo.setCurrent(TransactionServiceInfo.newInstanceForSyncAdd(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.ADD, groupInfo.getGroupId(), groupInfo.getMemberId(), method, args));
-                        break;
-                    case SYNC_STRONG:
-                        TransactionServiceInfo.setCurrent(TransactionServiceInfo.newInstanceForSyncAdd(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.ADD_STRONG, groupInfo.getGroupId(), groupInfo.getMemberId(), method, args));
-                        break;
-                    default:
-                        break;
-                }
+                switchTransactionType(transactionType,groupInfo,method,args);
                 //2.
                 try {
                     result = point.proceed();
@@ -121,20 +119,39 @@ public class AspectHandler {
                 }
                 //if the thread does not have transactionServiceInfo,set current transaction service information
                 if(temp==null){
-                    switch (transactionType){
-                        case SYNC_FINAL:
-                            TransactionServiceInfo.setCurrent(TransactionServiceInfo.newInstanceForSyncAdd(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.ADD,transactionGroupInfo.getGroupId(),transactionGroupInfo.getMemberId(),method,args));
-                            break;
-                        case SYNC_STRONG:
-                            TransactionServiceInfo.setCurrent(TransactionServiceInfo.newInstanceForSyncAdd(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.ADD_STRONG,transactionGroupInfo.getGroupId(),transactionGroupInfo.getMemberId(),method,args));
-                            break;
-                        default:
-                            break;
-                    }
+                    switchTransactionType(transactionType,transactionGroupInfo,method,args);
                 }
                 result =  point.proceed();
             }
         }
         return result;
+    }
+
+    private void waitForSignal(LockAndCondition lc,NettyService nettyService) throws Exception{
+        boolean receivedSignal = lc.await(5000, TimeUnit.MILLISECONDS);
+        if(receivedSignal == false){
+            boolean channelIsHealthy = nettyService.isHealthy();
+            if(channelIsHealthy){
+                boolean receivedSignal2 = lc.await(5000, TimeUnit.MILLISECONDS);
+                if(receivedSignal2 == false){
+                    throw new Exception("commit async fail");
+                }
+            }else{
+                throw new Exception("commit async fail");
+            }
+        }
+    }
+
+    private void switchTransactionType(TransactionType transactionType,TransactionGroupInfo transactionGroupInfo,Method method,Object[] args){
+        switch (transactionType){
+            case SYNC_FINAL:
+                TransactionServiceInfo.setCurrent(TransactionServiceInfo.newInstanceForSyncAdd(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.ADD,transactionGroupInfo.getGroupId(),transactionGroupInfo.getMemberId(),method,args));
+                break;
+            case SYNC_STRONG:
+                TransactionServiceInfo.setCurrent(TransactionServiceInfo.newInstanceForSyncAdd(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.ADD_STRONG,transactionGroupInfo.getGroupId(),transactionGroupInfo.getMemberId(),method,args));
+                break;
+            default:
+                break;
+        }
     }
 }

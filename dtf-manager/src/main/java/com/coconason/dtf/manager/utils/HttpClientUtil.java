@@ -26,7 +26,6 @@ public class HttpClientUtil {
 			httpPost.setEntity(entity);
 			httpPost.setHeader("groupInfo",groupId);
 			response = httpClient.execute(httpPost);
-			int i = 6/0;
 			resultString = EntityUtils.toString(response.getEntity(), "utf-8");
 		} catch (Exception e) {
 			e.printStackTrace();

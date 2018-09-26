@@ -27,7 +27,11 @@ import io.netty.handler.timeout.ReadTimeoutHandler;
  */
 public class NettyServer
 {
+    private static Boolean isHealthy = false;
 
+    public static Boolean isHealthy() {
+        return isHealthy;
+    }
     public static void main(String[] args) throws Exception
     {
         MessageAsyncQueue messageAsyncQueue = new MessageAsyncQueue();
@@ -77,8 +81,10 @@ public class NettyServer
                     });
 
             ChannelFuture f = b.bind(port).sync();
+            isHealthy = true;
             System.out.println("Netty Server start ok! post is 18080");
             f.channel().closeFuture().sync();
+            isHealthy = false;
         }
         finally
         {

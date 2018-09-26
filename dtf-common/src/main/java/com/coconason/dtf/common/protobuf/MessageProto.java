@@ -334,6 +334,10 @@ public final class MessageProto {
        * <code>ASYNC_CANCEL = 23;</code>
        */
       ASYNC_CANCEL(22, 23),
+      /**
+       * <code>COMMIT_SUCCESS_ASYNC = 24;</code>
+       */
+      COMMIT_SUCCESS_ASYNC(23, 24),
       ;
 
       /**
@@ -428,6 +432,10 @@ public final class MessageProto {
        * <code>ASYNC_CANCEL = 23;</code>
        */
       public static final int ASYNC_CANCEL_VALUE = 23;
+      /**
+       * <code>COMMIT_SUCCESS_ASYNC = 24;</code>
+       */
+      public static final int COMMIT_SUCCESS_ASYNC_VALUE = 24;
 
 
       public final int getNumber() { return value; }
@@ -457,6 +465,7 @@ public final class MessageProto {
           case 21: return ADD_FAIL_ASYNC;
           case 22: return ASYNC_COMMIT;
           case 23: return ASYNC_CANCEL;
+          case 24: return COMMIT_SUCCESS_ASYNC;
           default: return null;
         }
       }
@@ -1415,11 +1424,11 @@ public final class MessageProto {
       descriptor;
   static {
     String[] descriptorData = {
-      "\n\rMessage.proto\"\333\004\n\007Message\022\017\n\007crcCode\030\001" +
+      "\n\rMessage.proto\"\365\004\n\007Message\022\017\n\007crcCode\030\001" +
       " \001(\005\022\016\n\006length\030\002 \001(\005\022\021\n\tsessionID\030\003 \001(\003\022" +
       "\014\n\004type\030\004 \001(\005\022\020\n\010priority\030\005 \001(\005\022\n\n\002id\030\006 " +
       "\001(\t\022\014\n\004info\030\007 \001(\t\022,\n\006action\030\010 \001(\0162\023.Mess" +
-      "age.ActionType:\007DEFAULT\"\263\003\n\nActionType\022\007" +
+      "age.ActionType:\007DEFAULT\"\315\003\n\nActionType\022\007" +
       "\n\003ADD\020\001\022\022\n\016APPLYFORSUBMIT\020\002\022\021\n\rAPPROVESU" +
       "BMIT\020\003\022\n\n\006CANCEL\020\004\022\013\n\007SUCCESS\020\005\022\010\n\004FAIL\020" +
       "\006\022\013\n\007DEFAULT\020\007\022\r\n\tLOGIN_REQ\020\010\022\016\n\nLOGIN_R" +
@@ -1430,8 +1439,9 @@ public final class MessageProto {
       "\n\024WHOLE_SUCCESS_STRONG\020\021\022\025\n\021WHOLE_FAIL_S" +
       "TRONG\020\022\022\r\n\tADD_ASYNC\020\023\022\025\n\021ADD_SUCCESS_AS" +
       "YNC\020\024\022\022\n\016ADD_FAIL_ASYNC\020\025\022\020\n\014ASYNC_COMMI" +
-      "T\020\026\022\020\n\014ASYNC_CANCEL\020\027B1\n!com.coconason.d" +
-      "tf.common.protobufB\014MessageProto"
+      "T\020\026\022\020\n\014ASYNC_CANCEL\020\027\022\030\n\024COMMIT_SUCCESS_" +
+      "ASYNC\020\030B1\n!com.coconason.dtf.common.prot" +
+      "obufB\014MessageProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {

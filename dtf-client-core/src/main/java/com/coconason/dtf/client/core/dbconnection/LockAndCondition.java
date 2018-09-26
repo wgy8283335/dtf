@@ -1,5 +1,6 @@
 package com.coconason.dtf.client.core.dbconnection;
 
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 
@@ -35,6 +36,19 @@ public class LockAndCondition {
         } finally {
             lock.unlock();
         }
+    }
+
+    public boolean await(long milliseconds, TimeUnit timeUnit) {
+        boolean result = false;
+        try {
+            lock.lock();
+            result = condition.await(milliseconds, timeUnit);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            lock.unlock();
+        }
+        return result;
     }
 
     public void signal() {

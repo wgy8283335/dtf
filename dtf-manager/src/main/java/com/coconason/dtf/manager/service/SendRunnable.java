@@ -30,7 +30,6 @@ public class SendRunnable implements Runnable{
     @Override
     public void run() {
         try{
-            //Thread.sleep(5000);
             //get the TransactionMessageGroupAsync from the messageAsyncCache
             TransactionMessageGroupAsync theMessageGroupAsync = messageAsyncCache.get(transactionMessageForSubmit.getGroupId());
             Set<MessageInfo> theMemberSet = theMessageGroupAsync.getMemberSet();

@@ -36,6 +36,8 @@ public class NettyService {
 
     private EventLoopGroup group = new NioEventLoopGroup();
 
+    private Boolean isHealthy = false;
+
     @Autowired
     private NettyServerConfiguration nettyServerConfiguration;
 
@@ -88,11 +90,17 @@ public class NettyService {
                         }
                     });
             ChannelFuture f = b.connect(host, port).sync();
+            isHealthy = true;
             System.out.println("connection success-----> " + host + ":" + port);
             f.channel().closeFuture().sync();
+            isHealthy = false;
         }finally{
             threadPoolForClient.addTask(new ConnectRunnable(host,port));
         }
+    }
+
+    public Boolean isHealthy() {
+        return isHealthy;
     }
 
     public synchronized  void close(){

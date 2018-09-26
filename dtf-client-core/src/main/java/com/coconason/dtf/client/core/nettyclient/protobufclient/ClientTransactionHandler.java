@@ -35,6 +35,10 @@ class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 	private ThreadsInfo thirdThreadsInfo;
 
 	@Autowired
+	@Qualifier("threadsInfo")
+	private ThreadsInfo asyncFinalCommitThreadsInfo;
+
+	@Autowired
 	private ApplicationContext applicationContext;
 
 	private ChannelHandlerContext ctx;
@@ -109,6 +113,11 @@ class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 				LockAndCondition thirdlc2 = thirdThreadsInfo.get(JSONObject.parseObject(message.getInfo().toString()).get("groupId").toString());
 				thirdlc2.setState(DbOperationType.ASYNCFAIL);
 				thirdlc2.signal();
+				break;
+			case COMMIT_SUCCESS_ASYNC:
+				LockAndCondition asyncFinallc = asyncFinalCommitThreadsInfo.get(JSONObject.parseObject(message.getInfo().toString()).get("groupId").toString());
+				asyncFinallc.setState(DbOperationType.COMMIT_SUCCESS_ASYNC);
+				asyncFinallc.signal();
 				break;
 			default:
 				break;
