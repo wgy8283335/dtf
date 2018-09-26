@@ -12,7 +12,7 @@ import io.netty.channel.ChannelHandlerContext;
  */
 public class MessageSender {
 
-    public static void snedMsg(String groupId,ActionType action,ChannelHandlerContext ctx) throws Exception{
+    public static void sendMsg(String groupId,ActionType action,ChannelHandlerContext ctx) throws Exception{
         MessageProto.Message.Builder builder= MessageProto.Message.newBuilder();
         JSONObject info = new JSONObject();
         info.put("groupId",groupId);

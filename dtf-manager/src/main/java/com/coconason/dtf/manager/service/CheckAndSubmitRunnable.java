@@ -5,21 +5,24 @@ import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
 import com.coconason.dtf.manager.cache.MessageForSubmitSyncCache;
 import com.coconason.dtf.manager.cache.MessageSyncCache;
+import com.coconason.dtf.manager.cache.ThreadsInfo;
 import com.coconason.dtf.manager.message.TransactionMessageForAdding;
 import com.coconason.dtf.manager.message.TransactionMessageForSubmit;
 import com.coconason.dtf.manager.message.TransactionMessageGroup;
+import com.coconason.dtf.manager.utils.LockAndCondition;
 import com.coconason.dtf.manager.utils.MessageSender;
 import com.coconason.dtf.manager.utils.SetUtil;
 import io.netty.channel.ChannelHandlerContext;
 
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @Author: Jason
  * @date: 2018/9/19-10:26
  */
-public class ApplyForRunnable implements Runnable{
+public class CheckAndSubmitRunnable implements Runnable{
 
     private MessageProto.Message message;
 
@@ -31,12 +34,15 @@ public class ApplyForRunnable implements Runnable{
 
     private MessageSyncCache messageSyncCache;
 
-    public ApplyForRunnable(MessageProto.Message message, ActionType actionType, ChannelHandlerContext ctx,MessageForSubmitSyncCache messageForSubmitSyncCache,MessageSyncCache messageSyncCache) {
+    private ThreadsInfo threadsInfo;
+
+    public CheckAndSubmitRunnable(MessageProto.Message message, ActionType actionType, ChannelHandlerContext ctx, MessageForSubmitSyncCache messageForSubmitSyncCache, MessageSyncCache messageSyncCache, ThreadsInfo threadsInfo) {
         this.message = message;
         this.actionType = actionType;
         this.ctx = ctx;
         this.messageForSubmitSyncCache = messageForSubmitSyncCache;
         this.messageSyncCache = messageSyncCache;
+        this.threadsInfo = threadsInfo;
     }
 
     @Override
@@ -60,10 +66,13 @@ public class ApplyForRunnable implements Runnable{
                 if(SetUtil.isSetEqual(setFromMessage,setFromCache)){
                     for (TransactionMessageForAdding messageForAdding: memberList) {
                         if(actionType == ActionType.ADD || actionType == ActionType.APPROVESUBMIT){
-                            MessageSender.snedMsg(elementFromCache.getGroupId()+messageForAdding.getGroupMemberId(),ActionType.APPROVESUBMIT,messageForAdding.getCtx());
+                            MessageSender.sendMsg(elementFromCache.getGroupId()+messageForAdding.getGroupMemberId(),ActionType.APPROVESUBMIT,messageForAdding.getCtx());
                         }else{
                             //success
-                            MessageSender.snedMsg(elementFromCache.getGroupId()+messageForAdding.getGroupMemberId(),ActionType.APPROVESUBMIT_STRONG,messageForAdding.getCtx());
+                            LockAndCondition lc = new LockAndCondition(new ReentrantLock());
+                            threadsInfo.put(elementFromCache.getGroupId(),lc);
+                            lc.sendAndWaitForSignal(elementFromCache.getGroupId()+messageForAdding.getGroupMemberId(),ActionType.APPROVESUBMIT_STRONG,messageForAdding.getCtx(),"send approve submit strong fail");
+                            //MessageSender.sendMsg(elementFromCache.getGroupId()+messageForAdding.getGroupMemberId(),ActionType.APPROVESUBMIT_STRONG,messageForAdding.getCtx());
                         }
                     }
                     if(actionType == ActionType.ADD || actionType == ActionType.APPROVESUBMIT){

@@ -2,7 +2,7 @@ package com.coconason.dtf.manager.protobufserver;
 
 import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.manager.cache.*;
-import com.coconason.dtf.manager.service.ConsumerRunnable;
+import com.coconason.dtf.manager.service.ConsumerFailingAsyncRequestRunnable;
 import com.coconason.dtf.manager.threadpools.ThreadPoolForServer;
 import com.coconason.dtf.manager.utils.PropertiesReader;
 import io.netty.bootstrap.ServerBootstrap;
@@ -32,6 +32,7 @@ public class NettyServer
     public static Boolean isHealthy() {
         return isHealthy;
     }
+
     public static void main(String[] args) throws Exception
     {
         MessageAsyncQueue messageAsyncQueue = new MessageAsyncQueue();
@@ -42,7 +43,7 @@ public class NettyServer
                 Integer.valueOf(propertiesReader.getProperty("maximumPoolSize")),
                 Integer.valueOf(propertiesReader.getProperty("keepAliveTime")),
                 Integer.valueOf(propertiesReader.getProperty("capacity")));
-        threadPoolForServer.addTask(new ConsumerRunnable(messageAsyncQueue));
+        threadPoolForServer.addTask(new ConsumerFailingAsyncRequestRunnable(messageAsyncQueue));
         new NettyServer().bind(messageAsyncQueue,threadPoolForServer,Integer.valueOf(propertiesReader.getProperty("port")));
     }
 

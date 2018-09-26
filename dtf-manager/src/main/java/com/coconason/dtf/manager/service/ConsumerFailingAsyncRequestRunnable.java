@@ -8,11 +8,11 @@ import com.coconason.dtf.manager.utils.HttpClientUtil;
  * @Author: Jason
  * @date: 2018/9/6-13:04
  */
-public class ConsumerRunnable implements Runnable{
+public class ConsumerFailingAsyncRequestRunnable implements Runnable{
 
     private MessageAsyncQueue messageAsyncQueue;
 
-    public ConsumerRunnable(MessageAsyncQueue messageAsyncQueue) {
+    public ConsumerFailingAsyncRequestRunnable(MessageAsyncQueue messageAsyncQueue) {
         this.messageAsyncQueue = messageAsyncQueue;
     }
 

@@ -13,7 +13,7 @@ import java.util.Set;
  * @Author: Jason
  * @date: 2018/9/6-13:04
  */
-public class SendRunnable implements Runnable{
+public class SendAsyncRequestRunnable implements Runnable{
 
     private MessageAsyncCache messageAsyncCache;
 
@@ -21,7 +21,7 @@ public class SendRunnable implements Runnable{
 
     private MessageAsyncQueue messageAsyncQueue;
 
-    public SendRunnable(MessageAsyncCache messageAsyncCache, TransactionMessageForSubmit transactionMessageForSubmit, MessageAsyncQueue messageAsyncQueue) {
+    public SendAsyncRequestRunnable(MessageAsyncCache messageAsyncCache, TransactionMessageForSubmit transactionMessageForSubmit, MessageAsyncQueue messageAsyncQueue) {
         this.messageAsyncCache = messageAsyncCache;
         this.transactionMessageForSubmit = transactionMessageForSubmit;
         this.messageAsyncQueue = messageAsyncQueue;

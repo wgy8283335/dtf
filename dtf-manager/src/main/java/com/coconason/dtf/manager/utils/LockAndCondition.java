@@ -1,7 +1,8 @@
-package com.coconason.dtf.client.core.dbconnection;
+package com.coconason.dtf.manager.utils;
 
-import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
-import com.coconason.dtf.client.core.nettyclient.protobufclient.NettyService;
+import com.coconason.dtf.common.protobuf.MessageProto;
+import com.coconason.dtf.manager.protobufserver.NettyServer;
+import io.netty.channel.ChannelHandlerContext;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
@@ -14,20 +15,10 @@ import java.util.concurrent.locks.Lock;
 public class LockAndCondition {
     private Lock lock;
     private Condition condition;
-    private volatile DbOperationType state = DbOperationType.DEFAULT;
 
-    public LockAndCondition(Lock lock,DbOperationType state) {
-        this.state = state;
+    public LockAndCondition(Lock lock) {
         this.lock = lock;
         this.condition = lock.newCondition();
-    }
-
-    public DbOperationType getState() {
-        return state;
-    }
-
-    public void setState(DbOperationType state) {
-        this.state = state;
     }
 
     public void await() {
@@ -63,14 +54,13 @@ public class LockAndCondition {
         }
     }
 
-
-    public void sendAndWaitSignal(NettyService nettyService,TransactionServiceInfo serviceInfo,String msg) throws Exception{
-        nettyService.sendMsg(serviceInfo);
+    public void sendAndWaitForSignal(String groupId, MessageProto.Message.ActionType action, ChannelHandlerContext ctx,String msg) throws  Exception{
+        MessageSender.sendMsg(groupId,action,ctx);
         boolean receivedSignal = await(10000, TimeUnit.MILLISECONDS);
         if(receivedSignal == false){
-            boolean channelIsHealthy = nettyService.isHealthy();
+            boolean channelIsHealthy = NettyServer.isHealthy();
             if(channelIsHealthy){
-                nettyService.sendMsg(serviceInfo);
+                MessageSender.sendMsg(groupId,action,ctx);
                 boolean receivedSignal2 = await(10000, TimeUnit.MILLISECONDS);
                 if(receivedSignal2 == false){
                     throw new Exception(msg);

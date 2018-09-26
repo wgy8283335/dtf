@@ -20,7 +20,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Method;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
 import static com.coconason.dtf.client.core.constants.Member.ORIGINAL_ID;
@@ -71,10 +70,10 @@ public class AspectHandler {
                 //2.
                 result = point.proceed();
                 //3.Send confirm message to netty server, in order to commit all transaction in the service
-                nettyService.sendMsg(TransactionServiceInfo.newInstanceForAsyncCommit(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.ASYNC_COMMIT, TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
                 LockAndCondition asyncFinalCommitLc = new LockAndCondition(new ReentrantLock(), DbOperationType.DEFAULT);
                 asyncFinalCommitThreadsInfo.put(TransactionGroupInfo.getCurrent().getGroupId(), asyncFinalCommitLc);
-                waitForSignal(asyncFinalCommitLc,nettyService);
+                TransactionServiceInfo serviceInfo = TransactionServiceInfo.newInstanceForAsyncCommit(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.ASYNC_COMMIT, TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers());
+                asyncFinalCommitLc.sendAndWaitSignal(nettyService,serviceInfo,"commit async fail");
             }else{
                 result = point.proceed();
             }
@@ -126,21 +125,21 @@ public class AspectHandler {
         }
         return result;
     }
-
-    private void waitForSignal(LockAndCondition lc,NettyService nettyService) throws Exception{
-        boolean receivedSignal = lc.await(5000, TimeUnit.MILLISECONDS);
-        if(receivedSignal == false){
-            boolean channelIsHealthy = nettyService.isHealthy();
-            if(channelIsHealthy){
-                boolean receivedSignal2 = lc.await(5000, TimeUnit.MILLISECONDS);
-                if(receivedSignal2 == false){
-                    throw new Exception("commit async fail");
-                }
-            }else{
-                throw new Exception("commit async fail");
-            }
-        }
-    }
+//
+//    private void waitForSignal(LockAndCondition lc,NettyService nettyService) throws Exception{
+//        boolean receivedSignal = lc.await(5000, TimeUnit.MILLISECONDS);
+//        if(receivedSignal == false){
+//            boolean channelIsHealthy = nettyService.isHealthy();
+//            if(channelIsHealthy){
+//                boolean receivedSignal2 = lc.await(5000, TimeUnit.MILLISECONDS);
+//                if(receivedSignal2 == false){
+//                    throw new Exception("commit async fail");
+//                }
+//            }else{
+//                throw new Exception("commit async fail");
+//            }
+//        }
+//    }
 
     private void switchTransactionType(TransactionType transactionType,TransactionGroupInfo transactionGroupInfo,Method method,Object[] args){
         switch (transactionType){
