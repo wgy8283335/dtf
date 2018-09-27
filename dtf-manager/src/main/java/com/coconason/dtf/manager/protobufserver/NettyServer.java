@@ -57,6 +57,7 @@ public class NettyServer
         final MessageForSubmitAsyncCache messageForSubmitAsyncCache = new MessageForSubmitAsyncCache();
         final MessageAsyncQueue messageAsyncQueue = messageAsyncQueueTemp;
         final ThreadPoolForServer threadPoolForServer = threadPoolForServerTemp;
+        final ThreadsInfo threadsInfo = new ThreadsInfo();
         try
         {
             ServerBootstrap b = new ServerBootstrap();
@@ -76,7 +77,7 @@ public class NettyServer
                             ch.pipeline().addLast(new ProtobufEncoder());
                             ch.pipeline().addLast(new ReadTimeoutHandler(50));
                             ch.pipeline().addLast(new LoginAuthRespHandler());
-                            ch.pipeline().addLast(new ServerTransactionHandler(messageSyncCache,messageAsyncCache,messageAsyncQueue,threadPoolForServer,messageForSubmitSyncCache,messageForSubmitAsyncCache));
+                            ch.pipeline().addLast(new ServerTransactionHandler(messageSyncCache,messageAsyncCache,messageAsyncQueue,threadPoolForServer,messageForSubmitSyncCache,messageForSubmitAsyncCache,threadsInfo));
                             ch.pipeline().addLast(new HeartBeatRespHandler());
                         }
                     });

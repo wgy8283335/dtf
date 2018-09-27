@@ -78,6 +78,12 @@ public class TransactionServiceInfo {
         return new TransactionServiceInfo(id,info,action);
     }
 
+    public static TransactionServiceInfo newInstanceForShortMessage(String id, ActionType action, String groupId){
+        JSONObject info = new JSONObject();
+        info.put("groupId",groupId);
+        return new TransactionServiceInfo(id,info,action);
+    }
+
     private TransactionServiceInfo(String id, JSONObject info, ActionType action) {
         this.id = id;
         this.info = info;

@@ -43,5 +43,7 @@ message Message{
         ASYNC_COMMIT = 22;
         ASYNC_CANCEL = 23;
         COMMIT_SUCCESS_ASYNC = 24;
+        WHOLE_SUCCESS_STRONG_ACK = 25;
+        WHOLE_FAIL_STRONG_ACK = 26;
     }
 }

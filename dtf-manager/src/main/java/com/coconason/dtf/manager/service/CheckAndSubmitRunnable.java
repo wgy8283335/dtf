@@ -9,14 +9,13 @@ import com.coconason.dtf.manager.cache.ThreadsInfo;
 import com.coconason.dtf.manager.message.TransactionMessageForAdding;
 import com.coconason.dtf.manager.message.TransactionMessageForSubmit;
 import com.coconason.dtf.manager.message.TransactionMessageGroup;
-import com.coconason.dtf.manager.utils.LockAndCondition;
+import com.coconason.dtf.manager.threadpools.ThreadPoolForServer;
 import com.coconason.dtf.manager.utils.MessageSender;
 import com.coconason.dtf.manager.utils.SetUtil;
 import io.netty.channel.ChannelHandlerContext;
 
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @Author: Jason
@@ -36,13 +35,16 @@ public class CheckAndSubmitRunnable implements Runnable{
 
     private ThreadsInfo threadsInfo;
 
-    public CheckAndSubmitRunnable(MessageProto.Message message, ActionType actionType, ChannelHandlerContext ctx, MessageForSubmitSyncCache messageForSubmitSyncCache, MessageSyncCache messageSyncCache, ThreadsInfo threadsInfo) {
+    private ThreadPoolForServer threadPoolForServer;
+
+    public CheckAndSubmitRunnable(MessageProto.Message message, ActionType actionType, ChannelHandlerContext ctx, MessageForSubmitSyncCache messageForSubmitSyncCache, MessageSyncCache messageSyncCache, ThreadsInfo threadsInfo,ThreadPoolForServer threadPoolForServer) {
         this.message = message;
         this.actionType = actionType;
         this.ctx = ctx;
         this.messageForSubmitSyncCache = messageForSubmitSyncCache;
         this.messageSyncCache = messageSyncCache;
         this.threadsInfo = threadsInfo;
+        this.threadPoolForServer = threadPoolForServer;
     }
 
     @Override
@@ -69,10 +71,11 @@ public class CheckAndSubmitRunnable implements Runnable{
                             MessageSender.sendMsg(elementFromCache.getGroupId()+messageForAdding.getGroupMemberId(),ActionType.APPROVESUBMIT,messageForAdding.getCtx());
                         }else{
                             //success
-                            LockAndCondition lc = new LockAndCondition(new ReentrantLock());
-                            threadsInfo.put(elementFromCache.getGroupId(),lc);
-                            lc.sendAndWaitForSignal(elementFromCache.getGroupId()+messageForAdding.getGroupMemberId(),ActionType.APPROVESUBMIT_STRONG,messageForAdding.getCtx(),"send approve submit strong fail");
+                            //LockAndCondition lc = new LockAndCondition(new ReentrantLock());
+                            //threadsInfo.put(elementFromCache.getGroupId(),lc);
+                            //lc.sendAndWaitForSignal(elementFromCache.getGroupId()+messageForAdding.getGroupMemberId(),ActionType.APPROVESUBMIT_STRONG,messageForAdding.getCtx(),"send APPROVESUBMIT_STRONG message fail");
                             //MessageSender.sendMsg(elementFromCache.getGroupId()+messageForAdding.getGroupMemberId(),ActionType.APPROVESUBMIT_STRONG,messageForAdding.getCtx());
+                            threadPoolForServer.addTask(new SendMessageRunnable(elementFromCache.getGroupId()+messageForAdding.getGroupMemberId(),ActionType.APPROVESUBMIT_STRONG,messageForAdding.getCtx(),"send APPROVESUBMIT_STRONG message fail",threadsInfo));
                         }
                     }
                     if(actionType == ActionType.ADD || actionType == ActionType.APPROVESUBMIT){

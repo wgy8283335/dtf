@@ -108,7 +108,9 @@ public class DtfConnection implements Connection {
                     secondThreadsInfo.put(groupId, secondlc);
                     secondlc.await();
                     LockAndCondition secondlc2 = secondThreadsInfo.get(groupId);
+                    queue.put(TransactionServiceInfo.newInstanceForShortMessage(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.WHOLE_SUCCESS_STRONG_ACK, groupId));
                     if (secondlc2.getState() == DbOperationType.WHOLEFAIL) {
+                        queue.put(TransactionServiceInfo.newInstanceForShortMessage(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.WHOLE_FAIL_STRONG_ACK, groupId));
                         throw new Exception("Distributed transaction failed and groupId"+groupId);
                     }
                     //4. close the connection.
@@ -147,22 +149,22 @@ public class DtfConnection implements Connection {
                 if(state == DbOperationType.COMMIT){
                     System.out.println("提交");
                     connection.commit();
-                    if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG){
+                    //if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG){
                         queue.put(TransactionServiceInfo.newInstanceForSubSccuessStrong(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_SUCCESS_STRONG, groupId,groupMembers,memberId));
-                    }
+                    //}
                 }else if(state == DbOperationType.ROLLBACK){
                     System.out.println("回滚");
                     connection.rollback();
-                    if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG){
+                    //if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG){
                         queue.put(TransactionServiceInfo.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL_STRONG, groupId,groupMembers));
-                    }
+                    //}
                 }
             } catch (Exception e) {
                 try {
                     connection.rollback();
-                    if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG){
+                    //if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG){
                         queue.put(TransactionServiceInfo.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL_STRONG, groupId,groupMembers));
-                    }
+                    //}
                     e.printStackTrace();
                 } catch (Exception exception) {
                     exception.printStackTrace();

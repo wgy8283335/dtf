@@ -54,7 +54,7 @@ public class LockAndCondition {
         }
     }
 
-    public void sendAndWaitForSignal(String groupId, MessageProto.Message.ActionType action, ChannelHandlerContext ctx,String msg) throws  Exception{
+    public void sendAndWaitForSignal(String groupId, MessageProto.Message.ActionType action, ChannelHandlerContext ctx, String msg) throws  Exception{
         MessageSender.sendMsg(groupId,action,ctx);
         boolean receivedSignal = await(10000, TimeUnit.MILLISECONDS);
         if(receivedSignal == false){

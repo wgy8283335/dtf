@@ -78,29 +78,29 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
                 //store the message in the cache.
                 //check whether the group exits in the cache
                 messageSyncCache.putDependsOnCondition(new TransactionMessageGroup(message,ctx));
-                threadPoolForServer.addTask(new CheckAndSubmitRunnable(message,ActionType.ADD,ctx, messageForSubmitSyncCache, messageSyncCache,threadsInfo));
+                threadPoolForServer.addTask(new CheckAndSubmitRunnable(message,ActionType.ADD,ctx, messageForSubmitSyncCache, messageSyncCache,threadsInfo,threadPoolForServer));
                 break;
             case APPLYFORSUBMIT:
                 messageForSubmitSyncCache.put( new TransactionMessageForSubmit(message));
-                threadPoolForServer.addTask(new CheckAndSubmitRunnable(message,ActionType.APPROVESUBMIT,ctx, messageForSubmitSyncCache, messageSyncCache,threadsInfo));
+                threadPoolForServer.addTask(new CheckAndSubmitRunnable(message,ActionType.APPROVESUBMIT,ctx, messageForSubmitSyncCache, messageSyncCache,threadsInfo,threadPoolForServer));
                 break;
             case ADD_STRONG:
                 //store the message in the cache.
                 //check whether the group exits in the cache
                 messageSyncCache.putDependsOnCondition(new TransactionMessageGroup(message,ctx));
-                threadPoolForServer.addTask(new CheckAndSubmitRunnable(message,ActionType.ADD_STRONG,ctx, messageForSubmitSyncCache, messageSyncCache,threadsInfo));
+                threadPoolForServer.addTask(new CheckAndSubmitRunnable(message,ActionType.ADD_STRONG,ctx, messageForSubmitSyncCache, messageSyncCache,threadsInfo,threadPoolForServer));
                 break;
             case APPLYFORSUBMIT_STRONG:
                 messageForSubmitSyncCache.put( new TransactionMessageForSubmit(message));
-                threadPoolForServer.addTask(new CheckAndSubmitRunnable(message,ActionType.APPROVESUBMIT_STRONG,ctx, messageForSubmitSyncCache, messageSyncCache,threadsInfo));
+                threadPoolForServer.addTask(new CheckAndSubmitRunnable(message,ActionType.APPROVESUBMIT_STRONG,ctx, messageForSubmitSyncCache, messageSyncCache,threadsInfo,threadPoolForServer));
                 break;
             case CANCEL:
-                threadPoolForServer.addTask(new CheckAndSubmitRunnable(message,ActionType.CANCEL,ctx, messageForSubmitSyncCache, messageSyncCache,threadsInfo));
+                threadPoolForServer.addTask(new CheckAndSubmitRunnable(message,ActionType.CANCEL,ctx, messageForSubmitSyncCache, messageSyncCache,threadsInfo,threadPoolForServer));
             case SUB_SUCCESS_STRONG:
                 String memberId = JSONObject.parseObject(message.getInfo()).get("memberId").toString();
                 TransactionMessageGroup groupTemp = messageSyncCache.get(JSONObject.parseObject(message.getInfo()).get("groupId").toString());
-                LockAndCondition lc1 = threadsInfo.get(groupTemp.getGroupId());
-                lc1.signal();
+//                LockAndCondition lc1 = threadsInfo.get(groupTemp.getGroupId());
+//                lc1.signal();
                 //1.check the group.If all of members are success,reply to the creator.
                 List<TransactionMessageForAdding> memberList = groupTemp.getMemberList();
                 for(TransactionMessageForAdding member:memberList){
@@ -116,17 +116,28 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
                     }
                 }
                 if(flag == true){
-
                     //MessageSender.sendMsg(groupTemp.getGroupId(),ActionType.WHOLE_SUCCESS_STRONG,groupTemp.getCtxForSubmitting());
-                    threadPoolForServer.addTask(new SendMessageRunnable(groupTemp.getGroupId(),ActionType.WHOLE_SUCCESS_STRONG,groupTemp.getCtxForSubmitting(),"send message fail"));
-                    messageSyncCache.clear(groupTemp.getGroupId());
+                    String groupId = groupTemp.getGroupId();
+                    threadPoolForServer.addTask(new SendMessageRunnable(groupId,ActionType.WHOLE_SUCCESS_STRONG,groupTemp.getCtxForSubmitting(),"send WHOLE_SUCCESS_STRONG message fail",threadsInfo));
+                    messageSyncCache.clear(groupId);
                 }
                 break;
-
+            case WHOLE_SUCCESS_STRONG_ACK:
+                String tempGroupId1 = JSONObject.parseObject(message.getInfo()).get("groupId").toString();
+                LockAndCondition tempLc1 = threadsInfo.get(tempGroupId1);
+                tempLc1.signal();
+                break;
             case SUB_FAIL_STRONG:
                 TransactionMessageGroup groupTemp1 = messageSyncCache.get(JSONObject.parseObject(message.getInfo()).get("groupId").toString());
-                MessageSender.sendMsg(groupTemp1.getGroupId(),ActionType.WHOLE_FAIL_STRONG,groupTemp1.getCtxForSubmitting());
+                //MessageSender.sendMsg(groupTemp1.getGroupId(),ActionType.WHOLE_FAIL_STRONG,groupTemp1.getCtxForSubmitting());
+                String groupId1 = groupTemp1.getGroupId();
+                threadPoolForServer.addTask(new SendMessageRunnable(groupId1,ActionType.WHOLE_FAIL_STRONG,groupTemp1.getCtxForSubmitting(),"send WHOLE_FAIL_STRONG message fail",threadsInfo));
                 messageSyncCache.clear(groupTemp1.getGroupId());
+                break;
+            case WHOLE_FAIL_STRONG_ACK:
+                String tempGroupId2 = JSONObject.parseObject(message.getInfo()).get("groupId").toString();
+                LockAndCondition tempLc2 = threadsInfo.get(tempGroupId2);
+                tempLc2.signal();
                 break;
             case ADD_ASYNC:
                 TransactionMessageGroupAsync transactionMessageGroupAsync=null;
@@ -135,8 +146,12 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
                     //add message in messageAsyncCache
                     messageAsyncCache.putDependsOnConditionAsync(transactionMessageGroupAsync);
                     MessageSender.sendMsg(transactionMessageGroupAsync.getGroupId(),ActionType.ADD_SUCCESS_ASYNC,ctx);
+                    //String groupId2 = transactionMessageGroupAsync.getGroupId();
+                    //threadPoolForServer.addTask(new SendMessageRunnable(groupId2,ActionType.ADD_SUCCESS_ASYNC,ctx,"send message fail",threadsInfo));
                 }catch (Exception e) {
+                    //String groupId2 = transactionMessageGroupAsync.getGroupId();
                     MessageSender.sendMsg(transactionMessageGroupAsync.getGroupId(),ActionType.ADD_FAIL_ASYNC,ctx);
+                    //threadPoolForServer.addTask(new SendMessageRunnable(groupId2,ActionType.ADD_FAIL_ASYNC,ctx,"send message fail",threadsInfo));
                 }
                 Set<String> setFromCacheTemp = SetUtil.setTransfer(messageAsyncCache.get(transactionMessageGroupAsync.getGroupId()).getMemberSet());
                 TransactionMessageForSubmit transactionMessageForSubmit1= messageForSubmitAsyncCache.get(transactionMessageGroupAsync.getGroupId());
@@ -154,6 +169,8 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
                 TransactionMessageForSubmit transactionMessageForSubmit = new TransactionMessageForSubmit(message);
                 messageForSubmitAsyncCache.put(transactionMessageForSubmit);
                 MessageSender.sendMsg(transactionMessageForSubmit.getGroupId(),ActionType.COMMIT_SUCCESS_ASYNC,ctx);
+                //String groupId3 = transactionMessageForSubmit.getGroupId();
+                //threadPoolForServer.addTask(new SendMessageRunnable(groupId3,ActionType.COMMIT_SUCCESS_ASYNC,ctx,"send message fail",threadsInfo));
                 TransactionMessageGroupAsync transactionMessageGroupAsync1 = messageAsyncCache.get(groupId);
                 if(transactionMessageGroupAsync1!=null){
                     Set<String> setFromCache = SetUtil.setTransfer(transactionMessageGroupAsync1.getMemberSet());
