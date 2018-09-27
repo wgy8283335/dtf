@@ -26,7 +26,6 @@ public class SCServiceImpl implements ISCService {
     private RestClientAsync restClientAsync;
 
     @Override
-    //@DtfTransaction(type="SYNC_STRONG")
     @DtfTransaction
     @Transactional
     public DemoResult addSCInfo(Sc sc) throws Exception {

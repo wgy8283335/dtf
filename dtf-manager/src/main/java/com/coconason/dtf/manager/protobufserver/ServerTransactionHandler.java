@@ -11,9 +11,9 @@ import com.coconason.dtf.manager.message.TransactionMessageGroupAsync;
 import com.coconason.dtf.manager.service.CheckAndSubmitRunnable;
 import com.coconason.dtf.manager.service.SendAsyncRequestRunnable;
 import com.coconason.dtf.manager.service.SendMessageRunnable;
+import com.coconason.dtf.manager.service.SendShortMessageRunnable;
 import com.coconason.dtf.manager.threadpools.ThreadPoolForServer;
 import com.coconason.dtf.manager.utils.LockAndCondition;
-import com.coconason.dtf.manager.utils.MessageSender;
 import com.coconason.dtf.manager.utils.SetUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -146,13 +146,11 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
                     transactionMessageGroupAsync = TransactionMessageGroupAsync.parse(message);
                     //add message in messageAsyncCache
                     messageAsyncCache.putDependsOnConditionAsync(transactionMessageGroupAsync);
-                    MessageSender.sendMsg(transactionMessageGroupAsync.getGroupId(),ActionType.ADD_SUCCESS_ASYNC,ctx);
-                    //String groupId2 = transactionMessageGroupAsync.getGroupId();
-                    //threadPoolForServer.addTask(new SendMessageRunnable(groupId2,ActionType.ADD_SUCCESS_ASYNC,ctx,"send message fail",threadsInfo));
+                    //MessageSender.sendMsg(transactionMessageGroupAsync.getGroupId(),ActionType.ADD_SUCCESS_ASYNC,ctx);
+                    threadPoolForServer.addTask(new SendShortMessageRunnable(transactionMessageGroupAsync.getGroupId(),ActionType.ADD_SUCCESS_ASYNC,ctx));
                 }catch (Exception e) {
-                    //String groupId2 = transactionMessageGroupAsync.getGroupId();
-                    MessageSender.sendMsg(transactionMessageGroupAsync.getGroupId(),ActionType.ADD_FAIL_ASYNC,ctx);
-                    //threadPoolForServer.addTask(new SendMessageRunnable(groupId2,ActionType.ADD_FAIL_ASYNC,ctx,"send message fail",threadsInfo));
+                    //MessageSender.sendMsg(transactionMessageGroupAsync.getGroupId(),ActionType.ADD_FAIL_ASYNC,ctx);
+                    threadPoolForServer.addTask(new SendShortMessageRunnable(transactionMessageGroupAsync.getGroupId(),ActionType.ADD_FAIL_ASYNC,ctx));
                 }
                 Set<String> setFromCacheTemp = SetUtil.setTransfer(messageAsyncCache.get(transactionMessageGroupAsync.getGroupId()).getMemberSet());
                 TransactionMessageForSubmit transactionMessageForSubmit1= messageForSubmitAsyncCache.get(transactionMessageGroupAsync.getGroupId());
@@ -169,9 +167,8 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
                 String groupId = map.get("groupId").toString();
                 TransactionMessageForSubmit transactionMessageForSubmit = new TransactionMessageForSubmit(message);
                 messageForSubmitAsyncCache.put(transactionMessageForSubmit);
-                MessageSender.sendMsg(transactionMessageForSubmit.getGroupId(),ActionType.COMMIT_SUCCESS_ASYNC,ctx);
-                //String groupId3 = transactionMessageForSubmit.getGroupId();
-                //threadPoolForServer.addTask(new SendMessageRunnable(groupId3,ActionType.COMMIT_SUCCESS_ASYNC,ctx,"send message fail",threadsInfo));
+                //MessageSender.sendMsg(transactionMessageForSubmit.getGroupId(),ActionType.COMMIT_SUCCESS_ASYNC,ctx);
+                threadPoolForServer.addTask(new SendShortMessageRunnable(groupId,ActionType.COMMIT_SUCCESS_ASYNC,ctx));
                 TransactionMessageGroupAsync transactionMessageGroupAsync1 = messageAsyncCache.get(groupId);
                 if(transactionMessageGroupAsync1!=null){
                     Set<String> setFromCache = SetUtil.setTransfer(transactionMessageGroupAsync1.getMemberSet());

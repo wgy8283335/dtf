@@ -64,6 +64,7 @@ public class TeacherServiceImpl implements ITeacherService {
     }
 
     @Override
+    @DtfTransaction(type="ASYNC_FINAL")
     @Transactional
     public DemoResult addTeacherInfoAsync(Teacher teacher) throws Exception {
         if(teacherMapper.insertSelective(teacher)>0){
