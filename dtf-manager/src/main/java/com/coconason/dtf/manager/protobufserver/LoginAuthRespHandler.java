@@ -14,10 +14,15 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class LoginAuthRespHandler extends ChannelInboundHandlerAdapter
 {
-    // 白名单，暂时简单处理，写死了
+
+    /**
+     * White list.
+     */
     private String[] writeList = { "/127.0.0.1" };
 
-    // 已经登录的IP缓存，防止重复登录
+    /**
+     * The cache of the IP logged, in case duplicated log in.
+     */
     private Map<String, Boolean> nodeCheck = new ConcurrentHashMap();
 
     @Override
@@ -30,20 +35,19 @@ public class LoginAuthRespHandler extends ChannelInboundHandlerAdapter
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception
     {
         MessageProto.Message message = (MessageProto.Message) msg;
-        // 如果是握手请求消息
         if (message.getLength() != 2 && message.getAction() == ActionType.LOGIN_REQ)
         {
             System.out.println("receive client login req : " + message);
             MessageProto.Message loginResp = null;
             String nodeIndex = ctx.channel().remoteAddress().toString().split(":")[0];
-            // 判断是否重复登录
+            // Check whether is duplicated log in.
             if (nodeCheck.containsKey(nodeIndex))
             {
                 loginResp = buildResponse("login_repeat");
             }
             else
             {
-                // 判断是否属于白名单中的IP
+                // Check whether the ip is in the white list.
                 boolean tag = false;
                 for (String ip : writeList)
                 {
@@ -90,7 +94,7 @@ public class LoginAuthRespHandler extends ChannelInboundHandlerAdapter
         }
         finally
         {
-            // 异常发生时，把登录缓存清除
+            // Clear the cache when exception happens
             nodeCheck.remove("/127.0.0.1");
         }
 

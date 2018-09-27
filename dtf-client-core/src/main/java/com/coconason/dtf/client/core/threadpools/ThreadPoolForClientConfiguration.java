@@ -23,31 +23,16 @@ class ThreadPoolForClientConfiguration {
         return corePoolSize;
     }
 
-    public void setCorePoolSize(Integer corePoolSize) {
-        this.corePoolSize = corePoolSize;
-    }
-
     public Integer getMaximumPoolSize() {
         return maximumPoolSize;
-    }
-
-    public void setMaximumPoolSize(Integer maximumPoolSize) {
-        this.maximumPoolSize = maximumPoolSize;
     }
 
     public Integer getKeepAliveTime() {
         return keepAliveTime;
     }
 
-    public void setKeepAliveTime(Integer keepAliveTime) {
-        this.keepAliveTime = keepAliveTime;
-    }
-
     public Integer getQueueSize() {
         return queueSize;
     }
 
-    public void setQueueSize(Integer queueSize) {
-        this.queueSize = queueSize;
-    }
 }

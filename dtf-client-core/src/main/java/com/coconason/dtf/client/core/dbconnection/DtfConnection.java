@@ -108,7 +108,7 @@ public class DtfConnection implements Connection {
                     secondThreadsInfo.put(groupId, secondlc);
                     secondlc.await();
                     LockAndCondition secondlc2 = secondThreadsInfo.get(groupId);
-                    if (secondlc2.getState() == DbOperationType.WHOLEFAIL) {
+                    if (secondlc2.getState() == DbOperationType.WHOLE_FAIL) {
                         queue.put(TransactionServiceInfo.newInstanceForShortMessage(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.WHOLE_FAIL_STRONG_ACK, groupId));
                         throw new Exception("Distributed transaction failed and groupId"+groupId);
                     }

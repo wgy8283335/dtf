@@ -77,13 +77,13 @@ class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 			case WHOLE_SUCCESS_STRONG:
 				map = JSONObject.parseObject(message.getInfo().toString());
 				LockAndCondition secondlc = secondThreadsInfo.get(map.get("groupId").toString());
-				secondlc.setState(DbOperationType.WHOLESUCCESS);
+				secondlc.setState(DbOperationType.WHOLE_SUCCESS);
 				secondlc.signal();
 				break;
 			case WHOLE_FAIL_STRONG:
 				map = JSONObject.parseObject(message.getInfo().toString());
 				LockAndCondition secondlc2 = secondThreadsInfo.get(map.get("groupId").toString());
-				secondlc2.setState(DbOperationType.WHOLEFAIL);
+				secondlc2.setState(DbOperationType.WHOLE_FAIL);
 				secondlc2.signal();
 				break;
 			case CANCEL:
@@ -92,12 +92,12 @@ class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 				break;
 			case ADD_SUCCESS_ASYNC:
 				LockAndCondition thirdlc = thirdThreadsInfo.get(JSONObject.parseObject(message.getInfo().toString()).get("groupId").toString());
-				thirdlc.setState(DbOperationType.ASYNCSUCCESS);
+				thirdlc.setState(DbOperationType.ASYNC_SUCCESS);
 				thirdlc.signal();
 				break;
 			case ADD_FAIL_ASYNC:
 				LockAndCondition thirdlc2 = thirdThreadsInfo.get(JSONObject.parseObject(message.getInfo().toString()).get("groupId").toString());
-				thirdlc2.setState(DbOperationType.ASYNCFAIL);
+				thirdlc2.setState(DbOperationType.ASYNC_FAIL);
 				thirdlc2.signal();
 				break;
 			case COMMIT_SUCCESS_ASYNC:
@@ -237,13 +237,5 @@ class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 		MessageProto.Message message = builder.build();
 		System.out.println("Send transaction message:\n" + message);
 		ctx.writeAndFlush(message);
-	}
-
-	public ChannelHandlerContext getCtx() {
-		return ctx;
-	}
-
-	public void setCtx(ChannelHandlerContext ctx) {
-		this.ctx = ctx;
 	}
 }

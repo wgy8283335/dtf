@@ -30,9 +30,7 @@ class DtfClientInterceptor {
         RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
         HttpServletRequest request = requestAttributes == null ? null : ((ServletRequestAttributes) requestAttributes).getRequest();
         String info = request == null ? null : request.getHeader("groupInfo");
-        //return aspectHandler.before(info,joinPoint);
         Object result = aspectHandler.before(info,joinPoint);
-        //Thread.sleep(10000);
         return result;
     }
 }

@@ -29,14 +29,6 @@ public enum TransactionType {
         }
     }
 
-    public String getTransactionType() {
-        return transactionType;
-    }
-
-    public void setTransactionType(String transactionType) {
-        this.transactionType = transactionType;
-    }
-
     public static TransactionType getCurrent() {
         return current.get();
     }

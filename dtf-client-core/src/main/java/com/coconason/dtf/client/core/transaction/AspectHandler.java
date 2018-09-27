@@ -125,21 +125,6 @@ public class AspectHandler {
         }
         return result;
     }
-//
-//    private void waitForSignal(LockAndCondition lc,NettyService nettyService) throws Exception{
-//        boolean receivedSignal = lc.await(5000, TimeUnit.MILLISECONDS);
-//        if(receivedSignal == false){
-//            boolean channelIsHealthy = nettyService.isHealthy();
-//            if(channelIsHealthy){
-//                boolean receivedSignal2 = lc.await(5000, TimeUnit.MILLISECONDS);
-//                if(receivedSignal2 == false){
-//                    throw new Exception("commit async fail");
-//                }
-//            }else{
-//                throw new Exception("commit async fail");
-//            }
-//        }
-//    }
 
     private void switchTransactionType(TransactionType transactionType,TransactionGroupInfo transactionGroupInfo,Method method,Object[] args){
         switch (transactionType){

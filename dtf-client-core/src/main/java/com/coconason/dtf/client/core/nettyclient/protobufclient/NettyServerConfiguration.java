@@ -20,15 +20,8 @@ class NettyServerConfiguration {
         return host;
     }
 
-    void setHost(String host) {
-        this.host = host;
-    }
-
     Integer getPort() {
         return port;
     }
 
-    void setPort(Integer port) {
-        this.port = port;
-    }
 }

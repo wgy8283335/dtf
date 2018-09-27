@@ -1,8 +1,7 @@
 package com.coconason.dtf.manager.service;
 
-import com.alibaba.fastjson.JSONObject;
 import com.coconason.dtf.common.protobuf.MessageProto;
-import com.coconason.dtf.common.utils.UuidGenerator;
+import com.coconason.dtf.manager.utils.MessageSender;
 import io.netty.channel.ChannelHandlerContext;
 
 /**
@@ -22,14 +21,10 @@ public class SendShortMessageRunnable implements Runnable {
 
     @Override
     public void run() {
-        MessageProto.Message.Builder builder= MessageProto.Message.newBuilder();
-        JSONObject info = new JSONObject();
-        info.put("groupId",groupId);
-        builder.setInfo(info.toJSONString());
-        builder.setId(UuidGenerator.generateUuid());
-        builder.setAction(actionType);
-        MessageProto.Message message = builder.build();
-        System.out.println("Send transaction message:\n" + message);
-        ctx.writeAndFlush(message);
+        try{
+            MessageSender.sendMsg(groupId, actionType,ctx);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }
