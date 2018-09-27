@@ -96,11 +96,12 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
                 break;
             case CANCEL:
                 threadPoolForServer.addTask(new CheckAndSubmitRunnable(message,ActionType.CANCEL,ctx, messageForSubmitSyncCache, messageSyncCache,threadsInfo,threadPoolForServer));
+                break;
             case SUB_SUCCESS_STRONG:
                 String memberId = JSONObject.parseObject(message.getInfo()).get("memberId").toString();
                 TransactionMessageGroup groupTemp = messageSyncCache.get(JSONObject.parseObject(message.getInfo()).get("groupId").toString());
-//                LockAndCondition lc1 = threadsInfo.get(groupTemp.getGroupId());
-//                lc1.signal();
+                LockAndCondition lc1 = threadsInfo.get(groupTemp.getGroupId()+memberId);
+                lc1.signal();
                 //1.check the group.If all of members are success,reply to the creator.
                 List<TransactionMessageForAdding> memberList = groupTemp.getMemberList();
                 for(TransactionMessageForAdding member:memberList){

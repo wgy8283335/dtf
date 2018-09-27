@@ -167,6 +167,12 @@ class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 			case CANCEL:
 				sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString(),serviceInfo.getInfo().get("groupMemberSet").toString());
 				break;
+			case WHOLE_SUCCESS_STRONG_ACK:
+				sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString());
+				break;
+			case WHOLE_FAIL_STRONG_ACK:
+				sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString());
+				break;
 			default:
 				break;
 		}

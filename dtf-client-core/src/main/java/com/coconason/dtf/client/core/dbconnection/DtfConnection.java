@@ -103,16 +103,16 @@ public class DtfConnection implements Connection {
                 TransactionGroupInfo transactionGroupInfo = TransactionGroupInfo.getCurrent();
                 String groupId = transactionGroupInfo.getGroupId();
                 Long memberId = transactionGroupInfo.getMemberId();
-                if (ORIGINAL_ID.equals(memberId) && TransactionType.SYNC_STRONG==TransactionType.getCurrent()) {
+                if (ORIGINAL_ID.equals(memberId) && TransactionType.SYNC_STRONG==TransactionType.getCurrent()){
                     LockAndCondition secondlc = new LockAndCondition(new ReentrantLock(), DbOperationType.DEFAULT);
                     secondThreadsInfo.put(groupId, secondlc);
                     secondlc.await();
                     LockAndCondition secondlc2 = secondThreadsInfo.get(groupId);
-                    queue.put(TransactionServiceInfo.newInstanceForShortMessage(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.WHOLE_SUCCESS_STRONG_ACK, groupId));
                     if (secondlc2.getState() == DbOperationType.WHOLEFAIL) {
                         queue.put(TransactionServiceInfo.newInstanceForShortMessage(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.WHOLE_FAIL_STRONG_ACK, groupId));
                         throw new Exception("Distributed transaction failed and groupId"+groupId);
                     }
+                    queue.put(TransactionServiceInfo.newInstanceForShortMessage(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.WHOLE_SUCCESS_STRONG_ACK, groupId));
                     //4. close the connection.
                     connection.close();
                 }
