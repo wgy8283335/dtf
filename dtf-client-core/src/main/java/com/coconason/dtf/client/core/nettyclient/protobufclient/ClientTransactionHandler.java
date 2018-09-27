@@ -12,7 +12,6 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
@@ -37,9 +36,6 @@ class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 	@Autowired
 	@Qualifier("threadsInfo")
 	private ThreadsInfo asyncFinalCommitThreadsInfo;
-
-	@Autowired
-	private ApplicationContext applicationContext;
 
 	private ChannelHandlerContext ctx;
 
@@ -69,22 +65,12 @@ class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 		}
 		switch (action){
 			case APPROVESUBMIT:
-				//1.If notified to be commit
-				if(state == DbOperationType.COMMIT){
-					lc.signal();
-				}
-				//2.If notified to be rollback
-				else if(state == DbOperationType.ROLLBACK){
+				if(state == DbOperationType.COMMIT||state == DbOperationType.ROLLBACK){
 					lc.signal();
 				}
 				break;
 			case APPROVESUBMIT_STRONG:
-				//1.If notified to be commit
-				if(state == DbOperationType.COMMIT){
-					lc.signal();
-				}
-				//2.If notified to be rollback
-				else if(state == DbOperationType.ROLLBACK){
+				if(state == DbOperationType.COMMIT||state == DbOperationType.ROLLBACK){
 					lc.signal();
 				}
 				break;
@@ -172,6 +158,12 @@ class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 				break;
 			case WHOLE_FAIL_STRONG_ACK:
 				sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString());
+				break;
+			case SUB_SUCCESS:
+				sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString(),serviceInfo.getInfo().get("groupMemberSet").toString(),serviceInfo.getInfo().get("memberId").toString());
+				break;
+			case SUB_FAIL:
+				sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString(),serviceInfo.getInfo().get("groupMemberSet").toString());
 				break;
 			default:
 				break;

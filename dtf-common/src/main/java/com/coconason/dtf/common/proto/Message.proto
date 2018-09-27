@@ -45,5 +45,7 @@ message Message{
         COMMIT_SUCCESS_ASYNC = 24;
         WHOLE_SUCCESS_STRONG_ACK = 25;
         WHOLE_FAIL_STRONG_ACK = 26;
+        SUB_SUCCESS = 27;
+        SUB_FAIL = 28;
     }
 }

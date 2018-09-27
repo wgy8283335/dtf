@@ -10,7 +10,6 @@ import com.coconason.dtf.manager.message.TransactionMessageForAdding;
 import com.coconason.dtf.manager.message.TransactionMessageForSubmit;
 import com.coconason.dtf.manager.message.TransactionMessageGroup;
 import com.coconason.dtf.manager.threadpools.ThreadPoolForServer;
-import com.coconason.dtf.manager.utils.MessageSender;
 import com.coconason.dtf.manager.utils.SetUtil;
 import io.netty.channel.ChannelHandlerContext;
 
@@ -68,13 +67,9 @@ public class CheckAndSubmitRunnable implements Runnable{
                 if(SetUtil.isSetEqual(setFromMessage,setFromCache)){
                     for (TransactionMessageForAdding messageForAdding: memberList) {
                         if(actionType == ActionType.ADD || actionType == ActionType.APPROVESUBMIT){
-                            MessageSender.sendMsg(elementFromCache.getGroupId()+messageForAdding.getGroupMemberId(),ActionType.APPROVESUBMIT,messageForAdding.getCtx());
+                            threadPoolForServer.addTask(new SendMessageRunnable(elementFromCache.getGroupId()+messageForAdding.getGroupMemberId(),ActionType.APPROVESUBMIT,messageForAdding.getCtx(),"send APPROVESUBMIT message fail",threadsInfo));
                         }else{
                             //success
-                            //LockAndCondition lc = new LockAndCondition(new ReentrantLock());
-                            //threadsInfo.put(elementFromCache.getGroupId(),lc);
-                            //lc.sendAndWaitForSignal(elementFromCache.getGroupId()+messageForAdding.getGroupMemberId(),ActionType.APPROVESUBMIT_STRONG,messageForAdding.getCtx(),"send APPROVESUBMIT_STRONG message fail");
-                            //MessageSender.sendMsg(elementFromCache.getGroupId()+messageForAdding.getGroupMemberId(),ActionType.APPROVESUBMIT_STRONG,messageForAdding.getCtx());
                             threadPoolForServer.addTask(new SendMessageRunnable(elementFromCache.getGroupId()+messageForAdding.getGroupMemberId(),ActionType.APPROVESUBMIT_STRONG,messageForAdding.getCtx(),"send APPROVESUBMIT_STRONG message fail",threadsInfo));
                         }
                     }

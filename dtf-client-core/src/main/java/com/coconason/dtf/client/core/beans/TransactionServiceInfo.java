@@ -70,7 +70,7 @@ public class TransactionServiceInfo {
         return new TransactionServiceInfo(id,info,action);
     }
 
-    public static TransactionServiceInfo newInstanceForSubSccuessStrong(String id, ActionType action, String groupId, Set<Long> groupMemberSet, Long memberId){
+    public static TransactionServiceInfo newInstanceForSub(String id, ActionType action, String groupId, Set<Long> groupMemberSet, Long memberId){
         JSONObject info = new JSONObject();
         info.put("groupId",groupId);
         info.put("groupMemberSet",groupMemberSet.toString());

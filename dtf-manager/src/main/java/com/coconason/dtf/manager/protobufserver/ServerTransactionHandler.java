@@ -122,6 +122,16 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
                     messageSyncCache.clear(groupId);
                 }
                 break;
+            case SUB_SUCCESS:
+                String memberId2 = JSONObject.parseObject(message.getInfo()).get("memberId").toString();
+                String groupTempId2 = JSONObject.parseObject(message.getInfo()).get("groupId").toString();
+                LockAndCondition lc2 = threadsInfo.get(groupTempId2+memberId2);
+                lc2.signal();
+                break;
+            case SUB_FAIL:
+                String groupTempId3 = JSONObject.parseObject(message.getInfo()).get("groupId").toString();
+                messageSyncCache.clear(groupTempId3);
+                break;
             case WHOLE_SUCCESS_STRONG_ACK:
                 String tempGroupId1 = JSONObject.parseObject(message.getInfo()).get("groupId").toString();
                 LockAndCondition tempLc1 = threadsInfo.get(tempGroupId1);

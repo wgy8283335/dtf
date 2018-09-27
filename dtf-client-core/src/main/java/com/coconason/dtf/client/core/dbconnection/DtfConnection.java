@@ -149,22 +149,28 @@ public class DtfConnection implements Connection {
                 if(state == DbOperationType.COMMIT){
                     System.out.println("提交");
                     connection.commit();
-                    //if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG){
-                        queue.put(TransactionServiceInfo.newInstanceForSubSccuessStrong(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_SUCCESS_STRONG, groupId,groupMembers,memberId));
-                    //}
+                    if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG) {
+                        queue.put(TransactionServiceInfo.newInstanceForSub(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_SUCCESS_STRONG, groupId, groupMembers, memberId));
+                    }else if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD){
+                        queue.put(TransactionServiceInfo.newInstanceForSub(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_SUCCESS, groupId, groupMembers, memberId));
+                    }
                 }else if(state == DbOperationType.ROLLBACK){
                     System.out.println("回滚");
                     connection.rollback();
-                    //if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG){
+                    if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG){
                         queue.put(TransactionServiceInfo.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL_STRONG, groupId,groupMembers));
-                    //}
+                    }else if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD){
+                        queue.put(TransactionServiceInfo.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL, groupId,groupMembers));
+                    }
                 }
             } catch (Exception e) {
                 try {
                     connection.rollback();
-                    //if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG){
+                    if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG){
                         queue.put(TransactionServiceInfo.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL_STRONG, groupId,groupMembers));
-                    //}
+                    }else if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD){
+                        queue.put(TransactionServiceInfo.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL, groupId,groupMembers));
+                    }
                     e.printStackTrace();
                 } catch (Exception exception) {
                     exception.printStackTrace();
