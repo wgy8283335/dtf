@@ -3,13 +3,11 @@ package com.coconason.dtf.manager.cache;
 import com.coconason.dtf.manager.utils.LockAndCondition;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import org.springframework.stereotype.Component;
 
 /**
  * @Author: Jason
  * @date: 2018/8/22-11:09
  */
-@Component(value="threadsInfo")
 public class ThreadsInfo {
 
     private Cache<String,LockAndCondition> cache;
