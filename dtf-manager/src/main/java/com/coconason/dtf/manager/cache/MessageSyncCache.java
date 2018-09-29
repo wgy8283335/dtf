@@ -4,6 +4,8 @@ import com.coconason.dtf.manager.message.TransactionMessageGroup;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * @Author: Jason
  * @date: 2018/8/24-16:34
@@ -13,7 +15,7 @@ public class MessageSyncCache {
     private Cache<String,TransactionMessageGroup> cache;
 
     public MessageSyncCache() {
-        cache = CacheBuilder.newBuilder().maximumSize(1000000L).build();
+        cache = CacheBuilder.newBuilder().expireAfterAccess(600, TimeUnit.SECONDS).maximumSize(1000000L).build();
     }
 
     public synchronized TransactionMessageGroup get(String id){

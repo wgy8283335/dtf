@@ -68,16 +68,17 @@ public class LockAndCondition {
         nettyService.sendMsg(serviceInfo);
         boolean receivedSignal = await(10000, TimeUnit.MILLISECONDS);
         if(receivedSignal == false){
-            boolean channelIsHealthy = nettyService.isHealthy();
-            if(channelIsHealthy){
-                nettyService.sendMsg(serviceInfo);
-                boolean receivedSignal2 = await(10000, TimeUnit.MILLISECONDS);
-                if(receivedSignal2 == false){
-                    throw new Exception(msg);
-                }
-            }else{
-                throw new Exception(msg);
-            }
+//            boolean channelIsHealthy = nettyService.isHealthy();
+//            if(channelIsHealthy){
+//                nettyService.sendMsg(serviceInfo);
+//                boolean receivedSignal2 = await(10000, TimeUnit.MILLISECONDS);
+//                if(receivedSignal2 == false){
+//                    throw new Exception(msg);
+//                }
+//            }else{
+//                throw new Exception(msg);
+//            }
+            throw new Exception(msg);
         }
     }
 }

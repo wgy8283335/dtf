@@ -6,6 +6,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Author: Jason
@@ -16,7 +17,7 @@ public class MessageAsyncCache {
     private Cache<String,TransactionMessageGroupAsync> cache;
 
     public MessageAsyncCache() {
-        cache = CacheBuilder.newBuilder().maximumSize(1000000L).build();
+        cache = CacheBuilder.newBuilder().expireAfterAccess(600, TimeUnit.SECONDS).maximumSize(1000000L).build();
     }
 
     public synchronized TransactionMessageGroupAsync get(String id){
