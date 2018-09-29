@@ -33,6 +33,8 @@ public class SendMessageRunnable implements Runnable {
         try{
             if(actionType == ActionType.APPROVESUBMIT){
                 lc.sendAndWaitForSignal(groupId,actionType,ctx,message);
+            }else if(actionType == ActionType.APPROVESUBMIT_STRONG){
+                lc.sendAndWaitForSignalIfFailSendMessage(groupId,actionType,ctx,message);
             }else{
                 lc.sendAndWaitForSignalOnce(groupId,actionType,ctx,message);
             }

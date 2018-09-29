@@ -82,4 +82,13 @@ public class LockAndCondition {
         }
     }
 
+    public void sendAndWaitForSignalIfFailSendMessage(String groupId, MessageProto.Message.ActionType action, ChannelHandlerContext ctx, String msg) throws  Exception{
+        MessageSender.sendMsg(groupId,action,ctx);
+        boolean receivedSignal = await(10000, TimeUnit.MILLISECONDS);
+        if(receivedSignal == false){
+            MessageSender.sendMsg(groupId, MessageProto.Message.ActionType.WHOLE_FAIL_STRONG,ctx);
+            throw new Exception(msg);
+        }
+    }
+
 }
