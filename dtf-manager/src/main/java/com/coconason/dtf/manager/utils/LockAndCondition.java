@@ -3,6 +3,8 @@ package com.coconason.dtf.manager.utils;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.manager.protobufserver.NettyServer;
 import io.netty.channel.ChannelHandlerContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
@@ -13,6 +15,8 @@ import java.util.concurrent.locks.Lock;
  * @date: 2018/8/22-11:44
  */
 public class LockAndCondition {
+
+    private static final Logger logger = LoggerFactory.getLogger(LockAndCondition.class);
     private Lock lock;
     private Condition condition;
 
@@ -57,15 +61,14 @@ public class LockAndCondition {
     public void sendAndWaitForSignal(String groupId, MessageProto.Message.ActionType action, ChannelHandlerContext ctx, String msg) throws  Exception{
         MessageSender.sendMsg(groupId,action,ctx);
         boolean receivedSignal = await(10000, TimeUnit.MILLISECONDS);
-        if(receivedSignal == false){
+        while(receivedSignal == false){
             boolean channelIsHealthy = NettyServer.isHealthy();
             if(channelIsHealthy){
                 MessageSender.sendMsg(groupId,action,ctx);
-                boolean receivedSignal2 = await(10000, TimeUnit.MILLISECONDS);
-                if(receivedSignal2 == false){
-                    throw new Exception(msg);
-                }
+                receivedSignal = await(10000, TimeUnit.MILLISECONDS);
             }else{
+                //should write log.
+                logger.error(msg+"\n"+"groupId:"+groupId+"\n"+"action:"+action);
                 throw new Exception(msg);
             }
         }

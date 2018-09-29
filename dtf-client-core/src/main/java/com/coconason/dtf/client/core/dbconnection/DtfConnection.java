@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.Executor;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
 import static com.coconason.dtf.client.core.constants.Member.ORIGINAL_ID;
@@ -143,25 +144,29 @@ public class DtfConnection implements Connection {
                 JSONObject map = transactionServiceInfo.getInfo();
                 threadsInfo.put(map.get("groupId").toString()+memberId,lc);
                 queue.put(transactionServiceInfo);
-                lc.await();
+                boolean result = lc.await(10000, TimeUnit.MILLISECONDS);
+                if(result == false){
+                    throw new Exception("haven't received APPLYFORSUBMIT or APPLYFORSUBMIT_STRONG message");
+                }
                 //3. After signaling, if success commit or rollback, otherwise skip the committing.
                 state = threadsInfo.get(map.get("groupId").toString()+memberId).getState();
                 if(state == DbOperationType.COMMIT){
-                    System.out.println("提交");
-                    connection.commit();
+                    //Thread.sleep(30000);
                     if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG) {
                         queue.put(TransactionServiceInfo.newInstanceForSub(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_SUCCESS_STRONG, groupId, groupMembers, memberId));
                     }else if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD){
                         queue.put(TransactionServiceInfo.newInstanceForSub(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_SUCCESS, groupId, groupMembers, memberId));
                     }
+                    System.out.println("提交");
+                    connection.commit();
                 }else if(state == DbOperationType.ROLLBACK){
-                    System.out.println("回滚");
-                    connection.rollback();
                     if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG){
                         queue.put(TransactionServiceInfo.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL_STRONG, groupId,groupMembers));
                     }else if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD){
                         queue.put(TransactionServiceInfo.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL, groupId,groupMembers));
                     }
+                    System.out.println("回滚");
+                    connection.rollback();
                 }
             } catch (Exception e) {
                 try {

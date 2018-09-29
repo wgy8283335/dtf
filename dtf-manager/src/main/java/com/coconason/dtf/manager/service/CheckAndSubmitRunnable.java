@@ -67,9 +67,11 @@ public class CheckAndSubmitRunnable implements Runnable{
                 if(SetUtil.isSetEqual(setFromMessage,setFromCache)){
                     for (TransactionMessageForAdding messageForAdding: memberList) {
                         if(actionType == ActionType.ADD || actionType == ActionType.APPROVESUBMIT){
+                            System.out.println("Send transaction message:\n" + message);
                             threadPoolForServer.addTask(new SendMessageRunnable(elementFromCache.getGroupId()+messageForAdding.getGroupMemberId(),ActionType.APPROVESUBMIT,messageForAdding.getCtx(),"send APPROVESUBMIT message fail",threadsInfo));
                         }else{
                             //success
+                            System.out.println("Send transaction message:\n" + message);
                             threadPoolForServer.addTask(new SendMessageRunnable(elementFromCache.getGroupId()+messageForAdding.getGroupMemberId(),ActionType.APPROVESUBMIT_STRONG,messageForAdding.getCtx(),"send APPROVESUBMIT_STRONG message fail",threadsInfo));
                         }
                     }
