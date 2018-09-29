@@ -45,6 +45,7 @@ public class SendAsyncRequestRunnable implements Runnable{
                     e.printStackTrace();
                 }
             }
+            messageAsyncCache.clear(transactionMessageForSubmit.getGroupId());
         }catch (Exception e){
             e.printStackTrace();
         }
