@@ -146,13 +146,14 @@ public class DtfConnection implements Connection {
                 queue.put(transactionServiceInfo);
                 boolean result = lc.await(10000, TimeUnit.MILLISECONDS);
                 if(result == false){
-                    throw new Exception("haven't received APPLYFORSUBMIT or APPLYFORSUBMIT_STRONG message");
+                    throw new Exception("haven't received approve submit message");
                 }
                 //3. After signaling, if success commit or rollback, otherwise skip the committing.
                 state = threadsInfo.get(map.get("groupId").toString()+memberId).getState();
                 if(state == DbOperationType.COMMIT){
                     //Thread.sleep(30000);
                     if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG) {
+                        Thread.sleep(12000);
                         queue.put(TransactionServiceInfo.newInstanceForSub(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_SUCCESS_STRONG, groupId, groupMembers, memberId));
                     }else if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD){
                         queue.put(TransactionServiceInfo.newInstanceForSub(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_SUCCESS, groupId, groupMembers, memberId));

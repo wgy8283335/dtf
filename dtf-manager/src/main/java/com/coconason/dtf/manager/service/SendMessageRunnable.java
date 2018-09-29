@@ -31,7 +31,11 @@ public class SendMessageRunnable implements Runnable {
         LockAndCondition lc = new LockAndCondition(new ReentrantLock());
         threadsInfo.put(groupId,lc);
         try{
-            lc.sendAndWaitForSignal(groupId,actionType,ctx,message);
+            if(actionType == ActionType.APPROVESUBMIT){
+                lc.sendAndWaitForSignal(groupId,actionType,ctx,message);
+            }else{
+                lc.sendAndWaitForSignalOnce(groupId,actionType,ctx,message);
+            }
         }catch (Exception e){
             e.printStackTrace();
         }
