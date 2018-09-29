@@ -111,7 +111,8 @@ public class DtfConnection implements Connection {
                     LockAndCondition secondlc2 = secondThreadsInfo.get(groupId);
                     if (secondlc2.getState() == DbOperationType.WHOLE_FAIL) {
                         queue.put(TransactionServiceInfo.newInstanceForShortMessage(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.WHOLE_FAIL_STRONG_ACK, groupId));
-                        throw new Exception("Distributed transaction failed and groupId"+groupId);
+                        connection.close();
+                        throw new Exception("Distributed transaction failed and groupId:"+groupId);
                     }
                     queue.put(TransactionServiceInfo.newInstanceForShortMessage(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.WHOLE_SUCCESS_STRONG_ACK, groupId));
                     //4. close the connection.
@@ -153,7 +154,7 @@ public class DtfConnection implements Connection {
                 if(state == DbOperationType.COMMIT){
                     //Thread.sleep(30000);
                     if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG) {
-                        Thread.sleep(12000);
+                        Thread.sleep(60000);
                         queue.put(TransactionServiceInfo.newInstanceForSub(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_SUCCESS_STRONG, groupId, groupMembers, memberId));
                     }else if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD){
                         queue.put(TransactionServiceInfo.newInstanceForSub(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_SUCCESS, groupId, groupMembers, memberId));

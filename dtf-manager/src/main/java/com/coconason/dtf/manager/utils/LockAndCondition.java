@@ -78,6 +78,7 @@ public class LockAndCondition {
         MessageSender.sendMsg(groupId,action,ctx);
         boolean receivedSignal = await(10000, TimeUnit.MILLISECONDS);
         if(receivedSignal == false){
+            logger.error(msg+"\n"+"groupId:"+groupId+"\n"+"action:"+action);
             throw new Exception(msg);
         }
     }
@@ -86,7 +87,8 @@ public class LockAndCondition {
         MessageSender.sendMsg(groupId,action,ctx);
         boolean receivedSignal = await(10000, TimeUnit.MILLISECONDS);
         if(receivedSignal == false){
-            MessageSender.sendMsg(groupId, MessageProto.Message.ActionType.WHOLE_FAIL_STRONG,ctx);
+            logger.error(msg+"\n"+"groupId:"+groupId+"\n"+"action:"+action);
+            MessageSender.sendMsg(groupId.substring(0,18), MessageProto.Message.ActionType.WHOLE_FAIL_STRONG,ctx);
             throw new Exception(msg);
         }
     }
