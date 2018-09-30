@@ -1,0 +1,18 @@
+2018-09-29 16:22:58 [com.coconason.dtf.manager.utils.LockAndCondition:90] ERROR - send APPROVESUBMIT_STRONG message fail
+groupId:4956315351735336961538209368259
+action:APPROVESUBMIT_STRONG
+2018-09-29 16:22:59 [com.coconason.dtf.manager.utils.LockAndCondition:90] ERROR - send APPROVESUBMIT_STRONG message fail
+groupId:4956315351735336961538209367398
+action:APPROVESUBMIT_STRONG
+2018-09-29 16:22:59 [com.coconason.dtf.manager.utils.LockAndCondition:90] ERROR - send APPROVESUBMIT_STRONG message fail
+groupId:4956315351735336961538209367233
+action:APPROVESUBMIT_STRONG
+2018-09-29 16:22:59 [com.coconason.dtf.manager.utils.LockAndCondition:90] ERROR - send APPROVESUBMIT_STRONG message fail
+groupId:4956315351735336961
+action:APPROVESUBMIT_STRONG
+2018-09-29 16:23:59 [com.coconason.dtf.manager.utils.LockAndCondition:81] ERROR - send WHOLE_SUCCESS_STRONG message fail
+groupId:495631535173533696
+action:WHOLE_SUCCESS_STRONG
+2018-09-29 16:23:59 [com.coconason.dtf.manager.utils.LockAndCondition:81] ERROR - send WHOLE_FAIL_STRONG message fail
+groupId:495631535173533696
+action:WHOLE_FAIL_STRONG
