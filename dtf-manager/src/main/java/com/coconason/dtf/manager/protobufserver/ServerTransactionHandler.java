@@ -17,6 +17,8 @@ import com.coconason.dtf.manager.utils.LockAndCondition;
 import com.coconason.dtf.manager.utils.SetUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Set;
@@ -42,6 +44,8 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
     private MessageForSubmitAsyncCache messageForSubmitAsyncCache;
 
     private ThreadsInfo threadsInfo;
+
+    private static final Logger logger = LoggerFactory.getLogger(ServerTransactionHandler.class);
 
     public ServerTransactionHandler(MessageSyncCache messageSyncCache,MessageAsyncCache messageAsyncCache ,
                                     MessageAsyncQueue messageAsyncQueue, ThreadPoolForServer threadPoolForServer,
@@ -71,6 +75,7 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception
     {
+        System.out.println(msg);
         MessageProto.Message message = (MessageProto.Message) msg;
         ActionType actionType = message.getAction();
         switch (actionType){
@@ -130,6 +135,8 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
                 break;
             case SUB_FAIL:
                 String groupTempId3 = JSONObject.parseObject(message.getInfo()).get("groupId").toString();
+                TransactionMessageGroup groupInfoToLog = messageSyncCache.get(groupTempId3);
+                logger.error("SUB FAIL :"+groupInfoToLog.toString());
                 messageSyncCache.clear(groupTempId3);
                 break;
             case WHOLE_SUCCESS_STRONG_ACK:

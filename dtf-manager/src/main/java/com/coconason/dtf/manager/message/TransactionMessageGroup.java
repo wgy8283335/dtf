@@ -58,4 +58,15 @@ public class TransactionMessageGroup {
     public ChannelHandlerContext getCtxForSubmitting() {
         return ctxForSubmitting;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("{ groupId="+groupId);
+        for(TransactionMessageForAdding memberMsg : memberList){
+            stringBuilder.append(memberMsg.toString());
+        }
+        stringBuilder.append("}");
+        return stringBuilder.toString();
+    }
 }

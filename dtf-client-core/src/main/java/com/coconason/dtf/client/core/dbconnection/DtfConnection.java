@@ -147,6 +147,8 @@ public class DtfConnection implements Connection {
                 queue.put(transactionServiceInfo);
                 boolean result = lc.await(10000, TimeUnit.MILLISECONDS);
                 if(result == false){
+                    connection.rollback();
+                    connection.close();
                     throw new Exception("haven't received approve submit message");
                 }
                 //3. After signaling, if success commit or rollback, otherwise skip the committing.
@@ -154,7 +156,6 @@ public class DtfConnection implements Connection {
                 if(state == DbOperationType.COMMIT){
                     //Thread.sleep(30000);
                     if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG) {
-                        Thread.sleep(60000);
                         queue.put(TransactionServiceInfo.newInstanceForSub(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_SUCCESS_STRONG, groupId, groupMembers, memberId));
                     }else if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD){
                         queue.put(TransactionServiceInfo.newInstanceForSub(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_SUCCESS, groupId, groupMembers, memberId));
@@ -176,6 +177,7 @@ public class DtfConnection implements Connection {
                     if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG){
                         queue.put(TransactionServiceInfo.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL_STRONG, groupId,groupMembers));
                     }else if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD){
+                        System.out.println("sub fail ---------------------------"+System.currentTimeMillis());
                         queue.put(TransactionServiceInfo.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL, groupId,groupMembers));
                     }
                     e.printStackTrace();

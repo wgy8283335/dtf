@@ -87,19 +87,25 @@ public class AspectHandler {
                 switchTransactionType(transactionType,groupInfo,method,args);
                 //2.
                 try {
+                    System.out.println("before proceed ---------------------------"+System.currentTimeMillis());
                     result = point.proceed();
+                    System.out.println("after proceed ---------------------------"+System.currentTimeMillis());
                     if(ORIGINAL_ID.equals(TransactionGroupInfo.getCurrent().getMemberId())){
-                        if(MessageProto.Message.ActionType.ADD==TransactionServiceInfo.getCurrent().getAction()){
+                        //if(MessageProto.Message.ActionType.ADD==TransactionServiceInfo.getCurrent().getAction()){
+                        if(TransactionType.SYNC_FINAL == transactionType){
                             queue.put(TransactionServiceInfo.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT,TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
-                        }else if(MessageProto.Message.ActionType.ADD_STRONG==TransactionServiceInfo.getCurrent().getAction()){
+                        //}else if(MessageProto.Message.ActionType.ADD_STRONG==TransactionServiceInfo.getCurrent().getAction()){
+                        }else if(TransactionType.SYNC_STRONG == transactionType){
                             queue.put(TransactionServiceInfo.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT_STRONG,TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
                         }
                     }
                 }catch (Exception e){
                     if(ORIGINAL_ID.equals(TransactionGroupInfo.getCurrent().getMemberId())){
-                        if(MessageProto.Message.ActionType.ADD==TransactionServiceInfo.getCurrent().getAction()){
+                        //if(MessageProto.Message.ActionType.ADD==TransactionServiceInfo.getCurrent().getAction()){
+                        if(TransactionType.SYNC_FINAL == transactionType){
                             queue.put(TransactionServiceInfo.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.CANCEL,TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
-                        }else if(MessageProto.Message.ActionType.ADD_STRONG==TransactionServiceInfo.getCurrent().getAction()){
+                        //}else if(MessageProto.Message.ActionType.ADD_STRONG==TransactionServiceInfo.getCurrent().getAction()){
+                        }else if(TransactionType.SYNC_STRONG == transactionType){
                             queue.put(TransactionServiceInfo.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.CANCEL,TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
                         }
                     }

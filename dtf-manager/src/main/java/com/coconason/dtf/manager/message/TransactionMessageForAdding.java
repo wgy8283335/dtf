@@ -43,4 +43,13 @@ public class TransactionMessageForAdding {
     public void setCommited(boolean commited) {
         this.commited = commited;
     }
+
+    @Override
+    public String toString() {
+        return "groupMemberId='" + groupMemberId + '\'' +
+                ", ctx=" + ctx +
+                ", method='" + method + '\'' +
+                ", args='" + args + '\'' +
+                ", commited=" + commited;
+    }
 }

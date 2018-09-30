@@ -1984,3 +1984,933 @@ java.io.IOException: 远程主机强迫关闭了一个现有的连接。
 2018-09-30 13:50:48 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x30d83b3e, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
 2018-09-30 13:50:51 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x30d83b3e, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0x495b3bbb, L:/127.0.0.1:18080 - R:/127.0.0.1:59668]
 2018-09-30 13:50:51 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x30d83b3e, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 13:56:33 [io.netty.channel.DefaultChannelPipeline:151] WARN  - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+java.io.IOException: 远程主机强迫关闭了一个现有的连接。
+	at sun.nio.ch.SocketDispatcher.read0(Native Method) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:43) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:223) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.read(IOUtil.java:192) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:379) ~[?:1.7.0_72]
+	at io.netty.buffer.PooledUnsafeDirectByteBuf.setBytes(PooledUnsafeDirectByteBuf.java:288) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:1106) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:343) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:123) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:858) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:138) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at java.lang.Thread.run(Thread.java:745) [?:1.7.0_72]
+2018-09-30 13:56:52 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x30d83b3e, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0x8c6044be, L:/127.0.0.1:18080 - R:/127.0.0.1:59867]
+2018-09-30 13:56:52 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x30d83b3e, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 14:00:39 [io.netty.bootstrap.ServerBootstrap:146] WARN  - Unknown channel option 'TCP_NODELAY' for channel '[id: 0xecc0b35b]'
+2018-09-30 14:00:39 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xecc0b35b] REGISTERED
+2018-09-30 14:00:39 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xecc0b35b] BIND: 0.0.0.0/0.0.0.0:18080
+2018-09-30 14:00:39 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xecc0b35b, L:/0:0:0:0:0:0:0:0:18080] ACTIVE
+2018-09-30 14:00:39 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xecc0b35b, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0x3157bc68, L:/127.0.0.1:18080 - R:/127.0.0.1:60033]
+2018-09-30 14:00:39 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xecc0b35b, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 14:00:39 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xecc0b35b, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0xaf77ef52, L:/127.0.0.1:18080 - R:/127.0.0.1:60032]
+2018-09-30 14:00:39 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xecc0b35b, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 14:00:39 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xecc0b35b, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0x944ba3dd, L:/127.0.0.1:18080 - R:/127.0.0.1:60034]
+2018-09-30 14:00:39 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xecc0b35b, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 14:02:08 [io.netty.bootstrap.ServerBootstrap:146] WARN  - Unknown channel option 'TCP_NODELAY' for channel '[id: 0x2933fc14]'
+2018-09-30 14:02:08 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x2933fc14] REGISTERED
+2018-09-30 14:02:08 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x2933fc14] BIND: 0.0.0.0/0.0.0.0:18080
+2018-09-30 14:02:08 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x2933fc14, L:/0:0:0:0:0:0:0:0:18080] ACTIVE
+2018-09-30 14:02:10 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x2933fc14, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0x4d7c6359, L:/127.0.0.1:18080 - R:/127.0.0.1:60113]
+2018-09-30 14:02:10 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x2933fc14, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 14:02:10 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x2933fc14, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0x28e8218d, L:/127.0.0.1:18080 - R:/127.0.0.1:60114]
+2018-09-30 14:02:10 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x2933fc14, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 14:02:10 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x2933fc14, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0x6dad6f0c, L:/127.0.0.1:18080 - R:/127.0.0.1:60115]
+2018-09-30 14:02:10 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x2933fc14, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 14:03:06 [io.netty.bootstrap.ServerBootstrap:146] WARN  - Unknown channel option 'TCP_NODELAY' for channel '[id: 0x4586ca99]'
+2018-09-30 14:03:06 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x4586ca99] REGISTERED
+2018-09-30 14:03:06 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x4586ca99] BIND: 0.0.0.0/0.0.0.0:18080
+2018-09-30 14:03:06 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x4586ca99, L:/0:0:0:0:0:0:0:0:18080] ACTIVE
+2018-09-30 14:03:07 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x4586ca99, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0x6cf90882, L:/127.0.0.1:18080 - R:/127.0.0.1:60175]
+2018-09-30 14:03:07 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x4586ca99, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 14:03:07 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x4586ca99, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0xd1de450b, L:/127.0.0.1:18080 - R:/127.0.0.1:60176]
+2018-09-30 14:03:07 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x4586ca99, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 14:03:07 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x4586ca99, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0x488fc040, L:/127.0.0.1:18080 - R:/127.0.0.1:60177]
+2018-09-30 14:03:07 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x4586ca99, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 14:04:35 [io.netty.channel.DefaultChannelPipeline:151] WARN  - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+java.io.IOException: 远程主机强迫关闭了一个现有的连接。
+	at sun.nio.ch.SocketDispatcher.read0(Native Method) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:43) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:223) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.read(IOUtil.java:192) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:379) ~[?:1.7.0_72]
+	at io.netty.buffer.PooledUnsafeDirectByteBuf.setBytes(PooledUnsafeDirectByteBuf.java:288) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:1106) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:343) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:123) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:858) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:138) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at java.lang.Thread.run(Thread.java:745) [?:1.7.0_72]
+2018-09-30 14:04:53 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x4586ca99, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0x628d273b, L:/127.0.0.1:18080 - R:/127.0.0.1:60256]
+2018-09-30 14:04:53 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x4586ca99, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 14:08:13 [io.netty.channel.DefaultChannelPipeline:151] WARN  - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+java.io.IOException: 远程主机强迫关闭了一个现有的连接。
+	at sun.nio.ch.SocketDispatcher.read0(Native Method) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:43) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:223) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.read(IOUtil.java:192) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:379) ~[?:1.7.0_72]
+	at io.netty.buffer.PooledUnsafeDirectByteBuf.setBytes(PooledUnsafeDirectByteBuf.java:288) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:1106) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:343) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:123) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:858) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:138) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at java.lang.Thread.run(Thread.java:745) [?:1.7.0_72]
+2018-09-30 14:08:30 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x4586ca99, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0x67d8f80d, L:/127.0.0.1:18080 - R:/127.0.0.1:60363]
+2018-09-30 14:08:30 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x4586ca99, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 14:08:50 [io.netty.channel.DefaultChannelPipeline:151] WARN  - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+java.io.IOException: 远程主机强迫关闭了一个现有的连接。
+	at sun.nio.ch.SocketDispatcher.read0(Native Method) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:43) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:223) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.read(IOUtil.java:192) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:379) ~[?:1.7.0_72]
+	at io.netty.buffer.PooledUnsafeDirectByteBuf.setBytes(PooledUnsafeDirectByteBuf.java:288) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:1106) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:343) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:123) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:858) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:138) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at java.lang.Thread.run(Thread.java:745) [?:1.7.0_72]
+2018-09-30 14:09:09 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x4586ca99, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0x6335e21f, L:/127.0.0.1:18080 - R:/127.0.0.1:60415]
+2018-09-30 14:09:09 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x4586ca99, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 14:10:20 [io.netty.channel.DefaultChannelPipeline:151] WARN  - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+java.io.IOException: 远程主机强迫关闭了一个现有的连接。
+	at sun.nio.ch.SocketDispatcher.read0(Native Method) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:43) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:223) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.read(IOUtil.java:192) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:379) ~[?:1.7.0_72]
+	at io.netty.buffer.PooledUnsafeDirectByteBuf.setBytes(PooledUnsafeDirectByteBuf.java:288) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:1106) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:343) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:123) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:858) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:138) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at java.lang.Thread.run(Thread.java:745) [?:1.7.0_72]
+2018-09-30 14:10:37 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x4586ca99, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0xaaf435df, L:/127.0.0.1:18080 - R:/127.0.0.1:60475]
+2018-09-30 14:10:37 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x4586ca99, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 16:38:28 [io.netty.bootstrap.ServerBootstrap:146] WARN  - Unknown channel option 'TCP_NODELAY' for channel '[id: 0x2105f81b]'
+2018-09-30 16:38:28 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x2105f81b] REGISTERED
+2018-09-30 16:38:28 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x2105f81b] BIND: 0.0.0.0/0.0.0.0:18080
+2018-09-30 16:38:28 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x2105f81b, L:/0:0:0:0:0:0:0:0:18080] ACTIVE
+2018-09-30 16:38:56 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x2105f81b, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0xaa5fea0a, L:/127.0.0.1:18080 - R:/127.0.0.1:62930]
+2018-09-30 16:38:56 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x2105f81b, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 16:38:57 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x2105f81b, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0x88caead0, L:/127.0.0.1:18080 - R:/127.0.0.1:62932]
+2018-09-30 16:38:57 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x2105f81b, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 16:38:59 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x2105f81b, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0x2c76cd8b, L:/127.0.0.1:18080 - R:/127.0.0.1:62933]
+2018-09-30 16:38:59 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x2105f81b, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 16:52:18 [io.netty.channel.DefaultChannelPipeline:151] WARN  - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+java.io.IOException: 远程主机强迫关闭了一个现有的连接。
+	at sun.nio.ch.SocketDispatcher.read0(Native Method) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:43) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:223) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.read(IOUtil.java:192) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:379) ~[?:1.7.0_72]
+	at io.netty.buffer.PooledUnsafeDirectByteBuf.setBytes(PooledUnsafeDirectByteBuf.java:288) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:1106) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:343) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:123) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:858) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:138) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at java.lang.Thread.run(Thread.java:745) [?:1.7.0_72]
+2018-09-30 16:52:40 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x2105f81b, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0xd0996457, L:/127.0.0.1:18080 - R:/127.0.0.1:63230]
+2018-09-30 16:52:40 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x2105f81b, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 16:57:32 [io.netty.channel.DefaultChannelPipeline:151] WARN  - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+java.io.IOException: 远程主机强迫关闭了一个现有的连接。
+	at sun.nio.ch.SocketDispatcher.read0(Native Method) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:43) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:223) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.read(IOUtil.java:192) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:379) ~[?:1.7.0_72]
+	at io.netty.buffer.PooledUnsafeDirectByteBuf.setBytes(PooledUnsafeDirectByteBuf.java:288) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:1106) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:343) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:123) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:858) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:138) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at java.lang.Thread.run(Thread.java:745) [?:1.7.0_72]
+2018-09-30 16:57:55 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x2105f81b, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0x817ffa45, L:/127.0.0.1:18080 - R:/127.0.0.1:63425]
+2018-09-30 16:57:55 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x2105f81b, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 17:09:39 [io.netty.channel.DefaultChannelPipeline:151] WARN  - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+java.io.IOException: 远程主机强迫关闭了一个现有的连接。
+	at sun.nio.ch.SocketDispatcher.read0(Native Method) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:43) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:223) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.read(IOUtil.java:192) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:379) ~[?:1.7.0_72]
+	at io.netty.buffer.PooledUnsafeDirectByteBuf.setBytes(PooledUnsafeDirectByteBuf.java:288) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:1106) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:343) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:123) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:858) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:138) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at java.lang.Thread.run(Thread.java:745) [?:1.7.0_72]
+2018-09-30 17:10:03 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x2105f81b, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0x37a170a2, L:/127.0.0.1:18080 - R:/127.0.0.1:63675]
+2018-09-30 17:10:03 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x2105f81b, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 17:12:23 [io.netty.channel.DefaultChannelPipeline:151] WARN  - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+io.netty.handler.timeout.ReadTimeoutException: null
+2018-09-30 17:12:38 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x2105f81b, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0xc6074d10, L:/127.0.0.1:18080 - R:/127.0.0.1:63747]
+2018-09-30 17:12:38 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x2105f81b, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 17:16:03 [io.netty.channel.DefaultChannelPipeline:151] WARN  - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+java.io.IOException: 远程主机强迫关闭了一个现有的连接。
+	at sun.nio.ch.SocketDispatcher.read0(Native Method) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:43) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:223) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.read(IOUtil.java:192) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:379) ~[?:1.7.0_72]
+	at io.netty.buffer.PooledUnsafeDirectByteBuf.setBytes(PooledUnsafeDirectByteBuf.java:288) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:1106) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:343) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:123) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:858) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:138) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at java.lang.Thread.run(Thread.java:745) [?:1.7.0_72]
+2018-09-30 17:20:33 [io.netty.channel.DefaultChannelPipeline:151] WARN  - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+java.io.IOException: 远程主机强迫关闭了一个现有的连接。
+	at sun.nio.ch.SocketDispatcher.read0(Native Method) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:43) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:223) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.read(IOUtil.java:192) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:379) ~[?:1.7.0_72]
+	at io.netty.buffer.PooledUnsafeDirectByteBuf.setBytes(PooledUnsafeDirectByteBuf.java:288) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:1106) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:343) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:123) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:858) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:138) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at java.lang.Thread.run(Thread.java:745) [?:1.7.0_72]
+2018-09-30 17:20:38 [io.netty.channel.DefaultChannelPipeline:151] WARN  - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+java.io.IOException: 远程主机强迫关闭了一个现有的连接。
+	at sun.nio.ch.SocketDispatcher.read0(Native Method) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:43) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:223) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.read(IOUtil.java:192) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:379) ~[?:1.7.0_72]
+	at io.netty.buffer.PooledUnsafeDirectByteBuf.setBytes(PooledUnsafeDirectByteBuf.java:288) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:1106) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:343) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:123) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:858) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:138) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at java.lang.Thread.run(Thread.java:745) [?:1.7.0_72]
+2018-09-30 17:21:03 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x2105f81b, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0x7cb5511b, L:/127.0.0.1:18080 - R:/127.0.0.1:64035]
+2018-09-30 17:21:03 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x2105f81b, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 17:21:04 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x2105f81b, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0xcbcc353e, L:/127.0.0.1:18080 - R:/127.0.0.1:64036]
+2018-09-30 17:21:04 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x2105f81b, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 17:21:08 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x2105f81b, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0xb89c97f7, L:/127.0.0.1:18080 - R:/127.0.0.1:64037]
+2018-09-30 17:21:08 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x2105f81b, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 17:28:09 [io.netty.channel.DefaultChannelPipeline:151] WARN  - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+java.io.IOException: 远程主机强迫关闭了一个现有的连接。
+	at sun.nio.ch.SocketDispatcher.read0(Native Method) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:43) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:223) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.read(IOUtil.java:192) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:379) ~[?:1.7.0_72]
+	at io.netty.buffer.PooledUnsafeDirectByteBuf.setBytes(PooledUnsafeDirectByteBuf.java:288) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:1106) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:343) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:123) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:858) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:138) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at java.lang.Thread.run(Thread.java:745) [?:1.7.0_72]
+2018-09-30 17:28:19 [io.netty.channel.DefaultChannelPipeline:151] WARN  - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+java.io.IOException: 远程主机强迫关闭了一个现有的连接。
+	at sun.nio.ch.SocketDispatcher.read0(Native Method) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:43) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:223) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.read(IOUtil.java:192) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:379) ~[?:1.7.0_72]
+	at io.netty.buffer.PooledUnsafeDirectByteBuf.setBytes(PooledUnsafeDirectByteBuf.java:288) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:1106) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:343) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:123) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:858) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:138) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at java.lang.Thread.run(Thread.java:745) [?:1.7.0_72]
+2018-09-30 17:28:26 [io.netty.channel.DefaultChannelPipeline:151] WARN  - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+java.io.IOException: 远程主机强迫关闭了一个现有的连接。
+	at sun.nio.ch.SocketDispatcher.read0(Native Method) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:43) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:223) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.read(IOUtil.java:192) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:379) ~[?:1.7.0_72]
+	at io.netty.buffer.PooledUnsafeDirectByteBuf.setBytes(PooledUnsafeDirectByteBuf.java:288) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:1106) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:343) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:123) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:858) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:138) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at java.lang.Thread.run(Thread.java:745) [?:1.7.0_72]
+2018-09-30 17:28:43 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x2105f81b, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0x9f639312, L:/127.0.0.1:18080 - R:/127.0.0.1:64290]
+2018-09-30 17:28:43 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x2105f81b, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 17:28:44 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x2105f81b, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0x8c6c8def, L:/127.0.0.1:18080 - R:/127.0.0.1:64291]
+2018-09-30 17:28:44 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x2105f81b, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 17:28:46 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x2105f81b, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0x45085a2a, L:/127.0.0.1:18080 - R:/127.0.0.1:64294]
+2018-09-30 17:28:46 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x2105f81b, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 17:32:08 [io.netty.bootstrap.ServerBootstrap:146] WARN  - Unknown channel option 'TCP_NODELAY' for channel '[id: 0x9d43eaec]'
+2018-09-30 17:32:08 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x9d43eaec] REGISTERED
+2018-09-30 17:32:08 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x9d43eaec] BIND: 0.0.0.0/0.0.0.0:18080
+2018-09-30 17:32:08 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x9d43eaec, L:/0:0:0:0:0:0:0:0:18080] ACTIVE
+2018-09-30 17:32:11 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x9d43eaec, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0x66ac612b, L:/127.0.0.1:18080 - R:/127.0.0.1:64417]
+2018-09-30 17:32:11 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x9d43eaec, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 17:32:11 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x9d43eaec, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0x78c7c588, L:/127.0.0.1:18080 - R:/127.0.0.1:64418]
+2018-09-30 17:32:11 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x9d43eaec, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 17:32:11 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x9d43eaec, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0x4b278516, L:/127.0.0.1:18080 - R:/127.0.0.1:64419]
+2018-09-30 17:32:11 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x9d43eaec, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 17:45:56 [io.netty.bootstrap.ServerBootstrap:146] WARN  - Unknown channel option 'TCP_NODELAY' for channel '[id: 0x7da1398b]'
+2018-09-30 17:45:56 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x7da1398b] REGISTERED
+2018-09-30 17:45:56 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x7da1398b] BIND: 0.0.0.0/0.0.0.0:18080
+2018-09-30 17:45:56 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x7da1398b, L:/0:0:0:0:0:0:0:0:18080] ACTIVE
+2018-09-30 17:45:59 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x7da1398b, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0x1a6ee68b, L:/127.0.0.1:18080 - R:/127.0.0.1:64754]
+2018-09-30 17:45:59 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x7da1398b, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 17:45:59 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x7da1398b, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0x38424558, L:/127.0.0.1:18080 - R:/127.0.0.1:64755]
+2018-09-30 17:45:59 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x7da1398b, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 17:45:59 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x7da1398b, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0x925cad0b, L:/127.0.0.1:18080 - R:/127.0.0.1:64756]
+2018-09-30 17:45:59 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x7da1398b, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 17:47:03 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x7da1398b, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0x6362e1c8, L:/127.0.0.1:18080 - R:/127.0.0.1:64781]
+2018-09-30 17:47:03 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x7da1398b, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 17:47:03 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x7da1398b, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0x2a9010ee, L:/127.0.0.1:18080 - R:/127.0.0.1:64780]
+2018-09-30 17:47:03 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x7da1398b, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 17:47:03 [io.netty.channel.DefaultChannelPipeline:151] WARN  - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+java.io.IOException: 你的主机中的软件中止了一个已建立的连接。
+	at sun.nio.ch.SocketDispatcher.read0(Native Method) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:43) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:223) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.read(IOUtil.java:192) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:379) ~[?:1.7.0_72]
+	at io.netty.buffer.PooledUnsafeDirectByteBuf.setBytes(PooledUnsafeDirectByteBuf.java:288) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:1106) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:343) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:123) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:858) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:138) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at java.lang.Thread.run(Thread.java:745) [?:1.7.0_72]
+2018-09-30 17:47:08 [io.netty.channel.DefaultChannelPipeline:151] WARN  - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+java.io.IOException: 你的主机中的软件中止了一个已建立的连接。
+	at sun.nio.ch.SocketDispatcher.read0(Native Method) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:43) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:223) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.read(IOUtil.java:192) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:379) ~[?:1.7.0_72]
+	at io.netty.buffer.PooledUnsafeDirectByteBuf.setBytes(PooledUnsafeDirectByteBuf.java:288) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:1106) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:343) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:123) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:858) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:138) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at java.lang.Thread.run(Thread.java:745) [?:1.7.0_72]
+2018-09-30 17:55:19 [io.netty.bootstrap.ServerBootstrap:146] WARN  - Unknown channel option 'TCP_NODELAY' for channel '[id: 0xf7f9b4d0]'
+2018-09-30 17:55:19 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xf7f9b4d0] REGISTERED
+2018-09-30 17:55:19 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xf7f9b4d0] BIND: 0.0.0.0/0.0.0.0:18080
+2018-09-30 17:55:19 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xf7f9b4d0, L:/0:0:0:0:0:0:0:0:18080] ACTIVE
+2018-09-30 17:55:22 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xf7f9b4d0, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0x24436cf2, L:/127.0.0.1:18080 - R:/127.0.0.1:64959]
+2018-09-30 17:55:22 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xf7f9b4d0, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 17:55:22 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xf7f9b4d0, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0x1942b181, L:/127.0.0.1:18080 - R:/127.0.0.1:64960]
+2018-09-30 17:55:22 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xf7f9b4d0, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 17:55:22 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xf7f9b4d0, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0x500dc0e1, L:/127.0.0.1:18080 - R:/127.0.0.1:64961]
+2018-09-30 17:55:22 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xf7f9b4d0, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 17:55:51 [com.coconason.dtf.manager.protobufserver.ServerTransactionHandler:139] ERROR - { groupId=496017305738674176groupMemberId='1538301341271', ctx=ChannelHandlerContext(ServerTransactionHandler#0, [id: 0x500dc0e1, L:/127.0.0.1:18080 - R:/127.0.0.1:64961]), method='{"parameterAnnotations":[[]],"annotatedReturnType":{"declaredAnnotations":[],"annotations":[],"type":"com.coconason.dtf.manager.model.DemoResult"},"genericExceptionTypes":["java.lang.Exception"],"annotatedReceiverType":{"declaredAnnotations":[],"annotations":[],"type":"com.coconason.dtf.manager.service.impl.TeacherServiceImpl"},"declaringClass":"com.coconason.dtf.manager.service.impl.TeacherServiceImpl","typeParameters":[],"annotatedExceptionTypes":[{"declaredAnnotations":[],"annotations":[],"type":"java.lang.Exception"}],"synthetic":false,"annotatedParameterTypes":[{"declaredAnnotations":[],"annotations":[],"type":"com.coconason.dtf.manager.po.Teacher"}],"returnType":"com.coconason.dtf.manager.model.DemoResult","genericReturnType":"com.coconason.dtf.manager.model.DemoResult","exceptionTypes":["java.lang.Exception"],"default":false,"parameterCount":1,"name":"addTeacherInfo","varArgs":false,"accessible":false,"genericParameterTypes":["com.coconason.dtf.manager.po.Teacher"],"annotations":[{"type":"SYNC_FINAL"},{"rollbackFor":[],"noRollbackFor":[],"readOnly":false,"noRollbackForClassName":[],"isolation":"DEFAULT","rollbackForClassName":[],"value":"","propagation":"REQUIRED","transactionManager":"","timeout":-1}],"bridge":false,"modifiers":1,"parameterTypes":["com.coconason.dtf.manager.po.Teacher"]}', args='[{"t":1,"tname":"Lin"}]', commited=false}
+2018-09-30 17:56:11 [com.coconason.dtf.manager.protobufserver.ServerTransactionHandler:139] ERROR - { groupId=496011015624851456groupMemberId='1538301341305', ctx=ChannelHandlerContext(ServerTransactionHandler#0, [id: 0x1942b181, L:/127.0.0.1:18080 - R:/127.0.0.1:64960]), method='{"parameterAnnotations":[[]],"annotatedReturnType":{"declaredAnnotations":[],"annotations":[],"type":"com.coconason.dtf.demo3.springdemo3.model.DemoResult"},"genericExceptionTypes":["java.lang.Exception"],"annotatedReceiverType":{"declaredAnnotations":[],"annotations":[],"type":"com.coconason.dtf.demo3.springdemo3.service.impl.SCServiceImpl"},"declaringClass":"com.coconason.dtf.demo3.springdemo3.service.impl.SCServiceImpl","typeParameters":[],"annotatedExceptionTypes":[{"declaredAnnotations":[],"annotations":[],"type":"java.lang.Exception"}],"synthetic":false,"annotatedParameterTypes":[{"declaredAnnotations":[],"annotations":[],"type":"com.coconason.dtf.demo3.springdemo3.po.Sc"}],"returnType":"com.coconason.dtf.demo3.springdemo3.model.DemoResult","genericReturnType":"com.coconason.dtf.demo3.springdemo3.model.DemoResult","exceptionTypes":["java.lang.Exception"],"default":false,"parameterCount":1,"name":"addSCInfo","varArgs":false,"accessible":false,"genericParameterTypes":["com.coconason.dtf.demo3.springdemo3.po.Sc"],"annotations":[{"type":"SYNC_FINAL"},{"rollbackFor":[],"noRollbackFor":[],"readOnly":false,"noRollbackForClassName":[],"isolation":"DEFAULT","rollbackForClassName":[],"value":"","propagation":"REQUIRED","transactionManager":"","timeout":-1}],"bridge":false,"modifiers":1,"parameterTypes":["com.coconason.dtf.demo3.springdemo3.po.Sc"]}', args='[{"s":7,"c":5,"score":95}]', commited=falsegroupMemberId='1538299841585', ctx=ChannelHandlerContext(ServerTransactionHandler#0, [id: 0x500dc0e1, L:/127.0.0.1:18080 - R:/127.0.0.1:64961]), method='{"parameterAnnotations":[[]],"annotatedReturnType":{"declaredAnnotations":[],"annotations":[],"type":"com.coconason.dtf.manager.model.DemoResult"},"genericExceptionTypes":["java.lang.Exception"],"annotatedReceiverType":{"declaredAnnotations":[],"annotations":[],"type":"com.coconason.dtf.manager.service.impl.TeacherServiceImpl"},"declaringClass":"com.coconason.dtf.manager.service.impl.TeacherServiceImpl","typeParameters":[],"annotatedExceptionTypes":[{"declaredAnnotations":[],"annotations":[],"type":"java.lang.Exception"}],"synthetic":false,"annotatedParameterTypes":[{"declaredAnnotations":[],"annotations":[],"type":"com.coconason.dtf.manager.po.Teacher"}],"returnType":"com.coconason.dtf.manager.model.DemoResult","genericReturnType":"com.coconason.dtf.manager.model.DemoResult","exceptionTypes":["java.lang.Exception"],"default":false,"parameterCount":1,"name":"addTeacherInfo","varArgs":false,"accessible":false,"genericParameterTypes":["com.coconason.dtf.manager.po.Teacher"],"annotations":[{"type":"SYNC_FINAL"},{"rollbackFor":[],"noRollbackFor":[],"readOnly":false,"noRollbackForClassName":[],"isolation":"DEFAULT","rollbackForClassName":[],"value":"","propagation":"REQUIRED","transactionManager":"","timeout":-1}],"bridge":false,"modifiers":1,"parameterTypes":["com.coconason.dtf.manager.po.Teacher"]}', args='[{"t":1,"tname":"Lin"}]', commited=false}
+2018-09-30 17:56:11 [io.netty.channel.DefaultChannelPipeline:151] WARN  - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+java.lang.NullPointerException: null
+	at com.coconason.dtf.manager.protobufserver.ServerTransactionHandler.channelRead(ServerTransactionHandler.java:139) ~[classes/:?]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at com.coconason.dtf.manager.protobufserver.LoginAuthRespHandler.channelRead(LoginAuthRespHandler.java:75) [classes/:?]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.handler.timeout.IdleStateHandler.channelRead(IdleStateHandler.java:286) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.handler.codec.MessageToMessageDecoder.channelRead(MessageToMessageDecoder.java:102) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.fireChannelRead(ByteToMessageDecoder.java:310) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:284) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1359) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:935) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:134) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:858) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:138) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at java.lang.Thread.run(Thread.java:745) [?:1.7.0_72]
+2018-09-30 17:56:11 [com.coconason.dtf.manager.protobufserver.ServerTransactionHandler:139] ERROR - { groupId=496017305738674176groupMemberId='1538301341271', ctx=ChannelHandlerContext(ServerTransactionHandler#0, [id: 0x500dc0e1, L:/127.0.0.1:18080 - R:/127.0.0.1:64961]), method='{"parameterAnnotations":[[]],"annotatedReturnType":{"declaredAnnotations":[],"annotations":[],"type":"com.coconason.dtf.manager.model.DemoResult"},"genericExceptionTypes":["java.lang.Exception"],"annotatedReceiverType":{"declaredAnnotations":[],"annotations":[],"type":"com.coconason.dtf.manager.service.impl.TeacherServiceImpl"},"declaringClass":"com.coconason.dtf.manager.service.impl.TeacherServiceImpl","typeParameters":[],"annotatedExceptionTypes":[{"declaredAnnotations":[],"annotations":[],"type":"java.lang.Exception"}],"synthetic":false,"annotatedParameterTypes":[{"declaredAnnotations":[],"annotations":[],"type":"com.coconason.dtf.manager.po.Teacher"}],"returnType":"com.coconason.dtf.manager.model.DemoResult","genericReturnType":"com.coconason.dtf.manager.model.DemoResult","exceptionTypes":["java.lang.Exception"],"default":false,"parameterCount":1,"name":"addTeacherInfo","varArgs":false,"accessible":false,"genericParameterTypes":["com.coconason.dtf.manager.po.Teacher"],"annotations":[{"type":"SYNC_FINAL"},{"rollbackFor":[],"noRollbackFor":[],"readOnly":false,"noRollbackForClassName":[],"isolation":"DEFAULT","rollbackForClassName":[],"value":"","propagation":"REQUIRED","transactionManager":"","timeout":-1}],"bridge":false,"modifiers":1,"parameterTypes":["com.coconason.dtf.manager.po.Teacher"]}', args='[{"t":1,"tname":"Lin"}]', commited=falsegroupMemberId='1', ctx=ChannelHandlerContext(ServerTransactionHandler#0, [id: 0x24436cf2, L:/127.0.0.1:18080 - R:/127.0.0.1:64959]), method='{"parameterAnnotations":[[]],"annotatedReturnType":{"declaredAnnotations":[],"annotations":[],"type":"com.coconason.dtf.demo.model.DemoResult"},"genericExceptionTypes":["java.lang.Exception"],"annotatedReceiverType":{"declaredAnnotations":[],"annotations":[],"type":"com.coconason.dtf.demo.service.impl.CourseServiceImpl"},"declaringClass":"com.coconason.dtf.demo.service.impl.CourseServiceImpl","typeParameters":[],"annotatedExceptionTypes":[{"declaredAnnotations":[],"annotations":[],"type":"java.lang.Exception"}],"synthetic":false,"annotatedParameterTypes":[{"declaredAnnotations":[],"annotations":[],"type":"com.coconason.dtf.demo.po.Course"}],"returnType":"com.coconason.dtf.demo.model.DemoResult","genericReturnType":"com.coconason.dtf.demo.model.DemoResult","exceptionTypes":["java.lang.Exception"],"default":false,"parameterCount":1,"name":"addCourseInfo","varArgs":false,"accessible":false,"genericParameterTypes":["com.coconason.dtf.demo.po.Course"],"annotations":[{"type":"SYNC_FINAL"},{"rollbackFor":[],"noRollbackFor":[],"readOnly":false,"noRollbackForClassName":[],"isolation":"DEFAULT","rollbackForClassName":[],"value":"","propagation":"REQUIRED","transactionManager":"","timeout":-1}],"bridge":false,"modifiers":1,"parameterTypes":["com.coconason.dtf.demo.po.Course"]}', args='[{"t":5,"c":5,"cname":"Science"}]', commited=false}
+2018-09-30 17:58:48 [io.netty.bootstrap.ServerBootstrap:146] WARN  - Unknown channel option 'TCP_NODELAY' for channel '[id: 0x4d6601ea]'
+2018-09-30 17:58:48 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x4d6601ea] REGISTERED
+2018-09-30 17:58:48 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x4d6601ea] BIND: 0.0.0.0/0.0.0.0:18080
+2018-09-30 17:58:48 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x4d6601ea, L:/0:0:0:0:0:0:0:0:18080] ACTIVE
+2018-09-30 17:58:51 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x4d6601ea, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0xbe0f0cd7, L:/127.0.0.1:18080 - R:/127.0.0.1:65077]
+2018-09-30 17:58:51 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x4d6601ea, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 17:58:51 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x4d6601ea, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0xe126b255, L:/127.0.0.1:18080 - R:/127.0.0.1:65078]
+2018-09-30 17:58:51 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x4d6601ea, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 17:58:51 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x4d6601ea, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0xdf5a77ff, L:/127.0.0.1:18080 - R:/127.0.0.1:65079]
+2018-09-30 17:58:51 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x4d6601ea, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 17:58:56 [io.netty.channel.DefaultChannelPipeline:151] WARN  - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+java.io.IOException: 远程主机强迫关闭了一个现有的连接。
+	at sun.nio.ch.SocketDispatcher.read0(Native Method) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:43) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:223) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.read(IOUtil.java:192) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:379) ~[?:1.7.0_72]
+	at io.netty.buffer.PooledUnsafeDirectByteBuf.setBytes(PooledUnsafeDirectByteBuf.java:288) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:1106) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:343) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:123) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:858) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:138) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at java.lang.Thread.run(Thread.java:745) [?:1.7.0_72]
+2018-09-30 17:59:00 [io.netty.channel.DefaultChannelPipeline:151] WARN  - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+java.io.IOException: 远程主机强迫关闭了一个现有的连接。
+	at sun.nio.ch.SocketDispatcher.read0(Native Method) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:43) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:223) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.read(IOUtil.java:192) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:379) ~[?:1.7.0_72]
+	at io.netty.buffer.PooledUnsafeDirectByteBuf.setBytes(PooledUnsafeDirectByteBuf.java:288) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:1106) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:343) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:123) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:858) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:138) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at java.lang.Thread.run(Thread.java:745) [?:1.7.0_72]
+2018-09-30 17:59:11 [io.netty.channel.DefaultChannelPipeline:151] WARN  - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+java.io.IOException: 远程主机强迫关闭了一个现有的连接。
+	at sun.nio.ch.SocketDispatcher.read0(Native Method) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:43) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:223) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.read(IOUtil.java:192) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:379) ~[?:1.7.0_72]
+	at io.netty.buffer.PooledUnsafeDirectByteBuf.setBytes(PooledUnsafeDirectByteBuf.java:288) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:1106) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:343) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:123) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:858) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:138) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at java.lang.Thread.run(Thread.java:745) [?:1.7.0_72]
+2018-09-30 17:59:27 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x4d6601ea, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0xa88f73ab, L:/127.0.0.1:18080 - R:/127.0.0.1:65196]
+2018-09-30 17:59:27 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x4d6601ea, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 17:59:28 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x4d6601ea, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0xc66afc0a, L:/127.0.0.1:18080 - R:/127.0.0.1:65200]
+2018-09-30 17:59:28 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x4d6601ea, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 17:59:33 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x4d6601ea, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0xd7b161ea, L:/127.0.0.1:18080 - R:/127.0.0.1:65202]
+2018-09-30 17:59:33 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x4d6601ea, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 17:59:51 [com.coconason.dtf.manager.protobufserver.ServerTransactionHandler:139] ERROR - SUB FAIL :{ groupId=496018310232539136groupMemberId='1538301581643', ctx=ChannelHandlerContext(ServerTransactionHandler#0, [id: 0xc66afc0a, L:/127.0.0.1:18080 - R:/127.0.0.1:65200]), method='{"parameterAnnotations":[[]],"annotatedReturnType":{"declaredAnnotations":[],"annotations":[],"type":"com.coconason.dtf.manager.model.DemoResult"},"genericExceptionTypes":["java.lang.Exception"],"annotatedReceiverType":{"declaredAnnotations":[],"annotations":[],"type":"com.coconason.dtf.manager.service.impl.TeacherServiceImpl"},"declaringClass":"com.coconason.dtf.manager.service.impl.TeacherServiceImpl","typeParameters":[],"annotatedExceptionTypes":[{"declaredAnnotations":[],"annotations":[],"type":"java.lang.Exception"}],"synthetic":false,"annotatedParameterTypes":[{"declaredAnnotations":[],"annotations":[],"type":"com.coconason.dtf.manager.po.Teacher"}],"returnType":"com.coconason.dtf.manager.model.DemoResult","genericReturnType":"com.coconason.dtf.manager.model.DemoResult","exceptionTypes":["java.lang.Exception"],"default":false,"parameterCount":1,"name":"addTeacherInfo","varArgs":false,"accessible":false,"genericParameterTypes":["com.coconason.dtf.manager.po.Teacher"],"annotations":[{"type":"SYNC_FINAL"},{"rollbackFor":[],"noRollbackFor":[],"readOnly":false,"noRollbackForClassName":[],"isolation":"DEFAULT","rollbackForClassName":[],"value":"","propagation":"REQUIRED","transactionManager":"","timeout":-1}],"bridge":false,"modifiers":1,"parameterTypes":["com.coconason.dtf.manager.po.Teacher"]}', args='[{"t":1,"tname":"Lin"}]', commited=falsegroupMemberId='1538301581814', ctx=ChannelHandlerContext(ServerTransactionHandler#0, [id: 0xc66afc0a, L:/127.0.0.1:18080 - R:/127.0.0.1:65200]), method='{"parameterAnnotations":[[]],"annotatedReturnType":{"declaredAnnotations":[],"annotations":[],"type":"com.coconason.dtf.manager.model.DemoResult"},"genericExceptionTypes":["java.lang.Exception"],"annotatedReceiverType":{"declaredAnnotations":[],"annotations":[],"type":"com.coconason.dtf.manager.service.impl.TeacherServiceImpl"},"declaringClass":"com.coconason.dtf.manager.service.impl.TeacherServiceImpl","typeParameters":[],"annotatedExceptionTypes":[{"declaredAnnotations":[],"annotations":[],"type":"java.lang.Exception"}],"synthetic":false,"annotatedParameterTypes":[{"declaredAnnotations":[],"annotations":[],"type":"com.coconason.dtf.manager.po.Teacher"}],"returnType":"com.coconason.dtf.manager.model.DemoResult","genericReturnType":"com.coconason.dtf.manager.model.DemoResult","exceptionTypes":["java.lang.Exception"],"default":false,"parameterCount":1,"name":"addTeacherInfo","varArgs":false,"accessible":false,"genericParameterTypes":["com.coconason.dtf.manager.po.Teacher"],"annotations":[{"type":"SYNC_FINAL"},{"rollbackFor":[],"noRollbackFor":[],"readOnly":false,"noRollbackForClassName":[],"isolation":"DEFAULT","rollbackForClassName":[],"value":"","propagation":"REQUIRED","transactionManager":"","timeout":-1}],"bridge":false,"modifiers":1,"parameterTypes":["com.coconason.dtf.manager.po.Teacher"]}', args='[{"t":2,"tname":"Yun"}]', commited=falsegroupMemberId='1538301582428', ctx=ChannelHandlerContext(ServerTransactionHandler#0, [id: 0xd7b161ea, L:/127.0.0.1:18080 - R:/127.0.0.1:65202]), method='{"parameterAnnotations":[[]],"annotatedReturnType":{"declaredAnnotations":[],"annotations":[],"type":"com.coconason.dtf.demo3.springdemo3.model.DemoResult"},"genericExceptionTypes":["java.lang.Exception"],"annotatedReceiverType":{"declaredAnnotations":[],"annotations":[],"type":"com.coconason.dtf.demo3.springdemo3.service.impl.SCServiceImpl"},"declaringClass":"com.coconason.dtf.demo3.springdemo3.service.impl.SCServiceImpl","typeParameters":[],"annotatedExceptionTypes":[{"declaredAnnotations":[],"annotations":[],"type":"java.lang.Exception"}],"synthetic":false,"annotatedParameterTypes":[{"declaredAnnotations":[],"annotations":[],"type":"com.coconason.dtf.demo3.springdemo3.po.Sc"}],"returnType":"com.coconason.dtf.demo3.springdemo3.model.DemoResult","genericReturnType":"com.coconason.dtf.demo3.springdemo3.model.DemoResult","exceptionTypes":["java.lang.Exception"],"default":false,"parameterCount":1,"name":"addSCInfo","varArgs":false,"accessible":false,"genericParameterTypes":["com.coconason.dtf.demo3.springdemo3.po.Sc"],"annotations":[{"type":"SYNC_FINAL"},{"rollbackFor":[],"noRollbackFor":[],"readOnly":false,"noRollbackForClassName":[],"isolation":"DEFAULT","rollbackForClassName":[],"value":"","propagation":"REQUIRED","transactionManager":"","timeout":-1}],"bridge":false,"modifiers":1,"parameterTypes":["com.coconason.dtf.demo3.springdemo3.po.Sc"]}', args='[{"s":7,"c":5,"score":95}]', commited=falsegroupMemberId='1', ctx=ChannelHandlerContext(ServerTransactionHandler#0, [id: 0xa88f73ab, L:/127.0.0.1:18080 - R:/127.0.0.1:65196]), method='{"parameterAnnotations":[[]],"annotatedReturnType":{"declaredAnnotations":[],"annotations":[],"type":"com.coconason.dtf.demo.model.DemoResult"},"genericExceptionTypes":["java.lang.Exception"],"annotatedReceiverType":{"declaredAnnotations":[],"annotations":[],"type":"com.coconason.dtf.demo.service.impl.CourseServiceImpl"},"declaringClass":"com.coconason.dtf.demo.service.impl.CourseServiceImpl","typeParameters":[],"annotatedExceptionTypes":[{"declaredAnnotations":[],"annotations":[],"type":"java.lang.Exception"}],"synthetic":false,"annotatedParameterTypes":[{"declaredAnnotations":[],"annotations":[],"type":"com.coconason.dtf.demo.po.Course"}],"returnType":"com.coconason.dtf.demo.model.DemoResult","genericReturnType":"com.coconason.dtf.demo.model.DemoResult","exceptionTypes":["java.lang.Exception"],"default":false,"parameterCount":1,"name":"addCourseInfo","varArgs":false,"accessible":false,"genericParameterTypes":["com.coconason.dtf.demo.po.Course"],"annotations":[{"type":"SYNC_FINAL"},{"rollbackFor":[],"noRollbackFor":[],"readOnly":false,"noRollbackForClassName":[],"isolation":"DEFAULT","rollbackForClassName":[],"value":"","propagation":"REQUIRED","transactionManager":"","timeout":-1}],"bridge":false,"modifiers":1,"parameterTypes":["com.coconason.dtf.demo.po.Course"]}', args='[{"t":5,"c":5,"cname":"Science"}]', commited=false}
+2018-09-30 17:59:52 [io.netty.channel.DefaultChannelPipeline:151] WARN  - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+java.lang.NullPointerException: null
+	at com.coconason.dtf.manager.protobufserver.ServerTransactionHandler.channelRead(ServerTransactionHandler.java:139) ~[classes/:?]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at com.coconason.dtf.manager.protobufserver.LoginAuthRespHandler.channelRead(LoginAuthRespHandler.java:75) [classes/:?]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.handler.timeout.IdleStateHandler.channelRead(IdleStateHandler.java:286) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.handler.codec.MessageToMessageDecoder.channelRead(MessageToMessageDecoder.java:102) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.fireChannelRead(ByteToMessageDecoder.java:310) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:284) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1359) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:935) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:134) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:858) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:138) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at java.lang.Thread.run(Thread.java:745) [?:1.7.0_72]
+2018-09-30 17:59:52 [io.netty.channel.DefaultChannelPipeline:151] WARN  - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+java.lang.NullPointerException: null
+	at com.coconason.dtf.manager.protobufserver.ServerTransactionHandler.channelRead(ServerTransactionHandler.java:139) ~[classes/:?]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at com.coconason.dtf.manager.protobufserver.LoginAuthRespHandler.channelRead(LoginAuthRespHandler.java:75) [classes/:?]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.handler.timeout.IdleStateHandler.channelRead(IdleStateHandler.java:286) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.handler.codec.MessageToMessageDecoder.channelRead(MessageToMessageDecoder.java:102) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.fireChannelRead(ByteToMessageDecoder.java:310) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:284) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1359) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:935) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:134) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:858) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:138) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at java.lang.Thread.run(Thread.java:745) [?:1.7.0_72]
+2018-09-30 17:59:52 [io.netty.channel.DefaultChannelPipeline:151] WARN  - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+java.lang.NullPointerException: null
+	at com.coconason.dtf.manager.protobufserver.ServerTransactionHandler.channelRead(ServerTransactionHandler.java:139) ~[classes/:?]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at com.coconason.dtf.manager.protobufserver.LoginAuthRespHandler.channelRead(LoginAuthRespHandler.java:75) [classes/:?]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.handler.timeout.IdleStateHandler.channelRead(IdleStateHandler.java:286) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.handler.codec.MessageToMessageDecoder.channelRead(MessageToMessageDecoder.java:102) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.fireChannelRead(ByteToMessageDecoder.java:310) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:284) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1359) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:935) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:134) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:858) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:138) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at java.lang.Thread.run(Thread.java:745) [?:1.7.0_72]
+2018-09-30 18:00:03 [com.coconason.dtf.manager.utils.LockAndCondition:81] ERROR - send APPROVESUBMIT message fail
+groupId:4960183102325391361538301581643
+action:APPROVESUBMIT
+2018-09-30 18:00:12 [com.coconason.dtf.manager.utils.LockAndCondition:81] ERROR - send APPROVESUBMIT message fail
+groupId:4960183102325391361538301581814
+action:APPROVESUBMIT
+2018-09-30 18:00:22 [com.coconason.dtf.manager.utils.LockAndCondition:81] ERROR - send APPROVESUBMIT message fail
+groupId:4960183102325391361538301582428
+action:APPROVESUBMIT
+2018-09-30 18:00:32 [com.coconason.dtf.manager.utils.LockAndCondition:81] ERROR - send APPROVESUBMIT message fail
+groupId:4960183102325391361
+action:APPROVESUBMIT
+2018-09-30 18:01:14 [io.netty.bootstrap.ServerBootstrap:146] WARN  - Unknown channel option 'TCP_NODELAY' for channel '[id: 0x98a4a31d]'
+2018-09-30 18:01:14 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x98a4a31d] REGISTERED
+2018-09-30 18:01:14 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x98a4a31d] BIND: 0.0.0.0/0.0.0.0:18080
+2018-09-30 18:01:14 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x98a4a31d, L:/0:0:0:0:0:0:0:0:18080] ACTIVE
+2018-09-30 18:01:16 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x98a4a31d, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0x40e354ad, L:/127.0.0.1:18080 - R:/127.0.0.1:65300]
+2018-09-30 18:01:16 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x98a4a31d, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 18:01:16 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x98a4a31d, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0x1d3261c8, L:/127.0.0.1:18080 - R:/127.0.0.1:65301]
+2018-09-30 18:01:16 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x98a4a31d, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 18:01:26 [io.netty.channel.DefaultChannelPipeline:151] WARN  - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+java.io.IOException: 远程主机强迫关闭了一个现有的连接。
+	at sun.nio.ch.SocketDispatcher.read0(Native Method) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:43) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:223) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.read(IOUtil.java:192) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:379) ~[?:1.7.0_72]
+	at io.netty.buffer.PooledUnsafeDirectByteBuf.setBytes(PooledUnsafeDirectByteBuf.java:288) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:1106) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:343) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:123) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:858) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:138) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at java.lang.Thread.run(Thread.java:745) [?:1.7.0_72]
+2018-09-30 18:01:33 [io.netty.channel.DefaultChannelPipeline:151] WARN  - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+java.io.IOException: 远程主机强迫关闭了一个现有的连接。
+	at sun.nio.ch.SocketDispatcher.read0(Native Method) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:43) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:223) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.read(IOUtil.java:192) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:379) ~[?:1.7.0_72]
+	at io.netty.buffer.PooledUnsafeDirectByteBuf.setBytes(PooledUnsafeDirectByteBuf.java:288) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:1106) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:343) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:123) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:858) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:138) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at java.lang.Thread.run(Thread.java:745) [?:1.7.0_72]
+2018-09-30 18:01:49 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x98a4a31d, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0xbe33f14b, L:/127.0.0.1:18080 - R:/127.0.0.1:65431]
+2018-09-30 18:01:49 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x98a4a31d, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 18:01:51 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x98a4a31d, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0x0a94d289, L:/127.0.0.1:18080 - R:/127.0.0.1:65434]
+2018-09-30 18:01:51 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x98a4a31d, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 18:01:54 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x98a4a31d, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0x119d5df3, L:/127.0.0.1:18080 - R:/127.0.0.1:65438]
+2018-09-30 18:01:54 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x98a4a31d, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 18:02:20 [com.coconason.dtf.manager.utils.LockAndCondition:81] ERROR - send APPROVESUBMIT message fail
+groupId:4960189296179937281538301729813
+action:APPROVESUBMIT
+2018-09-30 18:02:20 [com.coconason.dtf.manager.utils.LockAndCondition:81] ERROR - send APPROVESUBMIT message fail
+groupId:4960189296179937281538301729063
+action:APPROVESUBMIT
+2018-09-30 18:02:20 [com.coconason.dtf.manager.utils.LockAndCondition:81] ERROR - send APPROVESUBMIT message fail
+groupId:4960189296179937281538301729201
+action:APPROVESUBMIT
+2018-09-30 18:02:20 [com.coconason.dtf.manager.utils.LockAndCondition:81] ERROR - send APPROVESUBMIT message fail
+groupId:4960189296179937281
+action:APPROVESUBMIT
+2018-09-30 18:10:14 [io.netty.bootstrap.ServerBootstrap:146] WARN  - Unknown channel option 'TCP_NODELAY' for channel '[id: 0xfcb7fb98]'
+2018-09-30 18:10:14 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xfcb7fb98] REGISTERED
+2018-09-30 18:10:14 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xfcb7fb98] BIND: 0.0.0.0/0.0.0.0:18080
+2018-09-30 18:10:14 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xfcb7fb98, L:/0:0:0:0:0:0:0:0:18080] ACTIVE
+2018-09-30 18:10:16 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xfcb7fb98, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0xb55e56c0, L:/127.0.0.1:18080 - R:/127.0.0.1:49334]
+2018-09-30 18:10:16 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xfcb7fb98, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 18:10:16 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xfcb7fb98, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0xb22e877b, L:/127.0.0.1:18080 - R:/127.0.0.1:49333]
+2018-09-30 18:10:16 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xfcb7fb98, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 18:10:16 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xfcb7fb98, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0x4da7b3f9, L:/127.0.0.1:18080 - R:/127.0.0.1:49335]
+2018-09-30 18:10:16 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xfcb7fb98, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 18:11:16 [io.netty.bootstrap.ServerBootstrap:146] WARN  - Unknown channel option 'TCP_NODELAY' for channel '[id: 0x15d6ab01]'
+2018-09-30 18:11:16 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x15d6ab01] REGISTERED
+2018-09-30 18:11:16 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x15d6ab01] BIND: 0.0.0.0/0.0.0.0:18080
+2018-09-30 18:11:16 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x15d6ab01, L:/0:0:0:0:0:0:0:0:18080] ACTIVE
+2018-09-30 18:11:17 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x15d6ab01, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0x8acec522, L:/127.0.0.1:18080 - R:/127.0.0.1:49405]
+2018-09-30 18:11:17 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x15d6ab01, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 18:11:17 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x15d6ab01, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0x740ee35a, L:/127.0.0.1:18080 - R:/127.0.0.1:49406]
+2018-09-30 18:11:17 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x15d6ab01, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 18:11:17 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x15d6ab01, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0xc6f02d91, L:/127.0.0.1:18080 - R:/127.0.0.1:49407]
+2018-09-30 18:11:17 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0x15d6ab01, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 18:13:00 [io.netty.bootstrap.ServerBootstrap:146] WARN  - Unknown channel option 'TCP_NODELAY' for channel '[id: 0xa11c80c3]'
+2018-09-30 18:13:01 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xa11c80c3] REGISTERED
+2018-09-30 18:13:01 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xa11c80c3] BIND: 0.0.0.0/0.0.0.0:18080
+2018-09-30 18:13:01 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xa11c80c3, L:/0:0:0:0:0:0:0:0:18080] ACTIVE
+2018-09-30 18:13:01 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xa11c80c3, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0xbaf39e23, L:/127.0.0.1:18080 - R:/127.0.0.1:49481]
+2018-09-30 18:13:01 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xa11c80c3, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 18:13:01 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xa11c80c3, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0x28e5ac25, L:/127.0.0.1:18080 - R:/127.0.0.1:49483]
+2018-09-30 18:13:01 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xa11c80c3, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 18:13:01 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xa11c80c3, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0x5c4cba14, L:/127.0.0.1:18080 - R:/127.0.0.1:49482]
+2018-09-30 18:13:01 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xa11c80c3, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 18:34:01 [io.netty.channel.DefaultChannelPipeline:151] WARN  - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+java.io.IOException: 远程主机强迫关闭了一个现有的连接。
+	at sun.nio.ch.SocketDispatcher.read0(Native Method) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:43) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:223) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.read(IOUtil.java:192) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:379) ~[?:1.7.0_72]
+	at io.netty.buffer.PooledUnsafeDirectByteBuf.setBytes(PooledUnsafeDirectByteBuf.java:288) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:1106) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:343) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:123) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:858) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:138) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at java.lang.Thread.run(Thread.java:745) [?:1.7.0_72]
+2018-09-30 18:34:25 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xa11c80c3, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0xb6f8880c, L:/127.0.0.1:18080 - R:/127.0.0.1:49927]
+2018-09-30 18:34:25 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xa11c80c3, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 18:34:37 [io.netty.channel.DefaultChannelPipeline:151] WARN  - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+java.io.IOException: 远程主机强迫关闭了一个现有的连接。
+	at sun.nio.ch.SocketDispatcher.read0(Native Method) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:43) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:223) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.read(IOUtil.java:192) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:379) ~[?:1.7.0_72]
+	at io.netty.buffer.PooledUnsafeDirectByteBuf.setBytes(PooledUnsafeDirectByteBuf.java:288) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:1106) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:343) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:123) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:858) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:138) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at java.lang.Thread.run(Thread.java:745) [?:1.7.0_72]
+2018-09-30 18:34:44 [io.netty.channel.DefaultChannelPipeline:151] WARN  - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+java.io.IOException: 远程主机强迫关闭了一个现有的连接。
+	at sun.nio.ch.SocketDispatcher.read0(Native Method) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:43) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:223) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.read(IOUtil.java:192) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:379) ~[?:1.7.0_72]
+	at io.netty.buffer.PooledUnsafeDirectByteBuf.setBytes(PooledUnsafeDirectByteBuf.java:288) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:1106) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:343) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:123) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:858) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:138) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at java.lang.Thread.run(Thread.java:745) [?:1.7.0_72]
+2018-09-30 18:35:01 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xa11c80c3, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0x114387fc, L:/127.0.0.1:18080 - R:/127.0.0.1:50018]
+2018-09-30 18:35:01 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xa11c80c3, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 18:35:03 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xa11c80c3, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0x01024fa1, L:/127.0.0.1:18080 - R:/127.0.0.1:50019]
+2018-09-30 18:35:03 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xa11c80c3, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 18:38:01 [io.netty.channel.DefaultChannelPipeline:151] WARN  - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+io.netty.handler.timeout.ReadTimeoutException: null
+2018-09-30 18:38:06 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xa11c80c3, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0x21eae2c4, L:/127.0.0.1:18080 - R:/127.0.0.1:50094]
+2018-09-30 18:38:06 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xa11c80c3, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 18:44:25 [io.netty.bootstrap.ServerBootstrap:146] WARN  - Unknown channel option 'TCP_NODELAY' for channel '[id: 0xf04389c5]'
+2018-09-30 18:44:25 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xf04389c5] REGISTERED
+2018-09-30 18:44:25 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xf04389c5] BIND: 0.0.0.0/0.0.0.0:18080
+2018-09-30 18:44:25 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xf04389c5, L:/0:0:0:0:0:0:0:0:18080] ACTIVE
+2018-09-30 18:44:25 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xf04389c5, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0x9b15ec29, L:/127.0.0.1:18080 - R:/127.0.0.1:50443]
+2018-09-30 18:44:25 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xf04389c5, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 18:44:26 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xf04389c5, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0x71150d75, L:/127.0.0.1:18080 - R:/127.0.0.1:50445]
+2018-09-30 18:44:26 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xf04389c5, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 18:44:28 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xf04389c5, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0xba8a8c5c, L:/127.0.0.1:18080 - R:/127.0.0.1:50449]
+2018-09-30 18:44:28 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xf04389c5, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 18:50:01 [io.netty.channel.DefaultChannelPipeline:151] WARN  - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+io.netty.handler.timeout.ReadTimeoutException: null
+2018-09-30 18:50:01 [io.netty.channel.DefaultChannelPipeline:151] WARN  - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+io.netty.handler.timeout.ReadTimeoutException: null
+2018-09-30 18:50:01 [io.netty.channel.DefaultChannelPipeline:151] WARN  - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+io.netty.handler.timeout.ReadTimeoutException: null
+2018-09-30 18:53:18 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xf04389c5, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0x876b6a81, L:/127.0.0.1:18080 - R:/127.0.0.1:50629]
+2018-09-30 18:53:18 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xf04389c5, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 18:53:27 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xf04389c5, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0xeca61b7c, L:/127.0.0.1:18080 - R:/127.0.0.1:50630]
+2018-09-30 18:53:27 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xf04389c5, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 18:53:33 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xf04389c5, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0xcb26d2ca, L:/127.0.0.1:18080 - R:/127.0.0.1:50632]
+2018-09-30 18:53:33 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xf04389c5, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 18:55:25 [com.coconason.dtf.manager.protobufserver.ServerTransactionHandler:139] ERROR - SUB FAIL :{ groupId=496032299188486144groupMemberId='1538304915986', ctx=ChannelHandlerContext(ServerTransactionHandler#0, [id: 0x876b6a81, L:/127.0.0.1:18080 - R:/127.0.0.1:50629]), method='{"parameterAnnotations":[[]],"annotatedReturnType":{"declaredAnnotations":[],"annotations":[],"type":"com.coconason.dtf.manager.model.DemoResult"},"genericExceptionTypes":["java.lang.Exception"],"annotatedReceiverType":{"declaredAnnotations":[],"annotations":[],"type":"com.coconason.dtf.manager.service.impl.TeacherServiceImpl"},"declaringClass":"com.coconason.dtf.manager.service.impl.TeacherServiceImpl","typeParameters":[],"annotatedExceptionTypes":[{"declaredAnnotations":[],"annotations":[],"type":"java.lang.Exception"}],"synthetic":false,"annotatedParameterTypes":[{"declaredAnnotations":[],"annotations":[],"type":"com.coconason.dtf.manager.po.Teacher"}],"returnType":"com.coconason.dtf.manager.model.DemoResult","genericReturnType":"com.coconason.dtf.manager.model.DemoResult","exceptionTypes":["java.lang.Exception"],"default":false,"parameterCount":1,"name":"addTeacherInfo","varArgs":false,"accessible":false,"genericParameterTypes":["com.coconason.dtf.manager.po.Teacher"],"annotations":[{"type":"SYNC_FINAL"},{"rollbackFor":[],"noRollbackFor":[],"readOnly":false,"noRollbackForClassName":[],"isolation":"DEFAULT","rollbackForClassName":[],"value":"","propagation":"REQUIRED","transactionManager":"","timeout":-1}],"bridge":false,"modifiers":1,"parameterTypes":["com.coconason.dtf.manager.po.Teacher"]}', args='[{"t":1,"tname":"Lin"}]', commited=falsegroupMemberId='1', ctx=ChannelHandlerContext(ServerTransactionHandler#0, [id: 0xeca61b7c, L:/127.0.0.1:18080 - R:/127.0.0.1:50630]), method='{"parameterAnnotations":[[]],"annotatedReturnType":{"declaredAnnotations":[],"annotations":[],"type":"com.coconason.dtf.demo.model.DemoResult"},"genericExceptionTypes":["java.lang.Exception"],"annotatedReceiverType":{"declaredAnnotations":[],"annotations":[],"type":"com.coconason.dtf.demo.service.impl.CourseServiceImpl"},"declaringClass":"com.coconason.dtf.demo.service.impl.CourseServiceImpl","typeParameters":[],"annotatedExceptionTypes":[{"declaredAnnotations":[],"annotations":[],"type":"java.lang.Exception"}],"synthetic":false,"annotatedParameterTypes":[{"declaredAnnotations":[],"annotations":[],"type":"com.coconason.dtf.demo.po.Course"}],"returnType":"com.coconason.dtf.demo.model.DemoResult","genericReturnType":"com.coconason.dtf.demo.model.DemoResult","exceptionTypes":["java.lang.Exception"],"default":false,"parameterCount":1,"name":"addCourseInfo","varArgs":false,"accessible":false,"genericParameterTypes":["com.coconason.dtf.demo.po.Course"],"annotations":[{"type":"SYNC_FINAL"},{"rollbackFor":[],"noRollbackFor":[],"readOnly":false,"noRollbackForClassName":[],"isolation":"DEFAULT","rollbackForClassName":[],"value":"","propagation":"REQUIRED","transactionManager":"","timeout":-1}],"bridge":false,"modifiers":1,"parameterTypes":["com.coconason.dtf.demo.po.Course"]}', args='[{"t":5,"c":5,"cname":"Science"}]', commited=false}
+2018-09-30 18:55:26 [com.coconason.dtf.manager.protobufserver.ServerTransactionHandler:139] ERROR - SUB FAIL :{ groupId=496029671876460544groupMemberId='1538304916035', ctx=ChannelHandlerContext(ServerTransactionHandler#0, [id: 0xcb26d2ca, L:/127.0.0.1:18080 - R:/127.0.0.1:50632]), method='{"parameterAnnotations":[[]],"annotatedReturnType":{"declaredAnnotations":[],"annotations":[],"type":"com.coconason.dtf.demo3.springdemo3.model.DemoResult"},"genericExceptionTypes":["java.lang.Exception"],"annotatedReceiverType":{"declaredAnnotations":[],"annotations":[],"type":"com.coconason.dtf.demo3.springdemo3.service.impl.SCServiceImpl"},"declaringClass":"com.coconason.dtf.demo3.springdemo3.service.impl.SCServiceImpl","typeParameters":[],"annotatedExceptionTypes":[{"declaredAnnotations":[],"annotations":[],"type":"java.lang.Exception"}],"synthetic":false,"annotatedParameterTypes":[{"declaredAnnotations":[],"annotations":[],"type":"com.coconason.dtf.demo3.springdemo3.po.Sc"}],"returnType":"com.coconason.dtf.demo3.springdemo3.model.DemoResult","genericReturnType":"com.coconason.dtf.demo3.springdemo3.model.DemoResult","exceptionTypes":["java.lang.Exception"],"default":false,"parameterCount":1,"name":"addSCInfo","varArgs":false,"accessible":false,"genericParameterTypes":["com.coconason.dtf.demo3.springdemo3.po.Sc"],"annotations":[{"type":"SYNC_FINAL"},{"rollbackFor":[],"noRollbackFor":[],"readOnly":false,"noRollbackForClassName":[],"isolation":"DEFAULT","rollbackForClassName":[],"value":"","propagation":"REQUIRED","transactionManager":"","timeout":-1}],"bridge":false,"modifiers":1,"parameterTypes":["com.coconason.dtf.demo3.springdemo3.po.Sc"]}', args='[{"s":7,"c":5,"score":95}]', commited=falsegroupMemberId='1538304290258', ctx=ChannelHandlerContext(ServerTransactionHandler#0, [id: 0x876b6a81, L:/127.0.0.1:18080 - R:/127.0.0.1:50629]), method='{"parameterAnnotations":[[]],"annotatedReturnType":{"declaredAnnotations":[],"annotations":[],"type":"com.coconason.dtf.manager.model.DemoResult"},"genericExceptionTypes":["java.lang.Exception"],"annotatedReceiverType":{"declaredAnnotations":[],"annotations":[],"type":"com.coconason.dtf.manager.service.impl.TeacherServiceImpl"},"declaringClass":"com.coconason.dtf.manager.service.impl.TeacherServiceImpl","typeParameters":[],"annotatedExceptionTypes":[{"declaredAnnotations":[],"annotations":[],"type":"java.lang.Exception"}],"synthetic":false,"annotatedParameterTypes":[{"declaredAnnotations":[],"annotations":[],"type":"com.coconason.dtf.manager.po.Teacher"}],"returnType":"com.coconason.dtf.manager.model.DemoResult","genericReturnType":"com.coconason.dtf.manager.model.DemoResult","exceptionTypes":["java.lang.Exception"],"default":false,"parameterCount":1,"name":"addTeacherInfo","varArgs":false,"accessible":false,"genericParameterTypes":["com.coconason.dtf.manager.po.Teacher"],"annotations":[{"type":"SYNC_FINAL"},{"rollbackFor":[],"noRollbackFor":[],"readOnly":false,"noRollbackForClassName":[],"isolation":"DEFAULT","rollbackForClassName":[],"value":"","propagation":"REQUIRED","transactionManager":"","timeout":-1}],"bridge":false,"modifiers":1,"parameterTypes":["com.coconason.dtf.manager.po.Teacher"]}', args='[{"t":1,"tname":"Lin"}]', commited=false}
+2018-09-30 18:55:26 [io.netty.channel.DefaultChannelPipeline:151] WARN  - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+java.lang.NullPointerException: null
+	at com.coconason.dtf.manager.protobufserver.ServerTransactionHandler.channelRead(ServerTransactionHandler.java:139) ~[classes/:?]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at com.coconason.dtf.manager.protobufserver.LoginAuthRespHandler.channelRead(LoginAuthRespHandler.java:75) [classes/:?]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.handler.timeout.IdleStateHandler.channelRead(IdleStateHandler.java:286) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.handler.codec.MessageToMessageDecoder.channelRead(MessageToMessageDecoder.java:102) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.fireChannelRead(ByteToMessageDecoder.java:310) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:284) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1359) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:935) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:134) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:858) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:138) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at java.lang.Thread.run(Thread.java:745) [?:1.7.0_72]
+2018-09-30 18:55:26 [io.netty.channel.DefaultChannelPipeline:151] WARN  - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+java.lang.NullPointerException: null
+	at com.coconason.dtf.manager.protobufserver.ServerTransactionHandler.channelRead(ServerTransactionHandler.java:139) ~[classes/:?]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at com.coconason.dtf.manager.protobufserver.LoginAuthRespHandler.channelRead(LoginAuthRespHandler.java:75) [classes/:?]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.handler.timeout.IdleStateHandler.channelRead(IdleStateHandler.java:286) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.handler.codec.MessageToMessageDecoder.channelRead(MessageToMessageDecoder.java:102) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.fireChannelRead(ByteToMessageDecoder.java:310) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:284) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1359) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:935) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:134) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:858) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:138) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at java.lang.Thread.run(Thread.java:745) [?:1.7.0_72]
+2018-09-30 18:55:47 [io.netty.channel.DefaultChannelPipeline:151] WARN  - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+java.io.IOException: 远程主机强迫关闭了一个现有的连接。
+	at sun.nio.ch.SocketDispatcher.read0(Native Method) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:43) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:223) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.read(IOUtil.java:192) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:379) ~[?:1.7.0_72]
+	at io.netty.buffer.PooledUnsafeDirectByteBuf.setBytes(PooledUnsafeDirectByteBuf.java:288) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:1106) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:343) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:123) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:858) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:138) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at java.lang.Thread.run(Thread.java:745) [?:1.7.0_72]
+2018-09-30 18:56:08 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xf04389c5, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0x22df59c0, L:/127.0.0.1:18080 - R:/127.0.0.1:50823]
+2018-09-30 18:56:08 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xf04389c5, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 18:56:29 [io.netty.channel.DefaultChannelPipeline:151] WARN  - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+java.io.IOException: 远程主机强迫关闭了一个现有的连接。
+	at sun.nio.ch.SocketDispatcher.read0(Native Method) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:43) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:223) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.read(IOUtil.java:192) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:379) ~[?:1.7.0_72]
+	at io.netty.buffer.PooledUnsafeDirectByteBuf.setBytes(PooledUnsafeDirectByteBuf.java:288) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:1106) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:343) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:123) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:858) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:138) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at java.lang.Thread.run(Thread.java:745) [?:1.7.0_72]
+2018-09-30 18:56:32 [io.netty.channel.DefaultChannelPipeline:151] WARN  - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+java.io.IOException: 远程主机强迫关闭了一个现有的连接。
+	at sun.nio.ch.SocketDispatcher.read0(Native Method) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:43) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:223) ~[?:1.7.0_72]
+	at sun.nio.ch.IOUtil.read(IOUtil.java:192) ~[?:1.7.0_72]
+	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:379) ~[?:1.7.0_72]
+	at io.netty.buffer.PooledUnsafeDirectByteBuf.setBytes(PooledUnsafeDirectByteBuf.java:288) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:1106) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:343) ~[netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:123) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:858) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:138) [netty-all-4.1.16.Final.jar:4.1.16.Final]
+	at java.lang.Thread.run(Thread.java:745) [?:1.7.0_72]
+2018-09-30 18:56:54 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xf04389c5, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0xfda3a125, L:/127.0.0.1:18080 - R:/127.0.0.1:50913]
+2018-09-30 18:56:54 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xf04389c5, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE
+2018-09-30 18:56:56 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xf04389c5, L:/0:0:0:0:0:0:0:0:18080] READ: [id: 0x4f12a7f1, L:/127.0.0.1:18080 - R:/127.0.0.1:50914]
+2018-09-30 18:56:56 [io.netty.handler.logging.LoggingHandler:101] INFO  - [id: 0xf04389c5, L:/0:0:0:0:0:0:0:0:18080] READ COMPLETE

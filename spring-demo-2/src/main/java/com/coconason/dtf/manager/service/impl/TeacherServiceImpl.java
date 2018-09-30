@@ -32,6 +32,7 @@ public class TeacherServiceImpl implements ITeacherService {
     @Transactional
     public DemoResult addTeacherInfo(Teacher teacher) throws Exception {
         if(teacherMapper.insertSelective(teacher)>0){
+            //int kk =6/0;
             if(teacher.getT()==2){
                 Sc sc = new Sc();
                 sc.setC(5);

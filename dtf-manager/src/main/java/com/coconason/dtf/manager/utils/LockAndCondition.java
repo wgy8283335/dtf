@@ -65,7 +65,7 @@ public class LockAndCondition {
             boolean channelIsHealthy = NettyServer.isHealthy();
             if(channelIsHealthy){
                 MessageSender.sendMsg(groupId,action,ctx);
-                receivedSignal = await(10000, TimeUnit.MILLISECONDS);
+                receivedSignal = await(60000, TimeUnit.MILLISECONDS);
             }else{
                 //should write log.
                 logger.error(msg+"\n"+"groupId:"+groupId+"\n"+"action:"+action);
