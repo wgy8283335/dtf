@@ -37,11 +37,15 @@ public class SendAsyncRequestRunnable implements Runnable{
                 String url= messageInfo.getUrl();
                 String obj = messageInfo.getObj().toString();
                 try{
-                    HttpClientUtil.doPostJson(url,obj,transactionMessageForSubmit.getGroupId());
-                    messageInfo.setSubmitted(true);
+                    String result = HttpClientUtil.doPostJson(url,obj,transactionMessageForSubmit.getGroupId());
+                    if("".equals(result)){
+                        messageAsyncQueue.offer(messageInfo);
+                    }else{
+                        messageInfo.setSubmitted(true);
+                    }
                 }catch (Exception e){
                     //if fail put the info of the service into a cache,and there will be another thread to check and execute.
-                    messageAsyncQueue.offer(messageInfo);
+                    //messageAsyncQueue.offer(messageInfo);
                     e.printStackTrace();
                 }
             }

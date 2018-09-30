@@ -35,12 +35,15 @@ public class ConsumerFailingAsyncRequestRunnable implements Runnable{
                         String url= messageInfo.getUrl();
                         String obj = messageInfo.getObj().toString();
                         String result = HttpClientUtil.doPostJson(url,obj,"");
-                        messageInfo.setSubmitted(true);
+                        if("".equals(result)){
+                            messageInfo.setSubmitted(false);
+                            messageAsyncQueue.offer(messageInfo);
+                        }else{
+                            messageInfo.setSubmitted(true);
+                        }
                     }
                 }catch (Exception e){
                     e.printStackTrace();
-                    messageInfo.setSubmitted(false);
-                    messageAsyncQueue.offer(messageInfo);
                 }finally {
                     messageInfo = null;
                 }

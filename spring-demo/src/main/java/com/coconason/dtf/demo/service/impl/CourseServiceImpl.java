@@ -68,6 +68,7 @@ public class CourseServiceImpl implements ICourseService {
     @Transactional
     public DemoResult addCourseInfoAsync(Course course) throws Exception {
         courseMapper.insertSelective(course);
+        //int kk = 6/0;
         Teacher teacher = new Teacher();
         teacher.setT(2);
         teacher.setTname("Yun");
@@ -89,6 +90,7 @@ public class CourseServiceImpl implements ICourseService {
         List<Course> courseList = courseMapper.selectByExample(courseExample);
         Course course = courseList.get(0);
         Integer teacherId = course.getT();
+        //int kk = 6/0;
         String result = restClient.sendGet("http://localhost:8082/get_teacher_info?id={1}",teacherId);
         JSONObject map = JSONObject.parseObject(result);
         DemoResult demoResult = new DemoResult().ok(map.get("datum"));

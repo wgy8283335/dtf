@@ -68,6 +68,7 @@ public class TeacherServiceImpl implements ITeacherService {
     @Transactional
     public DemoResult addTeacherInfoAsync(Teacher teacher) throws Exception {
         if(teacherMapper.insertSelective(teacher)>0){
+            //int kk = 6/0;
             return new DemoResult().ok();
         }else{
             return new DemoResult().build(ErrorCode.SYS_ERROR.value(),ErrorCode.SYS_ERROR.msg());
@@ -83,6 +84,7 @@ public class TeacherServiceImpl implements ITeacherService {
         criteria.andTEqualTo(id);
         List<Teacher> teacherList = teacherMapper.selectByExample(teacherExample);
         Teacher teacher = teacherList.get(0);
+        //int kk = 6/0;
         return teacher;
     }
 }

@@ -1,5 +1,6 @@
 package com.coconason.dtf.manager.utils;
 
+import org.apache.http.StatusLine;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
@@ -16,7 +17,7 @@ import java.io.IOException;
  */
 public class HttpClientUtil {
 
-	public static String doPostJson(String url, String json,String groupId) throws Exception{
+	public static String doPostJson(String url, String json,String groupId){
 		CloseableHttpClient httpClient = HttpClients.createDefault();
 		CloseableHttpResponse response = null;
 		String resultString = "";
@@ -26,10 +27,14 @@ public class HttpClientUtil {
 			httpPost.setEntity(entity);
 			httpPost.setHeader("groupInfo",groupId);
 			response = httpClient.execute(httpPost);
-			resultString = EntityUtils.toString(response.getEntity(), "utf-8");
+			StatusLine statusLine = response.getStatusLine();
+			//response.close();
+			int code = statusLine.getStatusCode();
+			if(code == 200){
+				resultString = EntityUtils.toString(response.getEntity(), "utf-8");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new Exception(e);
 		} finally {
 			try {
 				response.close();
@@ -40,5 +45,6 @@ public class HttpClientUtil {
 		}
 		return resultString;
 	}
+
 
 }
