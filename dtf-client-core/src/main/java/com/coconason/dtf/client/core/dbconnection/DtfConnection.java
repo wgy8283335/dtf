@@ -156,6 +156,7 @@ public class DtfConnection implements Connection {
                 if(state == DbOperationType.COMMIT){
                     //Thread.sleep(30000);
                     if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG) {
+                        //int i = 6/0;
                         queue.put(TransactionServiceInfo.newInstanceForSub(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_SUCCESS_STRONG, groupId, groupMembers, memberId));
                     }else if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD){
                         queue.put(TransactionServiceInfo.newInstanceForSub(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_SUCCESS, groupId, groupMembers, memberId));

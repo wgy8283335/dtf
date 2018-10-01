@@ -37,6 +37,10 @@ class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 	@Qualifier("threadsInfo")
 	private ThreadsInfo asyncFinalCommitThreadsInfo;
 
+	@Autowired
+	@Qualifier("threadsInfo")
+	private ThreadsInfo syncFinalCommitThreadsInfo;
+
 	private ChannelHandlerContext ctx;
 
 	@Override
@@ -51,7 +55,7 @@ class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception
 	{
-
+		System.out.println(msg);
 		MessageProto.Message message = (MessageProto.Message) msg;
 		ActionType action = message.getAction();
 		JSONObject map=null;
@@ -79,6 +83,9 @@ class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 				LockAndCondition secondlc = secondThreadsInfo.get(map.get("groupId").toString());
 				secondlc.setState(DbOperationType.WHOLE_SUCCESS);
 				secondlc.signal();
+				LockAndCondition syncFinalLc = syncFinalCommitThreadsInfo.get(map.get("groupId").toString());
+				syncFinalLc.setState(DbOperationType.WHOLE_SUCCESS);
+				syncFinalLc.signal();
 				break;
 			case WHOLE_FAIL_STRONG:
 				map = JSONObject.parseObject(message.getInfo().toString());

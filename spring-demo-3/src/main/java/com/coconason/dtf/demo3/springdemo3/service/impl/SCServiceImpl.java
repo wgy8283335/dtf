@@ -39,7 +39,6 @@ public class SCServiceImpl implements ISCService {
     @Transactional
     public DemoResult addSCInfoStrong(Sc sc) throws Exception {
         //int i = 6/0;
-
         scMapper.insertSelective(sc);
         return new DemoResult().ok();
     }

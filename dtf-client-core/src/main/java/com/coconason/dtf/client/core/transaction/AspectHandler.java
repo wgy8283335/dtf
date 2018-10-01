@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Method;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
 import static com.coconason.dtf.client.core.constants.Member.ORIGINAL_ID;
@@ -38,6 +39,10 @@ public class AspectHandler {
     @Autowired
     @Qualifier("threadsInfo")
     private ThreadsInfo asyncFinalCommitThreadsInfo;
+
+    @Autowired
+    @Qualifier("threadsInfo")
+    private ThreadsInfo syncFinalCommitThreadsInfo;
 
     public Object before(String info,ProceedingJoinPoint point) throws Throwable {
 
@@ -97,16 +102,25 @@ public class AspectHandler {
                         //}else if(MessageProto.Message.ActionType.ADD_STRONG==TransactionServiceInfo.getCurrent().getAction()){
                         }else if(TransactionType.SYNC_STRONG == transactionType){
                             queue.put(TransactionServiceInfo.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT_STRONG,TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
+                            LockAndCondition syncFinalCommitLc = new LockAndCondition(new ReentrantLock(), DbOperationType.DEFAULT);
+                            syncFinalCommitThreadsInfo.put(TransactionGroupInfo.getCurrent().getGroupId(), syncFinalCommitLc);
+                            boolean success = syncFinalCommitLc.await(10000, TimeUnit.MILLISECONDS);
+                            if(success == false&&DbOperationType.WHOLE_SUCCESS!=syncFinalCommitThreadsInfo.get(TransactionGroupInfo.getCurrent().getGroupId()).getState()){
+                                throw new Exception("system transaction error");
+                            }
                         }
                     }
                 }catch (Exception e){
-                    if(ORIGINAL_ID.equals(TransactionGroupInfo.getCurrent().getMemberId())){
-                        //if(MessageProto.Message.ActionType.ADD==TransactionServiceInfo.getCurrent().getAction()){
-                        if(TransactionType.SYNC_FINAL == transactionType){
-                            queue.put(TransactionServiceInfo.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.CANCEL,TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
-                        //}else if(MessageProto.Message.ActionType.ADD_STRONG==TransactionServiceInfo.getCurrent().getAction()){
-                        }else if(TransactionType.SYNC_STRONG == transactionType){
-                            queue.put(TransactionServiceInfo.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.CANCEL,TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
+                    if(!"system transaction error".equals(e.getMessage())){
+                        if(ORIGINAL_ID.equals(TransactionGroupInfo.getCurrent().getMemberId())){
+                            //if(MessageProto.Message.ActionType.ADD==TransactionServiceInfo.getCurrent().getAction()){
+                            if(TransactionType.SYNC_FINAL == transactionType){
+                                queue.put(TransactionServiceInfo.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.CANCEL,TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
+                                //}else if(MessageProto.Message.ActionType.ADD_STRONG==TransactionServiceInfo.getCurrent().getAction()){
+                            }else if(TransactionType.SYNC_STRONG == transactionType){
+                                queue.put(TransactionServiceInfo.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.CANCEL,TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
+                            }
+                            throw new Exception("system transaction error");
                         }
                     }
                 }

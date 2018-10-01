@@ -18,12 +18,16 @@ class TransactionNettyListener implements ApplicationListener<ContextRefreshedEv
     @Autowired
     private NettyService nettyService;
 
+    //@Autowired
+    //private ThreadPoolForClient threadPoolForClient;
+
     @Autowired
     private TransactionMessageSender sender;
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         nettyService.start();
         try{
+            //threadPoolForClient.addTask(new TransactionMessageSender());
             sender.startSendMessage();
         }catch (Exception e){
             e.printStackTrace();
