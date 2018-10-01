@@ -111,14 +111,18 @@ public class DtfConnection implements Connection {
                     queue.put(TransactionServiceInfo.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT_STRONG,TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
                     LockAndCondition secondlc = new LockAndCondition(new ReentrantLock(), DbOperationType.DEFAULT);
                     secondThreadsInfo.put(groupId, secondlc);
-                    secondlc.await();
+                    boolean isWholeSuccess = secondlc.await(10000,TimeUnit.MILLISECONDS);
+                    if(isWholeSuccess==false){
+                        LockAndCondition syncFinalCommitLc = syncFinalCommitThreadsInfo.get(groupId);
+                        syncFinalCommitLc.setState(DbOperationType.WHOLE_FAIL);
+                        throw new Exception("Distributed transaction fail to receive WHOLE_SUCCESS_STRONG , groupId is :"+groupId);
+                    }
                     LockAndCondition secondlc2 = secondThreadsInfo.get(groupId);
                     if (secondlc2.getState() == DbOperationType.WHOLE_FAIL) {
                         queue.put(TransactionServiceInfo.newInstanceForShortMessage(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.WHOLE_FAIL_STRONG_ACK, groupId));
                         connection.close();
                         LockAndCondition syncFinalCommitLc = syncFinalCommitThreadsInfo.get(groupId);
                         syncFinalCommitLc.setState(DbOperationType.WHOLE_FAIL);
-                        syncFinalCommitLc.signal();
                         throw new Exception("Distributed transaction failed and groupId:"+groupId);
                     }else{
                         queue.put(TransactionServiceInfo.newInstanceForShortMessage(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.WHOLE_SUCCESS_STRONG_ACK, groupId));
@@ -127,7 +131,6 @@ public class DtfConnection implements Connection {
                         connection.close();
                         LockAndCondition syncFinalCommitLc = syncFinalCommitThreadsInfo.get(groupId);
                         syncFinalCommitLc.setState(DbOperationType.WHOLE_SUCCESS);
-                        syncFinalCommitLc.signal();
                     }
                 }
                 else if(ORIGINAL_ID.equals(memberId) && TransactionType.SYNC_FINAL==TransactionType.getCurrent()){
