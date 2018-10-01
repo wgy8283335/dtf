@@ -105,6 +105,7 @@ public class DtfConnection implements Connection {
                 String groupId = transactionGroupInfo.getGroupId();
                 Long memberId = transactionGroupInfo.getMemberId();
                 if (ORIGINAL_ID.equals(memberId) && TransactionType.SYNC_STRONG==TransactionType.getCurrent()){
+                    queue.put(TransactionServiceInfo.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT_STRONG,TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
                     LockAndCondition secondlc = new LockAndCondition(new ReentrantLock(), DbOperationType.DEFAULT);
                     secondThreadsInfo.put(groupId, secondlc);
                     secondlc.await();
@@ -116,7 +117,10 @@ public class DtfConnection implements Connection {
                     }
                     queue.put(TransactionServiceInfo.newInstanceForShortMessage(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.WHOLE_SUCCESS_STRONG_ACK, groupId));
                     //4. close the connection.
+                    System.out.println("dtf connection.close();");
                     connection.close();
+                }else if(ORIGINAL_ID.equals(memberId) && TransactionType.SYNC_FINAL==TransactionType.getCurrent()){
+                    queue.put(TransactionServiceInfo.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT,TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -145,7 +149,9 @@ public class DtfConnection implements Connection {
                 JSONObject map = transactionServiceInfo.getInfo();
                 threadsInfo.put(map.get("groupId").toString()+memberId,lc);
                 queue.put(transactionServiceInfo);
+                System.out.println("before dtf connection add wait ---------------------------"+System.currentTimeMillis());
                 boolean result = lc.await(10000, TimeUnit.MILLISECONDS);
+                System.out.println("after dtf connection add wait finish ---------------------------"+System.currentTimeMillis());
                 if(result == false){
                     connection.rollback();
                     connection.close();
@@ -187,7 +193,7 @@ public class DtfConnection implements Connection {
                 }
             } finally {
                 try {
-                    if(memberId!=1&&(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG)||transactionServiceInfo.getAction()== MessageProto.Message.ActionType.CANCEL) {
+                    if(memberId!=1&&(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG)|| transactionServiceInfo.getAction()== MessageProto.Message.ActionType.CANCEL) {
                         connection.close();
                     }
                 } catch (Exception e) {

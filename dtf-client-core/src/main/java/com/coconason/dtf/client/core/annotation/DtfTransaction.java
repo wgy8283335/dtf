@@ -9,7 +9,8 @@ import java.lang.annotation.*;
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
-public @interface DtfTransaction {
+public @interface DtfTransaction{
     //SYNC_FINAL、SYNC_STRONG、ASYNC_FINAL
     String type() default "SYNC_FINAL";
+
 }

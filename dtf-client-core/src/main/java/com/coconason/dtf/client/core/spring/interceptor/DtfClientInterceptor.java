@@ -5,6 +5,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Aspect
 @Component
+@Order(1)
 class DtfClientInterceptor {
 
     @Autowired
@@ -31,6 +33,7 @@ class DtfClientInterceptor {
         HttpServletRequest request = requestAttributes == null ? null : ((ServletRequestAttributes) requestAttributes).getRequest();
         String info = request == null ? null : request.getHeader("groupInfo");
         Object result = aspectHandler.before(info,joinPoint);
+        System.out.println("DtfClientInterceptor result");
         return result;
     }
 }

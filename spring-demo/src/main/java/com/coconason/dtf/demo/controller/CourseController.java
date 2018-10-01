@@ -26,6 +26,7 @@ public class CourseController {
     @RequestMapping(value="/add_course_info_strong",method = RequestMethod.POST)
     public DemoResult addCourseInfoStrong(@RequestBody Course course) throws Exception{
         DemoResult demoResult = courseService.addCourseInfoStrong(course);
+        System.out.println(demoResult);
         return demoResult;
     }
 
