@@ -32,14 +32,14 @@ public class TransactionMessageSender {
         @Override
         public void run() {
             try {
-                sendMessage();
+                sendMessageInQueue();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public void sendMessage() throws InterruptedException{
+    public void sendMessageInQueue() throws InterruptedException{
         while(true){
             TransactionServiceInfo info = queue.take();
             service.sendMsg(info);

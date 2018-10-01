@@ -46,7 +46,6 @@ class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception
 	{
-
 		super.channelActive(ctx);
 		this.ctx = ctx;
 		System.out.println("create connection-->"+this.ctx);
