@@ -49,16 +49,19 @@ public class DtfConnection implements Connection {
 
     private ThreadPoolForClient threadPoolForClient;
 
+    private ThreadsInfo syncFinalCommitThreadsInfo;
+
     public DtfConnection(Connection connection) {
         this.connection = connection;
     }
 
-    public DtfConnection(Connection connection,ThreadsInfo threadsInfo,TransactionMessageQueue queue,ThreadsInfo secondThreadsInfo,ThreadPoolForClient threadPoolForClient) {
+    public DtfConnection(Connection connection,ThreadsInfo threadsInfo,TransactionMessageQueue queue,ThreadsInfo secondThreadsInfo,ThreadPoolForClient threadPoolForClient,ThreadsInfo syncFinalCommitThreadsInfo) {
         this.connection = connection;
         this.threadsInfo = threadsInfo;
         this.queue = queue;
         this.secondThreadsInfo = secondThreadsInfo;
         this.threadPoolForClient = threadPoolForClient;
+        this.syncFinalCommitThreadsInfo = syncFinalCommitThreadsInfo;
     }
 
     @Override
@@ -113,17 +116,26 @@ public class DtfConnection implements Connection {
                     if (secondlc2.getState() == DbOperationType.WHOLE_FAIL) {
                         queue.put(TransactionServiceInfo.newInstanceForShortMessage(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.WHOLE_FAIL_STRONG_ACK, groupId));
                         connection.close();
+                        LockAndCondition syncFinalCommitLc = syncFinalCommitThreadsInfo.get(groupId);
+                        syncFinalCommitLc.setState(DbOperationType.WHOLE_FAIL);
+                        syncFinalCommitLc.signal();
                         throw new Exception("Distributed transaction failed and groupId:"+groupId);
+                    }else{
+                        queue.put(TransactionServiceInfo.newInstanceForShortMessage(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.WHOLE_SUCCESS_STRONG_ACK, groupId));
+                        //4. close the connection.
+                        System.out.println("dtf connection.close();");
+                        connection.close();
+                        LockAndCondition syncFinalCommitLc = syncFinalCommitThreadsInfo.get(groupId);
+                        syncFinalCommitLc.setState(DbOperationType.WHOLE_SUCCESS);
+                        syncFinalCommitLc.signal();
                     }
-                    queue.put(TransactionServiceInfo.newInstanceForShortMessage(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.WHOLE_SUCCESS_STRONG_ACK, groupId));
-                    //4. close the connection.
-                    System.out.println("dtf connection.close();");
-                    connection.close();
-                }else if(ORIGINAL_ID.equals(memberId) && TransactionType.SYNC_FINAL==TransactionType.getCurrent()){
+                }
+                else if(ORIGINAL_ID.equals(memberId) && TransactionType.SYNC_FINAL==TransactionType.getCurrent()){
                     queue.put(TransactionServiceInfo.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT,TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                connection.close();
             }
         }else{
             connection.commit();

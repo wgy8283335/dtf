@@ -101,7 +101,14 @@ public class AspectHandler {
                         }else if(TransactionType.SYNC_STRONG == transactionType){
                             queue.put(TransactionServiceInfo.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.CANCEL,TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
                         }
-                        throw new Exception("system transaction error");
+                    }
+                }
+                if(ORIGINAL_ID.equals(TransactionGroupInfo.getCurrent().getMemberId())){
+                    //if(MessageProto.Message.ActionType.ADD==TransactionServiceInfo.getCurrent().getAction()){
+                    if(TransactionType.SYNC_STRONG == transactionType){
+                        if(syncFinalCommitThreadsInfo.get(TransactionGroupInfo.getCurrent().getGroupId()).getState()==DbOperationType.WHOLE_FAIL){
+                            throw new Exception("system transaction error");
+                        }
                     }
                 }
             }

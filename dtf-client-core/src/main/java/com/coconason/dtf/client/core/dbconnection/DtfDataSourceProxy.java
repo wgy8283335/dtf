@@ -26,6 +26,8 @@ public class DtfDataSourceProxy implements DataSource{
     private ThreadsInfo secondThreadsInfo;
     @Autowired
     private ThreadPoolForClient threadPoolForClient;
+    @Autowired
+    private ThreadsInfo syncFinalCommitThreadsInfo;
 
     public DtfDataSourceProxy(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -33,13 +35,13 @@ public class DtfDataSourceProxy implements DataSource{
 
     @Override
     public Connection getConnection() throws SQLException {
-        Connection connection = new DtfConnection(dataSource.getConnection(),threadsInfo,queue,secondThreadsInfo,threadPoolForClient);
+        Connection connection = new DtfConnection(dataSource.getConnection(),threadsInfo,queue,secondThreadsInfo,threadPoolForClient,syncFinalCommitThreadsInfo);
         return connection;
     }
 
     @Override
     public Connection getConnection(String username, String password) throws SQLException {
-        Connection connection = new DtfConnection(dataSource.getConnection(username,password),threadsInfo,queue,secondThreadsInfo,threadPoolForClient);
+        Connection connection = new DtfConnection(dataSource.getConnection(username,password),threadsInfo,queue,secondThreadsInfo,threadPoolForClient,syncFinalCommitThreadsInfo);
         return connection;
     }
 

@@ -82,12 +82,18 @@ class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 				LockAndCondition secondlc = secondThreadsInfo.get(map.get("groupId").toString());
 				secondlc.setState(DbOperationType.WHOLE_SUCCESS);
 				secondlc.signal();
+//				LockAndCondition syncFinalCommitLc = syncFinalCommitThreadsInfo.get(map.get("groupId").toString());
+//				syncFinalCommitLc.setState(DbOperationType.WHOLE_SUCCESS);
+//				syncFinalCommitLc.signal();
 				break;
 			case WHOLE_FAIL_STRONG:
 				map = JSONObject.parseObject(message.getInfo().toString());
 				LockAndCondition secondlc2 = secondThreadsInfo.get(map.get("groupId").toString());
 				secondlc2.setState(DbOperationType.WHOLE_FAIL);
 				secondlc2.signal();
+//				LockAndCondition syncFinalCommitLc2 = syncFinalCommitThreadsInfo.get(map.get("groupId").toString());
+//				syncFinalCommitLc2.setState(DbOperationType.WHOLE_FAIL);
+//				syncFinalCommitLc2.signal();
 				break;
 			case CANCEL:
 				lc.setState(DbOperationType.ROLLBACK);
