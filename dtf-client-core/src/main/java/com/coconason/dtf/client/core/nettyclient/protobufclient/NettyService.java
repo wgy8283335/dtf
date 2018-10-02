@@ -1,7 +1,6 @@
 package com.coconason.dtf.client.core.nettyclient.protobufclient;
 
 import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
-import com.coconason.dtf.client.core.threadpools.ThreadPoolForClient;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
@@ -14,8 +13,10 @@ import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -26,7 +27,7 @@ import java.util.concurrent.TimeUnit;
 public class NettyService {
 
     @Autowired
-    private ClientTransactionHandlerAdapter clientTransactionHandler;
+    private AbstractClientTransactionHandler clientTransactionHandler;
 
     @Autowired
     private ChannelInboundHandlerAdapter heartBeatReqHandler;
@@ -35,7 +36,8 @@ public class NettyService {
     private ChannelInboundHandlerAdapter loginAuthReqHandler;
 
     @Autowired
-    private ThreadPoolForClient threadPoolForClient;
+    @Qualifier("threadPoolForClientProxy")
+    private ExecutorService threadPoolForClientProxy;
 
     private EventLoopGroup group = new NioEventLoopGroup();
 
@@ -46,7 +48,7 @@ public class NettyService {
 
     public synchronized void start(){
         try{
-            threadPoolForClient.addTask(new ConnectRunnable(nettyServerConfiguration.getHost(),nettyServerConfiguration.getPort()));
+            threadPoolForClientProxy.execute(new ConnectRunnable(nettyServerConfiguration.getHost(),nettyServerConfiguration.getPort()));
         }catch (Exception e){
             System.out.println("Exception-----> \n" + e);
         }
@@ -98,7 +100,7 @@ public class NettyService {
             f.channel().closeFuture().sync();
             isHealthy = false;
         }finally{
-            threadPoolForClient.addTask(new ConnectRunnable(host,port));
+            threadPoolForClientProxy.execute(new ConnectRunnable(host,port));
         }
     }
 

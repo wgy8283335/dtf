@@ -43,7 +43,7 @@ public class NettyServer
                 Integer.valueOf(propertiesReader.getProperty("maximumPoolSize")),
                 Integer.valueOf(propertiesReader.getProperty("keepAliveTime")),
                 Integer.valueOf(propertiesReader.getProperty("capacity")));
-        threadPoolForServer.addTask(new ConsumerFailingAsyncRequestRunnable(messageAsyncQueue));
+        threadPoolForServer.execute(new ConsumerFailingAsyncRequestRunnable(messageAsyncQueue));
         new NettyServer().bind(messageAsyncQueue,threadPoolForServer,Integer.valueOf(propertiesReader.getProperty("port")));
     }
 

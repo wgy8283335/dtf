@@ -2,12 +2,12 @@ package com.coconason.dtf.client.core.nettyclient.sender;
 
 import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
 import com.coconason.dtf.client.core.nettyclient.protobufclient.NettyService;
-import com.coconason.dtf.client.core.threadpools.ThreadPoolForClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.Queue;
+import java.util.concurrent.ExecutorService;
 
 /**
  * @Author: Jason
@@ -25,11 +25,12 @@ public class TransactionMessageSender implements MessageSenderInterface{
     private NettyService service;
 
     @Autowired
-    private ThreadPoolForClient threadPoolForClient;
+    @Qualifier("threadPoolForClientProxy")
+    private ExecutorService threadPoolForClientProxy;
 
     @Override
     public void startSendMessage() throws InterruptedException{
-        threadPoolForClient.addTask(new sendMessageRunnable());
+        threadPoolForClientProxy.execute(new sendMessageRunnable());
     }
 
     private class sendMessageRunnable implements Runnable {

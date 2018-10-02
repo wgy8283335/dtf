@@ -18,7 +18,7 @@ public class ThreadPoolForServer {
         pool = new ThreadPoolExecutor(corePoolSize,maximumPoolSize,keepAliveTime, TimeUnit.MILLISECONDS,new LinkedBlockingDeque<Runnable>(capacity),new DefaultThreadFactory("defaultThreadFactory"),new ThreadPoolExecutor.AbortPolicy());
     }
 
-    public void addTask(Runnable runnable){
+    public void execute(Runnable runnable){
         pool.execute(runnable);
     }
 }

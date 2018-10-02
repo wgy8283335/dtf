@@ -13,19 +13,13 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 @Component
 public class TransactionMessageQueueProxy implements Queue {
+
     private final LinkedBlockingQueue<TransactionServiceInfo> messageQueue;
+
     public TransactionMessageQueueProxy() {
         messageQueue = new LinkedBlockingQueue<>(Integer.MAX_VALUE);
     }
 
-//    public void put(TransactionServiceInfo info) throws InterruptedException{
-//        messageQueue.put(info);
-//    }
-
-    public TransactionServiceInfo take() throws InterruptedException{
-        TransactionServiceInfo info = messageQueue.take();
-        return info;
-    }
     @Override
     public boolean isEmpty(){
         return messageQueue.isEmpty();

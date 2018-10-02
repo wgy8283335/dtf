@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.coconason.dtf.client.core.beans.TransactionGroupInfo;
 import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
 import com.coconason.dtf.client.core.beans.TransactionType;
-import com.coconason.dtf.client.core.threadpools.ThreadPoolForClient;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.common.utils.UuidGenerator;
 import com.google.common.cache.Cache;
@@ -17,6 +16,7 @@ import java.util.Properties;
 import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -48,7 +48,7 @@ public class DtfConnectionDecorator implements Connection {
 
     private Cache<String,ClientLockAndConditionInterface>  secondThreadLockCacheProxy;
 
-    private ThreadPoolForClient threadPoolForClient;
+    private ExecutorService threadPoolForClientProxy;
 
     private ThreadLockCacheProxy syncFinalCommitThreadLockCacheProxy;
 
@@ -56,12 +56,12 @@ public class DtfConnectionDecorator implements Connection {
         this.connection = connection;
     }
 
-    public DtfConnectionDecorator(Connection connection, ThreadLockCacheProxy threadLockCacheProxy, Queue queue, ThreadLockCacheProxy secondThreadLockCacheProxy, ThreadPoolForClient threadPoolForClient, ThreadLockCacheProxy syncFinalCommitThreadLockCacheProxy) {
+    public DtfConnectionDecorator(Connection connection, ThreadLockCacheProxy threadLockCacheProxy, Queue queue, ThreadLockCacheProxy secondThreadLockCacheProxy, ExecutorService threadPoolForClientProxy, ThreadLockCacheProxy syncFinalCommitThreadLockCacheProxy) {
         this.connection = connection;
         this.threadLockCacheProxy = threadLockCacheProxy;
         this.queue = queue;
         this.secondThreadLockCacheProxy = secondThreadLockCacheProxy;
-        this.threadPoolForClient = threadPoolForClient;
+        this.threadPoolForClientProxy = threadPoolForClientProxy;
         this.syncFinalCommitThreadLockCacheProxy = syncFinalCommitThreadLockCacheProxy;
     }
 
@@ -103,7 +103,7 @@ public class DtfConnectionDecorator implements Connection {
         }
         transactionServiceInfo = TransactionServiceInfo.getCurrent();
         if(TransactionType.SYNC_FINAL==TransactionType.getCurrent()||TransactionType.SYNC_STRONG==TransactionType.getCurrent()) {
-            threadPoolForClient.addTask(new SubmitRunnable(TransactionGroupInfo.getCurrent()));
+            threadPoolForClientProxy.execute(new SubmitRunnable(TransactionGroupInfo.getCurrent()));
             try {
                 TransactionGroupInfo transactionGroupInfo = TransactionGroupInfo.getCurrent();
                 String groupId = transactionGroupInfo.getGroupId();

@@ -1,6 +1,5 @@
 package com.coconason.dtf.client.core.dbconnection;
 
-import com.coconason.dtf.client.core.threadpools.ThreadPoolForClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
@@ -10,6 +9,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
 import java.util.Queue;
+import java.util.concurrent.ExecutorService;
 import java.util.logging.Logger;
 
 /**
@@ -27,7 +27,8 @@ public class DtfDataSourceDecorator implements DataSource{
     @Autowired
     private ThreadLockCacheProxy secondThreadLockCacheProxy;
     @Autowired
-    private ThreadPoolForClient threadPoolForClient;
+    @Qualifier("threadPoolForClientProxy")
+    private ExecutorService threadPoolForClientProxy;
     @Autowired
     private ThreadLockCacheProxy syncFinalCommitThreadLockCacheProxy;
 
@@ -37,13 +38,13 @@ public class DtfDataSourceDecorator implements DataSource{
 
     @Override
     public Connection getConnection() throws SQLException {
-        Connection connection = new DtfConnectionDecorator(dataSource.getConnection(), threadLockCacheProxy,queue, secondThreadLockCacheProxy,threadPoolForClient, syncFinalCommitThreadLockCacheProxy);
+        Connection connection = new DtfConnectionDecorator(dataSource.getConnection(), threadLockCacheProxy,queue, secondThreadLockCacheProxy, threadPoolForClientProxy, syncFinalCommitThreadLockCacheProxy);
         return connection;
     }
 
     @Override
     public Connection getConnection(String username, String password) throws SQLException {
-        Connection connection = new DtfConnectionDecorator(dataSource.getConnection(username,password), threadLockCacheProxy,queue, secondThreadLockCacheProxy,threadPoolForClient, syncFinalCommitThreadLockCacheProxy);
+        Connection connection = new DtfConnectionDecorator(dataSource.getConnection(username,password), threadLockCacheProxy,queue, secondThreadLockCacheProxy, threadPoolForClientProxy, syncFinalCommitThreadLockCacheProxy);
         return connection;
     }
 
