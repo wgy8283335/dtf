@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
 import com.coconason.dtf.client.core.dbconnection.DbOperationType;
 import com.coconason.dtf.client.core.dbconnection.ClientLockAndCondition;
-import com.coconason.dtf.client.core.dbconnection.ThreadsInfo;
+import com.coconason.dtf.client.core.dbconnection.ThreadLockCacheProxy;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
 import io.netty.channel.ChannelHandler;
@@ -22,24 +22,24 @@ class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 {
 
 	@Autowired
-	@Qualifier("threadsInfo")
-	private ThreadsInfo threadsInfo;
+	@Qualifier("threadLockCacheProxy")
+	private ThreadLockCacheProxy threadLockCacheProxy;
 
 	@Autowired
-	@Qualifier("threadsInfo")
-	private ThreadsInfo secondThreadsInfo;
+	@Qualifier("threadLockCacheProxy")
+	private ThreadLockCacheProxy secondThreadLockCacheProxy;
 
 	@Autowired
-	@Qualifier("threadsInfo")
-	private ThreadsInfo thirdThreadsInfo;
+	@Qualifier("threadLockCacheProxy")
+	private ThreadLockCacheProxy thirdThreadLockCacheProxy;
 
 	@Autowired
-	@Qualifier("threadsInfo")
-	private ThreadsInfo asyncFinalCommitThreadsInfo;
+	@Qualifier("threadLockCacheProxy")
+	private ThreadLockCacheProxy asyncFinalCommitThreadLockCacheProxy;
 
 	@Autowired
-	@Qualifier("threadsInfo")
-	private ThreadsInfo syncFinalCommitThreadsInfo;
+	@Qualifier("threadLockCacheProxy")
+	private ThreadLockCacheProxy syncFinalCommitThreadLockCacheProxy;
 
 	private ChannelHandlerContext ctx;
 
@@ -63,7 +63,7 @@ class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 
 		if(action == ActionType.APPROVESUBMIT||action == ActionType.APPROVESUBMIT_STRONG||action == ActionType.CANCEL){
 			map = JSONObject.parseObject(message.getInfo().toString());
-			lc = threadsInfo.get(map.get("groupId").toString());
+			lc = threadLockCacheProxy.get(map.get("groupId").toString());
 			state = lc.getState();
 		}
 		switch (action){
@@ -79,13 +79,13 @@ class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 				break;
 			case WHOLE_SUCCESS_STRONG:
 				map = JSONObject.parseObject(message.getInfo().toString());
-				ClientLockAndCondition secondlc = secondThreadsInfo.get(map.get("groupId").toString());
+				ClientLockAndCondition secondlc = secondThreadLockCacheProxy.get(map.get("groupId").toString());
 				secondlc.setState(DbOperationType.WHOLE_SUCCESS);
 				secondlc.signal();
 				break;
 			case WHOLE_FAIL_STRONG:
 				map = JSONObject.parseObject(message.getInfo().toString());
-				ClientLockAndCondition secondlc2 = secondThreadsInfo.get(map.get("groupId").toString());
+				ClientLockAndCondition secondlc2 = secondThreadLockCacheProxy.get(map.get("groupId").toString());
 				secondlc2.setState(DbOperationType.WHOLE_FAIL);
 				secondlc2.signal();
 				break;
@@ -94,17 +94,17 @@ class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 				lc.signal();
 				break;
 			case ADD_SUCCESS_ASYNC:
-				ClientLockAndCondition thirdlc = thirdThreadsInfo.get(JSONObject.parseObject(message.getInfo().toString()).get("groupId").toString());
+				ClientLockAndCondition thirdlc = thirdThreadLockCacheProxy.get(JSONObject.parseObject(message.getInfo().toString()).get("groupId").toString());
 				thirdlc.setState(DbOperationType.ASYNC_SUCCESS);
 				thirdlc.signal();
 				break;
 			case ADD_FAIL_ASYNC:
-				ClientLockAndCondition thirdlc2 = thirdThreadsInfo.get(JSONObject.parseObject(message.getInfo().toString()).get("groupId").toString());
+				ClientLockAndCondition thirdlc2 = thirdThreadLockCacheProxy.get(JSONObject.parseObject(message.getInfo().toString()).get("groupId").toString());
 				thirdlc2.setState(DbOperationType.ASYNC_FAIL);
 				thirdlc2.signal();
 				break;
 			case COMMIT_SUCCESS_ASYNC:
-				ClientLockAndCondition asyncFinallc = asyncFinalCommitThreadsInfo.get(JSONObject.parseObject(message.getInfo().toString()).get("groupId").toString());
+				ClientLockAndCondition asyncFinallc = asyncFinalCommitThreadLockCacheProxy.get(JSONObject.parseObject(message.getInfo().toString()).get("groupId").toString());
 				asyncFinallc.setState(DbOperationType.COMMIT_SUCCESS_ASYNC);
 				asyncFinallc.signal();
 				break;

@@ -6,7 +6,7 @@ import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
 import com.coconason.dtf.client.core.beans.TransactionType;
 import com.coconason.dtf.client.core.dbconnection.DbOperationType;
 import com.coconason.dtf.client.core.dbconnection.ClientLockAndCondition;
-import com.coconason.dtf.client.core.dbconnection.ThreadsInfo;
+import com.coconason.dtf.client.core.dbconnection.ThreadLockCacheProxy;
 import com.coconason.dtf.client.core.nettyclient.messagequeue.TransactionMessageQueue;
 import com.coconason.dtf.client.core.nettyclient.protobufclient.NettyService;
 import com.coconason.dtf.client.core.utils.GroupidGenerator;
@@ -37,12 +37,12 @@ public class AspectHandler {
     @Autowired
     private NettyService nettyService;
     @Autowired
-    @Qualifier("threadsInfo")
-    private ThreadsInfo asyncFinalCommitThreadsInfo;
+    @Qualifier("threadLockCacheProxy")
+    private ThreadLockCacheProxy asyncFinalCommitThreadLockCacheProxy;
 
     @Autowired
-    @Qualifier("threadsInfo")
-    private ThreadsInfo syncFinalCommitThreadsInfo;
+    @Qualifier("threadLockCacheProxy")
+    private ThreadLockCacheProxy syncFinalCommitThreadLockCacheProxy;
 
     public Object before(String info,ProceedingJoinPoint point) throws Throwable {
 
@@ -76,7 +76,7 @@ public class AspectHandler {
                 result = point.proceed();
                 //3.Send confirm message to netty server, in order to commit all transaction in the service
                 ClientLockAndCondition asyncFinalCommitLc = new ClientLockAndCondition(new ReentrantLock(), DbOperationType.DEFAULT);
-                asyncFinalCommitThreadsInfo.put(TransactionGroupInfo.getCurrent().getGroupId(), asyncFinalCommitLc);
+                asyncFinalCommitThreadLockCacheProxy.put(TransactionGroupInfo.getCurrent().getGroupId(), asyncFinalCommitLc);
                 TransactionServiceInfo serviceInfo = TransactionServiceInfo.newInstanceForAsyncCommit(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.ASYNC_COMMIT, TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers());
                 asyncFinalCommitLc.awaitLimitedTime(nettyService,serviceInfo,"commit async fail",10000, TimeUnit.MILLISECONDS);
             }else{
@@ -107,7 +107,7 @@ public class AspectHandler {
                 if(ORIGINAL_ID.equals(TransactionGroupInfo.getCurrent().getMemberId())){
                     //if(MessageProto.Message.ActionType.ADD==TransactionServiceInfo.getCurrent().getAction()){
                     if(TransactionType.SYNC_STRONG == transactionType){
-                        if(syncFinalCommitThreadsInfo.get(TransactionGroupInfo.getCurrent().getGroupId()).getState()==DbOperationType.WHOLE_FAIL){
+                        if(syncFinalCommitThreadLockCacheProxy.get(TransactionGroupInfo.getCurrent().getGroupId()).getState()==DbOperationType.WHOLE_FAIL){
                             throw new Exception("system transaction error");
                         }
                     }

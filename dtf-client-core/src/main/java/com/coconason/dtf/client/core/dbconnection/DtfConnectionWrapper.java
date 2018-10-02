@@ -25,9 +25,9 @@ import static com.coconason.dtf.client.core.constants.Member.ORIGINAL_ID;
  * @Author: Jason
  * @date: 2018/8/22-9:04
  */
-public class DtfConnection implements Connection {
+public class DtfConnectionWrapper implements Connection {
 
-    private Logger logger = LoggerFactory.getLogger(DtfConnection.class);
+    private Logger logger = LoggerFactory.getLogger(DtfConnectionWrapper.class);
 
     private Connection connection;
 
@@ -39,29 +39,29 @@ public class DtfConnection implements Connection {
 
     private boolean hasClose = false;
 
-    private ThreadsInfo threadsInfo;
+    private ThreadLockCacheProxy threadLockCacheProxy;
 
     private TransactionMessageQueue queue;
 
     private TransactionServiceInfo transactionServiceInfo;
 
-    private ThreadsInfo secondThreadsInfo;
+    private ThreadLockCacheProxy secondThreadLockCacheProxy;
 
     private ThreadPoolForClient threadPoolForClient;
 
-    private ThreadsInfo syncFinalCommitThreadsInfo;
+    private ThreadLockCacheProxy syncFinalCommitThreadLockCacheProxy;
 
-    public DtfConnection(Connection connection) {
+    public DtfConnectionWrapper(Connection connection) {
         this.connection = connection;
     }
 
-    public DtfConnection(Connection connection,ThreadsInfo threadsInfo,TransactionMessageQueue queue,ThreadsInfo secondThreadsInfo,ThreadPoolForClient threadPoolForClient,ThreadsInfo syncFinalCommitThreadsInfo) {
+    public DtfConnectionWrapper(Connection connection, ThreadLockCacheProxy threadLockCacheProxy, TransactionMessageQueue queue, ThreadLockCacheProxy secondThreadLockCacheProxy, ThreadPoolForClient threadPoolForClient, ThreadLockCacheProxy syncFinalCommitThreadLockCacheProxy) {
         this.connection = connection;
-        this.threadsInfo = threadsInfo;
+        this.threadLockCacheProxy = threadLockCacheProxy;
         this.queue = queue;
-        this.secondThreadsInfo = secondThreadsInfo;
+        this.secondThreadLockCacheProxy = secondThreadLockCacheProxy;
         this.threadPoolForClient = threadPoolForClient;
-        this.syncFinalCommitThreadsInfo = syncFinalCommitThreadsInfo;
+        this.syncFinalCommitThreadLockCacheProxy = syncFinalCommitThreadLockCacheProxy;
     }
 
     @Override
@@ -110,18 +110,18 @@ public class DtfConnection implements Connection {
                 if (ORIGINAL_ID.equals(memberId) && TransactionType.SYNC_STRONG==TransactionType.getCurrent()){
                     queue.put(TransactionServiceInfo.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT_STRONG,TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
                     ClientLockAndCondition secondlc = new ClientLockAndCondition(new ReentrantLock(), DbOperationType.DEFAULT);
-                    secondThreadsInfo.put(groupId, secondlc);
+                    secondThreadLockCacheProxy.put(groupId, secondlc);
                     boolean isWholeSuccess = secondlc.await(10000,TimeUnit.MILLISECONDS);
                     if(isWholeSuccess==false){
-                        ClientLockAndCondition syncFinalCommitLc = syncFinalCommitThreadsInfo.get(groupId);
+                        ClientLockAndCondition syncFinalCommitLc = syncFinalCommitThreadLockCacheProxy.get(groupId);
                         syncFinalCommitLc.setState(DbOperationType.WHOLE_FAIL);
                         throw new Exception("Distributed transaction fail to receive WHOLE_SUCCESS_STRONG , groupId is :"+groupId);
                     }
-                    ClientLockAndCondition secondlc2 = secondThreadsInfo.get(groupId);
+                    ClientLockAndCondition secondlc2 = secondThreadLockCacheProxy.get(groupId);
                     if (secondlc2.getState() == DbOperationType.WHOLE_FAIL) {
                         queue.put(TransactionServiceInfo.newInstanceForShortMessage(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.WHOLE_FAIL_STRONG_ACK, groupId));
                         connection.close();
-                        ClientLockAndCondition syncFinalCommitLc = syncFinalCommitThreadsInfo.get(groupId);
+                        ClientLockAndCondition syncFinalCommitLc = syncFinalCommitThreadLockCacheProxy.get(groupId);
                         syncFinalCommitLc.setState(DbOperationType.WHOLE_FAIL);
                         throw new Exception("Distributed transaction failed and groupId:"+groupId);
                     }else{
@@ -129,7 +129,7 @@ public class DtfConnection implements Connection {
                         //4. close the connection.
                         System.out.println("dtf connection.close();");
                         connection.close();
-                        ClientLockAndCondition syncFinalCommitLc = syncFinalCommitThreadsInfo.get(groupId);
+                        ClientLockAndCondition syncFinalCommitLc = syncFinalCommitThreadLockCacheProxy.get(groupId);
                         syncFinalCommitLc.setState(DbOperationType.WHOLE_SUCCESS);
                     }
                 }
@@ -162,7 +162,7 @@ public class DtfConnection implements Connection {
                 //2. Use lock condition to wait for signaling.
                 ClientLockAndCondition lc = new ClientLockAndCondition(new ReentrantLock(),state);
                 JSONObject map = transactionServiceInfo.getInfo();
-                threadsInfo.put(map.get("groupId").toString()+memberId,lc);
+                threadLockCacheProxy.put(map.get("groupId").toString()+memberId,lc);
                 queue.put(transactionServiceInfo);
                 System.out.println("before dtf connection add wait ---------------------------"+System.currentTimeMillis());
                 boolean result = lc.await(10000, TimeUnit.MILLISECONDS);
@@ -173,7 +173,7 @@ public class DtfConnection implements Connection {
                     throw new Exception("haven't received approve submit message");
                 }
                 //3. After signaling, if success commit or rollback, otherwise skip the committing.
-                state = threadsInfo.get(map.get("groupId").toString()+memberId).getState();
+                state = threadLockCacheProxy.get(map.get("groupId").toString()+memberId).getState();
                 if(state == DbOperationType.COMMIT){
                     //Thread.sleep(30000);
                     if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG) {

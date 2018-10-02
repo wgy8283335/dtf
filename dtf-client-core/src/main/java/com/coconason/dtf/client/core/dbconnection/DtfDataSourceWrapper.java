@@ -16,32 +16,32 @@ import java.util.logging.Logger;
  * @date: 2018/8/21-20:16
  */
 
-public class DtfDataSourceProxy implements DataSource{
+public class DtfDataSourceWrapper implements DataSource{
     private DataSource dataSource;
     @Autowired
-    private ThreadsInfo threadsInfo;
+    private ThreadLockCacheProxy threadLockCacheProxy;
     @Autowired
     private TransactionMessageQueue queue;
     @Autowired
-    private ThreadsInfo secondThreadsInfo;
+    private ThreadLockCacheProxy secondThreadLockCacheProxy;
     @Autowired
     private ThreadPoolForClient threadPoolForClient;
     @Autowired
-    private ThreadsInfo syncFinalCommitThreadsInfo;
+    private ThreadLockCacheProxy syncFinalCommitThreadLockCacheProxy;
 
-    public DtfDataSourceProxy(DataSource dataSource) {
+    public DtfDataSourceWrapper(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
     @Override
     public Connection getConnection() throws SQLException {
-        Connection connection = new DtfConnection(dataSource.getConnection(),threadsInfo,queue,secondThreadsInfo,threadPoolForClient,syncFinalCommitThreadsInfo);
+        Connection connection = new DtfConnectionWrapper(dataSource.getConnection(), threadLockCacheProxy,queue, secondThreadLockCacheProxy,threadPoolForClient, syncFinalCommitThreadLockCacheProxy);
         return connection;
     }
 
     @Override
     public Connection getConnection(String username, String password) throws SQLException {
-        Connection connection = new DtfConnection(dataSource.getConnection(username,password),threadsInfo,queue,secondThreadsInfo,threadPoolForClient,syncFinalCommitThreadsInfo);
+        Connection connection = new DtfConnectionWrapper(dataSource.getConnection(username,password), threadLockCacheProxy,queue, secondThreadLockCacheProxy,threadPoolForClient, syncFinalCommitThreadLockCacheProxy);
         return connection;
     }
 

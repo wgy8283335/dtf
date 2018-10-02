@@ -4,7 +4,7 @@ import com.coconason.dtf.client.core.beans.TransactionGroupInfo;
 import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
 import com.coconason.dtf.client.core.dbconnection.DbOperationType;
 import com.coconason.dtf.client.core.dbconnection.ClientLockAndCondition;
-import com.coconason.dtf.client.core.dbconnection.ThreadsInfo;
+import com.coconason.dtf.client.core.dbconnection.ThreadLockCacheProxy;
 import com.coconason.dtf.client.core.nettyclient.protobufclient.NettyService;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.common.utils.UuidGenerator;
@@ -26,13 +26,13 @@ public class RestClientAsync {
     private NettyService nettyService;
 
     @Autowired
-    @Qualifier("threadsInfo")
-    private ThreadsInfo thirdThreadsInfo;
+    @Qualifier("threadLockCacheProxy")
+    private ThreadLockCacheProxy thirdThreadLockCacheProxy;
 
     public void sendPost(String url, Object object) throws Exception{
         TransactionGroupInfo groupInfo = TransactionGroupInfo.getCurrent();
         ClientLockAndCondition lc = new ClientLockAndCondition(new ReentrantLock(), DbOperationType.DEFAULT);
-        thirdThreadsInfo.put(groupInfo.getGroupId(),lc);
+        thirdThreadLockCacheProxy.put(groupInfo.getGroupId(),lc);
         groupInfo.addNewMemeber();
         TransactionGroupInfo.setCurrent(groupInfo);
         TransactionServiceInfo transactionServiceInfo = TransactionServiceInfo.newInstanceForRestful(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.ADD_ASYNC, groupInfo.getGroupId(), groupInfo.getMemberId(), url, object);
