@@ -7,7 +7,7 @@ import com.coconason.dtf.client.core.beans.TransactionType;
 import com.coconason.dtf.client.core.dbconnection.DbOperationType;
 import com.coconason.dtf.client.core.dbconnection.ClientLockAndCondition;
 import com.coconason.dtf.client.core.dbconnection.ThreadLockCacheProxy;
-import com.coconason.dtf.client.core.nettyclient.messagequeue.TransactionMessageQueue;
+import com.coconason.dtf.client.core.nettyclient.messagequeue.TransactionMessageQueueProxy;
 import com.coconason.dtf.client.core.nettyclient.protobufclient.NettyService;
 import com.coconason.dtf.client.core.utils.GroupidGenerator;
 import com.coconason.dtf.common.protobuf.MessageProto;
@@ -33,7 +33,7 @@ import static com.coconason.dtf.client.core.constants.Member.ORIGINAL_ID;
 public class AspectHandler {
 
     @Autowired
-    private TransactionMessageQueue queue;
+    private TransactionMessageQueueProxy queue;
     @Autowired
     private NettyService nettyService;
     @Autowired

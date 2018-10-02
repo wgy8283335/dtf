@@ -1,7 +1,7 @@
 package com.coconason.dtf.client.core.nettyclient.sender;
 
 import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
-import com.coconason.dtf.client.core.nettyclient.messagequeue.TransactionMessageQueue;
+import com.coconason.dtf.client.core.nettyclient.messagequeue.TransactionMessageQueueProxy;
 import com.coconason.dtf.client.core.nettyclient.protobufclient.NettyService;
 import com.coconason.dtf.client.core.threadpools.ThreadPoolForClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 public class TransactionMessageSender {
 
     @Autowired
-    private TransactionMessageQueue queue;
+    private TransactionMessageQueueProxy queue;
 
     @Autowired
     private NettyService service;

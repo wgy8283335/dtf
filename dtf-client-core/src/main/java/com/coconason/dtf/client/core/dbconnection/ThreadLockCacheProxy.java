@@ -24,10 +24,6 @@ public class ThreadLockCacheProxy implements Cache{
         cache = CacheBuilder.newBuilder().maximumSize(1000000L).build();
     }
 
-//    public ClientLockAndCondition get(String id){
-//        return cache.getIfPresent(id);
-//    }
-
     @Override
     public ClientLockAndCondition getIfPresent(Object o) {
         return cache.getIfPresent(o);

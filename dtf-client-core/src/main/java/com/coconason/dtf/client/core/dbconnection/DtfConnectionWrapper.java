@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.coconason.dtf.client.core.beans.TransactionGroupInfo;
 import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
 import com.coconason.dtf.client.core.beans.TransactionType;
-import com.coconason.dtf.client.core.nettyclient.messagequeue.TransactionMessageQueue;
+import com.coconason.dtf.client.core.nettyclient.messagequeue.TransactionMessageQueueProxy;
 import com.coconason.dtf.client.core.threadpools.ThreadPoolForClient;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.common.utils.UuidGenerator;
@@ -41,7 +41,7 @@ public class DtfConnectionWrapper implements Connection {
 
     private ThreadLockCacheProxy threadLockCacheProxy;
 
-    private TransactionMessageQueue queue;
+    private TransactionMessageQueueProxy queue;
 
     private TransactionServiceInfo transactionServiceInfo;
 
@@ -55,7 +55,7 @@ public class DtfConnectionWrapper implements Connection {
         this.connection = connection;
     }
 
-    public DtfConnectionWrapper(Connection connection, ThreadLockCacheProxy threadLockCacheProxy, TransactionMessageQueue queue, ThreadLockCacheProxy secondThreadLockCacheProxy, ThreadPoolForClient threadPoolForClient, ThreadLockCacheProxy syncFinalCommitThreadLockCacheProxy) {
+    public DtfConnectionWrapper(Connection connection, ThreadLockCacheProxy threadLockCacheProxy, TransactionMessageQueueProxy queue, ThreadLockCacheProxy secondThreadLockCacheProxy, ThreadPoolForClient threadPoolForClient, ThreadLockCacheProxy syncFinalCommitThreadLockCacheProxy) {
         this.connection = connection;
         this.threadLockCacheProxy = threadLockCacheProxy;
         this.queue = queue;

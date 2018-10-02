@@ -1,6 +1,6 @@
 package com.coconason.dtf.client.core.dbconnection;
 
-import com.coconason.dtf.client.core.nettyclient.messagequeue.TransactionMessageQueue;
+import com.coconason.dtf.client.core.nettyclient.messagequeue.TransactionMessageQueueProxy;
 import com.coconason.dtf.client.core.threadpools.ThreadPoolForClient;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -21,7 +21,7 @@ public class DtfDataSourceWrapper implements DataSource{
     @Autowired
     private ThreadLockCacheProxy threadLockCacheProxy;
     @Autowired
-    private TransactionMessageQueue queue;
+    private TransactionMessageQueueProxy queue;
     @Autowired
     private ThreadLockCacheProxy secondThreadLockCacheProxy;
     @Autowired
