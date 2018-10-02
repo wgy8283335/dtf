@@ -15,7 +15,7 @@ import java.util.Queue;
  */
 
 @Component
-public class TransactionMessageSender {
+public class TransactionMessageSender implements MessageSenderInterface{
 
     @Autowired
     @Qualifier("transactionMessageQueueProxy")
@@ -27,6 +27,7 @@ public class TransactionMessageSender {
     @Autowired
     private ThreadPoolForClient threadPoolForClient;
 
+    @Override
     public void startSendMessage() throws InterruptedException{
         threadPoolForClient.addTask(new sendMessageRunnable());
     }
@@ -42,7 +43,7 @@ public class TransactionMessageSender {
         }
     }
 
-    public void sendMessageInQueue() throws InterruptedException{
+    private void sendMessageInQueue() throws InterruptedException{
         while(true){
             TransactionServiceInfo info = (TransactionServiceInfo)queue.poll();
             service.sendMsg(info);

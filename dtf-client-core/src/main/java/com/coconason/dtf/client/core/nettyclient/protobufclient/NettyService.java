@@ -4,10 +4,7 @@ import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
 import com.coconason.dtf.client.core.threadpools.ThreadPoolForClient;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.EventLoopGroup;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
@@ -29,7 +26,13 @@ import java.util.concurrent.TimeUnit;
 public class NettyService {
 
     @Autowired
-    private ClientTransactionHandler clientTransactionHandler;
+    private ClientTransactionHandlerAdapter clientTransactionHandler;
+
+    @Autowired
+    private ChannelInboundHandlerAdapter heartBeatReqHandler;
+
+    @Autowired
+    private ChannelInboundHandlerAdapter loginAuthReqHandler;
 
     @Autowired
     private ThreadPoolForClient threadPoolForClient;
@@ -84,9 +87,9 @@ public class NettyService {
                             ch.pipeline().addLast(new ProtobufVarint32LengthFieldPrepender());
                             ch.pipeline().addLast(new ProtobufEncoder());
                             ch.pipeline().addLast(new ReadTimeoutHandler(50));
-                            ch.pipeline().addLast(new LoginAuthReqHandler());
+                            ch.pipeline().addLast(loginAuthReqHandler);
                             ch.pipeline().addLast(clientTransactionHandler);
-                            ch.pipeline().addLast(new HeartBeatReqHandler());
+                            ch.pipeline().addLast(heartBeatReqHandler);
                         }
                     });
             ChannelFuture f = b.connect(host, port).sync();

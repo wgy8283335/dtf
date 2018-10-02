@@ -9,7 +9,6 @@ import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
 import com.google.common.cache.Cache;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -18,7 +17,7 @@ import java.lang.reflect.Method;
 
 @Component
 @ChannelHandler.Sharable
-class ClientTransactionHandler extends ChannelInboundHandlerAdapter
+class ClientTransactionHandler extends ClientTransactionHandlerAdapter
 {
 
 	@Autowired
@@ -125,7 +124,7 @@ class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 	{
 		ctx.fireExceptionCaught(cause);
 	}
-
+	@Override
 	public void sendMsg(TransactionServiceInfo serviceInfo) {
 		ActionType actionType = serviceInfo.getAction();
 		switch (actionType){
@@ -173,7 +172,7 @@ class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 		}
 	}
 
-	public void sendMsg(String id,ActionType action,String groupId){
+	private void sendMsg(String id,ActionType action,String groupId){
 		MessageProto.Message.Builder builder= MessageProto.Message.newBuilder();
 		JSONObject info = new JSONObject();
 		info.put("groupId",groupId);
@@ -185,7 +184,7 @@ class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 		ctx.writeAndFlush(message);
 	}
 
-	public void sendMsg(String id,ActionType action,String groupId, String groupMemberId, String url,Object obj){
+	private void sendMsg(String id,ActionType action,String groupId, String groupMemberId, String url,Object obj){
 		MessageProto.Message.Builder builder= MessageProto.Message.newBuilder();
 		JSONObject info = new JSONObject();
 		info.put("groupId",groupId);
@@ -200,7 +199,7 @@ class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 		ctx.writeAndFlush(message);
 	}
 
-	public void sendMsg(String id,ActionType action,String groupId, String groupMemberId, Method method,Object[] args){
+	private void sendMsg(String id,ActionType action,String groupId, String groupMemberId, Method method,Object[] args){
 		MessageProto.Message.Builder builder= MessageProto.Message.newBuilder();
 		JSONObject info = new JSONObject();
 		info.put("groupId",groupId);
@@ -215,7 +214,7 @@ class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 		ctx.writeAndFlush(message);
 	}
 
-	public void sendMsg(String id,ActionType action,String groupId, String groupMemberSet){
+	private void sendMsg(String id,ActionType action,String groupId, String groupMemberSet){
 		MessageProto.Message.Builder builder= MessageProto.Message.newBuilder();
 		JSONObject info = new JSONObject();
 		info.put("groupId",groupId);
@@ -228,7 +227,7 @@ class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 		ctx.writeAndFlush(message);
 	}
 
-	public void sendMsg(String id,ActionType action,String groupId, String groupMemberSet,String memberId){
+	private void sendMsg(String id,ActionType action,String groupId, String groupMemberSet,String memberId){
 		MessageProto.Message.Builder builder= MessageProto.Message.newBuilder();
 		JSONObject info = new JSONObject();
 		info.put("groupId",groupId);

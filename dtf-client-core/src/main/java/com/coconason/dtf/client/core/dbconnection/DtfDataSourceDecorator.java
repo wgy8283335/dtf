@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  * @date: 2018/8/21-20:16
  */
 
-public class DtfDataSourceWrapper implements DataSource{
+public class DtfDataSourceDecorator implements DataSource{
     private DataSource dataSource;
     @Autowired
     private ThreadLockCacheProxy threadLockCacheProxy;
@@ -31,19 +31,19 @@ public class DtfDataSourceWrapper implements DataSource{
     @Autowired
     private ThreadLockCacheProxy syncFinalCommitThreadLockCacheProxy;
 
-    public DtfDataSourceWrapper(DataSource dataSource) {
+    public DtfDataSourceDecorator(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
     @Override
     public Connection getConnection() throws SQLException {
-        Connection connection = new DtfConnectionWrapper(dataSource.getConnection(), threadLockCacheProxy,queue, secondThreadLockCacheProxy,threadPoolForClient, syncFinalCommitThreadLockCacheProxy);
+        Connection connection = new DtfConnectionDecorator(dataSource.getConnection(), threadLockCacheProxy,queue, secondThreadLockCacheProxy,threadPoolForClient, syncFinalCommitThreadLockCacheProxy);
         return connection;
     }
 
     @Override
     public Connection getConnection(String username, String password) throws SQLException {
-        Connection connection = new DtfConnectionWrapper(dataSource.getConnection(username,password), threadLockCacheProxy,queue, secondThreadLockCacheProxy,threadPoolForClient, syncFinalCommitThreadLockCacheProxy);
+        Connection connection = new DtfConnectionDecorator(dataSource.getConnection(username,password), threadLockCacheProxy,queue, secondThreadLockCacheProxy,threadPoolForClient, syncFinalCommitThreadLockCacheProxy);
         return connection;
     }
 

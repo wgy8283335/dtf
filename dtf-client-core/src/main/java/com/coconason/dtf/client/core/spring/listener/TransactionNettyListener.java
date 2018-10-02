@@ -1,7 +1,7 @@
 package com.coconason.dtf.client.core.spring.listener;
 
 import com.coconason.dtf.client.core.nettyclient.protobufclient.NettyService;
-import com.coconason.dtf.client.core.nettyclient.sender.TransactionMessageSender;
+import com.coconason.dtf.client.core.nettyclient.sender.MessageSenderInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -19,7 +19,7 @@ class TransactionNettyListener implements ApplicationListener<ContextRefreshedEv
     private NettyService nettyService;
 
     @Autowired
-    private TransactionMessageSender sender;
+    private MessageSenderInterface sender;
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         nettyService.start();

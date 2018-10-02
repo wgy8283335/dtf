@@ -26,9 +26,9 @@ import static com.coconason.dtf.client.core.constants.Member.ORIGINAL_ID;
  * @Author: Jason
  * @date: 2018/8/22-9:04
  */
-public class DtfConnectionWrapper implements Connection {
+public class DtfConnectionDecorator implements Connection {
 
-    private Logger logger = LoggerFactory.getLogger(DtfConnectionWrapper.class);
+    private Logger logger = LoggerFactory.getLogger(DtfConnectionDecorator.class);
 
     private Connection connection;
 
@@ -52,11 +52,11 @@ public class DtfConnectionWrapper implements Connection {
 
     private ThreadLockCacheProxy syncFinalCommitThreadLockCacheProxy;
 
-    public DtfConnectionWrapper(Connection connection) {
+    public DtfConnectionDecorator(Connection connection) {
         this.connection = connection;
     }
 
-    public DtfConnectionWrapper(Connection connection, ThreadLockCacheProxy threadLockCacheProxy, Queue queue, ThreadLockCacheProxy secondThreadLockCacheProxy, ThreadPoolForClient threadPoolForClient, ThreadLockCacheProxy syncFinalCommitThreadLockCacheProxy) {
+    public DtfConnectionDecorator(Connection connection, ThreadLockCacheProxy threadLockCacheProxy, Queue queue, ThreadLockCacheProxy secondThreadLockCacheProxy, ThreadPoolForClient threadPoolForClient, ThreadLockCacheProxy syncFinalCommitThreadLockCacheProxy) {
         this.connection = connection;
         this.threadLockCacheProxy = threadLockCacheProxy;
         this.queue = queue;

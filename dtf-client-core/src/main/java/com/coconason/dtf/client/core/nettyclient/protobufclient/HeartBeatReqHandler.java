@@ -3,11 +3,12 @@ package com.coconason.dtf.client.core.nettyclient.protobufclient;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-
+@Component
 class HeartBeatReqHandler extends ChannelInboundHandlerAdapter
 {
 
