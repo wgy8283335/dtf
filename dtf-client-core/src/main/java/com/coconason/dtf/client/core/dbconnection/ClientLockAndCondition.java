@@ -11,37 +11,48 @@ import java.util.concurrent.locks.Lock;
  * @Author: Jason
  * @date: 2018/8/22-11:44
  */
-public class LockAndCondition {
+public final class ClientLockAndCondition implements ClientLockAndConditionInterface {
     private Lock lock;
     private Condition condition;
     private volatile DbOperationType state = DbOperationType.DEFAULT;
 
-    public LockAndCondition(Lock lock,DbOperationType state) {
+    public ClientLockAndCondition(Lock lock, DbOperationType state) {
         this.state = state;
         this.lock = lock;
         this.condition = lock.newCondition();
     }
-
+    @Override
     public DbOperationType getState() {
         return state;
     }
-
+    @Override
     public void setState(DbOperationType state) {
         this.state = state;
     }
-
-    public void await() {
+    @Override
+    public void signal() {
         try {
             lock.lock();
-            condition.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            condition.signal();
         } finally {
             lock.unlock();
         }
     }
-
+    @Override
     public boolean await(long milliseconds, TimeUnit timeUnit) {
+        boolean result = wait(milliseconds, timeUnit);
+        return result;
+    }
+    @Override
+    public void awaitLimitedTime(NettyService nettyService,TransactionServiceInfo serviceInfo,String msg,long milliseconds, TimeUnit timeUnit) throws Exception{
+        nettyService.sendMsg(serviceInfo);
+        boolean receivedSignal = wait(milliseconds, timeUnit);
+        if(receivedSignal == false){
+            throw new Exception(msg);
+        }
+    }
+
+    private boolean wait(long milliseconds, TimeUnit timeUnit){
         boolean result = false;
         try {
             lock.lock();
@@ -52,23 +63,5 @@ public class LockAndCondition {
             lock.unlock();
         }
         return result;
-    }
-
-    public void signal() {
-        try {
-            lock.lock();
-            condition.signal();
-        } finally {
-            lock.unlock();
-        }
-    }
-
-
-    public void sendAndWaitSignal(NettyService nettyService,TransactionServiceInfo serviceInfo,String msg) throws Exception{
-        nettyService.sendMsg(serviceInfo);
-        boolean receivedSignal = await(10000, TimeUnit.MILLISECONDS);
-        if(receivedSignal == false){
-            throw new Exception(msg);
-        }
     }
 }

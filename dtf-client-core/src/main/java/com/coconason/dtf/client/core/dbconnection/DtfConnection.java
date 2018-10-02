@@ -109,19 +109,19 @@ public class DtfConnection implements Connection {
                 Long memberId = transactionGroupInfo.getMemberId();
                 if (ORIGINAL_ID.equals(memberId) && TransactionType.SYNC_STRONG==TransactionType.getCurrent()){
                     queue.put(TransactionServiceInfo.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT_STRONG,TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
-                    LockAndCondition secondlc = new LockAndCondition(new ReentrantLock(), DbOperationType.DEFAULT);
+                    ClientLockAndCondition secondlc = new ClientLockAndCondition(new ReentrantLock(), DbOperationType.DEFAULT);
                     secondThreadsInfo.put(groupId, secondlc);
                     boolean isWholeSuccess = secondlc.await(10000,TimeUnit.MILLISECONDS);
                     if(isWholeSuccess==false){
-                        LockAndCondition syncFinalCommitLc = syncFinalCommitThreadsInfo.get(groupId);
+                        ClientLockAndCondition syncFinalCommitLc = syncFinalCommitThreadsInfo.get(groupId);
                         syncFinalCommitLc.setState(DbOperationType.WHOLE_FAIL);
                         throw new Exception("Distributed transaction fail to receive WHOLE_SUCCESS_STRONG , groupId is :"+groupId);
                     }
-                    LockAndCondition secondlc2 = secondThreadsInfo.get(groupId);
+                    ClientLockAndCondition secondlc2 = secondThreadsInfo.get(groupId);
                     if (secondlc2.getState() == DbOperationType.WHOLE_FAIL) {
                         queue.put(TransactionServiceInfo.newInstanceForShortMessage(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.WHOLE_FAIL_STRONG_ACK, groupId));
                         connection.close();
-                        LockAndCondition syncFinalCommitLc = syncFinalCommitThreadsInfo.get(groupId);
+                        ClientLockAndCondition syncFinalCommitLc = syncFinalCommitThreadsInfo.get(groupId);
                         syncFinalCommitLc.setState(DbOperationType.WHOLE_FAIL);
                         throw new Exception("Distributed transaction failed and groupId:"+groupId);
                     }else{
@@ -129,7 +129,7 @@ public class DtfConnection implements Connection {
                         //4. close the connection.
                         System.out.println("dtf connection.close();");
                         connection.close();
-                        LockAndCondition syncFinalCommitLc = syncFinalCommitThreadsInfo.get(groupId);
+                        ClientLockAndCondition syncFinalCommitLc = syncFinalCommitThreadsInfo.get(groupId);
                         syncFinalCommitLc.setState(DbOperationType.WHOLE_SUCCESS);
                     }
                 }
@@ -160,7 +160,7 @@ public class DtfConnection implements Connection {
             Long memberId = transactionGroupInfo.getMemberId();
             try {
                 //2. Use lock condition to wait for signaling.
-                LockAndCondition lc = new LockAndCondition(new ReentrantLock(),state);
+                ClientLockAndCondition lc = new ClientLockAndCondition(new ReentrantLock(),state);
                 JSONObject map = transactionServiceInfo.getInfo();
                 threadsInfo.put(map.get("groupId").toString()+memberId,lc);
                 queue.put(transactionServiceInfo);

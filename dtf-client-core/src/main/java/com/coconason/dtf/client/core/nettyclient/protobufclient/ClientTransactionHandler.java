@@ -3,7 +3,7 @@ package com.coconason.dtf.client.core.nettyclient.protobufclient;
 import com.alibaba.fastjson.JSONObject;
 import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
 import com.coconason.dtf.client.core.dbconnection.DbOperationType;
-import com.coconason.dtf.client.core.dbconnection.LockAndCondition;
+import com.coconason.dtf.client.core.dbconnection.ClientLockAndCondition;
 import com.coconason.dtf.client.core.dbconnection.ThreadsInfo;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
@@ -58,7 +58,7 @@ class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 		MessageProto.Message message = (MessageProto.Message) msg;
 		ActionType action = message.getAction();
 		JSONObject map=null;
-		LockAndCondition lc=null;
+		ClientLockAndCondition lc=null;
 		DbOperationType state=null;
 
 		if(action == ActionType.APPROVESUBMIT||action == ActionType.APPROVESUBMIT_STRONG||action == ActionType.CANCEL){
@@ -79,38 +79,32 @@ class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 				break;
 			case WHOLE_SUCCESS_STRONG:
 				map = JSONObject.parseObject(message.getInfo().toString());
-				LockAndCondition secondlc = secondThreadsInfo.get(map.get("groupId").toString());
+				ClientLockAndCondition secondlc = secondThreadsInfo.get(map.get("groupId").toString());
 				secondlc.setState(DbOperationType.WHOLE_SUCCESS);
 				secondlc.signal();
-//				LockAndCondition syncFinalCommitLc = syncFinalCommitThreadsInfo.get(map.get("groupId").toString());
-//				syncFinalCommitLc.setState(DbOperationType.WHOLE_SUCCESS);
-//				syncFinalCommitLc.signal();
 				break;
 			case WHOLE_FAIL_STRONG:
 				map = JSONObject.parseObject(message.getInfo().toString());
-				LockAndCondition secondlc2 = secondThreadsInfo.get(map.get("groupId").toString());
+				ClientLockAndCondition secondlc2 = secondThreadsInfo.get(map.get("groupId").toString());
 				secondlc2.setState(DbOperationType.WHOLE_FAIL);
 				secondlc2.signal();
-//				LockAndCondition syncFinalCommitLc2 = syncFinalCommitThreadsInfo.get(map.get("groupId").toString());
-//				syncFinalCommitLc2.setState(DbOperationType.WHOLE_FAIL);
-//				syncFinalCommitLc2.signal();
 				break;
 			case CANCEL:
 				lc.setState(DbOperationType.ROLLBACK);
 				lc.signal();
 				break;
 			case ADD_SUCCESS_ASYNC:
-				LockAndCondition thirdlc = thirdThreadsInfo.get(JSONObject.parseObject(message.getInfo().toString()).get("groupId").toString());
+				ClientLockAndCondition thirdlc = thirdThreadsInfo.get(JSONObject.parseObject(message.getInfo().toString()).get("groupId").toString());
 				thirdlc.setState(DbOperationType.ASYNC_SUCCESS);
 				thirdlc.signal();
 				break;
 			case ADD_FAIL_ASYNC:
-				LockAndCondition thirdlc2 = thirdThreadsInfo.get(JSONObject.parseObject(message.getInfo().toString()).get("groupId").toString());
+				ClientLockAndCondition thirdlc2 = thirdThreadsInfo.get(JSONObject.parseObject(message.getInfo().toString()).get("groupId").toString());
 				thirdlc2.setState(DbOperationType.ASYNC_FAIL);
 				thirdlc2.signal();
 				break;
 			case COMMIT_SUCCESS_ASYNC:
-				LockAndCondition asyncFinallc = asyncFinalCommitThreadsInfo.get(JSONObject.parseObject(message.getInfo().toString()).get("groupId").toString());
+				ClientLockAndCondition asyncFinallc = asyncFinalCommitThreadsInfo.get(JSONObject.parseObject(message.getInfo().toString()).get("groupId").toString());
 				asyncFinallc.setState(DbOperationType.COMMIT_SUCCESS_ASYNC);
 				asyncFinallc.signal();
 				break;

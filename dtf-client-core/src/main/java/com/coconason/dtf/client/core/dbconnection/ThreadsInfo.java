@@ -11,17 +11,17 @@ import com.google.common.cache.CacheBuilder;
 @Component(value="threadsInfo")
 public class ThreadsInfo {
 
-    private Cache<String,LockAndCondition> cache;
+    private Cache<String,ClientLockAndCondition> cache;
 
     public ThreadsInfo() {
         cache = CacheBuilder.newBuilder().maximumSize(1000000L).build();
     }
 
-    public synchronized LockAndCondition get(String id){
+    public synchronized ClientLockAndCondition get(String id){
         return cache.getIfPresent(id);
     }
 
-    public synchronized void put(String id,LockAndCondition msg){
+    public synchronized void put(String id,ClientLockAndCondition msg){
         cache.put(id, msg);
     }
 }

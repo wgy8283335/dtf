@@ -5,7 +5,7 @@ import com.coconason.dtf.client.core.beans.TransactionGroupInfo;
 import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
 import com.coconason.dtf.client.core.beans.TransactionType;
 import com.coconason.dtf.client.core.dbconnection.DbOperationType;
-import com.coconason.dtf.client.core.dbconnection.LockAndCondition;
+import com.coconason.dtf.client.core.dbconnection.ClientLockAndCondition;
 import com.coconason.dtf.client.core.dbconnection.ThreadsInfo;
 import com.coconason.dtf.client.core.nettyclient.messagequeue.TransactionMessageQueue;
 import com.coconason.dtf.client.core.nettyclient.protobufclient.NettyService;
@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Method;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
 import static com.coconason.dtf.client.core.constants.Member.ORIGINAL_ID;
@@ -74,10 +75,10 @@ public class AspectHandler {
                 //2.
                 result = point.proceed();
                 //3.Send confirm message to netty server, in order to commit all transaction in the service
-                LockAndCondition asyncFinalCommitLc = new LockAndCondition(new ReentrantLock(), DbOperationType.DEFAULT);
+                ClientLockAndCondition asyncFinalCommitLc = new ClientLockAndCondition(new ReentrantLock(), DbOperationType.DEFAULT);
                 asyncFinalCommitThreadsInfo.put(TransactionGroupInfo.getCurrent().getGroupId(), asyncFinalCommitLc);
                 TransactionServiceInfo serviceInfo = TransactionServiceInfo.newInstanceForAsyncCommit(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.ASYNC_COMMIT, TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers());
-                asyncFinalCommitLc.sendAndWaitSignal(nettyService,serviceInfo,"commit async fail");
+                asyncFinalCommitLc.awaitLimitedTime(nettyService,serviceInfo,"commit async fail",10000, TimeUnit.MILLISECONDS);
             }else{
                 result = point.proceed();
             }
