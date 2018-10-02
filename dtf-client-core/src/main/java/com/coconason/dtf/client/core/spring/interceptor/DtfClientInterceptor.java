@@ -1,10 +1,11 @@
 package com.coconason.dtf.client.core.spring.interceptor;
 
-import com.coconason.dtf.client.core.transaction.AspectHandler;
+import com.coconason.dtf.client.core.transaction.AspectInterface;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
@@ -23,7 +24,8 @@ import javax.servlet.http.HttpServletRequest;
 class DtfClientInterceptor {
 
     @Autowired
-    private AspectHandler aspectHandler;
+    @Qualifier("aspectHandler")
+    private AspectInterface aspectHandler;
 
     @Around("@annotation(com.coconason.dtf.client.core.annotation.DtfTransaction)")
     public Object dtfTransactionExecute(ProceedingJoinPoint joinPoint)throws Throwable{

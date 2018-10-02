@@ -31,7 +31,7 @@ import static com.coconason.dtf.client.core.constants.Member.ORIGINAL_ID;
  * @date: 2018/8/19-20:38
  */
 @Component
-public class AspectHandler {
+public class AspectHandler implements AspectInterface {
 
     @Autowired
     @Qualifier("transactionMessageQueueProxy")
@@ -46,6 +46,7 @@ public class AspectHandler {
     @Qualifier("threadLockCacheProxy")
     private Cache<String,ClientLockAndConditionInterface>  syncFinalCommitThreadLockCacheProxy;
 
+    @Override
     public Object before(String info,ProceedingJoinPoint point) throws Throwable {
 
         MethodSignature signature = (MethodSignature) point.getSignature();
