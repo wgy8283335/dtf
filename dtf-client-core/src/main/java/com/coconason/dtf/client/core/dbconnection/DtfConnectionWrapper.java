@@ -109,19 +109,19 @@ public class DtfConnectionWrapper implements Connection {
                 Long memberId = transactionGroupInfo.getMemberId();
                 if (ORIGINAL_ID.equals(memberId) && TransactionType.SYNC_STRONG==TransactionType.getCurrent()){
                     queue.add(TransactionServiceInfo.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT_STRONG,TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
-                    ClientLockAndCondition secondlc = new ClientLockAndCondition(new ReentrantLock(), DbOperationType.DEFAULT);
+                    ClientLockAndConditionInterface secondlc = new ClientLockAndCondition(new ReentrantLock(), DbOperationType.DEFAULT);
                     secondThreadLockCacheProxy.put(groupId, secondlc);
                     boolean isWholeSuccess = secondlc.await(10000,TimeUnit.MILLISECONDS);
                     if(isWholeSuccess==false){
-                        ClientLockAndCondition syncFinalCommitLc = syncFinalCommitThreadLockCacheProxy.getIfPresent(groupId);
+                        ClientLockAndConditionInterface syncFinalCommitLc = syncFinalCommitThreadLockCacheProxy.getIfPresent(groupId);
                         syncFinalCommitLc.setState(DbOperationType.WHOLE_FAIL);
                         throw new Exception("Distributed transaction fail to receive WHOLE_SUCCESS_STRONG , groupId is :"+groupId);
                     }
-                    ClientLockAndCondition secondlc2 = secondThreadLockCacheProxy.getIfPresent(groupId);
+                    ClientLockAndConditionInterface secondlc2 = secondThreadLockCacheProxy.getIfPresent(groupId);
                     if (secondlc2.getState() == DbOperationType.WHOLE_FAIL) {
                         queue.add(TransactionServiceInfo.newInstanceForShortMessage(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.WHOLE_FAIL_STRONG_ACK, groupId));
                         connection.close();
-                        ClientLockAndCondition syncFinalCommitLc = syncFinalCommitThreadLockCacheProxy.getIfPresent(groupId);
+                        ClientLockAndConditionInterface syncFinalCommitLc = syncFinalCommitThreadLockCacheProxy.getIfPresent(groupId);
                         syncFinalCommitLc.setState(DbOperationType.WHOLE_FAIL);
                         throw new Exception("Distributed transaction failed and groupId:"+groupId);
                     }else{
@@ -129,7 +129,7 @@ public class DtfConnectionWrapper implements Connection {
                         //4. close the connection.
                         System.out.println("dtf connection.close();");
                         connection.close();
-                        ClientLockAndCondition syncFinalCommitLc = syncFinalCommitThreadLockCacheProxy.getIfPresent(groupId);
+                        ClientLockAndConditionInterface syncFinalCommitLc = syncFinalCommitThreadLockCacheProxy.getIfPresent(groupId);
                         syncFinalCommitLc.setState(DbOperationType.WHOLE_SUCCESS);
                     }
                 }
@@ -160,7 +160,7 @@ public class DtfConnectionWrapper implements Connection {
             Long memberId = transactionGroupInfo.getMemberId();
             try {
                 //2. Use lock condition to wait for signaling.
-                ClientLockAndCondition lc = new ClientLockAndCondition(new ReentrantLock(),state);
+                ClientLockAndConditionInterface lc = new ClientLockAndCondition(new ReentrantLock(),state);
                 JSONObject map = transactionServiceInfo.getInfo();
                 threadLockCacheProxy.put(map.get("groupId").toString()+memberId,lc);
                 queue.add(transactionServiceInfo);
