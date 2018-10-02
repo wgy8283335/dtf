@@ -7,11 +7,11 @@ import com.coconason.dtf.client.core.beans.TransactionType;
 import com.coconason.dtf.client.core.dbconnection.ClientLockAndCondition;
 import com.coconason.dtf.client.core.dbconnection.ClientLockAndConditionInterface;
 import com.coconason.dtf.client.core.dbconnection.DbOperationType;
-import com.coconason.dtf.client.core.dbconnection.ThreadLockCacheProxy;
 import com.coconason.dtf.client.core.nettyclient.protobufclient.NettyService;
 import com.coconason.dtf.client.core.utils.GroupidGenerator;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.common.utils.UuidGenerator;
+import com.google.common.cache.Cache;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,11 +40,11 @@ public class AspectHandler {
     private NettyService nettyService;
     @Autowired
     @Qualifier("threadLockCacheProxy")
-    private ThreadLockCacheProxy asyncFinalCommitThreadLockCacheProxy;
+    private Cache<String,ClientLockAndConditionInterface>  asyncFinalCommitThreadLockCacheProxy;
 
     @Autowired
     @Qualifier("threadLockCacheProxy")
-    private ThreadLockCacheProxy syncFinalCommitThreadLockCacheProxy;
+    private Cache<String,ClientLockAndConditionInterface>  syncFinalCommitThreadLockCacheProxy;
 
     public Object before(String info,ProceedingJoinPoint point) throws Throwable {
 

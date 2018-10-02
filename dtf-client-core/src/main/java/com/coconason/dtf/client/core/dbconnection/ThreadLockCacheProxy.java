@@ -18,19 +18,19 @@ import java.util.concurrent.ExecutionException;
 @Component(value="threadLockCacheProxy")
 public class ThreadLockCacheProxy implements Cache{
 
-    private Cache<String,ClientLockAndCondition> cache;
+    private Cache<String,ClientLockAndConditionInterface> cache;
 
     public ThreadLockCacheProxy() {
         cache = CacheBuilder.newBuilder().maximumSize(1000000L).build();
     }
 
     @Override
-    public ClientLockAndCondition getIfPresent(Object o) {
+    public ClientLockAndConditionInterface getIfPresent(Object o) {
         return cache.getIfPresent(o);
     }
 
     @Override
-    public Object get(Object o, Callable callable) throws ExecutionException {
+    public ClientLockAndConditionInterface get(Object o, Callable callable) throws ExecutionException {
         return cache.get((String)o,callable);
     }
 
@@ -41,7 +41,7 @@ public class ThreadLockCacheProxy implements Cache{
 
     @Override
     public void put(Object o, Object o2) {
-        cache.put((String)o,(ClientLockAndCondition)o2);
+        cache.put((String)o,(ClientLockAndConditionInterface)o2);
     }
 
     @Override

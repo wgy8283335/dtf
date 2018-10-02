@@ -4,9 +4,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
 import com.coconason.dtf.client.core.dbconnection.ClientLockAndConditionInterface;
 import com.coconason.dtf.client.core.dbconnection.DbOperationType;
-import com.coconason.dtf.client.core.dbconnection.ThreadLockCacheProxy;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
+import com.google.common.cache.Cache;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -23,23 +23,23 @@ class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 
 	@Autowired
 	@Qualifier("threadLockCacheProxy")
-	private ThreadLockCacheProxy threadLockCacheProxy;
+	private Cache<String,ClientLockAndConditionInterface> threadLockCacheProxy;
 
 	@Autowired
 	@Qualifier("threadLockCacheProxy")
-	private ThreadLockCacheProxy secondThreadLockCacheProxy;
+	private Cache<String,ClientLockAndConditionInterface>  secondThreadLockCacheProxy;
 
 	@Autowired
 	@Qualifier("threadLockCacheProxy")
-	private ThreadLockCacheProxy thirdThreadLockCacheProxy;
+	private Cache<String,ClientLockAndConditionInterface>  thirdThreadLockCacheProxy;
 
 	@Autowired
 	@Qualifier("threadLockCacheProxy")
-	private ThreadLockCacheProxy asyncFinalCommitThreadLockCacheProxy;
+	private Cache<String,ClientLockAndConditionInterface>  asyncFinalCommitThreadLockCacheProxy;
 
 	@Autowired
 	@Qualifier("threadLockCacheProxy")
-	private ThreadLockCacheProxy syncFinalCommitThreadLockCacheProxy;
+	private Cache<String,ClientLockAndConditionInterface>  syncFinalCommitThreadLockCacheProxy;
 
 	private ChannelHandlerContext ctx;
 

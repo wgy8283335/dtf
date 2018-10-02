@@ -7,6 +7,7 @@ import com.coconason.dtf.client.core.beans.TransactionType;
 import com.coconason.dtf.client.core.threadpools.ThreadPoolForClient;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.common.utils.UuidGenerator;
+import com.google.common.cache.Cache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,7 +46,7 @@ public class DtfConnectionWrapper implements Connection {
 
     private TransactionServiceInfo transactionServiceInfo;
 
-    private ThreadLockCacheProxy secondThreadLockCacheProxy;
+    private Cache<String,ClientLockAndConditionInterface>  secondThreadLockCacheProxy;
 
     private ThreadPoolForClient threadPoolForClient;
 
