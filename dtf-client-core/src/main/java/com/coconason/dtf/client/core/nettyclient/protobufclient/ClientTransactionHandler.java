@@ -63,7 +63,7 @@ class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 
 		if(action == ActionType.APPROVESUBMIT||action == ActionType.APPROVESUBMIT_STRONG||action == ActionType.CANCEL){
 			map = JSONObject.parseObject(message.getInfo().toString());
-			lc = threadLockCacheProxy.get(map.get("groupId").toString());
+			lc = threadLockCacheProxy.getIfPresent(map.get("groupId").toString());
 			state = lc.getState();
 		}
 		switch (action){
@@ -79,13 +79,13 @@ class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 				break;
 			case WHOLE_SUCCESS_STRONG:
 				map = JSONObject.parseObject(message.getInfo().toString());
-				ClientLockAndCondition secondlc = secondThreadLockCacheProxy.get(map.get("groupId").toString());
+				ClientLockAndCondition secondlc = secondThreadLockCacheProxy.getIfPresent(map.get("groupId").toString());
 				secondlc.setState(DbOperationType.WHOLE_SUCCESS);
 				secondlc.signal();
 				break;
 			case WHOLE_FAIL_STRONG:
 				map = JSONObject.parseObject(message.getInfo().toString());
-				ClientLockAndCondition secondlc2 = secondThreadLockCacheProxy.get(map.get("groupId").toString());
+				ClientLockAndCondition secondlc2 = secondThreadLockCacheProxy.getIfPresent(map.get("groupId").toString());
 				secondlc2.setState(DbOperationType.WHOLE_FAIL);
 				secondlc2.signal();
 				break;
@@ -94,17 +94,17 @@ class ClientTransactionHandler extends ChannelInboundHandlerAdapter
 				lc.signal();
 				break;
 			case ADD_SUCCESS_ASYNC:
-				ClientLockAndCondition thirdlc = thirdThreadLockCacheProxy.get(JSONObject.parseObject(message.getInfo().toString()).get("groupId").toString());
+				ClientLockAndCondition thirdlc = thirdThreadLockCacheProxy.getIfPresent(JSONObject.parseObject(message.getInfo().toString()).get("groupId").toString());
 				thirdlc.setState(DbOperationType.ASYNC_SUCCESS);
 				thirdlc.signal();
 				break;
 			case ADD_FAIL_ASYNC:
-				ClientLockAndCondition thirdlc2 = thirdThreadLockCacheProxy.get(JSONObject.parseObject(message.getInfo().toString()).get("groupId").toString());
+				ClientLockAndCondition thirdlc2 = thirdThreadLockCacheProxy.getIfPresent(JSONObject.parseObject(message.getInfo().toString()).get("groupId").toString());
 				thirdlc2.setState(DbOperationType.ASYNC_FAIL);
 				thirdlc2.signal();
 				break;
 			case COMMIT_SUCCESS_ASYNC:
-				ClientLockAndCondition asyncFinallc = asyncFinalCommitThreadLockCacheProxy.get(JSONObject.parseObject(message.getInfo().toString()).get("groupId").toString());
+				ClientLockAndCondition asyncFinallc = asyncFinalCommitThreadLockCacheProxy.getIfPresent(JSONObject.parseObject(message.getInfo().toString()).get("groupId").toString());
 				asyncFinallc.setState(DbOperationType.COMMIT_SUCCESS_ASYNC);
 				asyncFinallc.signal();
 				break;

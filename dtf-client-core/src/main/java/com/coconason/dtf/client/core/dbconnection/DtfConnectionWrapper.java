@@ -113,15 +113,15 @@ public class DtfConnectionWrapper implements Connection {
                     secondThreadLockCacheProxy.put(groupId, secondlc);
                     boolean isWholeSuccess = secondlc.await(10000,TimeUnit.MILLISECONDS);
                     if(isWholeSuccess==false){
-                        ClientLockAndCondition syncFinalCommitLc = syncFinalCommitThreadLockCacheProxy.get(groupId);
+                        ClientLockAndCondition syncFinalCommitLc = syncFinalCommitThreadLockCacheProxy.getIfPresent(groupId);
                         syncFinalCommitLc.setState(DbOperationType.WHOLE_FAIL);
                         throw new Exception("Distributed transaction fail to receive WHOLE_SUCCESS_STRONG , groupId is :"+groupId);
                     }
-                    ClientLockAndCondition secondlc2 = secondThreadLockCacheProxy.get(groupId);
+                    ClientLockAndCondition secondlc2 = secondThreadLockCacheProxy.getIfPresent(groupId);
                     if (secondlc2.getState() == DbOperationType.WHOLE_FAIL) {
                         queue.put(TransactionServiceInfo.newInstanceForShortMessage(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.WHOLE_FAIL_STRONG_ACK, groupId));
                         connection.close();
-                        ClientLockAndCondition syncFinalCommitLc = syncFinalCommitThreadLockCacheProxy.get(groupId);
+                        ClientLockAndCondition syncFinalCommitLc = syncFinalCommitThreadLockCacheProxy.getIfPresent(groupId);
                         syncFinalCommitLc.setState(DbOperationType.WHOLE_FAIL);
                         throw new Exception("Distributed transaction failed and groupId:"+groupId);
                     }else{
@@ -129,7 +129,7 @@ public class DtfConnectionWrapper implements Connection {
                         //4. close the connection.
                         System.out.println("dtf connection.close();");
                         connection.close();
-                        ClientLockAndCondition syncFinalCommitLc = syncFinalCommitThreadLockCacheProxy.get(groupId);
+                        ClientLockAndCondition syncFinalCommitLc = syncFinalCommitThreadLockCacheProxy.getIfPresent(groupId);
                         syncFinalCommitLc.setState(DbOperationType.WHOLE_SUCCESS);
                     }
                 }
@@ -173,7 +173,7 @@ public class DtfConnectionWrapper implements Connection {
                     throw new Exception("haven't received approve submit message");
                 }
                 //3. After signaling, if success commit or rollback, otherwise skip the committing.
-                state = threadLockCacheProxy.get(map.get("groupId").toString()+memberId).getState();
+                state = threadLockCacheProxy.getIfPresent(map.get("groupId").toString()+memberId).getState();
                 if(state == DbOperationType.COMMIT){
                     //Thread.sleep(30000);
                     if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG) {

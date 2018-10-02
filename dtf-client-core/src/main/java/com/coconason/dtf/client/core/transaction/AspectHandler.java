@@ -107,7 +107,7 @@ public class AspectHandler {
                 if(ORIGINAL_ID.equals(TransactionGroupInfo.getCurrent().getMemberId())){
                     //if(MessageProto.Message.ActionType.ADD==TransactionServiceInfo.getCurrent().getAction()){
                     if(TransactionType.SYNC_STRONG == transactionType){
-                        if(syncFinalCommitThreadLockCacheProxy.get(TransactionGroupInfo.getCurrent().getGroupId()).getState()==DbOperationType.WHOLE_FAIL){
+                        if(syncFinalCommitThreadLockCacheProxy.getIfPresent(TransactionGroupInfo.getCurrent().getGroupId()).getState()==DbOperationType.WHOLE_FAIL){
                             throw new Exception("system transaction error");
                         }
                     }
