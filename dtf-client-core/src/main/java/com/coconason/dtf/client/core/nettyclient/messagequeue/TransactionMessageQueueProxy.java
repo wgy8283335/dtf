@@ -18,9 +18,9 @@ public class TransactionMessageQueueProxy implements Queue {
         messageQueue = new LinkedBlockingQueue<>(Integer.MAX_VALUE);
     }
 
-    public void put(TransactionServiceInfo info) throws InterruptedException{
-        messageQueue.put(info);
-    }
+//    public void put(TransactionServiceInfo info) throws InterruptedException{
+//        messageQueue.put(info);
+//    }
 
     public TransactionServiceInfo take() throws InterruptedException{
         TransactionServiceInfo info = messageQueue.take();
@@ -32,8 +32,14 @@ public class TransactionMessageQueueProxy implements Queue {
     }
 
     @Override
-    public boolean add(Object o) {
-        return messageQueue.add((TransactionServiceInfo)o);
+    public boolean add(Object o){
+        try{
+            messageQueue.put((TransactionServiceInfo)o);
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -47,8 +53,15 @@ public class TransactionMessageQueueProxy implements Queue {
     }
 
     @Override
-    public Object poll() {
-        return messageQueue.poll();
+    public TransactionServiceInfo poll() {
+        TransactionServiceInfo result;
+        try{
+            result=messageQueue.take();
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+        return result;
     }
 
     @Override

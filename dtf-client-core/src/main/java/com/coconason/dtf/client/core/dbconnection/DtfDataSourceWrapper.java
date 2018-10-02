@@ -1,14 +1,15 @@
 package com.coconason.dtf.client.core.dbconnection;
 
-import com.coconason.dtf.client.core.nettyclient.messagequeue.TransactionMessageQueueProxy;
 import com.coconason.dtf.client.core.threadpools.ThreadPoolForClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import javax.sql.DataSource;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
+import java.util.Queue;
 import java.util.logging.Logger;
 
 /**
@@ -21,7 +22,8 @@ public class DtfDataSourceWrapper implements DataSource{
     @Autowired
     private ThreadLockCacheProxy threadLockCacheProxy;
     @Autowired
-    private TransactionMessageQueueProxy queue;
+    @Qualifier("transactionMessageQueueProxy")
+    private Queue queue;
     @Autowired
     private ThreadLockCacheProxy secondThreadLockCacheProxy;
     @Autowired

@@ -1,11 +1,13 @@
 package com.coconason.dtf.client.core.nettyclient.sender;
 
 import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
-import com.coconason.dtf.client.core.nettyclient.messagequeue.TransactionMessageQueueProxy;
 import com.coconason.dtf.client.core.nettyclient.protobufclient.NettyService;
 import com.coconason.dtf.client.core.threadpools.ThreadPoolForClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+
+import java.util.Queue;
 
 /**
  * @Author: Jason
@@ -16,7 +18,8 @@ import org.springframework.stereotype.Component;
 public class TransactionMessageSender {
 
     @Autowired
-    private TransactionMessageQueueProxy queue;
+    @Qualifier("transactionMessageQueueProxy")
+    private Queue queue;
 
     @Autowired
     private NettyService service;
@@ -41,7 +44,7 @@ public class TransactionMessageSender {
 
     public void sendMessageInQueue() throws InterruptedException{
         while(true){
-            TransactionServiceInfo info = queue.take();
+            TransactionServiceInfo info = (TransactionServiceInfo)queue.poll();
             service.sendMsg(info);
         }
     }

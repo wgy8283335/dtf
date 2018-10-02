@@ -4,10 +4,9 @@ import com.coconason.dtf.client.core.annotation.DtfTransaction;
 import com.coconason.dtf.client.core.beans.TransactionGroupInfo;
 import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
 import com.coconason.dtf.client.core.beans.TransactionType;
-import com.coconason.dtf.client.core.dbconnection.DbOperationType;
 import com.coconason.dtf.client.core.dbconnection.ClientLockAndCondition;
+import com.coconason.dtf.client.core.dbconnection.DbOperationType;
 import com.coconason.dtf.client.core.dbconnection.ThreadLockCacheProxy;
-import com.coconason.dtf.client.core.nettyclient.messagequeue.TransactionMessageQueueProxy;
 import com.coconason.dtf.client.core.nettyclient.protobufclient.NettyService;
 import com.coconason.dtf.client.core.utils.GroupidGenerator;
 import com.coconason.dtf.common.protobuf.MessageProto;
@@ -20,6 +19,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Method;
+import java.util.Queue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -33,7 +33,8 @@ import static com.coconason.dtf.client.core.constants.Member.ORIGINAL_ID;
 public class AspectHandler {
 
     @Autowired
-    private TransactionMessageQueueProxy queue;
+    @Qualifier("transactionMessageQueueProxy")
+    private Queue queue;
     @Autowired
     private NettyService nettyService;
     @Autowired
@@ -97,10 +98,10 @@ public class AspectHandler {
                     if(ORIGINAL_ID.equals(TransactionGroupInfo.getCurrent().getMemberId())){
                         //if(MessageProto.Message.ActionType.ADD==TransactionServiceInfo.getCurrent().getAction()){
                         if(TransactionType.SYNC_FINAL == transactionType){
-                            queue.put(TransactionServiceInfo.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.CANCEL,TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
+                            queue.add(TransactionServiceInfo.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.CANCEL,TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
                             //}else if(MessageProto.Message.ActionType.ADD_STRONG==TransactionServiceInfo.getCurrent().getAction()){
                         }else if(TransactionType.SYNC_STRONG == transactionType){
-                            queue.put(TransactionServiceInfo.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.CANCEL,TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
+                            queue.add(TransactionServiceInfo.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.CANCEL,TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
                         }
                     }
                 }
