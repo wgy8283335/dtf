@@ -6,7 +6,7 @@ import io.netty.channel.ChannelHandlerContext;
  * @Author: Jason
  * @date: 2018/8/24-17:01
  */
-public class TransactionMessageForAdding {
+public class TransactionMessageForAdding extends TransactionMessageForAddingAdaptor {
     private String groupMemberId;
     private ChannelHandlerContext ctx;
     private String method;
@@ -19,28 +19,20 @@ public class TransactionMessageForAdding {
         this.method = method;
         this.args = args;
     }
-
+    @Override
     public String getGroupMemberId() {
         return groupMemberId;
     }
-
+    @Override
     public ChannelHandlerContext getCtx() {
         return ctx;
     }
-
-    public String getMethod() {
-        return method;
-    }
-
-    public String getArgs() {
-        return args;
-    }
-
-    public boolean isCommited() {
+    @Override
+    public Boolean isCommitted() {
         return commited;
     }
-
-    public void setCommited(boolean commited) {
+    @Override
+    public void setCommitted(boolean commited) {
         this.commited = commited;
     }
 

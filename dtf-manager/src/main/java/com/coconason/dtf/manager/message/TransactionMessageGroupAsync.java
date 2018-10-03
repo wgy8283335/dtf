@@ -4,13 +4,14 @@ import com.alibaba.fastjson.JSONObject;
 import com.coconason.dtf.common.protobuf.MessageProto;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
  * @Author: Jason
  * @date: 2018/9/6-11:54
  */
-public class TransactionMessageGroupAsync {
+public class TransactionMessageGroupAsync extends TransactionMessageGroupAsyncAdaptor {
     private String groupId;
     private final Set<MessageInfo> memberSet = new HashSet<MessageInfo>();
 
@@ -18,16 +19,23 @@ public class TransactionMessageGroupAsync {
         this.groupId = groupId;
     }
 
-    public void addMember(String memberId,String url,Object obj){
-        memberSet.add(new MessageInfo(memberId,false,url,obj));
-    }
-
+    @Override
     public String getGroupId() {
         return groupId;
     }
-
+    @Override
     public Set<MessageInfo> getMemberSet() {
         return memberSet;
+    }
+
+    @Override
+    public List<TransactionMessageForAdding> getMemberList() {
+        return null;
+    }
+
+    @Override
+    public void addMember(String memberId,String url,Object obj){
+        memberSet.add(new MessageInfo(memberId,false,url,obj));
     }
 
     public static TransactionMessageGroupAsync parse(MessageProto.Message message){

@@ -1,10 +1,9 @@
 package com.coconason.dtf.manager.service;
 
-import com.coconason.dtf.manager.cache.MessageAsyncCache;
-import com.coconason.dtf.manager.cache.MessageAsyncQueue;
+import com.coconason.dtf.manager.cache.MessageAsyncCacheProxy;
+import com.coconason.dtf.manager.cache.MessageAsyncQueueProxy;
 import com.coconason.dtf.manager.message.MessageInfo;
-import com.coconason.dtf.manager.message.TransactionMessageForSubmit;
-import com.coconason.dtf.manager.message.TransactionMessageGroupAsync;
+import com.coconason.dtf.manager.message.TransactionMessageGroupInterface;
 import com.coconason.dtf.manager.utils.HttpClientUtil;
 
 import java.util.Set;
@@ -15,23 +14,23 @@ import java.util.Set;
  */
 public class SendAsyncRequestRunnable implements Runnable{
 
-    private MessageAsyncCache messageAsyncCache;
+    private MessageAsyncCacheProxy messageAsyncCacheProxy;
 
-    private TransactionMessageForSubmit transactionMessageForSubmit;
+    private TransactionMessageGroupInterface transactionMessageForSubmit;
 
-    private MessageAsyncQueue messageAsyncQueue;
+    private MessageAsyncQueueProxy messageAsyncQueueProxy;
 
-    public SendAsyncRequestRunnable(MessageAsyncCache messageAsyncCache, TransactionMessageForSubmit transactionMessageForSubmit, MessageAsyncQueue messageAsyncQueue) {
-        this.messageAsyncCache = messageAsyncCache;
+    public SendAsyncRequestRunnable(MessageAsyncCacheProxy messageAsyncCacheProxy, TransactionMessageGroupInterface transactionMessageForSubmit, MessageAsyncQueueProxy messageAsyncQueueProxy) {
+        this.messageAsyncCacheProxy = messageAsyncCacheProxy;
         this.transactionMessageForSubmit = transactionMessageForSubmit;
-        this.messageAsyncQueue = messageAsyncQueue;
+        this.messageAsyncQueueProxy = messageAsyncQueueProxy;
     }
 
     @Override
     public void run() {
         try{
-            //get the TransactionMessageGroupAsync from the messageAsyncCache
-            TransactionMessageGroupAsync theMessageGroupAsync = messageAsyncCache.get(transactionMessageForSubmit.getGroupId());
+            //get the TransactionMessageGroupAsync from the messageAsyncCacheProxy
+            TransactionMessageGroupInterface theMessageGroupAsync = messageAsyncCacheProxy.get(transactionMessageForSubmit.getGroupId());
             Set<MessageInfo> theMemberSet = theMessageGroupAsync.getMemberSet();
             for(MessageInfo messageInfo :theMemberSet){
                 String url= messageInfo.getUrl();
@@ -39,17 +38,17 @@ public class SendAsyncRequestRunnable implements Runnable{
                 try{
                     String result = HttpClientUtil.doPostJson(url,obj,transactionMessageForSubmit.getGroupId());
                     if("".equals(result)){
-                        messageAsyncQueue.offer(messageInfo);
+                        messageAsyncQueueProxy.add(messageInfo);
                     }else{
-                        messageInfo.setSubmitted(true);
+                        messageInfo.setCommitted(true);
                     }
                 }catch (Exception e){
                     //if fail put the info of the service into a cache,and there will be another thread to check and execute.
-                    //messageAsyncQueue.offer(messageInfo);
+                    //messageAsyncQueueProxy.offer(messageInfo);
                     e.printStackTrace();
                 }
             }
-            messageAsyncCache.clear(transactionMessageForSubmit.getGroupId());
+            messageAsyncCacheProxy.invalidate(transactionMessageForSubmit.getGroupId());
         }catch (Exception e){
             e.printStackTrace();
         }

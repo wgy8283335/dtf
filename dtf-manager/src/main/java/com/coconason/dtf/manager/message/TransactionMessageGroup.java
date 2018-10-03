@@ -13,27 +13,11 @@ import java.util.Set;
  * @Author: Jason
  * @date: 2018/8/24-17:04
  */
-public class TransactionMessageGroup {
+public class TransactionMessageGroup extends TransactionMessageGroupAdaptor {
     private String groupId;
     private final List<TransactionMessageForAdding> memberList = new ArrayList<TransactionMessageForAdding>();
     private final Set<String> memberSet = new HashSet<String>();
     private ChannelHandlerContext ctxForSubmitting;
-
-    public String getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(String groupId) {
-        this.groupId = groupId;
-    }
-
-    public List<TransactionMessageForAdding> getMemberList() {
-        return memberList;
-    }
-
-    public Set<String> getMemberSet() {
-        return memberSet;
-    }
 
     public TransactionMessageGroup(MessageProto.Message message, ChannelHandlerContext ctx){
         JSONObject info = JSONObject.parseObject(message.getInfo());
@@ -45,20 +29,36 @@ public class TransactionMessageGroup {
         TransactionMessageForAdding tmfa = new TransactionMessageForAdding(groupMemberId,ctx,method,args);
         addMemberToGroup(tmfa);
     }
+    @Override
+    public String getGroupId(){
+        return groupId;
+    }
+    @Override
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
+    @Override
+    public List<TransactionMessageForAdding> getMemberList() {
+        return memberList;
+    }
+    @Override
+    public Set<String> getMemberSet() {
+        return memberSet;
+    }
 
+    @Override
     public void addMemberToGroup(TransactionMessageForAdding e){
         memberList.add(e);
         memberSet.add(e.getGroupMemberId());
     }
-
+    @Override
     public void setCtxForSubmitting(ChannelHandlerContext ctxForSubmitting) {
         this.ctxForSubmitting = ctxForSubmitting;
     }
-
-    public ChannelHandlerContext getCtxForSubmitting() {
+    @Override
+    public ChannelHandlerContext getCtx() {
         return ctxForSubmitting;
     }
-
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();

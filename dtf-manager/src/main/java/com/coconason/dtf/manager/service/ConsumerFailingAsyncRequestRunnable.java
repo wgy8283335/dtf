@@ -1,6 +1,6 @@
 package com.coconason.dtf.manager.service;
 
-import com.coconason.dtf.manager.cache.MessageAsyncQueue;
+import com.coconason.dtf.manager.cache.MessageAsyncQueueProxy;
 import com.coconason.dtf.manager.message.MessageInfo;
 import com.coconason.dtf.manager.utils.HttpClientUtil;
 
@@ -10,18 +10,18 @@ import com.coconason.dtf.manager.utils.HttpClientUtil;
  */
 public class ConsumerFailingAsyncRequestRunnable implements Runnable{
 
-    private MessageAsyncQueue messageAsyncQueue;
+    private MessageAsyncQueueProxy messageAsyncQueueProxy;
 
-    public ConsumerFailingAsyncRequestRunnable(MessageAsyncQueue messageAsyncQueue) {
-        this.messageAsyncQueue = messageAsyncQueue;
+    public ConsumerFailingAsyncRequestRunnable(MessageAsyncQueueProxy messageAsyncQueueProxy) {
+        this.messageAsyncQueueProxy = messageAsyncQueueProxy;
     }
 
     @Override
     public void run() {
         MessageInfo messageInfo=null;
         while(true){
-            if(messageAsyncQueue!=null){
-                messageInfo = messageAsyncQueue.poll();
+            if(messageAsyncQueueProxy !=null){
+                messageInfo = messageAsyncQueueProxy.poll();
             }
             if(messageInfo==null){
                 try{
@@ -31,15 +31,15 @@ public class ConsumerFailingAsyncRequestRunnable implements Runnable{
                 }
             }else{
                 try{
-                    if (messageInfo.isSubmitted() == false) {
+                    if (messageInfo.isCommitted() == false) {
                         String url= messageInfo.getUrl();
                         String obj = messageInfo.getObj().toString();
                         String result = HttpClientUtil.doPostJson(url,obj,"");
                         if("".equals(result)){
-                            messageInfo.setSubmitted(false);
-                            messageAsyncQueue.offer(messageInfo);
+                            messageInfo.setCommitted(false);
+                            messageAsyncQueueProxy.add(messageInfo);
                         }else{
-                            messageInfo.setSubmitted(true);
+                            messageInfo.setCommitted(true);
                         }
                     }
                 }catch (Exception e){

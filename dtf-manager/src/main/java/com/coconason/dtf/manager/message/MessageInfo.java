@@ -4,57 +4,54 @@ package com.coconason.dtf.manager.message;
  * @Author: Jason
  * @date: 2018/9/6-13:14
  */
-public class MessageInfo{
+public class MessageInfo extends MessageInfoAdaptor{
     private String memberId;
-    private boolean isSubmitted;
+    private boolean isCommitted;
     private String url;
     private Object obj;
 
-    public MessageInfo(String memberId, boolean isSubmitted, String url, Object obj) {
+    public MessageInfo(String memberId, boolean isCommitted, String url, Object obj) {
         this.memberId = memberId;
-        this.isSubmitted = isSubmitted;
+        this.isCommitted = isCommitted;
         this.url = url;
         this.obj = obj;
     }
-
-    public String getMemberId() {
+    @Override
+    public String getGroupMemberId() {
         return memberId;
     }
-
-    public boolean isSubmitted() {
-        return isSubmitted;
+    @Override
+    public Boolean isCommitted() {
+        return isCommitted;
     }
-
+    @Override
     public String getUrl() {
         return url;
     }
-
+    @Override
     public Object getObj() {
         return obj;
     }
 
-    public void setSubmitted(boolean submitted) {
-        isSubmitted = submitted;
-    }
-
     @Override
     public boolean equals(Object o) {
-        if (this == o) {return true;}
+        if (this == o){ return true;}
         if (o == null || getClass() != o.getClass()) {return false;}
+
         MessageInfo that = (MessageInfo) o;
-        if (isSubmitted() != that.isSubmitted()) {return false;}
-        if (getMemberId() != null ? !getMemberId().equals(that.getMemberId()) : that.getMemberId() != null)
-        {return false;}
-        if (getUrl() != null ? !getUrl().equals(that.getUrl()) : that.getUrl() != null) {return false;}
-        return getObj() != null ? getObj().equals(that.getObj()) : that.getObj() == null;
+
+        if (isCommitted != that.isCommitted) {return false;}
+        if (!memberId.equals(that.memberId)) {return false;}
+        if (!getUrl().equals(that.getUrl())) {return false;}
+        return getObj().equals(that.getObj());
     }
 
     @Override
     public int hashCode() {
-        int result = getMemberId() != null ? getMemberId().hashCode() : 0;
-        result = 31 * result + (isSubmitted() ? 1 : 0);
-        result = 31 * result + (getUrl() != null ? getUrl().hashCode() : 0);
-        result = 31 * result + (getObj() != null ? getObj().hashCode() : 0);
+        int result = memberId.hashCode();
+        result = 31 * result + (isCommitted ? 1 : 0);
+        result = 31 * result + getUrl().hashCode();
+        result = 31 * result + getObj().hashCode();
         return result;
     }
 }

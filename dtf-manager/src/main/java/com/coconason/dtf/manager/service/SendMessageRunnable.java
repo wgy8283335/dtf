@@ -1,8 +1,8 @@
 package com.coconason.dtf.manager.service;
 
 import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
-import com.coconason.dtf.manager.cache.ThreadsInfo;
-import com.coconason.dtf.manager.utils.LockAndCondition;
+import com.coconason.dtf.manager.thread.LockAndCondition;
+import com.coconason.dtf.manager.thread.ServerThreadLockCacheProxy;
 import io.netty.channel.ChannelHandlerContext;
 
 import java.util.concurrent.locks.ReentrantLock;
@@ -16,20 +16,20 @@ public class SendMessageRunnable implements Runnable {
     private ActionType actionType;
     private ChannelHandlerContext ctx;
     private String message;
-    private ThreadsInfo threadsInfo;
+    private ServerThreadLockCacheProxy serverThreadLockCacheProxy;
 
-    public SendMessageRunnable(String groupId, ActionType actionType, ChannelHandlerContext ctx, String message,ThreadsInfo threadsInfo) {
+    public SendMessageRunnable(String groupId, ActionType actionType, ChannelHandlerContext ctx, String message,ServerThreadLockCacheProxy serverThreadLockCacheProxy) {
         this.groupId = groupId;
         this.actionType = actionType;
         this.ctx = ctx;
         this.message = message;
-        this.threadsInfo = threadsInfo;
+        this.serverThreadLockCacheProxy = serverThreadLockCacheProxy;
     }
 
     @Override
     public void run(){
         LockAndCondition lc = new LockAndCondition(new ReentrantLock());
-        threadsInfo.put(groupId,lc);
+        serverThreadLockCacheProxy.put(groupId,lc);
         try{
             if(actionType == ActionType.APPROVESUBMIT){
                 lc.sendAndWaitForSignal(groupId,actionType,ctx,message);

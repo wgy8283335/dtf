@@ -37,7 +37,7 @@ public class SetUtil {
     public static Set setTransfer(Set<MessageInfo> set){
         Set<String> resultSet = new HashSet<String>();
         for (MessageInfo messageInfo:set) {
-            resultSet.add(messageInfo.getMemberId());
+            resultSet.add(messageInfo.getGroupMemberId());
         }
         return  resultSet;
     }
