@@ -39,11 +39,6 @@ public class NettyServer
         MessageAsyncQueueProxy messageAsyncQueueProxy = new MessageAsyncQueueProxy();
         String classpath = Thread.currentThread().getContextClassLoader().getResource("").getPath();
         PropertiesReader propertiesReader = new PropertiesReader(classpath+"config.properties");
-//        ThreadPoolForServerProxy threadPoolForServerProxy = new ThreadPoolForServerProxy(
-//                Integer.valueOf(propertiesReader.getProperty("corePoolSize")),
-//                Integer.valueOf(propertiesReader.getProperty("maximumPoolSize")),
-//                Integer.valueOf(propertiesReader.getProperty("keepAliveTime")),
-//                Integer.valueOf(propertiesReader.getProperty("capacity")));
         ThreadPoolForServerProxy threadPoolForServerProxy = ThreadPoolForServerProxy.initialize();
         threadPoolForServerProxy.execute(new ConsumerFailingAsyncRequestRunnable(messageAsyncQueueProxy));
         new NettyServer().bind(messageAsyncQueueProxy, threadPoolForServerProxy,Integer.valueOf(propertiesReader.getProperty("port")));
