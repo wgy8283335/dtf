@@ -1,7 +1,7 @@
 package com.coconason.dtf.manager.service;
 
 import com.coconason.dtf.manager.cache.MessageAsyncQueueProxy;
-import com.coconason.dtf.manager.message.MessageInfo;
+import com.coconason.dtf.manager.message.MessageInfoInterface;
 import com.coconason.dtf.manager.utils.HttpClientUtil;
 
 /**
@@ -18,7 +18,7 @@ public class ConsumerFailingAsyncRequestRunnable implements Runnable{
 
     @Override
     public void run() {
-        MessageInfo messageInfo=null;
+        MessageInfoInterface messageInfo=null;
         while(true){
             if(messageAsyncQueueProxy !=null){
                 messageInfo = messageAsyncQueueProxy.poll();

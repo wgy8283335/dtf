@@ -1,7 +1,7 @@
 package com.coconason.dtf.manager.service;
 
 import com.coconason.dtf.manager.cache.MessageCacheInterface;
-import com.coconason.dtf.manager.message.MessageInfo;
+import com.coconason.dtf.manager.message.MessageInfoInterface;
 import com.coconason.dtf.manager.message.TransactionMessageGroupInterface;
 import com.coconason.dtf.manager.utils.HttpClientUtil;
 
@@ -31,8 +31,8 @@ public class SendAsyncRequestRunnable implements Runnable{
         try{
             //get the TransactionMessageGroupAsync from the messageAsyncCacheProxy
             TransactionMessageGroupInterface theMessageGroupAsync = messageAsyncCacheProxy.get(transactionMessageForSubmit.getGroupId());
-            Set<MessageInfo> theMemberSet = theMessageGroupAsync.getMemberSet();
-            for(MessageInfo messageInfo :theMemberSet){
+            Set<MessageInfoInterface> theMemberSet = theMessageGroupAsync.getMemberSet();
+            for(MessageInfoInterface messageInfo :theMemberSet){
                 String url= messageInfo.getUrl();
                 String obj = messageInfo.getObj().toString();
                 try{

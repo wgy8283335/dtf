@@ -6,9 +6,9 @@ import io.netty.channel.ChannelHandlerContext;
  * @Author: Jason
  * @date: 2018/9/6-11:54
  */
-public abstract class TransactionMessageGroupAsyncAdaptor implements TransactionMessageGroupInterface<MessageInfo> {
+public abstract class TransactionMessageGroupAsyncAdaptor implements TransactionMessageGroupInterface<MessageInfoInterface> {
     @Override
-    public void addMemberToGroup(TransactionMessageForAdding e) {
+    public void addMemberToGroup(TransactionMessageForAddingInterface e) {
 
     }
 

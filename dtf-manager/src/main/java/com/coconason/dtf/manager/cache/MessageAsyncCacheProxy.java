@@ -1,6 +1,6 @@
 package com.coconason.dtf.manager.cache;
 
-import com.coconason.dtf.manager.message.MessageInfo;
+import com.coconason.dtf.manager.message.MessageInfoInterface;
 import com.coconason.dtf.manager.message.TransactionMessageGroupInterface;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -37,8 +37,8 @@ public class MessageAsyncCacheProxy implements MessageCacheInterface {
             if(transactionMessageGroupAsync.equals(groupAsync)){
                 return;
             }
-            Set<MessageInfo> memberSet = groupAsync.getMemberSet();
-            for(MessageInfo messageInfo:memberSet){
+            Set<MessageInfoInterface> memberSet = groupAsync.getMemberSet();
+            for(MessageInfoInterface messageInfo:memberSet){
                 transactionMessageGroupAsync.addMember(messageInfo.getGroupMemberId(),messageInfo.getUrl(),messageInfo.getObj());
             }
             cache.put(transactionMessageGroupAsync.getGroupId(),transactionMessageGroupAsync);

@@ -14,13 +14,13 @@ public interface TransactionMessageGroupInterface<T> {
 
     void setGroupId(String groupId);
 
-    List<TransactionMessageForAdding> getMemberList();
+    List<TransactionMessageForAddingInterface> getMemberList();
 
     Set<T> getMemberSet();
 
     void addMember(String memberId,String url,Object obj);
 
-    void addMemberToGroup(TransactionMessageForAdding e);
+    void addMemberToGroup(TransactionMessageForAddingInterface e);
 
     void setCtxForSubmitting(ChannelHandlerContext ctxForSubmitting);
 

@@ -4,7 +4,7 @@ package com.coconason.dtf.manager.message;
  * @Author: Jason
  * @date: 2018/9/6-13:14
  */
-public class MessageInfo extends MessageInfoAdaptor{
+public class MessageInfo implements MessageInfoInterface{
     private String memberId;
     private boolean isCommitted;
     private String url;
@@ -31,6 +31,10 @@ public class MessageInfo extends MessageInfoAdaptor{
     @Override
     public Object getObj() {
         return obj;
+    }
+    @Override
+    public void setCommitted(boolean committed) {
+        isCommitted = committed;
     }
 
     @Override

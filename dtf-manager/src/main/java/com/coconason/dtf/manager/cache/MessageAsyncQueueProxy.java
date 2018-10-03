@@ -1,6 +1,6 @@
 package com.coconason.dtf.manager.cache;
 
-import com.coconason.dtf.manager.message.MessageInfo;
+import com.coconason.dtf.manager.message.MessageInfoInterface;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -12,7 +12,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  * @date: 2018/9/6-12:15
  */
 public class MessageAsyncQueueProxy implements Queue {
-    private LinkedBlockingQueue<MessageInfo> messageQueue;
+    private LinkedBlockingQueue<MessageInfoInterface> messageQueue;
 
     public MessageAsyncQueueProxy() {
         messageQueue = new LinkedBlockingQueue<>(Integer.MAX_VALUE);
@@ -26,7 +26,7 @@ public class MessageAsyncQueueProxy implements Queue {
     @Override
     public boolean add(Object o){
         try{
-            messageQueue.put((MessageInfo)o);
+            messageQueue.put((MessageInfoInterface)o);
         }catch (Exception e){
             e.printStackTrace();
             return false;
@@ -36,7 +36,7 @@ public class MessageAsyncQueueProxy implements Queue {
 
     @Override
     public boolean offer(Object o) {
-        return messageQueue.offer((MessageInfo)o);
+        return messageQueue.offer((MessageInfoInterface)o);
     }
 
     @Override
@@ -45,8 +45,8 @@ public class MessageAsyncQueueProxy implements Queue {
     }
 
     @Override
-    public MessageInfo poll() {
-        MessageInfo result;
+    public MessageInfoInterface poll() {
+        MessageInfoInterface result;
         try{
             result=messageQueue.take();
         }catch (Exception e){

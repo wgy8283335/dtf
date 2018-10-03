@@ -53,10 +53,10 @@ public class NettyServer
     {
         EventLoopGroup boss = new NioEventLoopGroup();
         EventLoopGroup work = new NioEventLoopGroup();
-        final MessageSyncCacheProxy messageSyncCacheProxy = new MessageSyncCacheProxy();
-        final MessageAsyncCacheProxy messageAsyncCacheProxy = new MessageAsyncCacheProxy();
-        final MessageForSubmitSyncCacheProxy messageForSubmitSyncCacheProxy = new MessageForSubmitSyncCacheProxy();
-        final MessageForSubmitAsyncCacheProxy messageForSubmitAsyncCacheProxy = new MessageForSubmitAsyncCacheProxy();
+        final MessageCacheInterface messageSyncCacheProxy = new MessageSyncCacheProxy();
+        final MessageCacheInterface messageAsyncCacheProxy = new MessageAsyncCacheProxy();
+        final MessageCacheInterface messageForSubmitSyncCacheProxy = new MessageForSubmitSyncCacheProxy();
+        final MessageCacheInterface messageForSubmitAsyncCacheProxy = new MessageForSubmitAsyncCacheProxy();
         final MessageAsyncQueueProxy messageAsyncQueueProxy = messageAsyncQueueProxyTemp;
         final ThreadPoolForServerProxy threadPoolForServerProxy = threadPoolForServerProxyTemp;
         final ServerThreadLockCacheProxy serverThreadLockCacheProxy = new ServerThreadLockCacheProxy();

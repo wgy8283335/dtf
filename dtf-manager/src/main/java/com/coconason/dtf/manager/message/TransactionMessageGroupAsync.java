@@ -13,7 +13,7 @@ import java.util.Set;
  */
 public class TransactionMessageGroupAsync extends TransactionMessageGroupAsyncAdaptor {
     private String groupId;
-    private final Set<MessageInfo> memberSet = new HashSet<MessageInfo>();
+    private final Set<MessageInfoInterface> memberSet = new HashSet<MessageInfoInterface>();
 
     public TransactionMessageGroupAsync(String groupId) {
         this.groupId = groupId;
@@ -24,12 +24,12 @@ public class TransactionMessageGroupAsync extends TransactionMessageGroupAsyncAd
         return groupId;
     }
     @Override
-    public Set<MessageInfo> getMemberSet() {
+    public Set<MessageInfoInterface> getMemberSet() {
         return memberSet;
     }
 
     @Override
-    public List<TransactionMessageForAdding> getMemberList() {
+    public List<TransactionMessageForAddingInterface> getMemberList() {
         return null;
     }
 

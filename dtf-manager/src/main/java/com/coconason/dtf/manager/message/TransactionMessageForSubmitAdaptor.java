@@ -25,7 +25,7 @@ public abstract class TransactionMessageForSubmitAdaptor implements TransactionM
     public void setCommitted(boolean commited){
     }
     @Override
-    public void addMemberToGroup(TransactionMessageForAdding e) {
+    public void addMemberToGroup(TransactionMessageForAddingInterface e) {
 
     }
     @Override
@@ -37,7 +37,7 @@ public abstract class TransactionMessageForSubmitAdaptor implements TransactionM
         return null;
     }
     @Override
-    public List<TransactionMessageForAdding> getMemberList() {
+    public List<TransactionMessageForAddingInterface> getMemberList() {
         return null;
     }
     @Override

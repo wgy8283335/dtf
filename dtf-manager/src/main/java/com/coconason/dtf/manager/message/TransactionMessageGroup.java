@@ -15,7 +15,7 @@ import java.util.Set;
  */
 public class TransactionMessageGroup extends TransactionMessageGroupAdaptor {
     private String groupId;
-    private final List<TransactionMessageForAdding> memberList = new ArrayList<TransactionMessageForAdding>();
+    private final List<TransactionMessageForAddingInterface> memberList = new ArrayList<TransactionMessageForAddingInterface>();
     private final Set<String> memberSet = new HashSet<String>();
     private ChannelHandlerContext ctxForSubmitting;
 
@@ -26,7 +26,7 @@ public class TransactionMessageGroup extends TransactionMessageGroupAdaptor {
         String groupMemberId = info.get("groupMemberId").toString();
         String method = info.get("method").toString();
         String args = info.get("args").toString();
-        TransactionMessageForAdding tmfa = new TransactionMessageForAdding(groupMemberId,ctx,method,args);
+        TransactionMessageForAddingInterface tmfa = new TransactionMessageForAdding(groupMemberId,ctx,method,args);
         addMemberToGroup(tmfa);
     }
     @Override
@@ -38,7 +38,7 @@ public class TransactionMessageGroup extends TransactionMessageGroupAdaptor {
         this.groupId = groupId;
     }
     @Override
-    public List<TransactionMessageForAdding> getMemberList() {
+    public List<TransactionMessageForAddingInterface> getMemberList() {
         return memberList;
     }
     @Override
@@ -47,7 +47,7 @@ public class TransactionMessageGroup extends TransactionMessageGroupAdaptor {
     }
 
     @Override
-    public void addMemberToGroup(TransactionMessageForAdding e){
+    public void addMemberToGroup(TransactionMessageForAddingInterface e){
         memberList.add(e);
         memberSet.add(e.getGroupMemberId());
     }
@@ -63,7 +63,7 @@ public class TransactionMessageGroup extends TransactionMessageGroupAdaptor {
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("{ groupId="+groupId);
-        for(TransactionMessageForAdding memberMsg : memberList){
+        for(TransactionMessageForAddingInterface memberMsg : memberList){
             stringBuilder.append(memberMsg.toString());
         }
         stringBuilder.append("}");

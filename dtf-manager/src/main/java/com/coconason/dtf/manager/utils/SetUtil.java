@@ -1,6 +1,7 @@
 package com.coconason.dtf.manager.utils;
 
-import com.coconason.dtf.manager.message.MessageInfo;
+import com.coconason.dtf.manager.message.MessageInfoInterface;
+import com.coconason.dtf.manager.message.TransactionMessageGroupInterface;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -34,9 +35,9 @@ public class SetUtil {
         return isFullEqual;
     }
 
-    public static Set setTransfer(Set<MessageInfo> set){
+    public static Set setTransfer(Set<TransactionMessageGroupInterface<MessageInfoInterface>> set){
         Set<String> resultSet = new HashSet<String>();
-        for (MessageInfo messageInfo:set) {
+        for (TransactionMessageGroupInterface<MessageInfoInterface> messageInfo:set) {
             resultSet.add(messageInfo.getGroupMemberId());
         }
         return  resultSet;
