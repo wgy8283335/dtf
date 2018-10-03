@@ -28,11 +28,6 @@ public interface TransactionMessageGroupInterface<T> {
 
     String getGroupMemberId();
 
-    Boolean isCommitted();
-
     void setCommitted(boolean commited);
 
-    String getUrl();
-
-    Object getObj();
 }

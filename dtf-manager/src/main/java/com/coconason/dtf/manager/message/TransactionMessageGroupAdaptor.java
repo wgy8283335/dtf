@@ -14,10 +14,7 @@ public abstract class TransactionMessageGroupAdaptor implements TransactionMessa
     public String getGroupMemberId(){
         return null;
     }
-    @Override
-    public Boolean isCommitted(){
-        return null;
-    }
+
     @Override
     public void setCommitted(boolean commited){
     }
@@ -25,13 +22,5 @@ public abstract class TransactionMessageGroupAdaptor implements TransactionMessa
     public void setGroupId(String groupId){
 
     }
-    @Override
-    public String getUrl() {
-        return null;
-    }
 
-    @Override
-    public Object getObj() {
-        return null;
-    }
 }

@@ -28,26 +28,11 @@ public abstract class TransactionMessageGroupAsyncAdaptor implements Transaction
     }
 
     @Override
-    public Boolean isCommitted(){
-        return null;
-    }
-
-    @Override
     public void setCommitted(boolean commited){
     }
 
     @Override
     public void setGroupId(String groupId){
 
-    }
-
-    @Override
-    public String getUrl() {
-        return null;
-    }
-
-    @Override
-    public Object getObj() {
-        return null;
     }
 }
