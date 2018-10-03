@@ -29,9 +29,9 @@ public class TransactionGroupInfo {
         this.groupMembers = groupMembers;
     }
 
-    public void setGroupId(String groupId) {
-        this.groupId = groupId;
-    }
+//    public void setGroupId(String groupId) {
+//        this.groupId = groupId;
+//    }
 
     public void addNewMemeber(){
         this.memberId = UuidGenerator.generateLongId();
