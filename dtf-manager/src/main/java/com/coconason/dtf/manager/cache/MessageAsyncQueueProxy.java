@@ -14,15 +14,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class MessageAsyncQueueProxy implements Queue {
     private LinkedBlockingQueue<MessageInfo> messageQueue;
 
-//    public boolean offer(MessageInfo messageInfo){
-//        return queue.offer(messageInfo);
-//    }
-//
-//    public MessageInfo poll(){
-//        return queue.poll();
-//    }
-
-
     public MessageAsyncQueueProxy() {
         messageQueue = new LinkedBlockingQueue<>(Integer.MAX_VALUE);
     }

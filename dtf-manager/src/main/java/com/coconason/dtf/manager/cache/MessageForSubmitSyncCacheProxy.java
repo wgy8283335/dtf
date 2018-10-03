@@ -22,10 +22,6 @@ public class MessageForSubmitSyncCacheProxy implements MessageCacheInterface{
         return cache.getIfPresent(id);
     }
 
-//    public void put(TransactionMessageGroupInterface msg){
-//        cache.put(msg.getGroupId(), msg);
-//    }
-
     @Override
     public void put(String id, TransactionMessageGroupInterface msg) {
         cache.put(id, msg);
