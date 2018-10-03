@@ -11,22 +11,22 @@ import java.util.concurrent.*;
  * @Author: Jason
  * @date: 2018/9/17-11:36
  */
-public class ThreadPoolForServer implements ExecutorService {
+public class ThreadPoolForServerProxy implements ExecutorService {
     private ExecutorService pool;
 
-    private ThreadPoolForServer(Integer corePoolSize,Integer maximumPoolSize,Integer keepAliveTime,Integer capacity) {
+    private ThreadPoolForServerProxy(Integer corePoolSize, Integer maximumPoolSize, Integer keepAliveTime, Integer capacity) {
         pool = new ThreadPoolExecutor(corePoolSize,maximumPoolSize,keepAliveTime, TimeUnit.MILLISECONDS,new LinkedBlockingDeque<Runnable>(capacity),new DefaultThreadFactory("defaultThreadFactory"),new ThreadPoolExecutor.AbortPolicy());
     }
 
-    public static ThreadPoolForServer initialize() throws Exception{
+    public static ThreadPoolForServerProxy initialize() throws Exception{
         String classpath = Thread.currentThread().getContextClassLoader().getResource("").getPath();
         PropertiesReader propertiesReader = new PropertiesReader(classpath+"config.properties");
-        ThreadPoolForServer threadPoolForServer = new ThreadPoolForServer(
+        ThreadPoolForServerProxy threadPoolForServerProxy = new ThreadPoolForServerProxy(
                 Integer.valueOf(propertiesReader.getProperty("corePoolSize")),
                 Integer.valueOf(propertiesReader.getProperty("maximumPoolSize")),
                 Integer.valueOf(propertiesReader.getProperty("keepAliveTime")),
                 Integer.valueOf(propertiesReader.getProperty("capacity")));
-        return threadPoolForServer;
+        return threadPoolForServerProxy;
     }
 
     @Override

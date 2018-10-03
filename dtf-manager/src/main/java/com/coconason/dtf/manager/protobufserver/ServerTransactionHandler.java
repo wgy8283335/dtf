@@ -11,7 +11,7 @@ import com.coconason.dtf.manager.service.SendMessageRunnable;
 import com.coconason.dtf.manager.service.SendShortMessageRunnable;
 import com.coconason.dtf.manager.thread.LockAndConditionInterface;
 import com.coconason.dtf.manager.thread.ServerThreadLockCacheProxy;
-import com.coconason.dtf.manager.threadpools.ThreadPoolForServer;
+import com.coconason.dtf.manager.threadpools.ThreadPoolForServerProxy;
 import com.coconason.dtf.manager.utils.SetUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -37,7 +37,7 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
 
     private ChannelHandlerContext ctx;
 
-    private ThreadPoolForServer threadPoolForServer;
+    private ThreadPoolForServerProxy threadPoolForServerProxy;
 
     private MessageForSubmitAsyncCacheProxy messageForSubmitAsyncCacheProxy;
 
@@ -46,13 +46,13 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
     private static final Logger logger = LoggerFactory.getLogger(ServerTransactionHandler.class);
 
     public ServerTransactionHandler(MessageSyncCacheProxy messageSyncCacheProxy, MessageAsyncCacheProxy messageAsyncCacheProxy,
-                                    MessageAsyncQueueProxy messageAsyncQueueProxy, ThreadPoolForServer threadPoolForServer,
+                                    MessageAsyncQueueProxy messageAsyncQueueProxy, ThreadPoolForServerProxy threadPoolForServerProxy,
                                     MessageForSubmitSyncCacheProxy messageForSubmitSyncCacheProxy, MessageForSubmitAsyncCacheProxy messageForSubmitAsyncCacheProxy,
                                     ServerThreadLockCacheProxy serverThreadLockCacheProxy) {
         this.messageSyncCacheProxy = messageSyncCacheProxy;
         this.messageAsyncQueueProxy = messageAsyncQueueProxy;
         this.messageAsyncCacheProxy = messageAsyncCacheProxy;
-        this.threadPoolForServer = threadPoolForServer;
+        this.threadPoolForServerProxy = threadPoolForServerProxy;
         this.messageForSubmitSyncCacheProxy = messageForSubmitSyncCacheProxy;
         this.messageForSubmitAsyncCacheProxy = messageForSubmitAsyncCacheProxy;
         this.serverThreadLockCacheProxy = serverThreadLockCacheProxy;
@@ -81,26 +81,26 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
                 //store the message in the cache.
                 //check whether the group exits in the cache
                 messageSyncCacheProxy.putDependsOnCondition(new TransactionMessageGroup(message,ctx));
-                threadPoolForServer.execute(new CheckAndSubmitRunnable(message,ActionType.ADD,ctx, messageForSubmitSyncCacheProxy, messageSyncCacheProxy, serverThreadLockCacheProxy,threadPoolForServer));
+                threadPoolForServerProxy.execute(new CheckAndSubmitRunnable(message,ActionType.ADD,ctx, messageForSubmitSyncCacheProxy, messageSyncCacheProxy, serverThreadLockCacheProxy, threadPoolForServerProxy));
                 break;
             case APPLYFORSUBMIT:
                 TransactionMessageForSubmit transactionMessageForSubmit = new TransactionMessageForSubmit(message);
                 messageForSubmitSyncCacheProxy.put( transactionMessageForSubmit.getGroupId(),transactionMessageForSubmit);
-                threadPoolForServer.execute(new CheckAndSubmitRunnable(message,ActionType.APPROVESUBMIT,ctx, messageForSubmitSyncCacheProxy, messageSyncCacheProxy, serverThreadLockCacheProxy,threadPoolForServer));
+                threadPoolForServerProxy.execute(new CheckAndSubmitRunnable(message,ActionType.APPROVESUBMIT,ctx, messageForSubmitSyncCacheProxy, messageSyncCacheProxy, serverThreadLockCacheProxy, threadPoolForServerProxy));
                 break;
             case ADD_STRONG:
                 //store the message in the cache.
                 //check whether the group exits in the cache
                 messageSyncCacheProxy.putDependsOnCondition(new TransactionMessageGroup(message,ctx));
-                threadPoolForServer.execute(new CheckAndSubmitRunnable(message,ActionType.ADD_STRONG,ctx, messageForSubmitSyncCacheProxy, messageSyncCacheProxy, serverThreadLockCacheProxy,threadPoolForServer));
+                threadPoolForServerProxy.execute(new CheckAndSubmitRunnable(message,ActionType.ADD_STRONG,ctx, messageForSubmitSyncCacheProxy, messageSyncCacheProxy, serverThreadLockCacheProxy, threadPoolForServerProxy));
                 break;
             case APPLYFORSUBMIT_STRONG:
                 TransactionMessageForSubmit transactionMessageForSubmitTemp1 = new TransactionMessageForSubmit(message);
                 messageForSubmitSyncCacheProxy.put( transactionMessageForSubmitTemp1.getGroupId(),transactionMessageForSubmitTemp1);
-                threadPoolForServer.execute(new CheckAndSubmitRunnable(message,ActionType.APPROVESUBMIT_STRONG,ctx, messageForSubmitSyncCacheProxy, messageSyncCacheProxy, serverThreadLockCacheProxy,threadPoolForServer));
+                threadPoolForServerProxy.execute(new CheckAndSubmitRunnable(message,ActionType.APPROVESUBMIT_STRONG,ctx, messageForSubmitSyncCacheProxy, messageSyncCacheProxy, serverThreadLockCacheProxy, threadPoolForServerProxy));
                 break;
             case CANCEL:
-                threadPoolForServer.execute(new CheckAndSubmitRunnable(message,ActionType.CANCEL,ctx, messageForSubmitSyncCacheProxy, messageSyncCacheProxy, serverThreadLockCacheProxy,threadPoolForServer));
+                threadPoolForServerProxy.execute(new CheckAndSubmitRunnable(message,ActionType.CANCEL,ctx, messageForSubmitSyncCacheProxy, messageSyncCacheProxy, serverThreadLockCacheProxy, threadPoolForServerProxy));
                 break;
             case SUB_SUCCESS_STRONG:
                 String memberId = JSONObject.parseObject(message.getInfo()).get("memberId").toString();
@@ -123,7 +123,7 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
                 }
                 if(flag == true){
                     String groupId = groupTemp.getGroupId();
-                    threadPoolForServer.execute(new SendMessageRunnable(groupId,ActionType.WHOLE_SUCCESS_STRONG,groupTemp.getCtx(),"send WHOLE_SUCCESS_STRONG message fail", serverThreadLockCacheProxy));
+                    threadPoolForServerProxy.execute(new SendMessageRunnable(groupId,ActionType.WHOLE_SUCCESS_STRONG,groupTemp.getCtx(),"send WHOLE_SUCCESS_STRONG message fail", serverThreadLockCacheProxy));
                     messageSyncCacheProxy.invalidate(groupId);
                 }
                 break;
@@ -147,7 +147,7 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
             case SUB_FAIL_STRONG:
                 TransactionMessageGroupInterface groupTemp1 = messageSyncCacheProxy.get(JSONObject.parseObject(message.getInfo()).get("groupId").toString());
                 String groupId1 = groupTemp1.getGroupId();
-                threadPoolForServer.execute(new SendMessageRunnable(groupId1,ActionType.WHOLE_FAIL_STRONG,groupTemp1.getCtx(),"send WHOLE_FAIL_STRONG message fail", serverThreadLockCacheProxy));
+                threadPoolForServerProxy.execute(new SendMessageRunnable(groupId1,ActionType.WHOLE_FAIL_STRONG,groupTemp1.getCtx(),"send WHOLE_FAIL_STRONG message fail", serverThreadLockCacheProxy));
                 messageSyncCacheProxy.invalidate(groupTemp1.getGroupId());
                 break;
             case WHOLE_FAIL_STRONG_ACK:
@@ -161,9 +161,9 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
                     transactionMessageGroupAsync = TransactionMessageGroupAsync.parse(message);
                     //add message in messageAsyncCacheProxy
                     messageAsyncCacheProxy.putDependsOnCondition(transactionMessageGroupAsync);
-                    threadPoolForServer.execute(new SendShortMessageRunnable(transactionMessageGroupAsync.getGroupId(),ActionType.ADD_SUCCESS_ASYNC,ctx));
+                    threadPoolForServerProxy.execute(new SendShortMessageRunnable(transactionMessageGroupAsync.getGroupId(),ActionType.ADD_SUCCESS_ASYNC,ctx));
                 }catch (Exception e) {
-                    threadPoolForServer.execute(new SendShortMessageRunnable(transactionMessageGroupAsync.getGroupId(),ActionType.ADD_FAIL_ASYNC,ctx));
+                    threadPoolForServerProxy.execute(new SendShortMessageRunnable(transactionMessageGroupAsync.getGroupId(),ActionType.ADD_FAIL_ASYNC,ctx));
                 }
                 Set<String> setFromCacheTemp = SetUtil.setTransfer(messageAsyncCacheProxy.get(transactionMessageGroupAsync.getGroupId()).getMemberSet());
                 TransactionMessageGroupInterface transactionMessageForSubmit1= messageForSubmitAsyncCacheProxy.get(transactionMessageGroupAsync.getGroupId());
@@ -171,7 +171,7 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
                     Set<String> setFromMessageTemp = transactionMessageForSubmit1.getMemberSet();
                     setFromMessageTemp.remove("1");
                     if (setFromMessageTemp != null && SetUtil.isSetEqual(setFromCacheTemp, setFromMessageTemp)) {
-                        threadPoolForServer.execute(new SendAsyncRequestRunnable(messageAsyncCacheProxy, transactionMessageForSubmit1, messageAsyncQueueProxy));
+                        threadPoolForServerProxy.execute(new SendAsyncRequestRunnable(messageAsyncCacheProxy, transactionMessageForSubmit1, messageAsyncQueueProxy));
                     }
                 }
                 break;
@@ -180,14 +180,14 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
                 String groupId = map.get("groupId").toString();
                 TransactionMessageForSubmit transactionMessageForSubmitTemp = new TransactionMessageForSubmit(message);
                 messageForSubmitAsyncCacheProxy.put(transactionMessageForSubmitTemp.getGroupId(),transactionMessageForSubmitTemp);
-                threadPoolForServer.execute(new SendShortMessageRunnable(groupId,ActionType.COMMIT_SUCCESS_ASYNC,ctx));
+                threadPoolForServerProxy.execute(new SendShortMessageRunnable(groupId,ActionType.COMMIT_SUCCESS_ASYNC,ctx));
                 TransactionMessageGroupInterface transactionMessageGroupAsync1 = messageAsyncCacheProxy.get(groupId);
                 if(transactionMessageGroupAsync1!=null){
                     Set<String> setFromCache = SetUtil.setTransfer(transactionMessageGroupAsync1.getMemberSet());
                     Set<String> setFromMessage = transactionMessageForSubmitTemp.getMemberSet();
                     setFromMessage.remove("1");
                     if(SetUtil.isSetEqual(setFromCache,setFromMessage)){
-                        threadPoolForServer.execute(new SendAsyncRequestRunnable(messageAsyncCacheProxy,transactionMessageForSubmitTemp, messageAsyncQueueProxy));
+                        threadPoolForServerProxy.execute(new SendAsyncRequestRunnable(messageAsyncCacheProxy,transactionMessageForSubmitTemp, messageAsyncQueueProxy));
                     }
                 }
                 break;

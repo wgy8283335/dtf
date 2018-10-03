@@ -9,7 +9,7 @@ import com.coconason.dtf.manager.message.TransactionMessageForAdding;
 import com.coconason.dtf.manager.message.TransactionMessageForSubmit;
 import com.coconason.dtf.manager.message.TransactionMessageGroupInterface;
 import com.coconason.dtf.manager.thread.ServerThreadLockCacheProxy;
-import com.coconason.dtf.manager.threadpools.ThreadPoolForServer;
+import com.coconason.dtf.manager.threadpools.ThreadPoolForServerProxy;
 import com.coconason.dtf.manager.utils.SetUtil;
 import io.netty.channel.ChannelHandlerContext;
 
@@ -34,16 +34,16 @@ public class CheckAndSubmitRunnable implements Runnable{
 
     private ServerThreadLockCacheProxy serverThreadLockCacheProxy;
 
-    private ThreadPoolForServer threadPoolForServer;
+    private ThreadPoolForServerProxy threadPoolForServerProxy;
 
-    public CheckAndSubmitRunnable(MessageProto.Message message, ActionType actionType, ChannelHandlerContext ctx, MessageForSubmitSyncCacheProxy messageForSubmitSyncCacheProxy, MessageSyncCacheProxy messageSyncCacheProxy, ServerThreadLockCacheProxy serverThreadLockCacheProxy, ThreadPoolForServer threadPoolForServer) {
+    public CheckAndSubmitRunnable(MessageProto.Message message, ActionType actionType, ChannelHandlerContext ctx, MessageForSubmitSyncCacheProxy messageForSubmitSyncCacheProxy, MessageSyncCacheProxy messageSyncCacheProxy, ServerThreadLockCacheProxy serverThreadLockCacheProxy, ThreadPoolForServerProxy threadPoolForServerProxy) {
         this.message = message;
         this.actionType = actionType;
         this.ctx = ctx;
         this.messageForSubmitSyncCacheProxy = messageForSubmitSyncCacheProxy;
         this.messageSyncCacheProxy = messageSyncCacheProxy;
         this.serverThreadLockCacheProxy = serverThreadLockCacheProxy;
-        this.threadPoolForServer = threadPoolForServer;
+        this.threadPoolForServerProxy = threadPoolForServerProxy;
     }
 
     @Override
@@ -68,12 +68,12 @@ public class CheckAndSubmitRunnable implements Runnable{
                     for (TransactionMessageForAdding messageForAdding: memberList) {
                         if(actionType == ActionType.ADD || actionType == ActionType.APPROVESUBMIT){
                             System.out.println("Send transaction message:\n" + message);
-                            threadPoolForServer.execute(new SendMessageRunnable(elementFromCache.getGroupId()+messageForAdding.getGroupMemberId(),ActionType.APPROVESUBMIT,messageForAdding.getCtx(),"send APPROVESUBMIT message fail", serverThreadLockCacheProxy));
+                            threadPoolForServerProxy.execute(new SendMessageRunnable(elementFromCache.getGroupId()+messageForAdding.getGroupMemberId(),ActionType.APPROVESUBMIT,messageForAdding.getCtx(),"send APPROVESUBMIT message fail", serverThreadLockCacheProxy));
                         }else{
                             //success
                             System.out.println("Send transaction message:\n" + message);
                             //int i = 6/0;
-                            threadPoolForServer.execute(new SendMessageRunnable(elementFromCache.getGroupId()+messageForAdding.getGroupMemberId(),ActionType.APPROVESUBMIT_STRONG,messageForAdding.getCtx(),"send APPROVESUBMIT_STRONG message fail", serverThreadLockCacheProxy));
+                            threadPoolForServerProxy.execute(new SendMessageRunnable(elementFromCache.getGroupId()+messageForAdding.getGroupMemberId(),ActionType.APPROVESUBMIT_STRONG,messageForAdding.getCtx(),"send APPROVESUBMIT_STRONG message fail", serverThreadLockCacheProxy));
                         }
                     }
                     if(actionType == ActionType.ADD || actionType == ActionType.APPROVESUBMIT){

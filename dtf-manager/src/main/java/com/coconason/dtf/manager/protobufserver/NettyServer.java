@@ -4,7 +4,7 @@ import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.manager.cache.*;
 import com.coconason.dtf.manager.service.ConsumerFailingAsyncRequestRunnable;
 import com.coconason.dtf.manager.thread.ServerThreadLockCacheProxy;
-import com.coconason.dtf.manager.threadpools.ThreadPoolForServer;
+import com.coconason.dtf.manager.threadpools.ThreadPoolForServerProxy;
 import com.coconason.dtf.manager.utils.PropertiesReader;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -39,17 +39,17 @@ public class NettyServer
         MessageAsyncQueueProxy messageAsyncQueueProxy = new MessageAsyncQueueProxy();
         String classpath = Thread.currentThread().getContextClassLoader().getResource("").getPath();
         PropertiesReader propertiesReader = new PropertiesReader(classpath+"config.properties");
-//        ThreadPoolForServer threadPoolForServer = new ThreadPoolForServer(
+//        ThreadPoolForServerProxy threadPoolForServerProxy = new ThreadPoolForServerProxy(
 //                Integer.valueOf(propertiesReader.getProperty("corePoolSize")),
 //                Integer.valueOf(propertiesReader.getProperty("maximumPoolSize")),
 //                Integer.valueOf(propertiesReader.getProperty("keepAliveTime")),
 //                Integer.valueOf(propertiesReader.getProperty("capacity")));
-        ThreadPoolForServer threadPoolForServer = ThreadPoolForServer.initialize();
-        threadPoolForServer.execute(new ConsumerFailingAsyncRequestRunnable(messageAsyncQueueProxy));
-        new NettyServer().bind(messageAsyncQueueProxy,threadPoolForServer,Integer.valueOf(propertiesReader.getProperty("port")));
+        ThreadPoolForServerProxy threadPoolForServerProxy = ThreadPoolForServerProxy.initialize();
+        threadPoolForServerProxy.execute(new ConsumerFailingAsyncRequestRunnable(messageAsyncQueueProxy));
+        new NettyServer().bind(messageAsyncQueueProxy, threadPoolForServerProxy,Integer.valueOf(propertiesReader.getProperty("port")));
     }
 
-    public void bind(MessageAsyncQueueProxy messageAsyncQueueProxyTemp, ThreadPoolForServer threadPoolForServerTemp, Integer port) throws Exception
+    public void bind(MessageAsyncQueueProxy messageAsyncQueueProxyTemp, ThreadPoolForServerProxy threadPoolForServerProxyTemp, Integer port) throws Exception
     {
         EventLoopGroup boss = new NioEventLoopGroup();
         EventLoopGroup work = new NioEventLoopGroup();
@@ -58,7 +58,7 @@ public class NettyServer
         final MessageForSubmitSyncCacheProxy messageForSubmitSyncCacheProxy = new MessageForSubmitSyncCacheProxy();
         final MessageForSubmitAsyncCacheProxy messageForSubmitAsyncCacheProxy = new MessageForSubmitAsyncCacheProxy();
         final MessageAsyncQueueProxy messageAsyncQueueProxy = messageAsyncQueueProxyTemp;
-        final ThreadPoolForServer threadPoolForServer = threadPoolForServerTemp;
+        final ThreadPoolForServerProxy threadPoolForServerProxy = threadPoolForServerProxyTemp;
         final ServerThreadLockCacheProxy serverThreadLockCacheProxy = new ServerThreadLockCacheProxy();
         try
         {
@@ -79,7 +79,7 @@ public class NettyServer
                             ch.pipeline().addLast(new ProtobufEncoder());
                             ch.pipeline().addLast(new ReadTimeoutHandler(50));
                             ch.pipeline().addLast(new LoginAuthRespHandler());
-                            ch.pipeline().addLast(new ServerTransactionHandler(messageSyncCacheProxy, messageAsyncCacheProxy, messageAsyncQueueProxy,threadPoolForServer, messageForSubmitSyncCacheProxy, messageForSubmitAsyncCacheProxy, serverThreadLockCacheProxy));
+                            ch.pipeline().addLast(new ServerTransactionHandler(messageSyncCacheProxy, messageAsyncCacheProxy, messageAsyncQueueProxy, threadPoolForServerProxy, messageForSubmitSyncCacheProxy, messageForSubmitAsyncCacheProxy, serverThreadLockCacheProxy));
                             ch.pipeline().addLast(new HeartBeatRespHandler());
                         }
                     });
