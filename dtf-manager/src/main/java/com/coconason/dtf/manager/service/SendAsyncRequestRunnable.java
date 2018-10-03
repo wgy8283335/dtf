@@ -1,11 +1,11 @@
 package com.coconason.dtf.manager.service;
 
-import com.coconason.dtf.manager.cache.MessageAsyncCacheProxy;
-import com.coconason.dtf.manager.cache.MessageAsyncQueueProxy;
+import com.coconason.dtf.manager.cache.MessageCacheInterface;
 import com.coconason.dtf.manager.message.MessageInfo;
 import com.coconason.dtf.manager.message.TransactionMessageGroupInterface;
 import com.coconason.dtf.manager.utils.HttpClientUtil;
 
+import java.util.Queue;
 import java.util.Set;
 
 /**
@@ -14,13 +14,13 @@ import java.util.Set;
  */
 public class SendAsyncRequestRunnable implements Runnable{
 
-    private MessageAsyncCacheProxy messageAsyncCacheProxy;
+    private MessageCacheInterface messageAsyncCacheProxy;
 
     private TransactionMessageGroupInterface transactionMessageForSubmit;
 
-    private MessageAsyncQueueProxy messageAsyncQueueProxy;
+    private Queue messageAsyncQueueProxy;
 
-    public SendAsyncRequestRunnable(MessageAsyncCacheProxy messageAsyncCacheProxy, TransactionMessageGroupInterface transactionMessageForSubmit, MessageAsyncQueueProxy messageAsyncQueueProxy) {
+    public SendAsyncRequestRunnable(MessageCacheInterface messageAsyncCacheProxy, TransactionMessageGroupInterface transactionMessageForSubmit, Queue messageAsyncQueueProxy) {
         this.messageAsyncCacheProxy = messageAsyncCacheProxy;
         this.transactionMessageForSubmit = transactionMessageForSubmit;
         this.messageAsyncQueueProxy = messageAsyncQueueProxy;
@@ -44,7 +44,6 @@ public class SendAsyncRequestRunnable implements Runnable{
                     }
                 }catch (Exception e){
                     //if fail put the info of the service into a cache,and there will be another thread to check and execute.
-                    //messageAsyncQueueProxy.offer(messageInfo);
                     e.printStackTrace();
                 }
             }

@@ -3,7 +3,8 @@ package com.coconason.dtf.manager.protobufserver;
 import com.alibaba.fastjson.JSONObject;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
-import com.coconason.dtf.manager.cache.*;
+import com.coconason.dtf.manager.cache.MessageAsyncQueueProxy;
+import com.coconason.dtf.manager.cache.MessageCacheInterface;
 import com.coconason.dtf.manager.message.*;
 import com.coconason.dtf.manager.service.CheckAndSubmitRunnable;
 import com.coconason.dtf.manager.service.SendAsyncRequestRunnable;
@@ -13,13 +14,16 @@ import com.coconason.dtf.manager.thread.LockAndConditionInterface;
 import com.coconason.dtf.manager.thread.ServerThreadLockCacheProxy;
 import com.coconason.dtf.manager.threadpools.ThreadPoolForServerProxy;
 import com.coconason.dtf.manager.utils.SetUtil;
+import com.google.common.cache.Cache;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Queue;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
 
 /**
  * @Author: Jason
@@ -27,27 +31,27 @@ import java.util.Set;
  */
 public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
 
-    private MessageSyncCacheProxy messageSyncCacheProxy;
+    private MessageCacheInterface messageSyncCacheProxy;
 
-    private MessageForSubmitSyncCacheProxy messageForSubmitSyncCacheProxy;
+    private MessageCacheInterface messageForSubmitSyncCacheProxy;
 
-    private MessageAsyncCacheProxy messageAsyncCacheProxy;
+    private MessageCacheInterface messageAsyncCacheProxy;
 
-    private MessageAsyncQueueProxy messageAsyncQueueProxy;
+    private Queue messageAsyncQueueProxy;
 
     private ChannelHandlerContext ctx;
 
-    private ThreadPoolForServerProxy threadPoolForServerProxy;
+    private ExecutorService threadPoolForServerProxy;
 
-    private MessageForSubmitAsyncCacheProxy messageForSubmitAsyncCacheProxy;
+    private MessageCacheInterface messageForSubmitAsyncCacheProxy;
 
     private ServerThreadLockCacheProxy serverThreadLockCacheProxy;
 
     private static final Logger logger = LoggerFactory.getLogger(ServerTransactionHandler.class);
 
-    public ServerTransactionHandler(MessageSyncCacheProxy messageSyncCacheProxy, MessageAsyncCacheProxy messageAsyncCacheProxy,
+    public ServerTransactionHandler(MessageCacheInterface messageSyncCacheProxy, MessageCacheInterface messageAsyncCacheProxy,
                                     MessageAsyncQueueProxy messageAsyncQueueProxy, ThreadPoolForServerProxy threadPoolForServerProxy,
-                                    MessageForSubmitSyncCacheProxy messageForSubmitSyncCacheProxy, MessageForSubmitAsyncCacheProxy messageForSubmitAsyncCacheProxy,
+                                    MessageCacheInterface messageForSubmitSyncCacheProxy, MessageCacheInterface messageForSubmitAsyncCacheProxy,
                                     ServerThreadLockCacheProxy serverThreadLockCacheProxy) {
         this.messageSyncCacheProxy = messageSyncCacheProxy;
         this.messageAsyncQueueProxy = messageAsyncQueueProxy;

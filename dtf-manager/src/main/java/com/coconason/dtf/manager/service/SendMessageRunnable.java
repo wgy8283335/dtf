@@ -2,7 +2,7 @@ package com.coconason.dtf.manager.service;
 
 import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
 import com.coconason.dtf.manager.thread.LockAndCondition;
-import com.coconason.dtf.manager.thread.ServerThreadLockCacheProxy;
+import com.google.common.cache.Cache;
 import io.netty.channel.ChannelHandlerContext;
 
 import java.util.concurrent.locks.ReentrantLock;
@@ -16,9 +16,9 @@ public class SendMessageRunnable implements Runnable {
     private ActionType actionType;
     private ChannelHandlerContext ctx;
     private String message;
-    private ServerThreadLockCacheProxy serverThreadLockCacheProxy;
+    private Cache serverThreadLockCacheProxy;
 
-    public SendMessageRunnable(String groupId, ActionType actionType, ChannelHandlerContext ctx, String message,ServerThreadLockCacheProxy serverThreadLockCacheProxy) {
+    public SendMessageRunnable(String groupId, ActionType actionType, ChannelHandlerContext ctx, String message,Cache serverThreadLockCacheProxy) {
         this.groupId = groupId;
         this.actionType = actionType;
         this.ctx = ctx;

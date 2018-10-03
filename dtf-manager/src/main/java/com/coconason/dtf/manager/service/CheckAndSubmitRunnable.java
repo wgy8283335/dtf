@@ -3,6 +3,7 @@ package com.coconason.dtf.manager.service;
 import com.alibaba.fastjson.JSONObject;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
+import com.coconason.dtf.manager.cache.MessageCacheInterface;
 import com.coconason.dtf.manager.cache.MessageForSubmitSyncCacheProxy;
 import com.coconason.dtf.manager.cache.MessageSyncCacheProxy;
 import com.coconason.dtf.manager.message.TransactionMessageForAdding;
@@ -11,10 +12,12 @@ import com.coconason.dtf.manager.message.TransactionMessageGroupInterface;
 import com.coconason.dtf.manager.thread.ServerThreadLockCacheProxy;
 import com.coconason.dtf.manager.threadpools.ThreadPoolForServerProxy;
 import com.coconason.dtf.manager.utils.SetUtil;
+import com.google.common.cache.Cache;
 import io.netty.channel.ChannelHandlerContext;
 
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
 
 /**
  * @Author: Jason
@@ -28,15 +31,15 @@ public class CheckAndSubmitRunnable implements Runnable{
 
     private ChannelHandlerContext ctx;
 
-    private MessageForSubmitSyncCacheProxy messageForSubmitSyncCacheProxy;
+    private MessageCacheInterface messageForSubmitSyncCacheProxy;
 
-    private MessageSyncCacheProxy messageSyncCacheProxy;
+    private MessageCacheInterface messageSyncCacheProxy;
 
-    private ServerThreadLockCacheProxy serverThreadLockCacheProxy;
+    private Cache serverThreadLockCacheProxy;
 
-    private ThreadPoolForServerProxy threadPoolForServerProxy;
+    private ExecutorService threadPoolForServerProxy;
 
-    public CheckAndSubmitRunnable(MessageProto.Message message, ActionType actionType, ChannelHandlerContext ctx, MessageForSubmitSyncCacheProxy messageForSubmitSyncCacheProxy, MessageSyncCacheProxy messageSyncCacheProxy, ServerThreadLockCacheProxy serverThreadLockCacheProxy, ThreadPoolForServerProxy threadPoolForServerProxy) {
+    public CheckAndSubmitRunnable(MessageProto.Message message, ActionType actionType, ChannelHandlerContext ctx, MessageCacheInterface messageForSubmitSyncCacheProxy, MessageCacheInterface messageSyncCacheProxy, Cache serverThreadLockCacheProxy, ExecutorService threadPoolForServerProxy) {
         this.message = message;
         this.actionType = actionType;
         this.ctx = ctx;
