@@ -1,7 +1,7 @@
 package com.coconason.dtf.client.core.nettyclient.protobufclient;
 
 import com.alibaba.fastjson.JSONObject;
-import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
+import com.coconason.dtf.client.core.beans.BaseTransactionServiceInfo;
 import com.coconason.dtf.client.core.dbconnection.ClientLockAndConditionInterface;
 import com.coconason.dtf.client.core.dbconnection.DbOperationType;
 import com.coconason.dtf.common.protobuf.MessageProto;
@@ -125,7 +125,7 @@ class ClientTransactionHandler extends AbstractClientTransactionHandler
 		ctx.fireExceptionCaught(cause);
 	}
 	@Override
-	public void sendMsg(TransactionServiceInfo serviceInfo) {
+	public void sendMsg(BaseTransactionServiceInfo serviceInfo) {
 		ActionType actionType = serviceInfo.getAction();
 		switch (actionType){
 			case ADD:

@@ -1,6 +1,6 @@
 package com.coconason.dtf.client.core.nettyclient.sender;
 
-import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
+import com.coconason.dtf.client.core.beans.BaseTransactionServiceInfo;
 import com.coconason.dtf.client.core.nettyclient.protobufclient.NettyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -46,7 +46,7 @@ public class TransactionMessageSender implements MessageSenderInterface{
 
     private void sendMessageInQueue() throws InterruptedException{
         while(true){
-            TransactionServiceInfo info = (TransactionServiceInfo)queue.poll();
+            BaseTransactionServiceInfo info = (BaseTransactionServiceInfo)queue.poll();
             service.sendMsg(info);
         }
     }

@@ -1,6 +1,6 @@
 package com.coconason.dtf.client.core.nettyclient.protobufclient;
 
-import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
+import com.coconason.dtf.client.core.beans.BaseTransactionServiceInfo;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
 /**
@@ -8,5 +8,5 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
  * @date: 2018/10/2-14:11
  */
 public abstract class AbstractClientTransactionHandler extends ChannelInboundHandlerAdapter {
-    abstract void sendMsg(TransactionServiceInfo serviceInfo);
+    abstract void sendMsg(BaseTransactionServiceInfo serviceInfo);
 }

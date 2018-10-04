@@ -1,8 +1,9 @@
 package com.coconason.dtf.client.core.spring.client;
 
 import com.coconason.dtf.client.core.beans.BaseTransactionGroupInfo;
+import com.coconason.dtf.client.core.beans.BaseTransactionServiceInfo;
 import com.coconason.dtf.client.core.beans.TransactionGroupInfo;
-import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
+import com.coconason.dtf.client.core.beans.TransactionServiceInfoFactory;
 import com.coconason.dtf.client.core.dbconnection.ClientLockAndCondition;
 import com.coconason.dtf.client.core.dbconnection.DbOperationType;
 import com.coconason.dtf.client.core.dbconnection.ThreadLockCacheProxy;
@@ -36,7 +37,7 @@ public class RestClientAsync {
         thirdThreadLockCacheProxy.put(groupInfo.getGroupId(),lc);
         groupInfo.addNewMemeber();
         TransactionGroupInfo.setCurrent(groupInfo);
-        TransactionServiceInfo transactionServiceInfo = TransactionServiceInfo.newInstanceForRestful(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.ADD_ASYNC, groupInfo.getGroupId(), groupInfo.getMemberId(), url, object);
+        BaseTransactionServiceInfo transactionServiceInfo = TransactionServiceInfoFactory.newInstanceForRestful(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.ADD_ASYNC, groupInfo.getGroupId(), groupInfo.getMemberId(), url, object);
         lc.awaitLimitedTime(nettyService,transactionServiceInfo,"RestClientAsync sendPost fail",10000, TimeUnit.MILLISECONDS);
     }
 }

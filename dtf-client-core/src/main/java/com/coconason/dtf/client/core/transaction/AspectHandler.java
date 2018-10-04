@@ -78,7 +78,7 @@ public class AspectHandler implements AspectInterface {
                 //3.Send confirm message to netty server, in order to commit all transaction in the service
                 ClientLockAndConditionInterface asyncFinalCommitLc = new ClientLockAndCondition(new ReentrantLock(), DbOperationType.DEFAULT);
                 asyncFinalCommitThreadLockCacheProxy.put(TransactionGroupInfo.getCurrent().getGroupId(), asyncFinalCommitLc);
-                TransactionServiceInfo serviceInfo = TransactionServiceInfo.newInstanceForAsyncCommit(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.ASYNC_COMMIT, TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers());
+                BaseTransactionServiceInfo serviceInfo = TransactionServiceInfoFactory.newInstanceForAsyncCommit(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.ASYNC_COMMIT, TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers());
                 asyncFinalCommitLc.awaitLimitedTime(nettyService,serviceInfo,"commit async fail",10000, TimeUnit.MILLISECONDS);
             }else{
                 result = point.proceed();
@@ -96,17 +96,14 @@ public class AspectHandler implements AspectInterface {
                     result = point.proceed();
                 }catch (Exception e){
                     if(ORIGINAL_ID.equals(TransactionGroupInfo.getCurrent().getMemberId())){
-                        //if(MessageProto.Message.ActionType.ADD==TransactionServiceInfo.getCurrent().getAction()){
                         if(TransactionType.SYNC_FINAL == transactionType){
-                            queue.add(TransactionServiceInfo.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.CANCEL,TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
-                            //}else if(MessageProto.Message.ActionType.ADD_STRONG==TransactionServiceInfo.getCurrent().getAction()){
+                            queue.add(TransactionServiceInfoFactory.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.CANCEL,TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
                         }else if(TransactionType.SYNC_STRONG == transactionType){
-                            queue.add(TransactionServiceInfo.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.CANCEL,TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
+                            queue.add(TransactionServiceInfoFactory.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.CANCEL,TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
                         }
                     }
                 }
                 if(ORIGINAL_ID.equals(TransactionGroupInfo.getCurrent().getMemberId())){
-                    //if(MessageProto.Message.ActionType.ADD==TransactionServiceInfo.getCurrent().getAction()){
                     if(TransactionType.SYNC_STRONG == transactionType){
                         if(syncFinalCommitThreadLockCacheProxy.getIfPresent(TransactionGroupInfo.getCurrent().getGroupId()).getState()==DbOperationType.WHOLE_FAIL){
                             throw new Exception("system transaction error");
@@ -139,10 +136,10 @@ public class AspectHandler implements AspectInterface {
     private void switchTransactionType(TransactionType transactionType,BaseTransactionGroupInfo transactionGroupInfo,Method method,Object[] args){
         switch (transactionType){
             case SYNC_FINAL:
-                TransactionServiceInfo.setCurrent(TransactionServiceInfo.newInstanceForSyncAdd(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.ADD,transactionGroupInfo.getGroupId(),transactionGroupInfo.getMemberId(),method,args));
+                BaseTransactionServiceInfo.setCurrent(TransactionServiceInfoFactory.newInstanceForSyncAdd(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.ADD,transactionGroupInfo.getGroupId(),transactionGroupInfo.getMemberId(),method,args));
                 break;
             case SYNC_STRONG:
-                TransactionServiceInfo.setCurrent(TransactionServiceInfo.newInstanceForSyncAdd(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.ADD_STRONG,transactionGroupInfo.getGroupId(),transactionGroupInfo.getMemberId(),method,args));
+                BaseTransactionServiceInfo.setCurrent(TransactionServiceInfoFactory.newInstanceForSyncAdd(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.ADD_STRONG,transactionGroupInfo.getGroupId(),transactionGroupInfo.getMemberId(),method,args));
                 break;
             default:
                 break;

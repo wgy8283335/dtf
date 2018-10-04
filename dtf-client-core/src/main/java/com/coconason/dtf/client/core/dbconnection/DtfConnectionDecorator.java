@@ -1,10 +1,7 @@
 package com.coconason.dtf.client.core.dbconnection;
 
 import com.alibaba.fastjson.JSONObject;
-import com.coconason.dtf.client.core.beans.BaseTransactionGroupInfo;
-import com.coconason.dtf.client.core.beans.TransactionGroupInfo;
-import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
-import com.coconason.dtf.client.core.beans.TransactionType;
+import com.coconason.dtf.client.core.beans.*;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.common.utils.UuidGenerator;
 import com.google.common.cache.Cache;
@@ -45,7 +42,7 @@ public class DtfConnectionDecorator implements Connection {
 
     private Queue queue;
 
-    private TransactionServiceInfo transactionServiceInfo;
+    private BaseTransactionServiceInfo transactionServiceInfo;
 
     private Cache<String,ClientLockAndConditionInterface>  secondThreadLockCacheProxy;
 
@@ -102,7 +99,7 @@ public class DtfConnectionDecorator implements Connection {
             hasClose = false;
             return;
         }
-        transactionServiceInfo = TransactionServiceInfo.getCurrent();
+        transactionServiceInfo = BaseTransactionServiceInfo.getCurrent();
         if(TransactionType.SYNC_FINAL==TransactionType.getCurrent()||TransactionType.SYNC_STRONG==TransactionType.getCurrent()) {
             threadPoolForClientProxy.execute(new SubmitRunnable(TransactionGroupInfo.getCurrent()));
             try {
@@ -110,7 +107,7 @@ public class DtfConnectionDecorator implements Connection {
                 String groupId = transactionGroupInfo.getGroupId();
                 Long memberId = transactionGroupInfo.getMemberId();
                 if (ORIGINAL_ID.equals(memberId) && TransactionType.SYNC_STRONG==TransactionType.getCurrent()){
-                    queue.add(TransactionServiceInfo.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT_STRONG,TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
+                    queue.add(TransactionServiceInfoFactory.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT_STRONG,TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
                     ClientLockAndConditionInterface secondlc = new ClientLockAndCondition(new ReentrantLock(), DbOperationType.DEFAULT);
                     secondThreadLockCacheProxy.put(groupId, secondlc);
                     boolean isWholeSuccess = secondlc.await(10000,TimeUnit.MILLISECONDS);
@@ -121,13 +118,13 @@ public class DtfConnectionDecorator implements Connection {
                     }
                     ClientLockAndConditionInterface secondlc2 = secondThreadLockCacheProxy.getIfPresent(groupId);
                     if (secondlc2.getState() == DbOperationType.WHOLE_FAIL) {
-                        queue.add(TransactionServiceInfo.newInstanceForShortMessage(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.WHOLE_FAIL_STRONG_ACK, groupId));
+                        queue.add(TransactionServiceInfoFactory.newInstanceForShortMessage(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.WHOLE_FAIL_STRONG_ACK, groupId));
                         connection.close();
                         ClientLockAndConditionInterface syncFinalCommitLc = syncFinalCommitThreadLockCacheProxy.getIfPresent(groupId);
                         syncFinalCommitLc.setState(DbOperationType.WHOLE_FAIL);
                         throw new Exception("Distributed transaction failed and groupId:"+groupId);
                     }else{
-                        queue.add(TransactionServiceInfo.newInstanceForShortMessage(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.WHOLE_SUCCESS_STRONG_ACK, groupId));
+                        queue.add(TransactionServiceInfoFactory.newInstanceForShortMessage(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.WHOLE_SUCCESS_STRONG_ACK, groupId));
                         //4. close the connection.
                         System.out.println("dtf connection.close();");
                         connection.close();
@@ -136,7 +133,7 @@ public class DtfConnectionDecorator implements Connection {
                     }
                 }
                 else if(ORIGINAL_ID.equals(memberId) && TransactionType.SYNC_FINAL==TransactionType.getCurrent()){
-                    queue.add(TransactionServiceInfo.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT,TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
+                    queue.add(TransactionServiceInfoFactory.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT,TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -180,17 +177,17 @@ public class DtfConnectionDecorator implements Connection {
                     //Thread.sleep(30000);
                     if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG) {
                         //int i = 6/0;
-                        queue.add(TransactionServiceInfo.newInstanceForSub(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_SUCCESS_STRONG, groupId, groupMembers, memberId));
+                        queue.add(TransactionServiceInfoFactory.newInstanceForSub(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_SUCCESS_STRONG, groupId, groupMembers, memberId));
                     }else if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD){
-                        queue.add(TransactionServiceInfo.newInstanceForSub(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_SUCCESS, groupId, groupMembers, memberId));
+                        queue.add(TransactionServiceInfoFactory.newInstanceForSub(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_SUCCESS, groupId, groupMembers, memberId));
                     }
                     System.out.println("提交");
                     connection.commit();
                 }else if(state == DbOperationType.ROLLBACK){
                     if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG){
-                        queue.add(TransactionServiceInfo.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL_STRONG, groupId,groupMembers));
+                        queue.add(TransactionServiceInfoFactory.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL_STRONG, groupId,groupMembers));
                     }else if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD){
-                        queue.add(TransactionServiceInfo.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL, groupId,groupMembers));
+                        queue.add(TransactionServiceInfoFactory.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL, groupId,groupMembers));
                     }
                     System.out.println("回滚");
                     connection.rollback();
@@ -199,10 +196,10 @@ public class DtfConnectionDecorator implements Connection {
                 try {
                     connection.rollback();
                     if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG){
-                        queue.add(TransactionServiceInfo.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL_STRONG, groupId,groupMembers));
+                        queue.add(TransactionServiceInfoFactory.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL_STRONG, groupId,groupMembers));
                     }else if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD){
                         System.out.println("sub fail ---------------------------"+System.currentTimeMillis());
-                        queue.add(TransactionServiceInfo.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL, groupId,groupMembers));
+                        queue.add(TransactionServiceInfoFactory.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL, groupId,groupMembers));
                     }
                     e.printStackTrace();
                 } catch (Exception exception) {

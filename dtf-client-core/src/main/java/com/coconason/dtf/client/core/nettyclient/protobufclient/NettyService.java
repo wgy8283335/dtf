@@ -1,6 +1,6 @@
 package com.coconason.dtf.client.core.nettyclient.protobufclient;
 
-import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
+import com.coconason.dtf.client.core.beans.BaseTransactionServiceInfo;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
@@ -119,7 +119,7 @@ public class NettyService {
         start();
     }
 
-    public void sendMsg(TransactionServiceInfo serviceInfo) {
+    public void sendMsg(BaseTransactionServiceInfo serviceInfo) {
         clientTransactionHandler.sendMsg(serviceInfo);
     }
 }

@@ -1,6 +1,6 @@
 package com.coconason.dtf.client.core.dbconnection;
 
-import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
+import com.coconason.dtf.client.core.beans.BaseTransactionServiceInfo;
 import com.coconason.dtf.client.core.nettyclient.protobufclient.NettyService;
 
 import java.util.concurrent.TimeUnit;
@@ -44,7 +44,7 @@ public final class ClientLockAndCondition implements ClientLockAndConditionInter
         return result;
     }
     @Override
-    public void awaitLimitedTime(NettyService nettyService,TransactionServiceInfo serviceInfo,String msg,long milliseconds, TimeUnit timeUnit) throws Exception{
+    public void awaitLimitedTime(NettyService nettyService, BaseTransactionServiceInfo serviceInfo, String msg, long milliseconds, TimeUnit timeUnit) throws Exception{
         nettyService.sendMsg(serviceInfo);
         boolean receivedSignal = wait(milliseconds, timeUnit);
         if(receivedSignal == false){

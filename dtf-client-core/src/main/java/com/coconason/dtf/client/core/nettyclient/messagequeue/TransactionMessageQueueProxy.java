@@ -1,6 +1,6 @@
 package com.coconason.dtf.client.core.nettyclient.messagequeue;
 
-import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
+import com.coconason.dtf.client.core.beans.BaseTransactionServiceInfo;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
@@ -14,7 +14,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 @Component
 public class TransactionMessageQueueProxy implements Queue {
 
-    private final LinkedBlockingQueue<TransactionServiceInfo> messageQueue;
+    private final LinkedBlockingQueue<BaseTransactionServiceInfo> messageQueue;
 
     public TransactionMessageQueueProxy() {
         messageQueue = new LinkedBlockingQueue<>(Integer.MAX_VALUE);
@@ -28,7 +28,7 @@ public class TransactionMessageQueueProxy implements Queue {
     @Override
     public boolean add(Object o){
         try{
-            messageQueue.put((TransactionServiceInfo)o);
+            messageQueue.put((BaseTransactionServiceInfo)o);
         }catch (Exception e){
             e.printStackTrace();
             return false;
@@ -38,7 +38,7 @@ public class TransactionMessageQueueProxy implements Queue {
 
     @Override
     public boolean offer(Object o) {
-        return messageQueue.offer((TransactionServiceInfo)o);
+        return messageQueue.offer((BaseTransactionServiceInfo)o);
     }
 
     @Override
@@ -47,8 +47,8 @@ public class TransactionMessageQueueProxy implements Queue {
     }
 
     @Override
-    public TransactionServiceInfo poll() {
-        TransactionServiceInfo result;
+    public BaseTransactionServiceInfo poll() {
+        BaseTransactionServiceInfo result;
         try{
             result=messageQueue.take();
         }catch (Exception e){

@@ -1,6 +1,6 @@
 package com.coconason.dtf.client.core.dbconnection;
 
-import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
+import com.coconason.dtf.client.core.beans.BaseTransactionServiceInfo;
 import com.coconason.dtf.client.core.nettyclient.protobufclient.NettyService;
 
 import java.util.concurrent.TimeUnit;
@@ -18,6 +18,6 @@ public interface ClientLockAndConditionInterface {
 
     boolean await(long milliseconds, TimeUnit timeUnit);
 
-    void awaitLimitedTime(NettyService nettyService, TransactionServiceInfo serviceInfo, String msg, long milliseconds, TimeUnit timeUnit) throws Exception;
+    void awaitLimitedTime(NettyService nettyService, BaseTransactionServiceInfo serviceInfo, String msg, long milliseconds, TimeUnit timeUnit) throws Exception;
 
 }
