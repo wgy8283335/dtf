@@ -1,5 +1,6 @@
 package com.coconason.dtf.client.core;
 
+import com.coconason.dtf.client.core.beans.BaseTransactionGroupInfo;
 import com.coconason.dtf.client.core.beans.TransactionGroupInfo;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
@@ -29,7 +30,7 @@ public class HeaderModifierAdvice implements ResponseBodyAdvice<Object> {
                                   ServerHttpResponse response) {
         ServletServerHttpResponse ssResp = (ServletServerHttpResponse)response;
         HttpServletResponse resp = ssResp.getServletResponse();
-        TransactionGroupInfo groupInfo = TransactionGroupInfo.getCurrent();
+        BaseTransactionGroupInfo groupInfo = TransactionGroupInfo.getCurrent();
         if(groupInfo == null){
         }else{
             //set groupInfo in the head.

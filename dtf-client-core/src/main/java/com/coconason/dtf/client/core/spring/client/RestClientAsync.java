@@ -1,9 +1,10 @@
 package com.coconason.dtf.client.core.spring.client;
 
+import com.coconason.dtf.client.core.beans.BaseTransactionGroupInfo;
 import com.coconason.dtf.client.core.beans.TransactionGroupInfo;
 import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
-import com.coconason.dtf.client.core.dbconnection.DbOperationType;
 import com.coconason.dtf.client.core.dbconnection.ClientLockAndCondition;
+import com.coconason.dtf.client.core.dbconnection.DbOperationType;
 import com.coconason.dtf.client.core.dbconnection.ThreadLockCacheProxy;
 import com.coconason.dtf.client.core.nettyclient.protobufclient.NettyService;
 import com.coconason.dtf.common.protobuf.MessageProto;
@@ -30,7 +31,7 @@ public class RestClientAsync {
     private ThreadLockCacheProxy thirdThreadLockCacheProxy;
 
     public void sendPost(String url, Object object) throws Exception{
-        TransactionGroupInfo groupInfo = TransactionGroupInfo.getCurrent();
+        BaseTransactionGroupInfo groupInfo = TransactionGroupInfo.getCurrent();
         ClientLockAndCondition lc = new ClientLockAndCondition(new ReentrantLock(), DbOperationType.DEFAULT);
         thirdThreadLockCacheProxy.put(groupInfo.getGroupId(),lc);
         groupInfo.addNewMemeber();

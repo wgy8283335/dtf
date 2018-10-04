@@ -30,4 +30,10 @@ public interface TransactionMessageGroupInterface<T> {
 
     void setCommitted(boolean commited);
 
+    Boolean isCommitted();
+
+    String getUrl();
+
+    Object getObj();
+
 }

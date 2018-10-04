@@ -35,4 +35,19 @@ public abstract class TransactionMessageGroupAsyncAdaptor implements Transaction
     public void setGroupId(String groupId){
 
     }
+
+    @Override
+    public Boolean isCommitted() {
+        return null;
+    }
+
+    @Override
+    public String getUrl() {
+        return null;
+    }
+
+    @Override
+    public Object getObj() {
+        return null;
+    }
 }

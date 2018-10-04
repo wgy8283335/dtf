@@ -1,9 +1,7 @@
 package com.coconason.dtf.client.core.transaction;
 
 import com.coconason.dtf.client.core.annotation.DtfTransaction;
-import com.coconason.dtf.client.core.beans.TransactionGroupInfo;
-import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
-import com.coconason.dtf.client.core.beans.TransactionType;
+import com.coconason.dtf.client.core.beans.*;
 import com.coconason.dtf.client.core.dbconnection.ClientLockAndCondition;
 import com.coconason.dtf.client.core.dbconnection.ClientLockAndConditionInterface;
 import com.coconason.dtf.client.core.dbconnection.DbOperationType;
@@ -73,7 +71,7 @@ public class AspectHandler implements AspectInterface {
             if(info==null) {
                 //1.
                 String groupIdTemp = GroupidGenerator.getStringId(0, 0);
-                TransactionGroupInfo groupInfo = TransactionGroupInfo.newInstanceWithGroupidMemid(groupIdTemp, ORIGINAL_ID);
+                BaseTransactionGroupInfo groupInfo = TransactionGroupInfoFactory.getInstanceWithGroupidMemid(groupIdTemp, ORIGINAL_ID);
                 TransactionGroupInfo.setCurrent(groupInfo);
                 //2.
                 result = point.proceed();
@@ -86,11 +84,11 @@ public class AspectHandler implements AspectInterface {
                 result = point.proceed();
             }
         }else{
-            TransactionGroupInfo transactionGroupInfo = info == null ? null:TransactionGroupInfo.parse(info);
+            BaseTransactionGroupInfo transactionGroupInfo = info == null ? null:TransactionGroupInfoFactory.getInstanceParseString(info);
             if(transactionGroupInfo == null) {
                 //1.
                 String groupIdTemp = GroupidGenerator.getStringId(0, 0);
-                TransactionGroupInfo groupInfo = TransactionGroupInfo.newInstanceWithGroupidMemid(groupIdTemp, ORIGINAL_ID);
+                BaseTransactionGroupInfo groupInfo = TransactionGroupInfoFactory.getInstanceWithGroupidMemid(groupIdTemp, ORIGINAL_ID);
                 TransactionGroupInfo.setCurrent(groupInfo);
                 switchTransactionType(transactionType,groupInfo,method,args);
                 //2.
@@ -122,7 +120,7 @@ public class AspectHandler implements AspectInterface {
             //If the response is submit,submit transaction by database proxy.If the response is cancel,cancel transaction by database proxy.
             else{
                 //if the thread does not have transactionGroupInfo,set current transaction group information
-                TransactionGroupInfo temp = TransactionGroupInfo.getCurrent();
+                BaseTransactionGroupInfo temp = TransactionGroupInfo.getCurrent();
                 if(temp==null){
                     transactionGroupInfo.addNewMemeber();
                     TransactionGroupInfo.setCurrent(transactionGroupInfo);
@@ -138,7 +136,7 @@ public class AspectHandler implements AspectInterface {
         return result;
     }
 
-    private void switchTransactionType(TransactionType transactionType,TransactionGroupInfo transactionGroupInfo,Method method,Object[] args){
+    private void switchTransactionType(TransactionType transactionType,BaseTransactionGroupInfo transactionGroupInfo,Method method,Object[] args){
         switch (transactionType){
             case SYNC_FINAL:
                 TransactionServiceInfo.setCurrent(TransactionServiceInfo.newInstanceForSyncAdd(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.ADD,transactionGroupInfo.getGroupId(),transactionGroupInfo.getMemberId(),method,args));

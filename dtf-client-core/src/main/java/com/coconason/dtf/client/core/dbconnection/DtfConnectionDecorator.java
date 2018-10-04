@@ -1,6 +1,7 @@
 package com.coconason.dtf.client.core.dbconnection;
 
 import com.alibaba.fastjson.JSONObject;
+import com.coconason.dtf.client.core.beans.BaseTransactionGroupInfo;
 import com.coconason.dtf.client.core.beans.TransactionGroupInfo;
 import com.coconason.dtf.client.core.beans.TransactionServiceInfo;
 import com.coconason.dtf.client.core.beans.TransactionType;
@@ -105,7 +106,7 @@ public class DtfConnectionDecorator implements Connection {
         if(TransactionType.SYNC_FINAL==TransactionType.getCurrent()||TransactionType.SYNC_STRONG==TransactionType.getCurrent()) {
             threadPoolForClientProxy.execute(new SubmitRunnable(TransactionGroupInfo.getCurrent()));
             try {
-                TransactionGroupInfo transactionGroupInfo = TransactionGroupInfo.getCurrent();
+                BaseTransactionGroupInfo transactionGroupInfo = TransactionGroupInfo.getCurrent();
                 String groupId = transactionGroupInfo.getGroupId();
                 Long memberId = transactionGroupInfo.getMemberId();
                 if (ORIGINAL_ID.equals(memberId) && TransactionType.SYNC_STRONG==TransactionType.getCurrent()){
@@ -148,9 +149,9 @@ public class DtfConnectionDecorator implements Connection {
     }
 
     private class SubmitRunnable implements Runnable{
-        private TransactionGroupInfo transactionGroupInfo;
+        private BaseTransactionGroupInfo transactionGroupInfo;
 
-        public SubmitRunnable(TransactionGroupInfo transactionGroupInfo) {
+        public SubmitRunnable(BaseTransactionGroupInfo transactionGroupInfo) {
             this.transactionGroupInfo = transactionGroupInfo;
         }
 

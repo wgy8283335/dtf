@@ -2,66 +2,39 @@ package com.coconason.dtf.client.core.beans;
 
 import com.coconason.dtf.common.utils.UuidGenerator;
 
-import java.util.HashSet;
 import java.util.Set;
 
 /**
  * @Author: Jason
  * @date: 2018/8/21-13:31
  */
-public class TransactionGroupInfo {
-
-    private final static ThreadLocal<TransactionGroupInfo> current = new ThreadLocal<>();
+public class TransactionGroupInfo extends BaseTransactionGroupInfo {
 
     private String groupId;
     private Long memberId;
     private Set<Long> groupMembers;
 
-    public static TransactionGroupInfo newInstanceWithGroupidMemid(String groupId, Long memberId){
-        Set groupMembers = new HashSet<>();
-        groupMembers.add(memberId);
-        return new TransactionGroupInfo(groupId, memberId, groupMembers);
-    }
-
-    private TransactionGroupInfo(String groupId,Long memberId, Set<Long> groupMembers) {
-        this.groupId = groupId;
-        this.memberId = memberId;
-        this.groupMembers = groupMembers;
-    }
-
-//    public void setGroupId(String groupId) {
-//        this.groupId = groupId;
-//    }
-
+    @Override
     public void addNewMemeber(){
         this.memberId = UuidGenerator.generateLongId();
         groupMembers.add(this.memberId);
     }
-
+    @Override
     public void addMemebers(Set<Long> tempSet){
         groupMembers.addAll(tempSet);
     }
-
+    @Override
     public Long getMemberId() {
         return memberId;
     }
-
+    @Override
     public String getGroupId() {
         return groupId;
     }
-
+    @Override
     public Set<Long> getGroupMembers() {
         return groupMembers;
     }
-
-    public static TransactionGroupInfo getCurrent(){
-        return current.get();
-    }
-
-    public static void setCurrent(TransactionGroupInfo transactionGroupInfo){
-        current.set(transactionGroupInfo);
-    }
-
     @Override
     public String toString() {
         StringBuffer buffer = new StringBuffer(groupId);
@@ -74,15 +47,9 @@ public class TransactionGroupInfo {
         return buffer.toString();
     }
 
-    public static TransactionGroupInfo parse(String value){
-        String[] array = value.split("-");
-        String groupId = array[0];
-        Long memberId = Long.valueOf(array[1]);
-        Set<Long> groupMembers = new HashSet<>();
-        for(int i=2; i<array.length;i++){
-            groupMembers.add(Long.valueOf(array[i]));
-        }
-        TransactionGroupInfo transactionGroupInfo = new TransactionGroupInfo(groupId,memberId,groupMembers);
-        return transactionGroupInfo;
+    TransactionGroupInfo(String groupId,Long memberId, Set<Long> groupMembers) {
+        this.groupId = groupId;
+        this.memberId = memberId;
+        this.groupMembers = groupMembers;
     }
 }

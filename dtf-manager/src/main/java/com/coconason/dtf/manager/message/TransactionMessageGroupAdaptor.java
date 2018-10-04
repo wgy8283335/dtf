@@ -23,4 +23,18 @@ public abstract class TransactionMessageGroupAdaptor implements TransactionMessa
 
     }
 
+    @Override
+    public Boolean isCommitted() {
+        return null;
+    }
+
+    @Override
+    public String getUrl() {
+        return null;
+    }
+
+    @Override
+    public Object getObj() {
+        return null;
+    }
 }
