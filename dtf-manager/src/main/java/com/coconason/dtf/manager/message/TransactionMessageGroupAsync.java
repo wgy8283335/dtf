@@ -15,7 +15,7 @@ public class TransactionMessageGroupAsync extends TransactionMessageGroupAsyncAd
     private String groupId;
     private final Set<MessageInfoInterface> memberSet = new HashSet<MessageInfoInterface>();
 
-    public TransactionMessageGroupAsync(String groupId) {
+    private TransactionMessageGroupAsync(String groupId) {
         this.groupId = groupId;
     }
 
