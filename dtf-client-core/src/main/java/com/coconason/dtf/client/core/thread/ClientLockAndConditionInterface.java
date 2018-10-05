@@ -1,6 +1,7 @@
-package com.coconason.dtf.client.core.dbconnection;
+package com.coconason.dtf.client.core.thread;
 
 import com.coconason.dtf.client.core.beans.BaseTransactionServiceInfo;
+import com.coconason.dtf.client.core.dbconnection.OperationType;
 import com.coconason.dtf.client.core.nettyclient.protobufclient.NettyService;
 
 import java.util.concurrent.TimeUnit;
@@ -10,9 +11,9 @@ import java.util.concurrent.TimeUnit;
  * @date: 2018/10/2-10:53
  */
 public interface ClientLockAndConditionInterface {
-    DbOperationType getState();
+    OperationType getState();
 
-    void setState(DbOperationType state);
+    void setState(OperationType state);
 
     void signal();
 

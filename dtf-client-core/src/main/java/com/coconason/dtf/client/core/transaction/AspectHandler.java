@@ -2,10 +2,10 @@ package com.coconason.dtf.client.core.transaction;
 
 import com.coconason.dtf.client.core.annotation.DtfTransaction;
 import com.coconason.dtf.client.core.beans.*;
-import com.coconason.dtf.client.core.dbconnection.ClientLockAndCondition;
-import com.coconason.dtf.client.core.dbconnection.ClientLockAndConditionInterface;
-import com.coconason.dtf.client.core.dbconnection.DbOperationType;
+import com.coconason.dtf.client.core.dbconnection.OperationType;
 import com.coconason.dtf.client.core.nettyclient.protobufclient.NettyService;
+import com.coconason.dtf.client.core.thread.ClientLockAndCondition;
+import com.coconason.dtf.client.core.thread.ClientLockAndConditionInterface;
 import com.coconason.dtf.client.core.utils.GroupidGenerator;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.common.utils.UuidGenerator;
@@ -76,7 +76,7 @@ public class AspectHandler implements AspectInterface {
                 //2.
                 result = point.proceed();
                 //3.Send confirm message to netty server, in order to commit all transaction in the service
-                ClientLockAndConditionInterface asyncFinalCommitLc = new ClientLockAndCondition(new ReentrantLock(), DbOperationType.DEFAULT);
+                ClientLockAndConditionInterface asyncFinalCommitLc = new ClientLockAndCondition(new ReentrantLock(), OperationType.DEFAULT);
                 asyncFinalCommitThreadLockCacheProxy.put(TransactionGroupInfo.getCurrent().getGroupId(), asyncFinalCommitLc);
                 BaseTransactionServiceInfo serviceInfo = TransactionServiceInfoFactory.newInstanceForAsyncCommit(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.ASYNC_COMMIT, TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers());
                 asyncFinalCommitLc.awaitLimitedTime(nettyService,serviceInfo,"commit async fail",10000, TimeUnit.MILLISECONDS);
@@ -105,7 +105,7 @@ public class AspectHandler implements AspectInterface {
                 }
                 if(ORIGINAL_ID.equals(TransactionGroupInfo.getCurrent().getMemberId())){
                     if(TransactionType.SYNC_STRONG == transactionType){
-                        if(syncFinalCommitThreadLockCacheProxy.getIfPresent(TransactionGroupInfo.getCurrent().getGroupId()).getState()==DbOperationType.WHOLE_FAIL){
+                        if(syncFinalCommitThreadLockCacheProxy.getIfPresent(TransactionGroupInfo.getCurrent().getGroupId()).getState()== OperationType.WHOLE_FAIL){
                             throw new Exception("system transaction error");
                         }
                     }

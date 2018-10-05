@@ -1,6 +1,7 @@
-package com.coconason.dtf.client.core.dbconnection;
+package com.coconason.dtf.client.core.thread;
 
 import com.coconason.dtf.client.core.beans.BaseTransactionServiceInfo;
+import com.coconason.dtf.client.core.dbconnection.OperationType;
 import com.coconason.dtf.client.core.nettyclient.protobufclient.NettyService;
 
 import java.util.concurrent.TimeUnit;
@@ -14,19 +15,19 @@ import java.util.concurrent.locks.Lock;
 public final class ClientLockAndCondition implements ClientLockAndConditionInterface {
     private Lock lock;
     private Condition condition;
-    private volatile DbOperationType state = DbOperationType.DEFAULT;
+    private volatile OperationType state = OperationType.DEFAULT;
 
-    public ClientLockAndCondition(Lock lock, DbOperationType state) {
+    public ClientLockAndCondition(Lock lock, OperationType state) {
         this.state = state;
         this.lock = lock;
         this.condition = lock.newCondition();
     }
     @Override
-    public DbOperationType getState() {
+    public OperationType getState() {
         return state;
     }
     @Override
-    public void setState(DbOperationType state) {
+    public void setState(OperationType state) {
         this.state = state;
     }
     @Override

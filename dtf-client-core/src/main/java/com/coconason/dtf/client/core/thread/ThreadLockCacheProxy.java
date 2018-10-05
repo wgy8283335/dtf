@@ -1,10 +1,10 @@
-package com.coconason.dtf.client.core.dbconnection;
+package com.coconason.dtf.client.core.thread;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheStats;
 import com.google.common.collect.ImmutableMap;
 import org.springframework.stereotype.Component;
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
 
 import java.util.Map;
 import java.util.concurrent.Callable;

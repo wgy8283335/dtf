@@ -1,5 +1,6 @@
 package com.coconason.dtf.client.core.dbconnection;
 
+import com.coconason.dtf.client.core.thread.ThreadLockCacheProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 

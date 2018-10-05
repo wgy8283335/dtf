@@ -51,7 +51,7 @@ public class CheckAndSubmitRunnable implements Runnable{
             JSONObject info = JSONObject.parseObject(message.getInfo());
             String groupId = info.get("groupId").toString();
             Object obj = info.get("groupMemberSet");
-            TransactionMessageGroupInterface tmfs = obj == null ? messageForSubmitSyncCacheProxy.get(groupId): TransactionMessageFactory.getInstance(message);
+            TransactionMessageGroupInterface tmfs = obj == null ? messageForSubmitSyncCacheProxy.get(groupId): TransactionMessageFactory.getMessageForSubmitInstance(message);
             if(tmfs == null||tmfs.getMemberSet().isEmpty()|| messageSyncCacheProxy.get(tmfs.getGroupId())==null){
                 return;
             }

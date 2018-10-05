@@ -2,8 +2,8 @@ package com.coconason.dtf.client.core.nettyclient.protobufclient;
 
 import com.alibaba.fastjson.JSONObject;
 import com.coconason.dtf.client.core.beans.BaseTransactionServiceInfo;
-import com.coconason.dtf.client.core.dbconnection.ClientLockAndConditionInterface;
-import com.coconason.dtf.client.core.dbconnection.DbOperationType;
+import com.coconason.dtf.client.core.dbconnection.OperationType;
+import com.coconason.dtf.client.core.thread.ClientLockAndConditionInterface;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
 import com.google.common.cache.Cache;
@@ -58,7 +58,7 @@ class ClientTransactionHandler extends AbstractClientTransactionHandler
 		ActionType action = message.getAction();
 		JSONObject map=null;
 		ClientLockAndConditionInterface lc=null;
-		DbOperationType state=null;
+		OperationType state=null;
 
 		if(action == ActionType.APPROVESUBMIT||action == ActionType.APPROVESUBMIT_STRONG||action == ActionType.CANCEL){
 			map = JSONObject.parseObject(message.getInfo().toString());
@@ -67,44 +67,44 @@ class ClientTransactionHandler extends AbstractClientTransactionHandler
 		}
 		switch (action){
 			case APPROVESUBMIT:
-				if(state == DbOperationType.COMMIT||state == DbOperationType.ROLLBACK){
+				if(state == OperationType.COMMIT||state == OperationType.ROLLBACK){
 					lc.signal();
 				}
 				break;
 			case APPROVESUBMIT_STRONG:
-				if(state == DbOperationType.COMMIT||state == DbOperationType.ROLLBACK){
+				if(state == OperationType.COMMIT||state == OperationType.ROLLBACK){
 					lc.signal();
 				}
 				break;
 			case WHOLE_SUCCESS_STRONG:
 				map = JSONObject.parseObject(message.getInfo().toString());
 				ClientLockAndConditionInterface secondlc = secondThreadLockCacheProxy.getIfPresent(map.get("groupId").toString());
-				secondlc.setState(DbOperationType.WHOLE_SUCCESS);
+				secondlc.setState(OperationType.WHOLE_SUCCESS);
 				secondlc.signal();
 				break;
 			case WHOLE_FAIL_STRONG:
 				map = JSONObject.parseObject(message.getInfo().toString());
 				ClientLockAndConditionInterface secondlc2 = secondThreadLockCacheProxy.getIfPresent(map.get("groupId").toString());
-				secondlc2.setState(DbOperationType.WHOLE_FAIL);
+				secondlc2.setState(OperationType.WHOLE_FAIL);
 				secondlc2.signal();
 				break;
 			case CANCEL:
-				lc.setState(DbOperationType.ROLLBACK);
+				lc.setState(OperationType.ROLLBACK);
 				lc.signal();
 				break;
 			case ADD_SUCCESS_ASYNC:
 				ClientLockAndConditionInterface thirdlc = thirdThreadLockCacheProxy.getIfPresent(JSONObject.parseObject(message.getInfo().toString()).get("groupId").toString());
-				thirdlc.setState(DbOperationType.ASYNC_SUCCESS);
+				thirdlc.setState(OperationType.ASYNC_SUCCESS);
 				thirdlc.signal();
 				break;
 			case ADD_FAIL_ASYNC:
 				ClientLockAndConditionInterface thirdlc2 = thirdThreadLockCacheProxy.getIfPresent(JSONObject.parseObject(message.getInfo().toString()).get("groupId").toString());
-				thirdlc2.setState(DbOperationType.ASYNC_FAIL);
+				thirdlc2.setState(OperationType.ASYNC_FAIL);
 				thirdlc2.signal();
 				break;
 			case COMMIT_SUCCESS_ASYNC:
 				ClientLockAndConditionInterface asyncFinallc = asyncFinalCommitThreadLockCacheProxy.getIfPresent(JSONObject.parseObject(message.getInfo().toString()).get("groupId").toString());
-				asyncFinallc.setState(DbOperationType.COMMIT_SUCCESS_ASYNC);
+				asyncFinallc.setState(OperationType.COMMIT_SUCCESS_ASYNC);
 				asyncFinallc.signal();
 				break;
 			default:

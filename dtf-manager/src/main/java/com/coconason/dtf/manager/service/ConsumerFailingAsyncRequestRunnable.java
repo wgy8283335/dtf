@@ -4,13 +4,15 @@ import com.coconason.dtf.manager.cache.MessageAsyncQueueProxy;
 import com.coconason.dtf.manager.message.MessageInfoInterface;
 import com.coconason.dtf.manager.utils.HttpClientUtil;
 
+import java.util.Queue;
+
 /**
  * @Author: Jason
  * @date: 2018/9/6-13:04
  */
 public class ConsumerFailingAsyncRequestRunnable implements Runnable{
 
-    private MessageAsyncQueueProxy messageAsyncQueueProxy;
+    private Queue messageAsyncQueueProxy;
 
     public ConsumerFailingAsyncRequestRunnable(MessageAsyncQueueProxy messageAsyncQueueProxy) {
         this.messageAsyncQueueProxy = messageAsyncQueueProxy;
@@ -21,7 +23,7 @@ public class ConsumerFailingAsyncRequestRunnable implements Runnable{
         MessageInfoInterface messageInfo=null;
         while(true){
             if(messageAsyncQueueProxy !=null){
-                messageInfo = messageAsyncQueueProxy.poll();
+                messageInfo = (MessageInfoInterface)messageAsyncQueueProxy.poll();
             }
             if(messageInfo==null){
                 try{

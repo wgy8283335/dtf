@@ -4,10 +4,10 @@ import com.coconason.dtf.client.core.beans.BaseTransactionGroupInfo;
 import com.coconason.dtf.client.core.beans.BaseTransactionServiceInfo;
 import com.coconason.dtf.client.core.beans.TransactionGroupInfo;
 import com.coconason.dtf.client.core.beans.TransactionServiceInfoFactory;
-import com.coconason.dtf.client.core.dbconnection.ClientLockAndCondition;
-import com.coconason.dtf.client.core.dbconnection.DbOperationType;
-import com.coconason.dtf.client.core.dbconnection.ThreadLockCacheProxy;
+import com.coconason.dtf.client.core.dbconnection.OperationType;
 import com.coconason.dtf.client.core.nettyclient.protobufclient.NettyService;
+import com.coconason.dtf.client.core.thread.ClientLockAndCondition;
+import com.coconason.dtf.client.core.thread.ThreadLockCacheProxy;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.common.utils.UuidGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ public class RestClientAsync {
 
     public void sendPost(String url, Object object) throws Exception{
         BaseTransactionGroupInfo groupInfo = TransactionGroupInfo.getCurrent();
-        ClientLockAndCondition lc = new ClientLockAndCondition(new ReentrantLock(), DbOperationType.DEFAULT);
+        ClientLockAndCondition lc = new ClientLockAndCondition(new ReentrantLock(), OperationType.DEFAULT);
         thirdThreadLockCacheProxy.put(groupInfo.getGroupId(),lc);
         groupInfo.addNewMemeber();
         TransactionGroupInfo.setCurrent(groupInfo);

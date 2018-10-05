@@ -10,10 +10,10 @@ import java.util.Properties;
  */
 public class PropertiesReader {
     private Properties properties;
-    private BufferedReader bufferedReader;
+//    private BufferedReader bufferedReader;
 
     public PropertiesReader(String filePath) throws Exception{
-        bufferedReader = new BufferedReader(new FileReader(filePath));
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath));
         properties = new Properties();
         properties.load(bufferedReader);
     }

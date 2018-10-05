@@ -2,6 +2,9 @@ package com.coconason.dtf.client.core.dbconnection;
 
 import com.alibaba.fastjson.JSONObject;
 import com.coconason.dtf.client.core.beans.*;
+import com.coconason.dtf.client.core.thread.ClientLockAndCondition;
+import com.coconason.dtf.client.core.thread.ClientLockAndConditionInterface;
+import com.coconason.dtf.client.core.thread.ThreadLockCacheProxy;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.common.utils.UuidGenerator;
 import com.google.common.cache.Cache;
@@ -34,7 +37,7 @@ public class DtfConnectionDecorator implements Connection {
 
     private boolean hasRead = false;
 
-    private volatile DbOperationType state = DbOperationType.DEFAULT;
+    private volatile OperationType state = OperationType.DEFAULT;
 
     private boolean hasClose = false;
 
@@ -71,7 +74,7 @@ public class DtfConnectionDecorator implements Connection {
             return;
         }
         logger.info("commit");
-        state = DbOperationType.COMMIT;
+        state = OperationType.COMMIT;
         close();
         hasClose = true;
     }
@@ -84,7 +87,7 @@ public class DtfConnectionDecorator implements Connection {
             return;
         }
         logger.info("rollback");
-        state = DbOperationType.ROLLBACK;
+        state = OperationType.ROLLBACK;
         close();
         hasClose = true;
     }
@@ -108,20 +111,20 @@ public class DtfConnectionDecorator implements Connection {
                 Long memberId = transactionGroupInfo.getMemberId();
                 if (ORIGINAL_ID.equals(memberId) && TransactionType.SYNC_STRONG==TransactionType.getCurrent()){
                     queue.add(TransactionServiceInfoFactory.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT_STRONG,TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
-                    ClientLockAndConditionInterface secondlc = new ClientLockAndCondition(new ReentrantLock(), DbOperationType.DEFAULT);
+                    ClientLockAndConditionInterface secondlc = new ClientLockAndCondition(new ReentrantLock(), OperationType.DEFAULT);
                     secondThreadLockCacheProxy.put(groupId, secondlc);
                     boolean isWholeSuccess = secondlc.await(10000,TimeUnit.MILLISECONDS);
                     if(isWholeSuccess==false){
                         ClientLockAndConditionInterface syncFinalCommitLc = syncFinalCommitThreadLockCacheProxy.getIfPresent(groupId);
-                        syncFinalCommitLc.setState(DbOperationType.WHOLE_FAIL);
+                        syncFinalCommitLc.setState(OperationType.WHOLE_FAIL);
                         throw new Exception("Distributed transaction fail to receive WHOLE_SUCCESS_STRONG , groupId is :"+groupId);
                     }
                     ClientLockAndConditionInterface secondlc2 = secondThreadLockCacheProxy.getIfPresent(groupId);
-                    if (secondlc2.getState() == DbOperationType.WHOLE_FAIL) {
+                    if (secondlc2.getState() == OperationType.WHOLE_FAIL) {
                         queue.add(TransactionServiceInfoFactory.newInstanceForShortMessage(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.WHOLE_FAIL_STRONG_ACK, groupId));
                         connection.close();
                         ClientLockAndConditionInterface syncFinalCommitLc = syncFinalCommitThreadLockCacheProxy.getIfPresent(groupId);
-                        syncFinalCommitLc.setState(DbOperationType.WHOLE_FAIL);
+                        syncFinalCommitLc.setState(OperationType.WHOLE_FAIL);
                         throw new Exception("Distributed transaction failed and groupId:"+groupId);
                     }else{
                         queue.add(TransactionServiceInfoFactory.newInstanceForShortMessage(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.WHOLE_SUCCESS_STRONG_ACK, groupId));
@@ -129,7 +132,7 @@ public class DtfConnectionDecorator implements Connection {
                         System.out.println("dtf connection.close();");
                         connection.close();
                         ClientLockAndConditionInterface syncFinalCommitLc = syncFinalCommitThreadLockCacheProxy.getIfPresent(groupId);
-                        syncFinalCommitLc.setState(DbOperationType.WHOLE_SUCCESS);
+                        syncFinalCommitLc.setState(OperationType.WHOLE_SUCCESS);
                     }
                 }
                 else if(ORIGINAL_ID.equals(memberId) && TransactionType.SYNC_FINAL==TransactionType.getCurrent()){
@@ -173,7 +176,7 @@ public class DtfConnectionDecorator implements Connection {
                 }
                 //3. After signaling, if success commit or rollback, otherwise skip the committing.
                 state = threadLockCacheProxy.getIfPresent(map.get("groupId").toString()+memberId).getState();
-                if(state == DbOperationType.COMMIT){
+                if(state == OperationType.COMMIT){
                     //Thread.sleep(30000);
                     if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG) {
                         //int i = 6/0;
@@ -183,7 +186,7 @@ public class DtfConnectionDecorator implements Connection {
                     }
                     System.out.println("提交");
                     connection.commit();
-                }else if(state == DbOperationType.ROLLBACK){
+                }else if(state == OperationType.ROLLBACK){
                     if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG){
                         queue.add(TransactionServiceInfoFactory.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL_STRONG, groupId,groupMembers));
                     }else if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD){
