@@ -8,7 +8,7 @@ import java.util.Set;
  * @Author: Jason
  * @date: 2018/9/6-11:54
  */
-public class TransactionMessageGroupAsync extends TransactionMessageGroupAsyncAdaptor {
+public final class TransactionMessageGroupAsync extends TransactionMessageGroupAsyncAdaptor {
     private String groupId;
    //private final Set<MessageInfoInterface> memberSet = new HashSet<MessageInfoInterface>();
    private Set<MessageInfoInterface> memberSet;

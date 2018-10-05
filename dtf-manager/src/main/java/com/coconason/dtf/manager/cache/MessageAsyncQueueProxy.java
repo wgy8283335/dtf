@@ -11,7 +11,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  * @Author: Jason
  * @date: 2018/9/6-12:15
  */
-public class MessageAsyncQueueProxy implements Queue {
+public final class MessageAsyncQueueProxy implements Queue {
     private LinkedBlockingQueue<MessageInfoInterface> messageQueue;
 
     public MessageAsyncQueueProxy() {

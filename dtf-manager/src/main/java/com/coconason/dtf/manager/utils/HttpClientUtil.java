@@ -15,7 +15,7 @@ import java.io.IOException;
  * @Author: Jason
  * @date: 2018/9/17-11:36
  */
-public class HttpClientUtil {
+public final class HttpClientUtil {
 
 	public static String doPostJson(String url, String json,String groupId){
 		CloseableHttpClient httpClient = HttpClients.createDefault();

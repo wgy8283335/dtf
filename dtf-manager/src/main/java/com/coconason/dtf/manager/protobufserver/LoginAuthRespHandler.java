@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @Author: Jason
  * @date: 2018/7/30-9:31
  */
-public class LoginAuthRespHandler extends ChannelInboundHandlerAdapter
+public final class LoginAuthRespHandler extends ChannelInboundHandlerAdapter
 {
 
     /**

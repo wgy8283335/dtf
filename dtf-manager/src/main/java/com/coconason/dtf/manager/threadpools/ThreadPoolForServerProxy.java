@@ -11,7 +11,7 @@ import java.util.concurrent.*;
  * @Author: Jason
  * @date: 2018/9/17-11:36
  */
-public class ThreadPoolForServerProxy implements ExecutorService {
+public final class ThreadPoolForServerProxy implements ExecutorService {
     private ExecutorService pool;
 
     private ThreadPoolForServerProxy(Integer corePoolSize, Integer maximumPoolSize, Integer keepAliveTime, Integer capacity) {

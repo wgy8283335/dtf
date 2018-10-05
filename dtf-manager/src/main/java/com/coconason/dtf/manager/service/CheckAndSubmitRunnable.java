@@ -19,7 +19,7 @@ import java.util.concurrent.ExecutorService;
  * @Author: Jason
  * @date: 2018/9/19-10:26
  */
-public class CheckAndSubmitRunnable implements Runnable{
+public final class CheckAndSubmitRunnable implements Runnable{
 
     private MessageProto.Message message;
 

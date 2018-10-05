@@ -15,7 +15,7 @@ import java.util.concurrent.locks.Lock;
  * @Author: Jason
  * @date: 2018/8/22-11:44
  */
-public class LockAndCondition implements LockAndConditionInterface {
+public final class LockAndCondition implements LockAndConditionInterface {
 
     private static final Logger logger = LoggerFactory.getLogger(LockAndCondition.class);
     private Lock lock;

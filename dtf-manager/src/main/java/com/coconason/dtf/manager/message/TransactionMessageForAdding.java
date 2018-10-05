@@ -6,7 +6,7 @@ import io.netty.channel.ChannelHandlerContext;
  * @Author: Jason
  * @date: 2018/8/24-17:01
  */
-public class TransactionMessageForAdding implements TransactionMessageForAddingInterface {
+public final class TransactionMessageForAdding implements TransactionMessageForAddingInterface {
     private String groupMemberId;
     private ChannelHandlerContext ctx;
     private String method;

@@ -11,7 +11,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * @Author: Jason
  * @date: 2018/9/26-17:02
  */
-public class SendMessageRunnable implements Runnable {
+public final class SendMessageRunnable implements Runnable {
     private String groupId;
     private ActionType actionType;
     private ChannelHandlerContext ctx;

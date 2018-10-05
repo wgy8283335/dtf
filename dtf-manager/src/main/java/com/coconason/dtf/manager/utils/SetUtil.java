@@ -11,7 +11,7 @@ import java.util.Set;
  * @Author: Jason
  * @date: 2018/9/19-9:55
  */
-public class SetUtil {
+public final class SetUtil {
     public static boolean isSetEqual(Set set1, Set set2) {
 
         if(set1 == null && set2 == null){

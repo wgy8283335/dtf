@@ -10,7 +10,7 @@ import io.netty.channel.ChannelHandlerContext;
  * @Author: Jason
  * @date: 2018/9/19-10:32
  */
-public class MessageSender {
+public final class MessageSender {
 
     public static void sendMsg(String groupId,ActionType action,ChannelHandlerContext ctx) throws Exception{
         MessageProto.Message.Builder builder= MessageProto.Message.newBuilder();

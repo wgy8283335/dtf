@@ -8,7 +8,7 @@ import io.netty.channel.ChannelHandlerContext;
  * @Author: Jason
  * @date: 2018/9/27-14:29
  */
-public class SendShortMessageRunnable implements Runnable {
+public final class SendShortMessageRunnable implements Runnable {
     private String groupId;
     private MessageProto.Message.ActionType actionType;
     private ChannelHandlerContext ctx;

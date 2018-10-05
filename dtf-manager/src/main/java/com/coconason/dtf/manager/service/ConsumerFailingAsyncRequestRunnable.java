@@ -10,7 +10,7 @@ import java.util.Queue;
  * @Author: Jason
  * @date: 2018/9/6-13:04
  */
-public class ConsumerFailingAsyncRequestRunnable implements Runnable{
+public final class ConsumerFailingAsyncRequestRunnable implements Runnable{
 
     private Queue messageAsyncQueueProxy;
 

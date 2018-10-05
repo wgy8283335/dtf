@@ -12,7 +12,7 @@ import java.util.Set;
  * @Author: Jason
  * @date: 2018/9/6-13:04
  */
-public class SendAsyncRequestRunnable implements Runnable{
+public final class SendAsyncRequestRunnable implements Runnable{
 
     private MessageCacheInterface messageAsyncCacheProxy;
 

@@ -6,7 +6,7 @@ import java.util.Set;
  * @Author: Jason
  * @date: 2018/8/24-18:43
  */
-public class TransactionMessageForSubmit extends TransactionMessageForSubmitAdaptor{
+public final class TransactionMessageForSubmit extends TransactionMessageForSubmitAdaptor{
     private String groupId;
     private Set<String> memberSet;
     @Override

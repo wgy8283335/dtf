@@ -28,7 +28,7 @@ import java.util.concurrent.ExecutorService;
  * @Author: Jason
  * @date: 2018/7/30-9:31
  */
-public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
+public final class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
 
     private MessageCacheInterface messageSyncCacheProxy;
 

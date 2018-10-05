@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
  * @Author: Jason
  * @date: 2018/8/22-11:09
  */
-public class ServerThreadLockCacheProxy implements Cache{
+public final class ServerThreadLockCacheProxy implements Cache{
 
     private Cache<String,LockAndConditionInterface> cache;
 

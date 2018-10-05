@@ -9,7 +9,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
  * @Author: Jason
  * @date: 2018/7/30-9:33
  */
-public class HeartBeatRespHandler extends ChannelInboundHandlerAdapter
+public final class HeartBeatRespHandler extends ChannelInboundHandlerAdapter
 {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception

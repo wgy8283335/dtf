@@ -11,7 +11,7 @@ import java.util.Set;
  * @Author: Jason
  * @date: 2018/8/24-17:04
  */
-public class TransactionMessageGroup extends TransactionMessageGroupAdaptor {
+public final class TransactionMessageGroup extends TransactionMessageGroupAdaptor {
     private String groupId;
 //    private final List<TransactionMessageForAddingInterface> memberList = new ArrayList<TransactionMessageForAddingInterface>();
 //    private final Set<String> memberSet = new HashSet<String>();

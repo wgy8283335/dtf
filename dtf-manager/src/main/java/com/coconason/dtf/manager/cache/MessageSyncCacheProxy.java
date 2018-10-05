@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
  * @Author: Jason
  * @date: 2018/8/24-16:34
  */
-public class MessageSyncCacheProxy implements MessageCacheInterface{
+public final class MessageSyncCacheProxy implements MessageCacheInterface{
 
     private Cache<String,TransactionMessageGroupInterface> cache;
 

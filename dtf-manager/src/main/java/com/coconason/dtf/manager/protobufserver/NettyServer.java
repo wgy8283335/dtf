@@ -26,7 +26,7 @@ import io.netty.handler.timeout.ReadTimeoutHandler;
  * @Author: Jason
  * @date: 2018/7/30-9:38
  */
-public class NettyServer
+public final class NettyServer
 {
     private static Boolean isHealthy = false;
 

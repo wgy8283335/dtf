@@ -8,7 +8,7 @@ import java.util.Properties;
  * @Author: Jason
  * @date: 2018/9/19-10:50
  */
-public class PropertiesReader {
+public final class PropertiesReader {
     private Properties properties;
 //    private BufferedReader bufferedReader;
 

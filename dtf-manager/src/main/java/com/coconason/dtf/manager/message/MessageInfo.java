@@ -4,7 +4,7 @@ package com.coconason.dtf.manager.message;
  * @Author: Jason
  * @date: 2018/9/6-13:14
  */
-public class MessageInfo implements MessageInfoInterface{
+public final class MessageInfo implements MessageInfoInterface{
     private String memberId;
     private boolean isCommitted;
     private String url;
