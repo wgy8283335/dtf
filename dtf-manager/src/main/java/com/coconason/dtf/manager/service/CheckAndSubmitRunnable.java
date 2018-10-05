@@ -4,13 +4,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
 import com.coconason.dtf.manager.cache.MessageCacheInterface;
-import com.coconason.dtf.manager.cache.MessageForSubmitSyncCacheProxy;
-import com.coconason.dtf.manager.cache.MessageSyncCacheProxy;
 import com.coconason.dtf.manager.message.TransactionMessageForAdding;
-import com.coconason.dtf.manager.message.TransactionMessageForSubmit;
+import com.coconason.dtf.manager.message.TransactionMessageFactory;
 import com.coconason.dtf.manager.message.TransactionMessageGroupInterface;
-import com.coconason.dtf.manager.thread.ServerThreadLockCacheProxy;
-import com.coconason.dtf.manager.threadpools.ThreadPoolForServerProxy;
 import com.coconason.dtf.manager.utils.SetUtil;
 import com.google.common.cache.Cache;
 import io.netty.channel.ChannelHandlerContext;
@@ -55,7 +51,7 @@ public class CheckAndSubmitRunnable implements Runnable{
             JSONObject info = JSONObject.parseObject(message.getInfo());
             String groupId = info.get("groupId").toString();
             Object obj = info.get("groupMemberSet");
-            TransactionMessageGroupInterface tmfs = obj == null ? messageForSubmitSyncCacheProxy.get(groupId):new TransactionMessageForSubmit(message);
+            TransactionMessageGroupInterface tmfs = obj == null ? messageForSubmitSyncCacheProxy.get(groupId): TransactionMessageFactory.getInstance(message);
             if(tmfs == null||tmfs.getMemberSet().isEmpty()|| messageSyncCacheProxy.get(tmfs.getGroupId())==null){
                 return;
             }

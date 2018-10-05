@@ -87,7 +87,7 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
                 threadPoolForServerProxy.execute(new CheckAndSubmitRunnable(message,ActionType.ADD,ctx, messageForSubmitSyncCacheProxy, messageSyncCacheProxy, serverThreadLockCacheProxy, threadPoolForServerProxy));
                 break;
             case APPLYFORSUBMIT:
-                TransactionMessageGroupInterface transactionMessageForSubmit = new TransactionMessageForSubmit(message);
+                TransactionMessageGroupInterface transactionMessageForSubmit = TransactionMessageFactory.getInstance(message);
                 messageForSubmitSyncCacheProxy.put( transactionMessageForSubmit.getGroupId(),transactionMessageForSubmit);
                 threadPoolForServerProxy.execute(new CheckAndSubmitRunnable(message,ActionType.APPROVESUBMIT,ctx, messageForSubmitSyncCacheProxy, messageSyncCacheProxy, serverThreadLockCacheProxy, threadPoolForServerProxy));
                 break;
@@ -98,7 +98,7 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
                 threadPoolForServerProxy.execute(new CheckAndSubmitRunnable(message,ActionType.ADD_STRONG,ctx, messageForSubmitSyncCacheProxy, messageSyncCacheProxy, serverThreadLockCacheProxy, threadPoolForServerProxy));
                 break;
             case APPLYFORSUBMIT_STRONG:
-                TransactionMessageGroupInterface transactionMessageForSubmitTemp1 = new TransactionMessageForSubmit(message);
+                TransactionMessageGroupInterface transactionMessageForSubmitTemp1 = TransactionMessageFactory.getInstance(message);
                 messageForSubmitSyncCacheProxy.put( transactionMessageForSubmitTemp1.getGroupId(),transactionMessageForSubmitTemp1);
                 threadPoolForServerProxy.execute(new CheckAndSubmitRunnable(message,ActionType.APPROVESUBMIT_STRONG,ctx, messageForSubmitSyncCacheProxy, messageSyncCacheProxy, serverThreadLockCacheProxy, threadPoolForServerProxy));
                 break;
@@ -181,7 +181,7 @@ public class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
             case ASYNC_COMMIT:
                 JSONObject map = JSONObject.parseObject(message.getInfo());
                 String groupId = map.get("groupId").toString();
-                TransactionMessageGroupInterface transactionMessageForSubmitTemp = new TransactionMessageForSubmit(message);
+                TransactionMessageGroupInterface transactionMessageForSubmitTemp = TransactionMessageFactory.getInstance(message);
                 messageForSubmitAsyncCacheProxy.put(transactionMessageForSubmitTemp.getGroupId(),transactionMessageForSubmitTemp);
                 threadPoolForServerProxy.execute(new SendShortMessageRunnable(groupId,ActionType.COMMIT_SUCCESS_ASYNC,ctx));
                 TransactionMessageGroupInterface transactionMessageGroupAsync1 = messageAsyncCacheProxy.get(groupId);
