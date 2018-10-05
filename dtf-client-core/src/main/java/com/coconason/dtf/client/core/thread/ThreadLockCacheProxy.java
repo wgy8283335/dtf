@@ -16,7 +16,7 @@ import java.util.concurrent.ExecutionException;
  * @date: 2018/8/22-11:09
  */
 @Component(value="threadLockCacheProxy")
-public class ThreadLockCacheProxy implements Cache{
+public final class ThreadLockCacheProxy implements Cache{
 
     private Cache<String,ClientLockAndConditionInterface> cache;
 

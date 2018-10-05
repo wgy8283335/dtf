@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 @Aspect
 @Component
 @Order(1)
-class DtfClientInterceptor {
+final class DtfClientInterceptor {
 
     @Autowired
     @Qualifier("aspectHandler")

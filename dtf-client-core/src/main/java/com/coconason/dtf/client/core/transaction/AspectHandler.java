@@ -29,7 +29,7 @@ import static com.coconason.dtf.client.core.constants.Member.ORIGINAL_ID;
  * @date: 2018/8/19-20:38
  */
 @Component
-public class AspectHandler implements AspectInterface {
+public final class AspectHandler implements AspectInterface {
 
     @Autowired
     @Qualifier("transactionMessageQueueProxy")

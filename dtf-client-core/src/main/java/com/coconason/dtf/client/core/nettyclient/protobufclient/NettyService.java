@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
  * @date: 2018/8/22-16:49
  */
 @Component
-public class NettyService {
+public final class NettyService {
 
     @Autowired
     private AbstractClientTransactionHandler clientTransactionHandler;

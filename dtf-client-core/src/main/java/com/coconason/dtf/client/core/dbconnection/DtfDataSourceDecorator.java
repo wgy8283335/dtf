@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  * @date: 2018/8/21-20:16
  */
 
-public class DtfDataSourceDecorator implements DataSource{
+public final class DtfDataSourceDecorator implements DataSource{
     private DataSource dataSource;
     @Autowired
     private ThreadLockCacheProxy threadLockCacheProxy;

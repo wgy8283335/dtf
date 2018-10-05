@@ -22,7 +22,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * @date: 2018/8/27-15:24
  */
 @Component
-public class RestClientAsync {
+public final class RestClientAsync {
 
     @Autowired
     private NettyService nettyService;

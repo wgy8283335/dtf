@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
  * @date: 2018/9/23-10:20
  */
 @ControllerAdvice
-public class HeaderModifierAdvice implements ResponseBodyAdvice<Object> {
+public final class HeaderModifierAdvice implements ResponseBodyAdvice<Object> {
     @Override
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
         return true;

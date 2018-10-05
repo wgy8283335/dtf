@@ -17,7 +17,7 @@ import java.lang.reflect.Method;
 
 @Component
 @ChannelHandler.Sharable
-class ClientTransactionHandler extends AbstractClientTransactionHandler
+final class ClientTransactionHandler extends AbstractClientTransactionHandler
 {
 
 	@Autowired

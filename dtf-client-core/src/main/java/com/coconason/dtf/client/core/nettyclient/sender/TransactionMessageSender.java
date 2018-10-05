@@ -15,7 +15,7 @@ import java.util.concurrent.ExecutorService;
  */
 
 @Component
-public class TransactionMessageSender implements MessageSenderInterface{
+public final class TransactionMessageSender implements MessageSenderInterface{
 
     @Autowired
     @Qualifier("transactionMessageQueueProxy")

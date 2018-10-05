@@ -6,7 +6,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.springframework.stereotype.Component;
 
 @Component
-class LoginAuthReqHandler extends ChannelInboundHandlerAdapter
+final class LoginAuthReqHandler extends ChannelInboundHandlerAdapter
 {
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception

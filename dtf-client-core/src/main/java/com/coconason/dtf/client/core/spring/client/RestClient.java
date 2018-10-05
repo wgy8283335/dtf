@@ -11,7 +11,7 @@ import java.util.*;
  * @date: 2018/8/27-15:24
  */
 @Component
-public class RestClient {
+public final class RestClient {
 
     @Autowired
     private ClientHttpRequestInterceptor dtfHttpRequestInterceptor;

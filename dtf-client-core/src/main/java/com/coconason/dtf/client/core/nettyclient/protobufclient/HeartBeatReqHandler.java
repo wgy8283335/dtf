@@ -9,7 +9,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 @Component
-class HeartBeatReqHandler extends ChannelInboundHandlerAdapter
+final class HeartBeatReqHandler extends ChannelInboundHandlerAdapter
 {
 
 	private volatile ScheduledFuture<?> heartBeat;

@@ -7,7 +7,7 @@ import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
  * @Author: Jason
  * @date: 2018/8/21-17:15
  */
-public class TransactionServiceInfo extends BaseTransactionServiceInfo{
+public final class TransactionServiceInfo extends BaseTransactionServiceInfo{
 
     private String id;
     private JSONObject info;

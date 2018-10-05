@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @PropertySource("classpath:application.properties")
-class NettyServerConfiguration {
+final class NettyServerConfiguration {
     @Value(value="${nettyserver.host}")
     private String host;
     @Value(value="${nettyserver.port}")

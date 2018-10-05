@@ -13,7 +13,7 @@ import java.util.concurrent.*;
  * @date: 2018/9/17-11:36
  */
 @Component
-public class ThreadPoolForClientProxy implements ExecutorService{
+public final class ThreadPoolForClientProxy implements ExecutorService{
 
     private ExecutorService pool;
 

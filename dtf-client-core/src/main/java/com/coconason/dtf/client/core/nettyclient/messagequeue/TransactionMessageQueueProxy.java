@@ -12,7 +12,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  * @date: 2018/8/22-8:07
  */
 @Component
-public class TransactionMessageQueueProxy implements Queue {
+public final class TransactionMessageQueueProxy implements Queue {
 
     private final LinkedBlockingQueue<BaseTransactionServiceInfo> messageQueue;
 

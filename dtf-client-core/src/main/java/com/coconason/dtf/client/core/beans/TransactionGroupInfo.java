@@ -8,7 +8,7 @@ import java.util.Set;
  * @Author: Jason
  * @date: 2018/8/21-13:31
  */
-public class TransactionGroupInfo extends BaseTransactionGroupInfo {
+public final class TransactionGroupInfo extends BaseTransactionGroupInfo {
 
     private String groupId;
     private Long memberId;
