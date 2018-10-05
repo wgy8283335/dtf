@@ -38,6 +38,7 @@ public class TransactionMessageFactory {
         memberList.add(tmfa);
         memberSet.add(tmfa.getGroupMemberId());
         TransactionMessageGroupInterface result = new TransactionMessageGroup(groupId);
+        result.addMemberToGroup(tmfa);
         return result;
     }
 

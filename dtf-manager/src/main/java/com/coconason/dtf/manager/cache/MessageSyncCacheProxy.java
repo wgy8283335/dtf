@@ -18,6 +18,7 @@ public class MessageSyncCacheProxy implements MessageCacheInterface{
     public MessageSyncCacheProxy() {
         cache = CacheBuilder.newBuilder().expireAfterAccess(600, TimeUnit.SECONDS).maximumSize(1000000L).build();
     }
+
     @Override
     public TransactionMessageGroupInterface get(String id){
         return cache.getIfPresent(id);
