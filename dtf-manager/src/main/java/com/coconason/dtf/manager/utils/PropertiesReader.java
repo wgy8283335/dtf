@@ -10,7 +10,6 @@ import java.util.Properties;
  */
 public final class PropertiesReader {
     private Properties properties;
-//    private BufferedReader bufferedReader;
 
     public PropertiesReader(String filePath) throws Exception{
         BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath));
