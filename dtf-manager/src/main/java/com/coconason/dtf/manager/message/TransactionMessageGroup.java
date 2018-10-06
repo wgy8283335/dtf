@@ -13,8 +13,6 @@ import java.util.Set;
  */
 public final class TransactionMessageGroup extends TransactionMessageGroupAdaptor {
     private String groupId;
-//    private final List<TransactionMessageForAddingInterface> memberList = new ArrayList<TransactionMessageForAddingInterface>();
-//    private final Set<String> memberSet = new HashSet<String>();
 
     private List<TransactionMessageForAddingInterface> memberList;
     private Set<String> memberSet;
@@ -26,16 +24,6 @@ public final class TransactionMessageGroup extends TransactionMessageGroupAdapto
         this.memberSet = new HashSet<String>();
     }
 
-//    public TransactionMessageGroup(MessageProto.Message message, ChannelHandlerContext ctx){
-//        JSONObject info = JSONObject.parseObject(message.getInfo());
-//        String groupId = info.get("groupId").toString();
-//        this.groupId = groupId;
-//        String groupMemberId = info.get("groupMemberId").toString();
-//        String method = info.get("method").toString();
-//        String args = info.get("args").toString();
-//        TransactionMessageForAddingInterface tmfa = new TransactionMessageForAdding(groupMemberId,ctx,method,args);
-//        addMemberToGroup(tmfa);
-//    }
     @Override
     public String getGroupId(){
         return groupId;

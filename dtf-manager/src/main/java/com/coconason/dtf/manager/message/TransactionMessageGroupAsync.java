@@ -10,7 +10,6 @@ import java.util.Set;
  */
 public final class TransactionMessageGroupAsync extends TransactionMessageGroupAsyncAdaptor {
     private String groupId;
-   //private final Set<MessageInfoInterface> memberSet = new HashSet<MessageInfoInterface>();
    private Set<MessageInfoInterface> memberSet;
 
     TransactionMessageGroupAsync(String groupId) {
@@ -36,14 +35,6 @@ public final class TransactionMessageGroupAsync extends TransactionMessageGroupA
     public void addMember(String memberId,String url,Object obj){
         memberSet.add(new MessageInfo(memberId,false,url,obj));
     }
-//
-//    public static TransactionMessageGroupAsync parse(MessageProto.Message message){
-//        JSONObject map = JSONObject.parseObject(message.getInfo());
-//        String groupId = map.get("groupId").toString();
-//        TransactionMessageGroupAsync transactionMessageGroupAsync = new TransactionMessageGroupAsync(groupId);
-//        transactionMessageGroupAsync.addMember(map.get("groupMemberId").toString(),map.get("url").toString(),map.get("obj"));
-//        return transactionMessageGroupAsync;
-//    }
 
     @Override
     public boolean equals(Object o) {
