@@ -177,9 +177,7 @@ public final class DtfConnectionDecorator implements Connection {
                 //3. After signaling, if success commit or rollback, otherwise skip the committing.
                 state = threadLockCacheProxy.getIfPresent(map.get("groupId").toString()+memberId).getState();
                 if(state == OperationType.COMMIT){
-                    //Thread.sleep(30000);
                     if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG) {
-                        //int i = 6/0;
                         queue.add(TransactionServiceInfoFactory.newInstanceForSub(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_SUCCESS_STRONG, groupId, groupMembers, memberId));
                     }else if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD){
                         queue.add(TransactionServiceInfoFactory.newInstanceForSub(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_SUCCESS, groupId, groupMembers, memberId));

@@ -69,13 +69,10 @@ public final class AspectHandler implements AspectInterface {
         //If success, submit transaction by database proxy.If fail,cancel transaction by database proxy.
         if(TransactionType.ASYNC_FINAL == transactionType){
             if(info==null) {
-                //1.
                 String groupIdTemp = GroupidGenerator.getStringId(0, 0);
                 BaseTransactionGroupInfo groupInfo = TransactionGroupInfoFactory.getInstanceWithGroupidMemid(groupIdTemp, ORIGINAL_ID);
                 TransactionGroupInfo.setCurrent(groupInfo);
-                //2.
                 result = point.proceed();
-                //3.Send confirm message to netty server, in order to commit all transaction in the service
                 ClientLockAndConditionInterface asyncFinalCommitLc = new ClientLockAndCondition(new ReentrantLock(), OperationType.DEFAULT);
                 asyncFinalCommitThreadLockCacheProxy.put(TransactionGroupInfo.getCurrent().getGroupId(), asyncFinalCommitLc);
                 BaseTransactionServiceInfo serviceInfo = TransactionServiceInfoFactory.newInstanceForAsyncCommit(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.ASYNC_COMMIT, TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers());

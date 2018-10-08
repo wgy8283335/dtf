@@ -5,9 +5,7 @@ package com.coconason.dtf.client.core.dbconnection;
  * @date: 2018/8/24-10:38
  */
 public enum OperationType {
-    /*
-     *
-     */
+    //
     COMMIT,
     ROLLBACK,
     DEFAULT,
