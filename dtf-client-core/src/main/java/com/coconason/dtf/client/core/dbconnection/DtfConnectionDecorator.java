@@ -151,61 +151,119 @@ public final class DtfConnectionDecorator implements Connection {
             this.transactionGroupInfo = transactionGroupInfo;
         }
 
+//        @Override
+//        public void run() {
+//            String groupId = transactionGroupInfo.getGroupId();
+//            Set groupMembers = transactionGroupInfo.getGroupMembers();
+//            Long memberId = transactionGroupInfo.getMemberId();
+//            try {
+//                ClientLockAndConditionInterface lc = new ClientLockAndCondition(new ReentrantLock(),state);
+//                JSONObject map = transactionServiceInfo.getInfo();
+//                threadLockCacheProxy.put(map.get("groupId").toString()+memberId,lc);
+//                queue.add(transactionServiceInfo);
+//                boolean result = lc.await(10000, TimeUnit.MILLISECONDS);
+//                if(result == false){
+//                    connection.rollback();
+//                    connection.close();
+//                    throw new Exception("haven't received approve submit message");
+//                }
+//                //3. After signaling, if success commit or rollback, otherwise skip the committing.
+//                state = threadLockCacheProxy.getIfPresent(map.get("groupId").toString()+memberId).getState();
+//                if(state == OperationType.COMMIT){
+//                    if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG) {
+//                        queue.add(TransactionServiceInfoFactory.newInstanceForSub(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_SUCCESS_STRONG, groupId, groupMembers, memberId));
+//                    }else if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD){
+//                        queue.add(TransactionServiceInfoFactory.newInstanceForSub(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_SUCCESS, groupId, groupMembers, memberId));
+//                    }
+//                    System.out.println("提交");
+//                    connection.commit();
+//                }else if(state == OperationType.ROLLBACK){
+//                    if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG){
+//                        queue.add(TransactionServiceInfoFactory.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL_STRONG, groupId,groupMembers));
+//                    }else if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD){
+//                        queue.add(TransactionServiceInfoFactory.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL, groupId,groupMembers));
+//                    }
+//                    System.out.println("回滚");
+//                    connection.rollback();
+//                }
+//            } catch (Exception e) {
+//                try {
+//                    connection.rollback();
+//                    if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG){
+//                        queue.add(TransactionServiceInfoFactory.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL_STRONG, groupId,groupMembers));
+//                    }else if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD){
+//                        System.out.println("sub fail ---------------------------"+System.currentTimeMillis());
+//                        queue.add(TransactionServiceInfoFactory.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL, groupId,groupMembers));
+//                    }
+//                    e.printStackTrace();
+//                } catch (Exception exception) {
+//                    exception.printStackTrace();
+//                }
+//            } finally {
+//                try {
+//                    if(memberId!=1&&(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG)|| transactionServiceInfo.getAction()== MessageProto.Message.ActionType.CANCEL) {
+//                        connection.close();
+//                    }
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
         @Override
         public void run() {
             String groupId = transactionGroupInfo.getGroupId();
             Set groupMembers = transactionGroupInfo.getGroupMembers();
             Long memberId = transactionGroupInfo.getMemberId();
-            try {
-                //2. Use lock condition to wait for signaling.
-                ClientLockAndConditionInterface lc = new ClientLockAndCondition(new ReentrantLock(),state);
-                JSONObject map = transactionServiceInfo.getInfo();
-                threadLockCacheProxy.put(map.get("groupId").toString()+memberId,lc);
-                queue.add(transactionServiceInfo);
-                boolean result = lc.await(10000, TimeUnit.MILLISECONDS);
-                if(result == false){
+
+            ClientLockAndConditionInterface lc = new ClientLockAndCondition(new ReentrantLock(),state);
+            JSONObject map = transactionServiceInfo.getInfo();
+            threadLockCacheProxy.put(map.get("groupId").toString()+memberId,lc);
+            queue.add(transactionServiceInfo);
+            boolean result = lc.await(10000, TimeUnit.MILLISECONDS);
+            if(result == false){
+                try{
                     connection.rollback();
                     connection.close();
-                    throw new Exception("haven't received approve submit message");
-                }
-                //3. After signaling, if success commit or rollback, otherwise skip the committing.
-                state = threadLockCacheProxy.getIfPresent(map.get("groupId").toString()+memberId).getState();
-                if(state == OperationType.COMMIT){
-                    if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG) {
-                        queue.add(TransactionServiceInfoFactory.newInstanceForSub(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_SUCCESS_STRONG, groupId, groupMembers, memberId));
-                    }else if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD){
-                        queue.add(TransactionServiceInfoFactory.newInstanceForSub(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_SUCCESS, groupId, groupMembers, memberId));
-                    }
-                    System.out.println("提交");
-                    connection.commit();
-                }else if(state == OperationType.ROLLBACK){
-                    if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG){
-                        queue.add(TransactionServiceInfoFactory.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL_STRONG, groupId,groupMembers));
-                    }else if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD){
-                        queue.add(TransactionServiceInfoFactory.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL, groupId,groupMembers));
-                    }
-                    System.out.println("回滚");
-                    connection.rollback();
-                }
-            } catch (Exception e) {
-                try {
-                    connection.rollback();
-                    if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG){
-                        queue.add(TransactionServiceInfoFactory.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL_STRONG, groupId,groupMembers));
-                    }else if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD){
-                        System.out.println("sub fail ---------------------------"+System.currentTimeMillis());
-                        queue.add(TransactionServiceInfoFactory.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL, groupId,groupMembers));
-                    }
+                }catch (SQLException e){
                     e.printStackTrace();
-                } catch (Exception exception) {
-                    exception.printStackTrace();
                 }
-            } finally {
+                if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG){
+                    queue.add(TransactionServiceInfoFactory.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL_STRONG, groupId,groupMembers));
+                }else if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD){
+                    queue.add(TransactionServiceInfoFactory.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL, groupId,groupMembers));
+                }
+            }
+            state = threadLockCacheProxy.getIfPresent(map.get("groupId").toString()+memberId).getState();
+            if(state == OperationType.COMMIT){
+                if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG) {
+                    queue.add(TransactionServiceInfoFactory.newInstanceForSub(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_SUCCESS_STRONG, groupId, groupMembers, memberId));
+                }else if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD){
+                    queue.add(TransactionServiceInfoFactory.newInstanceForSub(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_SUCCESS, groupId, groupMembers, memberId));
+                }
+                System.out.println("提交");
                 try {
-                    if(memberId!=1&&(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG)|| transactionServiceInfo.getAction()== MessageProto.Message.ActionType.CANCEL) {
-                        connection.close();
-                    }
-                } catch (Exception e) {
+                    connection.commit();
+                }catch (SQLException e){
+                    e.printStackTrace();
+                }
+            }else if(state == OperationType.ROLLBACK){
+                if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG){
+                    queue.add(TransactionServiceInfoFactory.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL_STRONG, groupId,groupMembers));
+                }else if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD){
+                    queue.add(TransactionServiceInfoFactory.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL, groupId,groupMembers));
+                }
+                System.out.println("回滚");
+                try{
+                    connection.rollback();
+                }catch (SQLException e){
+                    e.printStackTrace();
+                }
+
+            }
+            if(memberId!=1&&(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG)|| transactionServiceInfo.getAction()== MessageProto.Message.ActionType.CANCEL) {
+                try{
+                    connection.close();
+                }catch (SQLException e){
                     e.printStackTrace();
                 }
             }
