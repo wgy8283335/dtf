@@ -12,6 +12,8 @@ import com.coconason.dtf.common.utils.UuidGenerator;
 import com.google.common.cache.Cache;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -30,6 +32,8 @@ import static com.coconason.dtf.client.core.constants.Member.ORIGINAL_ID;
  */
 @Component
 public final class AspectHandler implements AspectInterface {
+
+    private Logger logger = LoggerFactory.getLogger(AspectHandler.class);
 
     @Autowired
     @Qualifier("transactionMessageQueueProxy")
@@ -60,13 +64,7 @@ public final class AspectHandler implements AspectInterface {
         if (transactional == null) {
             transactional = clazz.getAnnotation(Transactional.class);
         }
-        //declare one transaction group
-        //TransactionGroupInfo groupInfo;
-        //1.When the service is creator,should create groupId and store in public object.
-        //2.Then execute the program.And if the program has transactional operation in database,
-        //should use database proxy to send transaction information to the transaction server.
-        //3.At the end send submit request to the server, and listen the response from server.
-        //If success, submit transaction by database proxy.If fail,cancel transaction by database proxy.
+
         if(TransactionType.ASYNC_FINAL == transactionType){
             if(info==null) {
                 String groupIdTemp = GroupidGenerator.getStringId(0, 0);
@@ -99,20 +97,17 @@ public final class AspectHandler implements AspectInterface {
                             queue.add(TransactionServiceInfoFactory.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.CANCEL,TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
                         }
                     }
+                    logger.error(e.getMessage());
                 }
                 if(ORIGINAL_ID.equals(TransactionGroupInfo.getCurrent().getMemberId())){
                     if(TransactionType.SYNC_STRONG == transactionType){
                         if(syncFinalCommitThreadLockCacheProxy.getIfPresent(TransactionGroupInfo.getCurrent().getGroupId()).getState()== OperationType.WHOLE_FAIL){
+                            logger.error("system transaction error");
                             throw new Exception("system transaction error");
                         }
                     }
                 }
-            }
-            //1.When the service is follower,execute the program.And if the program has transactional operation in database,
-            //should use database proxy to send transaction information to the transaction server.
-            //2.And listen the response from server.
-            //If the response is submit,submit transaction by database proxy.If the response is cancel,cancel transaction by database proxy.
-            else{
+            }else{
                 //if the thread does not have transactionGroupInfo,set current transaction group information
                 BaseTransactionGroupInfo temp = TransactionGroupInfo.getCurrent();
                 if(temp==null){
@@ -126,7 +121,6 @@ public final class AspectHandler implements AspectInterface {
                 result =  point.proceed();
             }
         }
-        System.out.println("Aspectandler return result;");
         return result;
     }
 
