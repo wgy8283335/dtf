@@ -31,8 +31,7 @@ public final class HeaderModifierAdvice implements ResponseBodyAdvice<Object> {
         ServletServerHttpResponse ssResp = (ServletServerHttpResponse)response;
         HttpServletResponse resp = ssResp.getServletResponse();
         BaseTransactionGroupInfo groupInfo = TransactionGroupInfo.getCurrent();
-        if(groupInfo == null){
-        }else{
+        if(groupInfo != null){
             //set groupInfo in the head.
             resp.setHeader("groupInfo",groupInfo.toString());
         }

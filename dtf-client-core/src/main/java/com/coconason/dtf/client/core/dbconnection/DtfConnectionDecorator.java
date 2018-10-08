@@ -105,42 +105,38 @@ public final class DtfConnectionDecorator implements Connection {
         transactionServiceInfo = BaseTransactionServiceInfo.getCurrent();
         if(TransactionType.SYNC_FINAL==TransactionType.getCurrent()||TransactionType.SYNC_STRONG==TransactionType.getCurrent()) {
             threadPoolForClientProxy.execute(new SubmitRunnable(TransactionGroupInfo.getCurrent()));
-            try {
-                BaseTransactionGroupInfo transactionGroupInfo = TransactionGroupInfo.getCurrent();
-                String groupId = transactionGroupInfo.getGroupId();
-                Long memberId = transactionGroupInfo.getMemberId();
-                if (ORIGINAL_ID.equals(memberId) && TransactionType.SYNC_STRONG==TransactionType.getCurrent()){
-                    queue.add(TransactionServiceInfoFactory.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT_STRONG,TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
-                    ClientLockAndConditionInterface secondlc = new ClientLockAndCondition(new ReentrantLock(), OperationType.DEFAULT);
-                    secondThreadLockCacheProxy.put(groupId, secondlc);
-                    boolean isWholeSuccess = secondlc.await(10000,TimeUnit.MILLISECONDS);
-                    if(isWholeSuccess==false){
-                        ClientLockAndConditionInterface syncFinalCommitLc = syncFinalCommitThreadLockCacheProxy.getIfPresent(groupId);
-                        syncFinalCommitLc.setState(OperationType.WHOLE_FAIL);
-                        throw new Exception("Distributed transaction fail to receive WHOLE_SUCCESS_STRONG , groupId is :"+groupId);
-                    }
-                    ClientLockAndConditionInterface secondlc2 = secondThreadLockCacheProxy.getIfPresent(groupId);
-                    if (secondlc2.getState() == OperationType.WHOLE_FAIL) {
-                        queue.add(TransactionServiceInfoFactory.newInstanceForShortMessage(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.WHOLE_FAIL_STRONG_ACK, groupId));
-                        connection.close();
-                        ClientLockAndConditionInterface syncFinalCommitLc = syncFinalCommitThreadLockCacheProxy.getIfPresent(groupId);
-                        syncFinalCommitLc.setState(OperationType.WHOLE_FAIL);
-                        throw new Exception("Distributed transaction failed and groupId:"+groupId);
-                    }else{
-                        queue.add(TransactionServiceInfoFactory.newInstanceForShortMessage(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.WHOLE_SUCCESS_STRONG_ACK, groupId));
-                        //4. close the connection.
-                        System.out.println("dtf connection.close();");
-                        connection.close();
-                        ClientLockAndConditionInterface syncFinalCommitLc = syncFinalCommitThreadLockCacheProxy.getIfPresent(groupId);
-                        syncFinalCommitLc.setState(OperationType.WHOLE_SUCCESS);
-                    }
+            BaseTransactionGroupInfo transactionGroupInfo = TransactionGroupInfo.getCurrent();
+            String groupId = transactionGroupInfo.getGroupId();
+            Long memberId = transactionGroupInfo.getMemberId();
+            if (ORIGINAL_ID.equals(memberId) && TransactionType.SYNC_STRONG==TransactionType.getCurrent()){
+                queue.add(TransactionServiceInfoFactory.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT_STRONG,TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
+                ClientLockAndConditionInterface secondlc = new ClientLockAndCondition(new ReentrantLock(), OperationType.DEFAULT);
+                secondThreadLockCacheProxy.put(groupId, secondlc);
+                boolean isWholeSuccess = secondlc.await(10000,TimeUnit.MILLISECONDS);
+                if(isWholeSuccess==false){
+                    connection.close();
+                    ClientLockAndConditionInterface syncFinalCommitLc = syncFinalCommitThreadLockCacheProxy.getIfPresent(groupId);
+                    syncFinalCommitLc.setState(OperationType.WHOLE_FAIL);
+                    throw new SQLException("Distributed transaction fail to receive WHOLE_SUCCESS_STRONG , groupId is :"+groupId);
                 }
-                else if(ORIGINAL_ID.equals(memberId) && TransactionType.SYNC_FINAL==TransactionType.getCurrent()){
-                    queue.add(TransactionServiceInfoFactory.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT,TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
+                ClientLockAndConditionInterface secondlc2 = secondThreadLockCacheProxy.getIfPresent(groupId);
+                if (secondlc2.getState() == OperationType.WHOLE_FAIL) {
+                    queue.add(TransactionServiceInfoFactory.newInstanceForShortMessage(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.WHOLE_FAIL_STRONG_ACK, groupId));
+                    connection.close();
+                    ClientLockAndConditionInterface syncFinalCommitLc = syncFinalCommitThreadLockCacheProxy.getIfPresent(groupId);
+                    syncFinalCommitLc.setState(OperationType.WHOLE_FAIL);
+                    throw new SQLException("Distributed transaction failed and groupId:"+groupId);
+                }else{
+                    queue.add(TransactionServiceInfoFactory.newInstanceForShortMessage(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.WHOLE_SUCCESS_STRONG_ACK, groupId));
+                    //4. close the connection.
+                    System.out.println("dtf connection.close();");
+                    connection.close();
+                    ClientLockAndConditionInterface syncFinalCommitLc = syncFinalCommitThreadLockCacheProxy.getIfPresent(groupId);
+                    syncFinalCommitLc.setState(OperationType.WHOLE_SUCCESS);
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-                connection.close();
+            }
+            else if(ORIGINAL_ID.equals(memberId) && TransactionType.SYNC_FINAL==TransactionType.getCurrent()){
+                queue.add(TransactionServiceInfoFactory.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT,TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
             }
         }else{
             connection.commit();
@@ -166,9 +162,7 @@ public final class DtfConnectionDecorator implements Connection {
                 JSONObject map = transactionServiceInfo.getInfo();
                 threadLockCacheProxy.put(map.get("groupId").toString()+memberId,lc);
                 queue.add(transactionServiceInfo);
-                System.out.println("before dtf connection add wait ---------------------------"+System.currentTimeMillis());
                 boolean result = lc.await(10000, TimeUnit.MILLISECONDS);
-                System.out.println("after dtf connection add wait finish ---------------------------"+System.currentTimeMillis());
                 if(result == false){
                     connection.rollback();
                     connection.close();
