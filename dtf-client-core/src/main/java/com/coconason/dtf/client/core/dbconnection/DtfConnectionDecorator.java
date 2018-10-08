@@ -147,6 +147,8 @@ public final class DtfConnectionDecorator implements Connection {
     private class SubmitRunnable implements Runnable{
         private BaseTransactionGroupInfo transactionGroupInfo;
 
+
+
         public SubmitRunnable(BaseTransactionGroupInfo transactionGroupInfo) {
             this.transactionGroupInfo = transactionGroupInfo;
         }
@@ -225,7 +227,7 @@ public final class DtfConnectionDecorator implements Connection {
                     connection.rollback();
                     connection.close();
                 }catch (SQLException e){
-                    e.printStackTrace();
+                    logger.error(e.getMessage());
                 }
                 if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG){
                     queue.add(TransactionServiceInfoFactory.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL_STRONG, groupId,groupMembers));
@@ -244,7 +246,7 @@ public final class DtfConnectionDecorator implements Connection {
                 try {
                     connection.commit();
                 }catch (SQLException e){
-                    e.printStackTrace();
+                    logger.error(e.getMessage());
                 }
             }else if(state == OperationType.ROLLBACK){
                 if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD_STRONG){
@@ -256,7 +258,7 @@ public final class DtfConnectionDecorator implements Connection {
                 try{
                     connection.rollback();
                 }catch (SQLException e){
-                    e.printStackTrace();
+                    logger.error(e.getMessage());
                 }
 
             }
@@ -264,7 +266,7 @@ public final class DtfConnectionDecorator implements Connection {
                 try{
                     connection.close();
                 }catch (SQLException e){
-                    e.printStackTrace();
+                    logger.error(e.getMessage());
                 }
             }
         }
