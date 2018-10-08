@@ -12,6 +12,8 @@ import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import io.netty.handler.timeout.ReadTimeoutHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -25,6 +27,8 @@ import java.util.concurrent.TimeUnit;
  */
 @Component
 public final class NettyService {
+
+    private Logger logger = LoggerFactory.getLogger(NettyService.class);
 
     @Autowired
     private AbstractClientTransactionHandler clientTransactionHandler;
@@ -47,11 +51,7 @@ public final class NettyService {
     private NettyServerConfiguration nettyServerConfiguration;
 
     public synchronized void start(){
-        try{
-            threadPoolForClientProxy.execute(new ConnectRunnable(nettyServerConfiguration.getHost(),nettyServerConfiguration.getPort()));
-        }catch (Exception e){
-            System.out.println("Exception-----> \n" + e);
-        }
+        threadPoolForClientProxy.execute(new ConnectRunnable(nettyServerConfiguration.getHost(),nettyServerConfiguration.getPort()));
     }
 
     private class ConnectRunnable implements Runnable{
@@ -68,37 +68,39 @@ public final class NettyService {
                 TimeUnit.SECONDS.sleep(5);
                 connect(host, port);
             }catch (Exception e){
-                e.printStackTrace();
+                logger.error(e.getMessage());
             }
         }
     }
 
     private void connect(String host, int port) throws Exception{
-        try{
-            Bootstrap b = new Bootstrap();
-            b.group(group)
-                    .option(ChannelOption.TCP_NODELAY, true)
-                    .channel(NioSocketChannel.class)
-                    .handler(new ChannelInitializer<SocketChannel>()
+        Bootstrap b = new Bootstrap();
+        b.group(group)
+                .option(ChannelOption.TCP_NODELAY, true)
+                .channel(NioSocketChannel.class)
+                .handler(new ChannelInitializer<SocketChannel>()
+                {
+                    @Override
+                    protected void initChannel(SocketChannel ch) throws Exception
                     {
-                        @Override
-                        protected void initChannel(SocketChannel ch) throws Exception
-                        {
-                            ch.pipeline().addLast(new ProtobufVarint32FrameDecoder());
-                            ch.pipeline().addLast(new ProtobufDecoder(MessageProto.Message.getDefaultInstance()));
-                            ch.pipeline().addLast(new ProtobufVarint32LengthFieldPrepender());
-                            ch.pipeline().addLast(new ProtobufEncoder());
-                            ch.pipeline().addLast(new ReadTimeoutHandler(50));
-                            ch.pipeline().addLast(loginAuthReqHandler);
-                            ch.pipeline().addLast(clientTransactionHandler);
-                            ch.pipeline().addLast(heartBeatReqHandler);
-                        }
-                    });
+                        ch.pipeline().addLast(new ProtobufVarint32FrameDecoder());
+                        ch.pipeline().addLast(new ProtobufDecoder(MessageProto.Message.getDefaultInstance()));
+                        ch.pipeline().addLast(new ProtobufVarint32LengthFieldPrepender());
+                        ch.pipeline().addLast(new ProtobufEncoder());
+                        ch.pipeline().addLast(new ReadTimeoutHandler(50));
+                        ch.pipeline().addLast(loginAuthReqHandler);
+                        ch.pipeline().addLast(clientTransactionHandler);
+                        ch.pipeline().addLast(heartBeatReqHandler);
+                    }
+                });
+        try{
             ChannelFuture f = b.connect(host, port).sync();
             isHealthy = true;
             System.out.println("connection success-----> " + host + ":" + port);
             f.channel().closeFuture().sync();
             isHealthy = false;
+        }catch (InterruptedException e){
+            logger.error(e.getMessage());
         }finally{
             threadPoolForClientProxy.execute(new ConnectRunnable(host,port));
         }
