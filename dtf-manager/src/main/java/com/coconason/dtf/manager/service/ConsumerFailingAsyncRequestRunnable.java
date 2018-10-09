@@ -32,23 +32,18 @@ public final class ConsumerFailingAsyncRequestRunnable implements Runnable{
                     e.printStackTrace();
                 }
             }else{
-                try{
-                    if (messageInfo.isCommitted() == false) {
-                        String url= messageInfo.getUrl();
-                        String obj = messageInfo.getObj().toString();
-                        String result = HttpClientUtil.doPostJson(url,obj,"");
-                        if("".equals(result)){
-                            messageInfo.setCommitted(false);
-                            messageAsyncQueueProxy.add(messageInfo);
-                        }else{
-                            messageInfo.setCommitted(true);
-                        }
+                if (messageInfo.isCommitted() == false) {
+                    String url= messageInfo.getUrl();
+                    String obj = messageInfo.getObj().toString();
+                    String result = HttpClientUtil.doPostJson(url,obj,"");
+                    if("".equals(result)){
+                        messageInfo.setCommitted(false);
+                        messageAsyncQueueProxy.add(messageInfo);
+                    }else{
+                        messageInfo.setCommitted(true);
                     }
-                }catch (Exception e){
-                    e.printStackTrace();
-                }finally {
-                    messageInfo = null;
                 }
+                messageInfo = null;
             }
         }
     }

@@ -28,28 +28,19 @@ public final class SendAsyncRequestRunnable implements Runnable{
 
     @Override
     public void run() {
-        try{
             //get the TransactionMessageGroupAsync from the messageAsyncCacheProxy
             TransactionMessageGroupInterface theMessageGroupAsync = messageAsyncCacheProxy.get(transactionMessageForSubmit.getGroupId());
             Set<MessageInfoInterface> theMemberSet = theMessageGroupAsync.getMemberSet();
             for(MessageInfoInterface messageInfo :theMemberSet){
                 String url= messageInfo.getUrl();
                 String obj = messageInfo.getObj().toString();
-                try{
-                    String result = HttpClientUtil.doPostJson(url,obj,transactionMessageForSubmit.getGroupId());
-                    if("".equals(result)){
-                        messageAsyncQueueProxy.add(messageInfo);
-                    }else{
-                        messageInfo.setCommitted(true);
-                    }
-                }catch (Exception e){
-                    //if fail put the info of the service into a cache,and there will be another thread to check and execute.
-                    e.printStackTrace();
+                String result = HttpClientUtil.doPostJson(url,obj,transactionMessageForSubmit.getGroupId());
+                if("".equals(result)){
+                    messageAsyncQueueProxy.add(messageInfo);
+                }else{
+                    messageInfo.setCommitted(true);
                 }
             }
             messageAsyncCacheProxy.invalidate(transactionMessageForSubmit.getGroupId());
-        }catch (Exception e){
-            e.printStackTrace();
-        }
     }
 }
