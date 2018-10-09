@@ -8,3 +8,6 @@ DTF
 
 ##### 下方是同步最终一致性模式的时序图： 
 ![Image discription](https://github.com/wgy8283335/dtf/blob/master/image/sync_final.JPG)
+
+##### 下方是异步最终一致性模式的时序图：
+![Image discription](https://github.com/wgy8283335/dtf/blob/master/image/async_final.JPG)
