@@ -93,17 +93,12 @@ public final class NettyService {
                         ch.pipeline().addLast(heartBeatReqHandler);
                     }
                 });
-        try{
-            ChannelFuture f = b.connect(host, port).sync();
-            isHealthy = true;
-            System.out.println("connection success-----> " + host + ":" + port);
-            f.channel().closeFuture().sync();
-            isHealthy = false;
-        }catch (InterruptedException e){
-            logger.error(e.getMessage());
-        }finally{
-            threadPoolForClientProxy.execute(new ConnectRunnable(host,port));
-        }
+        ChannelFuture f = b.connect(host, port).sync();
+        isHealthy = true;
+        System.out.println("connection success-----> " + host + ":" + port);
+        f.channel().closeFuture().sync();
+        isHealthy = false;
+        threadPoolForClientProxy.execute(new ConnectRunnable(host,port));
     }
 
     public Boolean isHealthy() {

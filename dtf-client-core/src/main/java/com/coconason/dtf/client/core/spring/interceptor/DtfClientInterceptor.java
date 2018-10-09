@@ -29,13 +29,10 @@ final class DtfClientInterceptor {
 
     @Around("@annotation(com.coconason.dtf.client.core.annotation.DtfTransaction)")
     public Object dtfTransactionExecute(ProceedingJoinPoint joinPoint)throws Throwable{
-        //If the model is creator the request would be null.
-        //If the model is follower the request would not be null.
         RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
         HttpServletRequest request = requestAttributes == null ? null : ((ServletRequestAttributes) requestAttributes).getRequest();
         String info = request == null ? null : request.getHeader("groupInfo");
         Object result = aspectHandler.before(info,joinPoint);
-        System.out.println("DtfClientInterceptor result");
         return result;
     }
 }

@@ -55,42 +55,34 @@ public final class NettyServer
         final MessageAsyncQueueProxy messageAsyncQueueProxy = messageAsyncQueueProxyTemp;
         final ThreadPoolForServerProxy threadPoolForServerProxy = threadPoolForServerProxyTemp;
         final ServerThreadLockCacheProxy serverThreadLockCacheProxy = new ServerThreadLockCacheProxy();
-        try
-        {
-            ServerBootstrap b = new ServerBootstrap();
-            b.group(boss, work)
-                    .channel(NioServerSocketChannel.class)
-                    .option(ChannelOption.SO_BACKLOG, 1024)
-                    .option(ChannelOption.TCP_NODELAY, true)
-                    .handler(new LoggingHandler(LogLevel.INFO))
-                    .childHandler(new ChannelInitializer<SocketChannel>()
+        ServerBootstrap b = new ServerBootstrap();
+        b.group(boss, work)
+                .channel(NioServerSocketChannel.class)
+                .option(ChannelOption.SO_BACKLOG, 1024)
+                .option(ChannelOption.TCP_NODELAY, true)
+                .handler(new LoggingHandler(LogLevel.INFO))
+                .childHandler(new ChannelInitializer<SocketChannel>()
+                {
+                    @Override
+                    protected void initChannel(SocketChannel ch) throws Exception
                     {
-                        @Override
-                        protected void initChannel(SocketChannel ch) throws Exception
-                        {
-                            ch.pipeline().addLast(new ProtobufVarint32FrameDecoder());
-                            ch.pipeline().addLast(new ProtobufDecoder(MessageProto.Message.getDefaultInstance()));
-                            ch.pipeline().addLast(new ProtobufVarint32LengthFieldPrepender());
-                            ch.pipeline().addLast(new ProtobufEncoder());
-                            ch.pipeline().addLast(new ReadTimeoutHandler(50));
-                            ch.pipeline().addLast(new LoginAuthRespHandler());
-                            ch.pipeline().addLast(new ServerTransactionHandler(messageSyncCacheProxy, messageAsyncCacheProxy, messageAsyncQueueProxy, threadPoolForServerProxy, messageForSubmitSyncCacheProxy, messageForSubmitAsyncCacheProxy, serverThreadLockCacheProxy));
-                            ch.pipeline().addLast(new HeartBeatRespHandler());
-                        }
-                    });
-
-            ChannelFuture f = b.bind(port).sync();
-            isHealthy = true;
-            System.out.println("Netty Server start ok! post is 18080");
-            f.channel().closeFuture().sync();
-            isHealthy = false;
-        }
-        finally
-        {
-            boss.shutdownGracefully();
-            work.shutdownGracefully();
-        }
-
+                        ch.pipeline().addLast(new ProtobufVarint32FrameDecoder());
+                        ch.pipeline().addLast(new ProtobufDecoder(MessageProto.Message.getDefaultInstance()));
+                        ch.pipeline().addLast(new ProtobufVarint32LengthFieldPrepender());
+                        ch.pipeline().addLast(new ProtobufEncoder());
+                        ch.pipeline().addLast(new ReadTimeoutHandler(50));
+                        ch.pipeline().addLast(new LoginAuthRespHandler());
+                        ch.pipeline().addLast(new ServerTransactionHandler(messageSyncCacheProxy, messageAsyncCacheProxy, messageAsyncQueueProxy, threadPoolForServerProxy, messageForSubmitSyncCacheProxy, messageForSubmitAsyncCacheProxy, serverThreadLockCacheProxy));
+                        ch.pipeline().addLast(new HeartBeatRespHandler());
+                    }
+                });
+        ChannelFuture f = b.bind(port).sync();
+        isHealthy = true;
+        System.out.println("Netty Server start ok! post is 18080");
+        f.channel().closeFuture().sync();
+        isHealthy = false;
+        boss.shutdownGracefully();
+        work.shutdownGracefully();
     }
 
 }
