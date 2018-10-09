@@ -31,7 +31,7 @@ public final class LockAndCondition implements LockAndConditionInterface {
             lock.lock();
             condition.await();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         } finally {
             lock.unlock();
         }
@@ -43,7 +43,7 @@ public final class LockAndCondition implements LockAndConditionInterface {
             lock.lock();
             result = condition.await(milliseconds, timeUnit);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         } finally {
             lock.unlock();
         }
