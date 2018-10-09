@@ -28,7 +28,6 @@ public final class HttpClientUtil {
 			httpPost.setHeader("groupInfo",groupId);
 			response = httpClient.execute(httpPost);
 			StatusLine statusLine = response.getStatusLine();
-			//response.close();
 			int code = statusLine.getStatusCode();
 			if(code == 200){
 				resultString = EntityUtils.toString(response.getEntity(), "utf-8");
@@ -45,6 +44,4 @@ public final class HttpClientUtil {
 		}
 		return resultString;
 	}
-
-
 }
