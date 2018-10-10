@@ -4,7 +4,10 @@ import com.coconason.dtf.common.protobuf.MessageProto;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.springframework.stereotype.Component;
-
+/**
+ * @Author: Jason
+ * @date: 2018/10/2-14:11
+ */
 @Component
 final class LoginAuthReqHandler extends ChannelInboundHandlerAdapter
 {

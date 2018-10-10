@@ -7,7 +7,10 @@ import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-
+/**
+ * @Author: Jason
+ * @date: 2018/10/2-14:11
+ */
 @Component
 final class HeartBeatReqHandler extends ChannelInboundHandlerAdapter
 {

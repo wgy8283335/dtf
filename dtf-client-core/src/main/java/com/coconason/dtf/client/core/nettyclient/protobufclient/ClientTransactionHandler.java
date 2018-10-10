@@ -14,7 +14,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
-
+/**
+ * @Author: Jason
+ * @date: 2018/10/2-14:11
+ */
 @Component
 @ChannelHandler.Sharable
 final class ClientTransactionHandler extends AbstractClientTransactionHandler
