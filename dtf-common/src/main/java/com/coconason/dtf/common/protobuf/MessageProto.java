@@ -2,6 +2,10 @@
 // source: Message.proto
 
 package com.coconason.dtf.common.protobuf;
+/**
+ * @Author: Jason
+ * @date: 2018/10/11-10:58
+ */
 
 public final class MessageProto {
   private MessageProto() {}
