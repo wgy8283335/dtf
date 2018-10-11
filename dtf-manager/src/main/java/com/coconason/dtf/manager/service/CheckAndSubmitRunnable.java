@@ -60,7 +60,6 @@ public final class CheckAndSubmitRunnable implements Runnable{
         elementFromCache.setCtxForSubmitting(ctx);
         messageSyncCacheProxy.put(elementFromCache.getGroupId(),elementFromCache);
         List<TransactionMessageForAdding> memberList = elementFromCache.getMemberList();
-        //check whether the member from message has the same element as the member from cache.
         if(!setFromMessage.isEmpty()){
             if(SetUtil.isSetEqual(setFromMessage,setFromCache)){
                 for (TransactionMessageForAdding messageForAdding: memberList) {
@@ -68,7 +67,6 @@ public final class CheckAndSubmitRunnable implements Runnable{
                         System.out.println("Send transaction message:\n" + message);
                         threadPoolForServerProxy.execute(new SendMessageRunnable(elementFromCache.getGroupId()+messageForAdding.getGroupMemberId(),ActionType.APPROVESUBMIT,messageForAdding.getCtx(),"send APPROVESUBMIT message fail", serverThreadLockCacheProxy));
                     }else{
-                        //success
                         System.out.println("Send transaction message:\n" + message);
                         threadPoolForServerProxy.execute(new SendMessageRunnable(elementFromCache.getGroupId()+messageForAdding.getGroupMemberId(),ActionType.APPROVESUBMIT_STRONG,messageForAdding.getCtx(),"send APPROVESUBMIT_STRONG message fail", serverThreadLockCacheProxy));
                     }
