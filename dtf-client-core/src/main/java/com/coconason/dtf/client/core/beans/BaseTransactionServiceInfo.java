@@ -11,7 +11,6 @@ public abstract class BaseTransactionServiceInfo {
 
     private final static ThreadLocal<BaseTransactionServiceInfo> current = new ThreadLocal<>();
 
-
     public static BaseTransactionServiceInfo getCurrent() {
         return current.get();
     }
