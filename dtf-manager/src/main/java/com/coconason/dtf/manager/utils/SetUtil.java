@@ -14,7 +14,8 @@ public final class SetUtil {
     public static boolean isSetEqual(Set set1, Set set2) {
 
         if(set1 == null && set2 == null){
-            return true; //Both are null
+            //if both are null,return true.
+            return true;
         }
 
         if (set1 == null || set2 == null || set1.size() != set2.size()
