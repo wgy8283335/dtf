@@ -38,7 +38,6 @@ public final class HttpClientUtil {
 			try {
 				response.close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
