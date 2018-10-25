@@ -11,9 +11,7 @@ public abstract class BaseTransactionGroupInfo {
      * current is a ThreadLocal variable,each thread has its own BaseTransactionGroupInfo variable.
      */
     private final static ThreadLocal<BaseTransactionGroupInfo> current = new ThreadLocal<>();
-    /**
-     * this is a method for getting BaseTransactionGroupInfo object in current thread.
-     */
+
     public static BaseTransactionGroupInfo getCurrent(){
         return current.get();
     }
