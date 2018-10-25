@@ -12,7 +12,7 @@ public abstract class BaseTransactionGroupInfo {
      */
     private final static ThreadLocal<BaseTransactionGroupInfo> current = new ThreadLocal<>();
     /**
-     * this
+     * this is a method for getting BaseTransactionGroupInfo object in current thread.
      */
     public static BaseTransactionGroupInfo getCurrent(){
         return current.get();
