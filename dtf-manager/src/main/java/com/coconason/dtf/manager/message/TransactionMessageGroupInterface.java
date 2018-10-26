@@ -10,6 +10,7 @@ import java.util.Set;
  * @date: 2018/10/3-10:13
  */
 public interface TransactionMessageGroupInterface<T> {
+
     String getGroupId();
 
     void setGroupId(String groupId);
