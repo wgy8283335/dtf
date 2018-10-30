@@ -84,5 +84,4 @@ public final class NettyServer
         boss.shutdownGracefully();
         work.shutdownGracefully();
     }
-
 }
