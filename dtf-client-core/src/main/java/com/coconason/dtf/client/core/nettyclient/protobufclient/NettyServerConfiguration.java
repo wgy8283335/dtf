@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 @PropertySource("classpath:application.properties")
 final class NettyServerConfiguration {
+
     @Value(value="${nettyserver.host}")
     private String host;
     @Value(value="${nettyserver.port}")
