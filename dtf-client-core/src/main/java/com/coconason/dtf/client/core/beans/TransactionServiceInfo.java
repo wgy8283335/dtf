@@ -12,6 +12,7 @@ public final class TransactionServiceInfo extends BaseTransactionServiceInfo{
     private String id;
     private JSONObject info;
     private ActionType action;
+
     @Override
     public String getId() {
         return id;
