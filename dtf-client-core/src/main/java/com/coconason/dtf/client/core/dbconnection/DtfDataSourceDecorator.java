@@ -19,7 +19,9 @@ import java.util.logging.Logger;
  */
 
 public final class DtfDataSourceDecorator implements DataSource{
+
     private DataSource dataSource;
+
     @Autowired
     private ThreadLockCacheProxy threadLockCacheProxy;
     @Autowired
