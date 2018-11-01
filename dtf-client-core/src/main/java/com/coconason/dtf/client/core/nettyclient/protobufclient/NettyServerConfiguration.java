@@ -14,6 +14,7 @@ final class NettyServerConfiguration {
 
     @Value(value="${nettyserver.host}")
     private String host;
+
     @Value(value="${nettyserver.port}")
     private Integer port;
 
