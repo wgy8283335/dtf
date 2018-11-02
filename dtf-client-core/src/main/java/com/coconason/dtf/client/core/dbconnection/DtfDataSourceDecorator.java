@@ -24,14 +24,18 @@ public final class DtfDataSourceDecorator implements DataSource{
 
     @Autowired
     private ThreadLockCacheProxy threadLockCacheProxy;
+
     @Autowired
     @Qualifier("transactionMessageQueueProxy")
     private Queue queue;
+
     @Autowired
     private ThreadLockCacheProxy secondThreadLockCacheProxy;
+
     @Autowired
     @Qualifier("threadPoolForClientProxy")
     private ExecutorService threadPoolForClientProxy;
+
     @Autowired
     private ThreadLockCacheProxy syncFinalCommitThreadLockCacheProxy;
 
