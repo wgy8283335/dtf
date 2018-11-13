@@ -13,6 +13,7 @@
         <module>dtf-manager</module>
         <module>dtf-common</module>
         <module>spring-demo-2</module>
+        <module>dtf-manager-2</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
