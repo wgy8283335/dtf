@@ -27,6 +27,7 @@ public final class ThreadPoolForServerProxy implements ExecutorService {
                 Integer.valueOf(propertiesReader.getProperty("maximumPoolSize")),
                 Integer.valueOf(propertiesReader.getProperty("keepAliveTime")),
                 Integer.valueOf(propertiesReader.getProperty("capacity")));
+
         return threadPoolForServerProxy;
     }
 
