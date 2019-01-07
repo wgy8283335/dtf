@@ -1,0 +1,26 @@
+# Created by .ignore support plugin (hsz.mobi)
+### Example user template template
+### Example user template
+
+# IntelliJ project files
+.idea
+*.iml
+logs/
+server-logs/
+out
+gen
+test
+dtf-client-core/target/
+dtf-client-demo/target/
+dtf-manager/target/
+spring-demo/.mvn
+spring-demo/mvnw
+spring-demo/mvnw.cmd
+spring-demo-3/.mvn
+spring-demo-3/mvnw
+spring-demo-3/mvnw.cmd
+dtf-common/target/
+spring-demo/target/
+spring-demo-2/target/
+spring-demo-3/target/
+dtf-common/src/main/resources/
