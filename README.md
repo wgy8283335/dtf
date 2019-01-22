@@ -14,5 +14,5 @@ DTF
 ======================================================================================
 ##### 分布式事务框架版本为0.2。规划server端支持cluster模式，cluster模式采用自定义分布式一致
 ##### 性协议保证集群服务的可靠性和数据一致性。
-##### 如下是0.2版本中关于server cluster模式的时序图。
+##### 如下是0.2版本中关于server cluster模式的时序图。集群在工作中分为广播阶段和选举阶段两个阶段。
 ![Image discription](https://github.com/wgy8283335/dtf/blob/master/image/server_cluster_in_working.JPG)
