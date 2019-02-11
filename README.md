@@ -16,3 +16,5 @@ DTF
 ##### 性协议保证集群服务的可靠性和数据一致性。
 ##### 如下是0.2版本中关于server cluster模式的时序图。集群在工作中分为广播阶段和选举阶段两个阶段。
 ![Image discription](https://github.com/wgy8283335/dtf/blob/master/image/server_cluster_in_working.JPG)
+##### 目前集群状态下工作模式分为高可用和高并发，如下为图示。
+![Image discription](https://github.com/wgy8283335/dtf/blob/master/image/working_state.JPG)
