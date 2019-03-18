@@ -4,7 +4,6 @@ import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.manager.cache.*;
 import com.coconason.dtf.manager.service.ConsumerFailingAsyncRequestRunnable;
 import com.coconason.dtf.manager.thread.ServerThreadLockCacheProxy;
-import com.coconason.dtf.manager.threadpools.ThreadPoolForServerProxy;
 import com.coconason.dtf.manager.utils.PropertiesReader;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;

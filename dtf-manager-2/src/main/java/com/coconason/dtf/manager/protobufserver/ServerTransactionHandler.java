@@ -14,7 +14,6 @@ import com.coconason.dtf.manager.service.SendMessageRunnable;
 import com.coconason.dtf.manager.service.SendShortMessageRunnable;
 import com.coconason.dtf.manager.thread.LockAndConditionInterface;
 import com.coconason.dtf.manager.thread.ServerThreadLockCacheProxy;
-import com.coconason.dtf.manager.threadpools.ThreadPoolForServerProxy;
 import com.coconason.dtf.manager.utils.SetUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
