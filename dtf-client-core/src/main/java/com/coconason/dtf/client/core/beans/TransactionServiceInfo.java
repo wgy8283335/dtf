@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
 
 /**
+ * TransactionServiceInfo is used to deliver the transaction information of client to dtf manager.
  * @Author: Jason
  * @date: 2018/8/21-17:15
  */

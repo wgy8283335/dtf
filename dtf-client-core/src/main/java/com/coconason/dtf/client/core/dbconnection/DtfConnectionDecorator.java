@@ -108,6 +108,7 @@ public final class DtfConnectionDecorator implements Connection {
             BaseTransactionGroupInfo transactionGroupInfo = TransactionGroupInfo.getCurrent();
             String groupId = transactionGroupInfo.getGroupId();
             Long memberId = transactionGroupInfo.getMemberId();
+            //If the thread is transaction initiator in synchronize strong mode.
             if (ORIGINAL_ID.equals(memberId) && TransactionType.SYNC_STRONG==TransactionType.getCurrent()){
                 queue.add(TransactionServiceInfoFactory.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT_STRONG,TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
                 ClientLockAndConditionInterface secondlc = new ClientLockAndCondition(new ReentrantLock(), OperationType.DEFAULT);
@@ -135,6 +136,7 @@ public final class DtfConnectionDecorator implements Connection {
                     syncFinalCommitLc.setState(OperationType.WHOLE_SUCCESS);
                 }
             }
+            //If the thread is transaction initiator in synchronize final mode.
             else if(ORIGINAL_ID.equals(memberId) && TransactionType.SYNC_FINAL==TransactionType.getCurrent()){
                 queue.add(TransactionServiceInfoFactory.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT,TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
             }
