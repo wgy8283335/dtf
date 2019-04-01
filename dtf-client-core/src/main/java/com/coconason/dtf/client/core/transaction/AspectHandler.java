@@ -68,6 +68,7 @@ public final class AspectHandler implements AspectInterface {
         }
 
         if(TransactionType.ASYNC_FINAL == transactionType){
+            //"info==null" means the current thread is transaction initiator.DtfClientInterceptor for reference.
             if(info==null) {
                 String groupIdTemp = GroupidGenerator.getStringId(0, 0);
                 BaseTransactionGroupInfo groupInfo = TransactionGroupInfoFactory.getInstanceWithGroupidMemid(groupIdTemp, ORIGINAL_ID);
@@ -81,6 +82,7 @@ public final class AspectHandler implements AspectInterface {
                 result = point.proceed();
             }
         }else{
+            //"info==null" means the current thread is transaction initiator.DtfClientInterceptor for reference.
             BaseTransactionGroupInfo transactionGroupInfo = info == null ? null:TransactionGroupInfoFactory.getInstanceParseString(info);
             if(transactionGroupInfo == null) {
                 //1.
