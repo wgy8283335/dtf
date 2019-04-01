@@ -38,8 +38,10 @@ public final class AspectHandler implements AspectInterface {
     @Autowired
     @Qualifier("transactionMessageQueueProxy")
     private Queue queue;
+
     @Autowired
     private NettyService nettyService;
+
     @Autowired
     @Qualifier("threadLockCacheProxy")
     private Cache<String,ClientLockAndConditionInterface>  asyncFinalCommitThreadLockCacheProxy;
