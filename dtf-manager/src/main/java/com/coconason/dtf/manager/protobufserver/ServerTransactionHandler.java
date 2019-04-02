@@ -25,6 +25,7 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 
 /**
+ * This part is the core of Manager.
  * @Author: Jason
  * @date: 2018/7/30-9:31
  */
