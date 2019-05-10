@@ -22,7 +22,6 @@ public final class ServerThreadLockCacheProxy implements Cache{
     public ServerThreadLockCacheProxy() {
         cache = CacheBuilder.newBuilder().expireAfterAccess(600, TimeUnit.SECONDS).maximumSize(1000000L).build();
     }
-
     @Override
     public LockAndConditionInterface getIfPresent(Object o) {
         return cache.getIfPresent(o);
