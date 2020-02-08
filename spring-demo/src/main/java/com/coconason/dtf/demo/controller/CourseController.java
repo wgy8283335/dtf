@@ -17,6 +17,12 @@ public class CourseController {
     @Autowired
     ICourseService courseService;
 
+    @RequestMapping(value="/add_course_info_without_dtf",method = RequestMethod.POST)
+    public DemoResult addCourseInfoWithoutDtf(@RequestBody Course course) throws Exception{
+        DemoResult demoResult = courseService.addCourseInfoWithoutDtf(course);
+        return demoResult;
+    }
+
     @RequestMapping(value="/add_course_info",method = RequestMethod.POST)
     public DemoResult addCourseInfo(@RequestBody Course course) throws Exception{
         DemoResult demoResult = courseService.addCourseInfo(course);

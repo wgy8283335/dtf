@@ -9,6 +9,8 @@ import com.coconason.dtf.demo3.springdemo3.model.DemoResult;
 import com.coconason.dtf.demo3.springdemo3.po.Sc;
 
 public interface ISCService {
+    DemoResult addSCInfoWithoutDtf(Sc course) throws Exception;
+    
     DemoResult addSCInfo(Sc course) throws Exception;
 
     DemoResult addSCInfoStrong(Sc course) throws Exception;

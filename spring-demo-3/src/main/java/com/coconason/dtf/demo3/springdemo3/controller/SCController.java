@@ -19,6 +19,12 @@ public class SCController {
     @Autowired
     ISCService scService;
 
+    @RequestMapping(value="/add_sc_info_without_dtf",method = RequestMethod.POST)
+    public DemoResult addSCInfoWithoutDtf(@RequestBody Sc sc) throws Exception{
+        DemoResult demoResult = scService.addSCInfoWithoutDtf(sc);
+        return demoResult;
+    }
+
     @RequestMapping(value="/add_sc_info",method = RequestMethod.POST)
     public DemoResult addSCInfo(@RequestBody Sc sc) throws Exception{
         DemoResult demoResult = scService.addSCInfo(sc);

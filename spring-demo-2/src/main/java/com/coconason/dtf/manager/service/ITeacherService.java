@@ -10,6 +10,9 @@ import com.coconason.dtf.manager.model.DemoResult;
 import com.coconason.dtf.manager.po.Teacher;
 
 public interface ITeacherService {
+
+    DemoResult addTeacherInfoWithoutDtf(Teacher teacher) throws Exception;
+    
     DemoResult addTeacherInfo(Teacher teacher) throws Exception;
 
     DemoResult addTeacherInfoStrong(Teacher teacher) throws Exception;

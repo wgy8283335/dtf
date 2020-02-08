@@ -16,6 +16,12 @@ public class TeacherController {
     @Autowired
     ITeacherService teacherService;
 
+    @RequestMapping(value="/set_teacher_info_without_dtf",method = RequestMethod.POST)
+    public DemoResult setTeacherInfoWithoutDtf(@RequestBody Teacher teacher) throws Exception{
+        DemoResult demoResult = teacherService.addTeacherInfoWithoutDtf(teacher);
+        return demoResult;
+    }
+
     @RequestMapping(value="/set_teacher_info",method = RequestMethod.POST)
     public DemoResult setTeacherInfo(@RequestBody Teacher teacher) throws Exception{
         DemoResult demoResult = teacherService.addTeacherInfo(teacher);
