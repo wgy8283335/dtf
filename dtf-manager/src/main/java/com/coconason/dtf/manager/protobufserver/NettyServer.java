@@ -21,13 +21,16 @@ import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.timeout.ReadTimeoutHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @Author: Jason
  * @date: 2018/7/30-9:38
  */
-public final class NettyServer
-{
+public final class NettyServer {
+    private Logger logger = LoggerFactory.getLogger(NettyServer.class);
+    
     private static Boolean isHealthy = false;
 
     public static Boolean isHealthy() {
@@ -78,7 +81,7 @@ public final class NettyServer
                 });
         ChannelFuture f = b.bind(port).sync();
         isHealthy = true;
-        System.out.println("Netty Server start ok! post is 18080");
+        logger.info("Dtf server start listening at port:18080");
         f.channel().closeFuture().sync();
         isHealthy = false;
         boss.shutdownGracefully();
