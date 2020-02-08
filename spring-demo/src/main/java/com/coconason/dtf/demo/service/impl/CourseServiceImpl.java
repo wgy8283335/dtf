@@ -36,6 +36,7 @@ public class CourseServiceImpl implements ICourseService {
     public DemoResult addCourseInfoWithoutDtf(Course course) throws Exception {
         courseMapper.insertSelective(course);
         Teacher teacher = new Teacher();
+        //
         teacher.setT(1);
         teacher.setTname("Lin");
         System.out.println("before sendPost ---------------------------"+System.currentTimeMillis());
