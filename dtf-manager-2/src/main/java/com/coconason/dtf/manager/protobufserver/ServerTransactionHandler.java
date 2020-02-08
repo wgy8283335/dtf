@@ -14,6 +14,7 @@ import com.coconason.dtf.manager.service.SendMessageRunnable;
 import com.coconason.dtf.manager.service.SendShortMessageRunnable;
 import com.coconason.dtf.manager.thread.LockAndConditionInterface;
 import com.coconason.dtf.manager.thread.ServerThreadLockCacheProxy;
+import com.coconason.dtf.manager.threadpools.ThreadPoolForServerProxy;
 import com.coconason.dtf.manager.utils.SetUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -29,7 +30,9 @@ import java.util.concurrent.ExecutorService;
  * @Author: Jason
  * @date: 2018/7/30-9:31
  */
-public final class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
+public final class ServerTransactionHandler extends ChannelInboundHandlerAdapter {
+
+    private Logger logger = LoggerFactory.getLogger(ServerTransactionHandler.class);
 
     private MessageCacheInterface messageSyncCacheProxy;
 
@@ -46,8 +49,6 @@ public final class ServerTransactionHandler extends ChannelInboundHandlerAdapter
     private MessageCacheInterface messageForSubmitAsyncCacheProxy;
 
     private ServerThreadLockCacheProxy serverThreadLockCacheProxy;
-
-    private static final Logger logger = LoggerFactory.getLogger(ServerTransactionHandler.class);
 
     public ServerTransactionHandler(MessageCacheInterface messageSyncCacheProxy, MessageCacheInterface messageAsyncCacheProxy,
                                     MessageAsyncQueueProxy messageAsyncQueueProxy, ThreadPoolForServerProxy threadPoolForServerProxy,

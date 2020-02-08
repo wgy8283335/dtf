@@ -3,6 +3,8 @@ package com.coconason.dtf.client.core.nettyclient.protobufclient;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ScheduledFuture;
@@ -12,9 +14,10 @@ import java.util.concurrent.TimeUnit;
  * @date: 2018/10/2-14:11
  */
 @Component
-final class HeartBeatReqHandler extends ChannelInboundHandlerAdapter
-{
+final class HeartBeatReqHandler extends ChannelInboundHandlerAdapter {
 
+	private Logger logger = LoggerFactory.getLogger(HeartBeatReqHandler.class);
+	
 	private volatile ScheduledFuture<?> heartBeat;
 
 	@Override

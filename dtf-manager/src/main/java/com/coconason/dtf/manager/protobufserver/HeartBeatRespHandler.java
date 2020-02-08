@@ -4,13 +4,17 @@ import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @Author: Jason
  * @date: 2018/7/30-9:33
  */
-public final class HeartBeatRespHandler extends ChannelInboundHandlerAdapter
-{
+public final class HeartBeatRespHandler extends ChannelInboundHandlerAdapter {
+
+    private Logger logger = LoggerFactory.getLogger(HeartBeatRespHandler.class);
+    
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception
     {

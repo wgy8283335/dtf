@@ -4,6 +4,8 @@ import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -12,9 +14,10 @@ import java.util.concurrent.ConcurrentHashMap;
  * @Author: Jason
  * @date: 2018/7/30-9:31
  */
-public final class LoginAuthRespHandler extends ChannelInboundHandlerAdapter
-{
+public final class LoginAuthRespHandler extends ChannelInboundHandlerAdapter {
 
+    private Logger logger = LoggerFactory.getLogger(LoginAuthRespHandler.class);
+    
     /**
      * White list.
      */

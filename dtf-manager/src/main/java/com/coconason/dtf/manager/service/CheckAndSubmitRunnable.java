@@ -10,6 +10,8 @@ import com.coconason.dtf.manager.message.TransactionMessageGroupInterface;
 import com.coconason.dtf.manager.utils.SetUtil;
 import com.google.common.cache.Cache;
 import io.netty.channel.ChannelHandlerContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Set;
@@ -19,7 +21,9 @@ import java.util.concurrent.ExecutorService;
  * @Author: Jason
  * @date: 2018/9/19-10:26
  */
-public final class CheckAndSubmitRunnable implements Runnable{
+public final class CheckAndSubmitRunnable implements Runnable {
+
+    private Logger logger = LoggerFactory.getLogger(CheckAndSubmitRunnable.class);
 
     private MessageProto.Message message;
 

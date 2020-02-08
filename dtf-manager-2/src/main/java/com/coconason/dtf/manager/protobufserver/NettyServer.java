@@ -4,6 +4,7 @@ import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.manager.cache.*;
 import com.coconason.dtf.manager.service.ConsumerFailingAsyncRequestRunnable;
 import com.coconason.dtf.manager.thread.ServerThreadLockCacheProxy;
+import com.coconason.dtf.manager.threadpools.ThreadPoolForServerProxy;
 import com.coconason.dtf.manager.utils.PropertiesReader;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -20,13 +21,17 @@ import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.timeout.ReadTimeoutHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @Author: Jason
  * @date: 2018/7/30-9:38
  */
-public final class NettyServer
-{
+public final class NettyServer {
+
+    private Logger logger = LoggerFactory.getLogger(NettyServer.class);
+    
     private static Boolean isHealthy = false;
 
     public static Boolean isHealthy() {

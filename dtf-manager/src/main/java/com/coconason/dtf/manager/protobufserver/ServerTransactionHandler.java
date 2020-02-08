@@ -29,7 +29,9 @@ import java.util.concurrent.ExecutorService;
  * @Author: Jason
  * @date: 2018/7/30-9:31
  */
-public final class ServerTransactionHandler extends ChannelInboundHandlerAdapter{
+public final class ServerTransactionHandler extends ChannelInboundHandlerAdapter {
+
+    private Logger logger = LoggerFactory.getLogger(ServerTransactionHandler.class);
 
     private MessageCacheInterface messageSyncCacheProxy;
 
@@ -46,8 +48,6 @@ public final class ServerTransactionHandler extends ChannelInboundHandlerAdapter
     private MessageCacheInterface messageForSubmitAsyncCacheProxy;
 
     private ServerThreadLockCacheProxy serverThreadLockCacheProxy;
-
-    private static final Logger logger = LoggerFactory.getLogger(ServerTransactionHandler.class);
 
     public ServerTransactionHandler(MessageCacheInterface messageSyncCacheProxy, MessageCacheInterface messageAsyncCacheProxy,
                                     MessageAsyncQueueProxy messageAsyncQueueProxy, ThreadPoolForServerProxy threadPoolForServerProxy,

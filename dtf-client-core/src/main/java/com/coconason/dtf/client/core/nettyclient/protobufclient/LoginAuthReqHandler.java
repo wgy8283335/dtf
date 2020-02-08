@@ -3,14 +3,18 @@ package com.coconason.dtf.client.core.nettyclient.protobufclient;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 /**
  * @Author: Jason
  * @date: 2018/10/2-14:11
  */
 @Component
-final class LoginAuthReqHandler extends ChannelInboundHandlerAdapter
-{
+final class LoginAuthReqHandler extends ChannelInboundHandlerAdapter {
+	
+	private Logger logger = LoggerFactory.getLogger(LoginAuthReqHandler.class);
+	
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception
 	{

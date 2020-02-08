@@ -29,6 +29,7 @@ import org.slf4j.LoggerFactory;
  * @date: 2018/7/30-9:38
  */
 public final class NettyServer {
+    
     private Logger logger = LoggerFactory.getLogger(NettyServer.class);
     
     private static Boolean isHealthy = false;

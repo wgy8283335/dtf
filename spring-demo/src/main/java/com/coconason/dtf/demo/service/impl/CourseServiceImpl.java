@@ -11,6 +11,8 @@ import com.coconason.dtf.demo.po.CourseExample;
 import com.coconason.dtf.demo.po.Sc;
 import com.coconason.dtf.demo.po.Teacher;
 import com.coconason.dtf.demo.service.ICourseService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +25,8 @@ import java.util.List;
  */
 @Service
 public class CourseServiceImpl implements ICourseService {
+
+    private Logger logger = LoggerFactory.getLogger(CourseServiceImpl.class);
 
     @Autowired
     private CourseMapper courseMapper;

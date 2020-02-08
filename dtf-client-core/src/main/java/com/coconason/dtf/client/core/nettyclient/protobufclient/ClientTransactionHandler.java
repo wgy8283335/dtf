@@ -9,6 +9,8 @@ import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
 import com.google.common.cache.Cache;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -20,8 +22,9 @@ import java.lang.reflect.Method;
  */
 @Component
 @ChannelHandler.Sharable
-final class ClientTransactionHandler extends AbstractClientTransactionHandler
-{
+final class ClientTransactionHandler extends AbstractClientTransactionHandler {
+
+	private Logger logger = LoggerFactory.getLogger(ClientTransactionHandler.class);
 
 	@Autowired
 	@Qualifier("threadLockCacheProxy")
