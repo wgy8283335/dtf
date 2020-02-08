@@ -82,7 +82,7 @@ public final class NettyServer {
                 });
         ChannelFuture f = b.bind(port).sync();
         isHealthy = true;
-        System.out.println("Netty Server start ok! post is 18080");
+        logger.info("Netty Server start ok! post is 18080");
         f.channel().closeFuture().sync();
         isHealthy = false;
         boss.shutdownGracefully();

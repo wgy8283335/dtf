@@ -184,7 +184,7 @@ public final class DtfConnectionDecorator implements Connection {
                 }else if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD){
                     queue.add(TransactionServiceInfoFactory.newInstanceForSub(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_SUCCESS, groupId, groupMembers, memberId));
                 }
-                System.out.println("提交");
+                logger.debug("提交");
                 try {
                     connection.commit();
                 }catch (SQLException e){
@@ -196,7 +196,7 @@ public final class DtfConnectionDecorator implements Connection {
                 }else if(transactionServiceInfo.getAction()== MessageProto.Message.ActionType.ADD){
                     queue.add(TransactionServiceInfoFactory.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL, groupId,groupMembers));
                 }
-                System.out.println("回滚");
+                logger.debug("回滚");
                 try{
                     connection.rollback();
                 }catch (SQLException e){

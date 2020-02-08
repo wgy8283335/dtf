@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
  */
 public final class MessageSender {
 
-    private Logger logger = LoggerFactory.getLogger(MessageSender.class);
+    private static Logger logger = LoggerFactory.getLogger(MessageSender.class);
 
     public static void sendMsg(String groupId,ActionType action,ChannelHandlerContext ctx){
         MessageProto.Message.Builder builder= MessageProto.Message.newBuilder();
@@ -24,7 +24,7 @@ public final class MessageSender {
         builder.setId(UuidGenerator.generateUuid());
         builder.setAction(action);
         MessageProto.Message message = builder.build();
-        System.out.println("Send transaction message:\n" + message);
+        logger.debug("Send transaction message:\n" + message);
         ctx.writeAndFlush(message);
     }
 }

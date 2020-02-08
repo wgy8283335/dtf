@@ -34,19 +34,19 @@ final class LoginAuthReqHandler extends ChannelInboundHandlerAdapter {
 				String loginResult = message.getInfo().toString();
 				if (loginResult.equals("login_ok"))
 				{
-					System.out.println("Login is success :" + message);
+					logger.debug("Login is success :" + message);
 					ctx.fireChannelRead(msg);
 				}
 				else
 				{
 					ctx.close();
-					System.out.println("fail,close connection");
+					logger.debug("fail,close connection");
 				}
 			}
 			else
 			{
 				ctx.close();
-				System.out.println("fail,close connection");
+				logger.debug("fail,close connection");
 			}
 		}
 		else

@@ -43,15 +43,15 @@ public class CourseServiceImpl implements ICourseService {
         // uuid
         teacher.setT(1);
         teacher.setTname("Lin");
-        System.out.println("before sendPost ---------------------------"+System.currentTimeMillis());
+        logger.debug("before sendPost ---------------------------"+System.currentTimeMillis());
         String result = restClient.sendPost("http://localhost:8082/set_teacher_info_without_dtf",teacher);
-        System.out.println("after sendPost ---------------------------"+System.currentTimeMillis());
+        logger.debug("after sendPost ---------------------------"+System.currentTimeMillis());
         Teacher teacher1 = new Teacher();
         teacher1.setT(2);
         teacher1.setTname("Yun");
-        System.out.println("before 2 sendPost ---------------------------"+System.currentTimeMillis());
+        logger.debug("before 2 sendPost ---------------------------"+System.currentTimeMillis());
         String result2 = restClient.sendPost("http://localhost:8082/set_teacher_info_without_dtf",teacher1);
-        System.out.println("after 2 sendPost ---------------------------"+System.currentTimeMillis());
+        logger.debug("after 2 sendPost ---------------------------"+System.currentTimeMillis());
         return new DemoResult().ok();
     }
 
@@ -63,15 +63,15 @@ public class CourseServiceImpl implements ICourseService {
         Teacher teacher = new Teacher();
         teacher.setT(1);
         teacher.setTname("Lin");
-        System.out.println("before sendPost ---------------------------"+System.currentTimeMillis());
+        logger.debug("before sendPost ---------------------------"+System.currentTimeMillis());
         String result = restClient.sendPost("http://localhost:8082/set_teacher_info",teacher);
-        System.out.println("after sendPost ---------------------------"+System.currentTimeMillis());
+        logger.debug("after sendPost ---------------------------"+System.currentTimeMillis());
         Teacher teacher1 = new Teacher();
         teacher1.setT(2);
         teacher1.setTname("Yun");
-        System.out.println("before 2 sendPost ---------------------------"+System.currentTimeMillis());
+        logger.debug("before 2 sendPost ---------------------------"+System.currentTimeMillis());
         String result2 = restClient.sendPost("http://localhost:8082/set_teacher_info",teacher1);
-        System.out.println("after 2 sendPost ---------------------------"+System.currentTimeMillis());
+        logger.debug("after 2 sendPost ---------------------------"+System.currentTimeMillis());
         return new DemoResult().ok();
     }
 

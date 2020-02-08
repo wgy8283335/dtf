@@ -53,13 +53,13 @@ final class ClientTransactionHandler extends AbstractClientTransactionHandler {
 	{
 		super.channelActive(ctx);
 		this.ctx = ctx;
-		System.out.println("create connection-->"+this.ctx);
+		logger.debug("create connection-->"+this.ctx);
 	}
 
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception
 	{
-		System.out.println(msg);
+		logger.debug(msg.toString());
 		MessageProto.Message message = (MessageProto.Message) msg;
 		ActionType action = message.getAction();
 		JSONObject map=null;
@@ -186,7 +186,7 @@ final class ClientTransactionHandler extends AbstractClientTransactionHandler {
 		builder.setId(id);
 		builder.setAction(action);
 		MessageProto.Message message = builder.build();
-		System.out.println("Send transaction message:\n" + message);
+		logger.debug("Send transaction message:\n" + message);
 		ctx.writeAndFlush(message);
 	}
 
@@ -201,7 +201,7 @@ final class ClientTransactionHandler extends AbstractClientTransactionHandler {
 		builder.setId(id);
 		builder.setAction(action);
 		MessageProto.Message message = builder.build();
-		System.out.println("Send transaction message:\n" + message);
+		logger.debug("Send transaction message:\n" + message);
 		ctx.writeAndFlush(message);
 	}
 
@@ -216,7 +216,7 @@ final class ClientTransactionHandler extends AbstractClientTransactionHandler {
 		builder.setId(id);
 		builder.setAction(action);
 		MessageProto.Message message = builder.build();
-		System.out.println("Send transaction message:\n" + message);
+		logger.debug("Send transaction message:\n" + message);
 		ctx.writeAndFlush(message);
 	}
 
@@ -229,7 +229,7 @@ final class ClientTransactionHandler extends AbstractClientTransactionHandler {
 		builder.setId(id);
 		builder.setAction(action);
 		MessageProto.Message message = builder.build();
-		System.out.println("Send transaction message:\n" + message);
+		logger.debug("Send transaction message:\n" + message);
 		ctx.writeAndFlush(message);
 	}
 
@@ -243,7 +243,7 @@ final class ClientTransactionHandler extends AbstractClientTransactionHandler {
 		builder.setId(id);
 		builder.setAction(action);
 		MessageProto.Message message = builder.build();
-		System.out.println("Send transaction message:\n" + message);
+		logger.debug("Send transaction message:\n" + message);
 		ctx.writeAndFlush(message);
 	}
 }

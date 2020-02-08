@@ -40,7 +40,7 @@ public final class LoginAuthRespHandler extends ChannelInboundHandlerAdapter {
         MessageProto.Message message = (MessageProto.Message) msg;
         if (message.getLength() != 2 && message.getAction() == ActionType.LOGIN_REQ)
         {
-            System.out.println("receive client login req : " + message);
+            logger.debug("receive client login req : " + message);
             MessageProto.Message loginResp = null;
             String nodeIndex = ctx.channel().remoteAddress().toString().split(":")[0];
             // Check whether is duplicated log in.
@@ -70,7 +70,7 @@ public final class LoginAuthRespHandler extends ChannelInboundHandlerAdapter {
                     loginResp = buildResponse("login_fail");
                 }
                 ctx.writeAndFlush(loginResp);
-                System.out.println("send login resp is : " + loginResp);
+                logger.debug("send login resp is : " + loginResp);
             }
         }
         else

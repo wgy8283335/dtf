@@ -38,7 +38,7 @@ final class HeartBeatReqHandler extends ChannelInboundHandlerAdapter {
 			}
 			else if (message.getAction() == MessageProto.Message.ActionType.HEARTBEAT_RESP)
 			{
-				System.out.println("Client receive server heart beat message :" + message);
+				logger.debug("Client receive server heart beat message :" + message);
 			}
 			else
 			{
@@ -87,7 +87,7 @@ final class HeartBeatReqHandler extends ChannelInboundHandlerAdapter {
 		public void run()
 		{
 			ctx.writeAndFlush(buildHeartBeat());
-			System.out.println("Client send heart beat message to server : ----> " + heartBeat);
+			logger.debug("Client send heart beat message to server : ----> " + heartBeat);
 		}
 
 	}

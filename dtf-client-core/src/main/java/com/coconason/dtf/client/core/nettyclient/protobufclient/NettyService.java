@@ -95,7 +95,7 @@ public final class NettyService {
                 });
         ChannelFuture f = b.connect(host, port).sync();
         isHealthy = true;
-        System.out.println("connection success-----> " + host + ":" + port);
+        logger.debug("connection success-----> " + host + ":" + port);
         f.channel().closeFuture().sync();
         isHealthy = false;
         threadPoolForClientProxy.execute(new ConnectRunnable(host,port));

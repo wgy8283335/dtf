@@ -78,7 +78,7 @@ public final class ServerTransactionHandler extends ChannelInboundHandlerAdapter
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception
     {
-        System.out.println(msg);
+        logger.debug(msg.toString());
         MessageProto.Message message = (MessageProto.Message) msg;
         ActionType actionType = message.getAction();
         switch (actionType){
