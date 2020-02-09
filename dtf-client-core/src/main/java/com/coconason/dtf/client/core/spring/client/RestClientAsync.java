@@ -35,7 +35,7 @@ public final class RestClientAsync {
         BaseTransactionGroupInfo groupInfo = TransactionGroupInfo.getCurrent();
         ClientLockAndCondition lc = new ClientLockAndCondition(new ReentrantLock(), OperationType.DEFAULT);
         thirdThreadLockCacheProxy.put(groupInfo.getGroupId(),lc);
-        groupInfo.addNewMemeber();
+        groupInfo.addNewMember();
         TransactionGroupInfo.setCurrent(groupInfo);
         BaseTransactionServiceInfo transactionServiceInfo = TransactionServiceInfoFactory.newInstanceForRestful(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.ADD_ASYNC, groupInfo.getGroupId(), groupInfo.getMemberId(), url, object);
         lc.awaitLimitedTime(nettyService,transactionServiceInfo,"RestClientAsync sendPost fail",10000, TimeUnit.MILLISECONDS);

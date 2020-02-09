@@ -115,7 +115,7 @@ public final class AspectHandler implements AspectInterface {
                 //if the thread does not have transactionGroupInfo,set current transaction group information
                 BaseTransactionGroupInfo temp = TransactionGroupInfo.getCurrent();
                 if(temp==null){
-                    transactionGroupInfo.addNewMemeber();
+                    transactionGroupInfo.addNewMember();
                     TransactionGroupInfo.setCurrent(transactionGroupInfo);
                 }
                 //if the thread does not have transactionServiceInfo,set current transaction service information

@@ -3,33 +3,66 @@ package com.coconason.dtf.client.core.beans;
 import java.util.Set;
 
 /**
+ * Abstract class of base transaction group information.
+ * 
  * @Author: Jason
- * @date: 2018/8/21-13:31
  */
 public abstract class BaseTransactionGroupInfo {
+    
     /**
-     * current is a ThreadLocal variable,each thread has its own BaseTransactionGroupInfo variable.
+     * Current is a threadLocal variable,each thread has its own BaseTransactionGroupInfo variable.
      */
-    private final static ThreadLocal<BaseTransactionGroupInfo> current = new ThreadLocal<>();
+    private static final ThreadLocal<BaseTransactionGroupInfo> CURRENT = new ThreadLocal<>();
+    
     /**
-     * this is a method for getting BaseTransactionGroupInfo object in current thread .
+     * Get BaseTransactionGroupInfo object in current thread.
+     * 
+     * @return base transaction group information
      */
-    public static BaseTransactionGroupInfo getCurrent(){
-        return current.get();
+    public static BaseTransactionGroupInfo getCurrent() {
+        return CURRENT.get();
     }
-
-    public static void setCurrent(BaseTransactionGroupInfo transactionGroupInfo){
-        current.set(transactionGroupInfo);
+    
+    /**
+     * Set BaseTransactionGroupInfo object in current thread.
+     *
+     * @param transactionGroupInfo base transaction group information
+     */
+    public static void setCurrent(final BaseTransactionGroupInfo transactionGroupInfo) {
+        CURRENT.set(transactionGroupInfo);
     }
-
-    public abstract void addNewMemeber();
-
-    public abstract void addMemebers(Set<Long> tempSet);
-
+    
+    /**
+     * Generate uuid as new member id, and store it in groupMembers.
+     */
+    public abstract void addNewMember();
+    
+    /**
+     * Add tempSet in groupMembers.
+     *
+     * @param tempSet set of members
+     */
+    public abstract void addMembers(Set<Long> tempSet);
+    
+    /**
+     * Get member id.
+     *
+     * @return member id
+     */
     public abstract Long getMemberId();
-
+    
+    /**
+     * Get group id.
+     *
+     * @return group id
+     */
     public abstract String getGroupId();
-
+    
+    /**
+     * Get group members.
+     *
+     * @return set of group members
+     */
     public abstract Set<Long> getGroupMembers();
 
 }
