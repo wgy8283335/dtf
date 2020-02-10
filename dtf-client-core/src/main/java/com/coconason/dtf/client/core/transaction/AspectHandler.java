@@ -71,7 +71,7 @@ public final class AspectHandler implements AspectInterface {
             //"info==null" means the current thread is transaction initiator.DtfClientInterceptor for reference.
             if(info==null) {
                 String groupIdTemp = GroupidGenerator.getStringId(0, 0);
-                BaseTransactionGroupInfo groupInfo = TransactionGroupInfoFactory.getInstanceWithGroupidMemid(groupIdTemp, ORIGINAL_ID);
+                BaseTransactionGroupInfo groupInfo = TransactionGroupInfoFactory.getInstance(groupIdTemp, ORIGINAL_ID);
                 TransactionGroupInfo.setCurrent(groupInfo);
                 result = point.proceed();
                 ClientLockAndConditionInterface asyncFinalCommitLc = new ClientLockAndCondition(new ReentrantLock(), OperationType.DEFAULT);
@@ -83,11 +83,11 @@ public final class AspectHandler implements AspectInterface {
             }
         }else{
             //"info==null" means the current thread is transaction initiator.DtfClientInterceptor for reference.
-            BaseTransactionGroupInfo transactionGroupInfo = info == null ? null:TransactionGroupInfoFactory.getInstanceParseString(info);
+            BaseTransactionGroupInfo transactionGroupInfo = info == null ? null:TransactionGroupInfoFactory.getInstanceByParsingString(info);
             if(transactionGroupInfo == null) {
                 //1.
                 String groupIdTemp = GroupidGenerator.getStringId(0, 0);
-                BaseTransactionGroupInfo groupInfo = TransactionGroupInfoFactory.getInstanceWithGroupidMemid(groupIdTemp, ORIGINAL_ID);
+                BaseTransactionGroupInfo groupInfo = TransactionGroupInfoFactory.getInstance(groupIdTemp, ORIGINAL_ID);
                 TransactionGroupInfo.setCurrent(groupInfo);
                 switchTransactionType(transactionType,groupInfo,method,args);
                 //2.

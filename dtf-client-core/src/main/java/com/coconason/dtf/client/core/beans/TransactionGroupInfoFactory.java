@@ -4,18 +4,32 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
+ * Transaction group information factory
+ * 
  * @Author: Jason
- * @date: 2018/10/4-11:04
  */
 public class TransactionGroupInfoFactory {
 
-    public static BaseTransactionGroupInfo getInstanceWithGroupidMemid(String groupId, Long memberId){
+    /**
+     * Get instance by groupId and memberId.
+     * 
+     * @param groupId
+     * @param memberId
+     * @return base transction group information
+     */
+    public static BaseTransactionGroupInfo getInstance(String groupId, Long memberId){
         Set groupMembers = new HashSet<>();
         groupMembers.add(memberId);
         return new TransactionGroupInfo(groupId, memberId, groupMembers);
     }
 
-    public static BaseTransactionGroupInfo getInstanceParseString(String value){
+    /**
+     * Get instance by parsing string
+     * 
+     * @param value
+     * @return base transaction group information
+     */
+    public static BaseTransactionGroupInfo getInstanceByParsingString(String value){
         String[] array = value.split("-");
         String groupId = array[0];
         Long memberId = Long.valueOf(array[1]);

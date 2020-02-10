@@ -29,7 +29,7 @@ final class DtfHttpRequestInterceptor implements ClientHttpRequestInterceptor {
         ClientHttpResponse response = clientHttpRequestExecution.execute(httpRequest,bytes);
         List<String> groupInfoStringList=response.getHeaders().get("groupInfo");
         if(groupInfoStringList != null){
-            BaseTransactionGroupInfo responseTransactionGroupInfo = TransactionGroupInfoFactory.getInstanceParseString(groupInfoStringList.get(0));
+            BaseTransactionGroupInfo responseTransactionGroupInfo = TransactionGroupInfoFactory.getInstanceByParsingString(groupInfoStringList.get(0));
             transactionGroupInfo.addMembers(responseTransactionGroupInfo.getGroupMembers());
         }
         return response;
