@@ -11,7 +11,7 @@ import com.coconason.dtf.common.protobuf.MessageProto;
 public abstract class BaseTransactionServiceInfo {
 
     /**
-     * Current is a ThreadLocal variable,each thread has its own BaseTransactionServiceInfo variable.
+     * Current is a ThreadLocal variable,each thread has its on BaseTransactionServiceInfo variable.
      */
     private static final ThreadLocal<BaseTransactionServiceInfo> CURRENT = new ThreadLocal<>();
 

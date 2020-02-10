@@ -1,23 +1,40 @@
 package com.coconason.dtf.client.core.beans;
 
 /**
+ * Transaction type.
+ * 
  * @Author: Jason
- * @date: 2018/9/5-15:15
  */
 public enum TransactionType {
-    //SYNC_FINAL,SYNC_STRONG,SYNC_STRONG
-    SYNC_FINAL("SYNC_FINAL"),SYNC_STRONG("SYNC_STRONG"),ASYNC_FINAL("ASYNC_FINAL");
-
-    private final static ThreadLocal<TransactionType> current = new ThreadLocal<>();
-
+    
+    /**
+     * There is three kinds of transaction type:
+     * synchronous final consistency; synchronous strong consistency; asynchronous final consistency.
+     */
+    SYNC_FINAL("SYNC_FINAL"), SYNC_STRONG("SYNC_STRONG"), ASYNC_FINAL("ASYNC_FINAL");
+    
+    /**
+     * Current is a ThreadLocal variable,each thread has its on TransactionType variable.
+     */
+    private static final ThreadLocal<TransactionType> CURRENT = new ThreadLocal<>();
+    
+    /**
+     * Transaction type, store type in string.
+     */
     private String transactionType;
-
-    TransactionType(String transactionType) {
+    
+    TransactionType(final String transactionType) {
         this.transactionType = transactionType;
     }
 
-    public static TransactionType newInstance(String type){
-        switch (type){
+    /**
+     * Create instance by type.
+     * 
+     * @param type type in string
+     * @return transaction type
+     */
+    public static TransactionType newInstance(final String type) {
+        switch (type) {
             case "SYNC_FINAL":
                 return SYNC_FINAL;
             case "SYNC_STRONG":
@@ -28,12 +45,23 @@ public enum TransactionType {
                 return null;
         }
     }
-
+    
+    /**
+     * Get TransactionType object in current thread.
+     *
+     * @return base transaction group information
+     */
     public static TransactionType getCurrent() {
-        return current.get();
+        return CURRENT.get();
     }
-
-    public static void setCurrent(TransactionType transactionType){
-        current.set(transactionType);
+    
+    /**
+     * Set TransactionType object in current thread.
+     *
+     * @param transactionType transaction type
+     */
+    public static void setCurrent(final TransactionType transactionType) {
+        CURRENT.set(transactionType);
     }
+    
 }
