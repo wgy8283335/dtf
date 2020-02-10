@@ -96,9 +96,9 @@ public final class AspectHandler implements AspectInterface {
                 }catch (Exception e){
                     if(ORIGINAL_ID.equals(TransactionGroupInfo.getCurrent().getMemberId())){
                         if(TransactionType.SYNC_FINAL == transactionType){
-                            queue.add(TransactionServiceInfoFactory.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.CANCEL,TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
+                            queue.add(TransactionServiceInfoFactory.newInstanceWithGroupIdSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.CANCEL,TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
                         }else if(TransactionType.SYNC_STRONG == transactionType){
-                            queue.add(TransactionServiceInfoFactory.newInstanceWithGroupidSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.CANCEL,TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
+                            queue.add(TransactionServiceInfoFactory.newInstanceWithGroupIdSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.CANCEL,TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
                         }
                     }
                     logger.error(e.getMessage());
