@@ -46,7 +46,7 @@ public abstract class BaseTransactionServiceInfo {
      * @return Information in JSONObject
      */
     public abstract JSONObject getInfo();
-
+    
     /**
      * Get Action.
      * 
