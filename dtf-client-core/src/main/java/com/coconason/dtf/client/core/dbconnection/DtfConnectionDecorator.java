@@ -176,43 +176,45 @@ public final class DtfConnectionDecorator implements Connection {
             return;
         }
         transactionServiceInfo = BaseTransactionServiceInfo.getCurrent();
-        if (TransactionType.SYNC_FINAL == TransactionType.getCurrent() || TransactionType.SYNC_STRONG == TransactionType.getCurrent()) {
-            threadPoolForClientProxy.execute(new SubmitRunnable(TransactionGroupInfo.getCurrent()));
-            BaseTransactionGroupInfo transactionGroupInfo = TransactionGroupInfo.getCurrent();
-            String groupId = transactionGroupInfo.getGroupId();
-            Long memberId = transactionGroupInfo.getMemberId();
-            if (Member.ORIGINAL_ID.equals(memberId) && TransactionType.SYNC_STRONG == TransactionType.getCurrent()) {
-                queue.add(TransactionServiceInfoFactory.newInstanceWithGroupIdSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT_STRONG, 
-                        TransactionGroupInfo.getCurrent().getGroupId(), TransactionGroupInfo.getCurrent().getGroupMembers()));
-                ClientLockAndConditionInterface secondlc = new ClientLockAndCondition(new ReentrantLock(), OperationType.DEFAULT);
-                secondThreadLockCacheProxy.put(groupId, secondlc);
-                boolean isWholeSuccess = secondlc.await(10000, TimeUnit.MILLISECONDS);
-                if (isWholeSuccess == false) {
-                    connection.close();
-                    ClientLockAndConditionInterface syncFinalCommitLc = syncFinalCommitThreadLockCacheProxy.getIfPresent(groupId);
-                    syncFinalCommitLc.setState(OperationType.WHOLE_FAIL);
-                    throw new SQLException("Distributed transaction fail to receive WHOLE_SUCCESS_STRONG , groupId is :" + groupId);
-                }
-                ClientLockAndConditionInterface secondlc2 = secondThreadLockCacheProxy.getIfPresent(groupId);
-                if (secondlc2.getState() == OperationType.WHOLE_FAIL) {
-                    queue.add(TransactionServiceInfoFactory.newInstanceForShortMessage(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.WHOLE_FAIL_STRONG_ACK, groupId));
-                    connection.close();
-                    ClientLockAndConditionInterface syncFinalCommitLc = syncFinalCommitThreadLockCacheProxy.getIfPresent(groupId);
-                    syncFinalCommitLc.setState(OperationType.WHOLE_FAIL);
-                    throw new SQLException("Distributed transaction failed and groupId:" + groupId);
-                } else {
-                    queue.add(TransactionServiceInfoFactory.newInstanceForShortMessage(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.WHOLE_SUCCESS_STRONG_ACK, groupId));
-                    connection.close();
-                    ClientLockAndConditionInterface syncFinalCommitLc = syncFinalCommitThreadLockCacheProxy.getIfPresent(groupId);
-                    syncFinalCommitLc.setState(OperationType.WHOLE_SUCCESS);
-                }
-            } else if (Member.ORIGINAL_ID.equals(memberId) && TransactionType.SYNC_FINAL == TransactionType.getCurrent()) {
-                queue.add(TransactionServiceInfoFactory.newInstanceWithGroupIdSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT, 
-                        TransactionGroupInfo.getCurrent().getGroupId(), TransactionGroupInfo.getCurrent().getGroupMembers()));
-            }
-        } else {
+        if (TransactionType.SYNC_FINAL != TransactionType.getCurrent() && TransactionType.SYNC_STRONG != TransactionType.getCurrent()) {
             connection.commit();
             connection.close();
+            return;
+        }
+        threadPoolForClientProxy.execute(new SubmitRunnable(TransactionGroupInfo.getCurrent()));
+        BaseTransactionGroupInfo transactionGroupInfo = TransactionGroupInfo.getCurrent();
+        String groupId = transactionGroupInfo.getGroupId();
+        Long memberId = transactionGroupInfo.getMemberId();
+        if (Member.ORIGINAL_ID.equals(memberId) && TransactionType.SYNC_STRONG == TransactionType.getCurrent()) {
+            queue.add(TransactionServiceInfoFactory.newInstanceWithGroupIdSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT_STRONG, 
+                    TransactionGroupInfo.getCurrent().getGroupId(), TransactionGroupInfo.getCurrent().getGroupMembers()));
+            ClientLockAndConditionInterface secondlc = new ClientLockAndCondition(new ReentrantLock(), OperationType.DEFAULT);
+            secondThreadLockCacheProxy.put(groupId, secondlc);
+            boolean isWholeSuccess = secondlc.await(10000, TimeUnit.MILLISECONDS);
+            if (!isWholeSuccess) {
+                connection.close();
+                ClientLockAndConditionInterface syncFinalCommitLc = syncFinalCommitThreadLockCacheProxy.getIfPresent(groupId);
+                syncFinalCommitLc.setState(OperationType.WHOLE_FAIL);
+                throw new SQLException("Distributed transaction fail to receive WHOLE_SUCCESS_STRONG , groupId is :" + groupId);
+            }
+            ClientLockAndConditionInterface secondlc2 = secondThreadLockCacheProxy.getIfPresent(groupId);
+            if (secondlc2.getState() == OperationType.WHOLE_FAIL) {
+                queue.add(TransactionServiceInfoFactory.newInstanceForShortMessage(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.WHOLE_FAIL_STRONG_ACK, groupId));
+                connection.close();
+                ClientLockAndConditionInterface syncFinalCommitLc = syncFinalCommitThreadLockCacheProxy.getIfPresent(groupId);
+                syncFinalCommitLc.setState(OperationType.WHOLE_FAIL);
+                throw new SQLException("Distributed transaction failed and groupId:" + groupId);
+            } else {
+                queue.add(TransactionServiceInfoFactory.newInstanceForShortMessage(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.WHOLE_SUCCESS_STRONG_ACK, groupId));
+                connection.close();
+                ClientLockAndConditionInterface syncFinalCommitLc = syncFinalCommitThreadLockCacheProxy.getIfPresent(groupId);
+                syncFinalCommitLc.setState(OperationType.WHOLE_SUCCESS);
+                return;
+            }
+        } else if (Member.ORIGINAL_ID.equals(memberId) && TransactionType.SYNC_FINAL == TransactionType.getCurrent()) {
+            queue.add(TransactionServiceInfoFactory.newInstanceWithGroupIdSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT, 
+                    TransactionGroupInfo.getCurrent().getGroupId(), TransactionGroupInfo.getCurrent().getGroupMembers()));
+            return;
         }
     }
     
@@ -494,19 +496,11 @@ public final class DtfConnectionDecorator implements Connection {
                 } catch (SQLException e) {
                     logger.error(e.getMessage());
                 }
-                if (transactionServiceInfo.getAction() == MessageProto.Message.ActionType.ADD_STRONG) {
-                    queue.add(TransactionServiceInfoFactory.newInstanceWithGroupIdSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL_STRONG, groupId, groupMembers));
-                } else if (transactionServiceInfo.getAction() == MessageProto.Message.ActionType.ADD) {
-                    queue.add(TransactionServiceInfoFactory.newInstanceWithGroupIdSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL, groupId, groupMembers));
-                }
+                addNewTransactionServicetoQueueWhenFalse(groupId, groupMembers);
             }
             state = threadLockCacheProxy.getIfPresent(map.get("groupId").toString() + memberId).getState();
             if (state == OperationType.COMMIT) {
-                if (transactionServiceInfo.getAction() == MessageProto.Message.ActionType.ADD_STRONG) {
-                    queue.add(TransactionServiceInfoFactory.newInstanceForSub(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_SUCCESS_STRONG, groupId, groupMembers, memberId));
-                } else if (transactionServiceInfo.getAction() == MessageProto.Message.ActionType.ADD) {
-                    queue.add(TransactionServiceInfoFactory.newInstanceForSub(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_SUCCESS, groupId, groupMembers, memberId));
-                }
+                addNewTransactionServicetoQueueWhenCommit(groupId, groupMembers, memberId);
                 logger.debug("commit");
                 try {
                     connection.commit();
@@ -514,11 +508,7 @@ public final class DtfConnectionDecorator implements Connection {
                     logger.error(e.getMessage());
                 }
             } else if (state == OperationType.ROLLBACK) {
-                if (transactionServiceInfo.getAction() == MessageProto.Message.ActionType.ADD_STRONG) {
-                    queue.add(TransactionServiceInfoFactory.newInstanceWithGroupIdSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL_STRONG, groupId, groupMembers));
-                } else if (transactionServiceInfo.getAction() == MessageProto.Message.ActionType.ADD) {
-                    queue.add(TransactionServiceInfoFactory.newInstanceWithGroupIdSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL, groupId, groupMembers));
-                }
+                addNewTransactionServicetoQueueWhenRollback(groupId, groupMembers);
                 logger.debug("rollback");
                 try {
                     connection.rollback();
@@ -532,6 +522,30 @@ public final class DtfConnectionDecorator implements Connection {
                 } catch (SQLException e) {
                     logger.error(e.getMessage());
                 }
+            }
+        }
+        
+        private void addNewTransactionServicetoQueueWhenFalse(final String groupId, final Set groupMembers) {
+            if (transactionServiceInfo.getAction() == MessageProto.Message.ActionType.ADD_STRONG) {
+                queue.add(TransactionServiceInfoFactory.newInstanceWithGroupIdSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL_STRONG, groupId, groupMembers));
+            } else if (transactionServiceInfo.getAction() == MessageProto.Message.ActionType.ADD) {
+                queue.add(TransactionServiceInfoFactory.newInstanceWithGroupIdSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL, groupId, groupMembers));
+            }
+        }
+
+        private void addNewTransactionServicetoQueueWhenCommit(final String groupId, final Set groupMembers, final Long memberId) {
+            if (transactionServiceInfo.getAction() == MessageProto.Message.ActionType.ADD_STRONG) {
+                queue.add(TransactionServiceInfoFactory.newInstanceForSub(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_SUCCESS_STRONG, groupId, groupMembers, memberId));
+            } else if (transactionServiceInfo.getAction() == MessageProto.Message.ActionType.ADD) {
+                queue.add(TransactionServiceInfoFactory.newInstanceForSub(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_SUCCESS, groupId, groupMembers, memberId));
+            }
+        }
+
+        private void addNewTransactionServicetoQueueWhenRollback(final String groupId, final Set groupMembers) {
+            if (transactionServiceInfo.getAction() == MessageProto.Message.ActionType.ADD_STRONG) {
+                queue.add(TransactionServiceInfoFactory.newInstanceWithGroupIdSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL_STRONG, groupId, groupMembers));
+            } else if (transactionServiceInfo.getAction() == MessageProto.Message.ActionType.ADD) {
+                queue.add(TransactionServiceInfoFactory.newInstanceWithGroupIdSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL, groupId, groupMembers));
             }
         }
     }
