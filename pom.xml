@@ -12,8 +12,9 @@
         <module>dtf-client-core</module>
         <module>dtf-manager</module>
         <module>dtf-common</module>
+        <module>spring-demo</module>
         <module>spring-demo-2</module>
-        <module>dtf-manager-2</module>
+        <module>spring-demo-3</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
