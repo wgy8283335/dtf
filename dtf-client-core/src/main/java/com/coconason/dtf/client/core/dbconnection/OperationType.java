@@ -1,11 +1,11 @@
 package com.coconason.dtf.client.core.dbconnection;
 
 /**
+ * Transaction operation type of distributed transaction.
+ * 
  * @Author: Jason
- * @date: 2018/8/24-10:38
  */
 public enum OperationType {
-    //these are operation types of distributed transaction.
     COMMIT,
     ROLLBACK,
     DEFAULT,

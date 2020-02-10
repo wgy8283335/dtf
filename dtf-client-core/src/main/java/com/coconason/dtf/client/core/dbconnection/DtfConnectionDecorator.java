@@ -24,35 +24,50 @@ import java.util.concurrent.locks.ReentrantLock;
 import static com.coconason.dtf.client.core.constants.Member.ORIGINAL_ID;
 
 /**
+ * Dtf connection decorator.
+ * Implement the java.sql.connection interface.
+ * 
  * @Author: Jason
- * @date: 2018/8/22-9:04
  */
 public final class DtfConnectionDecorator implements Connection {
-
+    
+    /**
+     * Logger for DtfConnectionDecorator.
+     */
     private Logger logger = LoggerFactory.getLogger(DtfConnectionDecorator.class);
-
+    
+    /**
+     * Database connection.
+     */
     private Connection connection;
+    
+    /**
+     * Transaction operation type.
+     * Why use volatile?
+     */
+    private volatile OperationType state = OperationType.DEFAULT;
+
+    /**
+     * Store 
+     */
+    private ThreadLockCacheProxy threadLockCacheProxy;
+    
+    private Queue queue;
+    
+    private BaseTransactionServiceInfo transactionServiceInfo;
+    
+    private Cache<String,ClientLockAndConditionInterface>  secondThreadLockCacheProxy;
+    
+    private ExecutorService threadPoolForClientProxy;
+    
+    private ThreadLockCacheProxy syncFinalCommitThreadLockCacheProxy;
 
     private boolean readOnly = false;
 
     private boolean hasRead = false;
 
-    private volatile OperationType state = OperationType.DEFAULT;
-
     private boolean hasClose = false;
-
-    private ThreadLockCacheProxy threadLockCacheProxy;
-
-    private Queue queue;
-
-    private BaseTransactionServiceInfo transactionServiceInfo;
-
-    private Cache<String,ClientLockAndConditionInterface>  secondThreadLockCacheProxy;
-
-    private ExecutorService threadPoolForClientProxy;
-
-    private ThreadLockCacheProxy syncFinalCommitThreadLockCacheProxy;
-
+    
     public DtfConnectionDecorator(Connection connection) {
         this.connection = connection;
     }
@@ -66,6 +81,13 @@ public final class DtfConnectionDecorator implements Connection {
         this.syncFinalCommitThreadLockCacheProxy = syncFinalCommitThreadLockCacheProxy;
     }
 
+    /**
+     * Commit transaction.
+     * Only read only transaction could be committed by database connection directly.
+     * Otherwise, commit will be handled by close(). Close() method is also a over written method.
+     * 
+     * @throws SQLException
+     */
     @Override
     public void commit() throws SQLException {
         if(readOnly){
@@ -78,7 +100,14 @@ public final class DtfConnectionDecorator implements Connection {
         close();
         hasClose = true;
     }
-
+    
+    /**
+     * Roll back transaction.
+     * Only read only transaction could be rolled back by database connection directly.
+     * Otherwise, commit will be rolled back by close(). Close() method is also a over written method.
+     * 
+     * @throws SQLException
+     */
     @Override
     public void rollback() throws SQLException {
         if(readOnly){
@@ -92,6 +121,12 @@ public final class DtfConnectionDecorator implements Connection {
         hasClose = true;
     }
 
+    /**
+     * Close the connection.
+     * The close() method is a over written method. Main process of the dtf transaction is described at here.
+     * 
+     * @throws SQLException
+     */
     @Override
     public void close() throws SQLException {
         if(readOnly||hasRead){
@@ -145,7 +180,8 @@ public final class DtfConnectionDecorator implements Connection {
             connection.close();
         }
     }
-
+    
+    
     private class SubmitRunnable implements Runnable{
         private BaseTransactionGroupInfo transactionGroupInfo;
 
