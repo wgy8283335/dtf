@@ -4,27 +4,53 @@ import com.alibaba.fastjson.JSONObject;
 import com.coconason.dtf.common.protobuf.MessageProto;
 
 /**
+ * Abstract class of base transaction service information.
+ * 
  * @Author: Jason
- * @date: 2018/10/4-12:15
  */
 public abstract class BaseTransactionServiceInfo {
 
     /**
-     * current is a ThreadLocal variable,each thread has its own BaseTransactionServiceInfo variable.
+     * Current is a ThreadLocal variable,each thread has its own BaseTransactionServiceInfo variable.
      */
-    private final static ThreadLocal<BaseTransactionServiceInfo> current = new ThreadLocal<>();
+    private static final ThreadLocal<BaseTransactionServiceInfo> CURRENT = new ThreadLocal<>();
 
+    /**
+     * Get thread local variable from CURRENT.
+     * 
+     * @return base transaction service information
+     */
     public static BaseTransactionServiceInfo getCurrent() {
-        return current.get();
+        return CURRENT.get();
     }
 
-    public static void setCurrent(BaseTransactionServiceInfo transactionServiceInfo){
-        current.set(transactionServiceInfo);
+    /**
+     * Set thread local variable from CURRENT.
+     * 
+     * @param transactionServiceInfo base transaction service information
+     */
+    public static void setCurrent(final BaseTransactionServiceInfo transactionServiceInfo) {
+        CURRENT.set(transactionServiceInfo);
     }
 
+    /**
+     * Get id.
+     * 
+     * @return id
+     */
     public abstract String getId();
 
+    /**
+     * Get Information.
+     * 
+     * @return Information in JSONObject
+     */
     public abstract JSONObject getInfo();
 
+    /**
+     * Get Action.
+     * 
+     * @return action type
+     */
     public abstract MessageProto.Message.ActionType getAction();
 }
