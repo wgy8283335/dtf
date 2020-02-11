@@ -1,0 +1,18 @@
+package com.coconason.dtf.client.core.nettyclient.protobufclient.strategy.signal;
+
+import com.alibaba.fastjson.JSONObject;
+import com.coconason.dtf.client.core.dbconnection.OperationType;
+import com.coconason.dtf.client.core.thread.ClientLockAndConditionInterface;
+import com.coconason.dtf.common.protobuf.MessageProto;
+import com.google.common.cache.Cache;
+
+public class SignalStrategyForWholeFailStrong implements SignalStrategy {
+
+    @Override
+    public void processSignal(Cache<String,ClientLockAndConditionInterface> threadLockCacheProxy, MessageProto.Message.ActionType action, ClientLockAndConditionInterface lc, JSONObject map, OperationType state, MessageProto.Message message) {
+        map = JSONObject.parseObject(message.getInfo().toString());
+        ClientLockAndConditionInterface secondlc2 = threadLockCacheProxy.getIfPresent(map.get("groupId").toString());
+        secondlc2.setState(OperationType.WHOLE_FAIL);
+        secondlc2.signal();
+    }
+}

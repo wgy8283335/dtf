@@ -25,7 +25,7 @@ public final class TransactionMessageQueueProxy implements Queue {
     /**
      * Check whether the queue is empty.
      * 
-     * @return
+     * @return If success, return true. Else, return false
      */
     @Override
     public boolean isEmpty(){
@@ -36,8 +36,8 @@ public final class TransactionMessageQueueProxy implements Queue {
      * Add base transaction service information into the queue.
      * Blocking method.
      * 
-     * @param o base transaction service information.
-     * @return If success, return true. Else, return false.
+     * @param o base transaction service information
+     * @return If success, return true. Else, return false
      */
     @Override
     public boolean add(Object o){
@@ -54,8 +54,8 @@ public final class TransactionMessageQueueProxy implements Queue {
      * Add base transaction service information to queue.
      * Non blocking method.
      * 
-     * @param o base transaction service information.
-     * @return If success, return true. Else, return false.
+     * @param o base transaction service information
+     * @return If success, return true. Else, return false
      */
     @Override
     public boolean offer(Object o) {
