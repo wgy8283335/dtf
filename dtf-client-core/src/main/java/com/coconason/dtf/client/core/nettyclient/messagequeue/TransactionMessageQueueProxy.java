@@ -7,9 +7,11 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
+
 /**
+ * Linked blocking queue storing base transaction service information.
+ * 
  * @Author: Jason
- * @date: 2018/8/22-8:07
  */
 @Component
 public final class TransactionMessageQueueProxy implements Queue {
@@ -20,11 +22,23 @@ public final class TransactionMessageQueueProxy implements Queue {
         messageQueue = new LinkedBlockingQueue<>(Integer.MAX_VALUE);
     }
 
+    /**
+     * Check whether the queue is empty.
+     * 
+     * @return
+     */
     @Override
     public boolean isEmpty(){
         return messageQueue.isEmpty();
     }
 
+    /**
+     * Add base transaction service information into the queue.
+     * Blocking method.
+     * 
+     * @param o base transaction service information.
+     * @return If success, return true. Else, return false.
+     */
     @Override
     public boolean add(Object o){
         try{
@@ -35,17 +49,36 @@ public final class TransactionMessageQueueProxy implements Queue {
         }
         return true;
     }
-
+    
+    /**
+     * Add base transaction service information to queue.
+     * Non blocking method.
+     * 
+     * @param o base transaction service information.
+     * @return If success, return true. Else, return false.
+     */
     @Override
     public boolean offer(Object o) {
         return messageQueue.offer((BaseTransactionServiceInfo)o);
     }
 
+    /**
+     * Remove a base transaction service information from queue.
+     * Non blocking method.
+     * 
+     * @return base transaction service information
+     */
     @Override
     public Object remove() {
         return messageQueue.remove();
     }
 
+    /**
+     * Get first base transaction service information from queue.
+     * Blocking method.
+     *
+     * @return base transaction service information
+     */
     @Override
     public BaseTransactionServiceInfo poll() {
         BaseTransactionServiceInfo result;
