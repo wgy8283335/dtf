@@ -6,11 +6,27 @@ import com.coconason.dtf.client.core.thread.ClientLockAndConditionInterface;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import com.google.common.cache.Cache;
 
+/**
+ * Process signal according to action type.
+ *
+ * @Author: Jason
+ */
 public class SignalStrategyForApproveSubmit implements SignalStrategy {
-
+    
+    /**
+     * Process signal according to action type.
+     *
+     * @param threadLockCacheProxy cache for thread lock
+     * @param action action type
+     * @param lc thread lock and condition
+     * @param map JSONObject
+     * @param state operation type
+     * @param message message in proto
+     */
     @Override
-    public void processSignal(Cache<String,ClientLockAndConditionInterface> threadLockCacheProxy, MessageProto.Message.ActionType action, ClientLockAndConditionInterface lc, JSONObject map, OperationType state, MessageProto.Message message) {
-        if(state == OperationType.COMMIT||state == OperationType.ROLLBACK){
+    public void processSignal(final Cache<String, ClientLockAndConditionInterface> threadLockCacheProxy, final MessageProto.Message.ActionType action,
+                              final ClientLockAndConditionInterface lc, final JSONObject map, final OperationType state, final MessageProto.Message message) {
+        if (state == OperationType.COMMIT || state == OperationType.ROLLBACK) {
             lc.signal();
         }
     }

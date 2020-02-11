@@ -6,7 +6,23 @@ import com.coconason.dtf.client.core.thread.ClientLockAndConditionInterface;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import com.google.common.cache.Cache;
 
+/**
+ * Process signal according to action type.
+ *
+ * @Author: Jason
+ */
 public interface SignalStrategy {
     
-    public void processSignal(Cache<String,ClientLockAndConditionInterface> threadLockCacheProxy, MessageProto.Message.ActionType action, ClientLockAndConditionInterface lc, JSONObject map, OperationType state, MessageProto.Message message);
+    /**
+     * Process signal according to action type.
+     * 
+     * @param threadLockCacheProxy cache for thread lock
+     * @param action action type
+     * @param lc thread lock and condition
+     * @param map JSONObject
+     * @param state operation type
+     * @param message message in proto
+     */
+    void processSignal(Cache<String, ClientLockAndConditionInterface> threadLockCacheProxy, MessageProto.Message.ActionType action, 
+                              ClientLockAndConditionInterface lc, JSONObject map, OperationType state, MessageProto.Message message);
 }
