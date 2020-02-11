@@ -3,6 +3,7 @@ package com.coconason.dtf.client.core.nettyclient.protobufclient;
 import com.alibaba.fastjson.JSONObject;
 import com.coconason.dtf.client.core.beans.BaseTransactionServiceInfo;
 import com.coconason.dtf.client.core.dbconnection.OperationType;
+import com.coconason.dtf.client.core.nettyclient.protobufclient.strategy.message.SendMessageStrategyContext;
 import com.coconason.dtf.client.core.nettyclient.protobufclient.strategy.signal.SignalStrategyContext;
 import com.coconason.dtf.client.core.thread.ClientLockAndConditionInterface;
 import com.coconason.dtf.common.protobuf.MessageProto;
@@ -16,11 +17,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Method;
-
 /**
+ * Client transaction handler.
+ * 
  * @Author: Jason
- * @date: 2018/10/2-14:11
  */
 @Component
 @ChannelHandler.Sharable
@@ -36,7 +36,7 @@ final class ClientTransactionHandler extends AbstractClientTransactionHandler {
      */
     @Autowired
     @Qualifier("threadLockCacheProxy")
-    private Cache<String,ClientLockAndConditionInterface> threadLockCacheProxy;
+    private Cache<String, ClientLockAndConditionInterface> threadLockCacheProxy;
     
     /**
      * Channel handler context used for sending message.
@@ -49,11 +49,10 @@ final class ClientTransactionHandler extends AbstractClientTransactionHandler {
      * @param ctx channel handler context used for sending message
      */
     @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception
-    {
+    public void channelActive(final ChannelHandlerContext ctx) throws Exception {
         super.channelActive(ctx);
         this.ctx = ctx;
-        logger.debug("create connection-->"+this.ctx);
+        logger.debug("create connection-->" + this.ctx);
     }
     
     /**
@@ -63,15 +62,14 @@ final class ClientTransactionHandler extends AbstractClientTransactionHandler {
      * @param msg message read by channel
      */
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception
-    {
+    public void channelRead(final ChannelHandlerContext ctx, final Object msg) throws Exception {
         logger.debug(msg.toString());
         MessageProto.Message message = (MessageProto.Message) msg;
         ActionType action = message.getAction();
-        JSONObject map=null;
-        ClientLockAndConditionInterface lc=null;
-        OperationType state=null;
-        if (action == ActionType.APPROVESUBMIT || action == ActionType.APPROVESUBMIT_STRONG ||action == ActionType.CANCEL) {
+        JSONObject map = null;
+        ClientLockAndConditionInterface lc = null;
+        OperationType state = null;
+        if (action == ActionType.APPROVESUBMIT || action == ActionType.APPROVESUBMIT_STRONG || action == ActionType.CANCEL) {
             map = JSONObject.parseObject(message.getInfo().toString());
             lc = threadLockCacheProxy.getIfPresent(map.get("groupId").toString());
             state = lc.getState();
@@ -79,134 +77,36 @@ final class ClientTransactionHandler extends AbstractClientTransactionHandler {
         SignalStrategyContext.getInstance().processSignalAccordingToAction(threadLockCacheProxy, action, lc, map, state, message);
         ctx.fireChannelRead(msg);
     }
-    
+
+    /**
+     * Operation when read complete.
+     * 
+     * @param ctx channel handler context
+     */
     @Override
-    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception
-    {
+    public void channelReadComplete(final ChannelHandlerContext ctx) throws Exception {
         ctx.flush();
     }
-    
+
+    /**
+     * Catch exception.
+     * 
+     * @param ctx channel handler context
+     * @param cause throwable
+     */
     @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception
-    {
+    public void exceptionCaught(final ChannelHandlerContext ctx, final Throwable cause) throws Exception {
         ctx.fireExceptionCaught(cause);
     }
-    
+
+    /**
+     * Send message about base transaction service information.
+     * 
+     * @param serviceInfo base transaction service information
+     */
     @Override
-    public void sendMsg(BaseTransactionServiceInfo serviceInfo) {
-        ActionType actionType = serviceInfo.getAction();
-        switch (actionType){
-            case ADD:
-                sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString(),serviceInfo.getInfo().get("groupMemberId").toString(),(Method) serviceInfo.getInfo().get("method"),(Object[]) serviceInfo.getInfo().get("args"));
-                break;
-            case APPLYFORSUBMIT:
-                sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString(),serviceInfo.getInfo().get("groupMemberSet").toString());
-                break;
-            case ADD_STRONG:
-                sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString(),serviceInfo.getInfo().get("groupMemberId").toString(),(Method) serviceInfo.getInfo().get("method"),(Object[]) serviceInfo.getInfo().get("args"));
-                break;
-            case APPLYFORSUBMIT_STRONG:
-                sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString(),serviceInfo.getInfo().get("groupMemberSet").toString());
-                break;
-            case SUB_SUCCESS_STRONG:
-                sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString(),serviceInfo.getInfo().get("groupMemberSet").toString(),serviceInfo.getInfo().get("memberId").toString());
-                break;
-            case SUB_FAIL_STRONG:
-                sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString(),serviceInfo.getInfo().get("groupMemberSet").toString());
-                break;
-            case ADD_ASYNC:
-                sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString(),serviceInfo.getInfo().get("groupMemberId").toString(),serviceInfo.getInfo().get("url").toString(),serviceInfo.getInfo().get("obj"));
-                break;
-            case ASYNC_COMMIT:
-                sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString(),serviceInfo.getInfo().get("groupMemberSet").toString());
-                break;
-            case CANCEL:
-                sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString(),serviceInfo.getInfo().get("groupMemberSet").toString());
-                break;
-            case WHOLE_SUCCESS_STRONG_ACK:
-                sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString());
-                break;
-            case WHOLE_FAIL_STRONG_ACK:
-                sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString());
-                break;
-            case SUB_SUCCESS:
-                sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString(),serviceInfo.getInfo().get("groupMemberSet").toString(),serviceInfo.getInfo().get("memberId").toString());
-                break;
-            case SUB_FAIL:
-                sendMsg(serviceInfo.getId(),serviceInfo.getAction(),serviceInfo.getInfo().get("groupId").toString(),serviceInfo.getInfo().get("groupMemberSet").toString());
-                break;
-            default:
-                break;
-        }
-    }
-    
-    private void sendMsg(String id,ActionType action,String groupId){
-        MessageProto.Message.Builder builder= MessageProto.Message.newBuilder();
-        JSONObject info = new JSONObject();
-        info.put("groupId",groupId);
-        builder.setInfo(info.toJSONString());
-        builder.setId(id);
-        builder.setAction(action);
-        MessageProto.Message message = builder.build();
-        logger.debug("Send transaction message:\n" + message);
-        ctx.writeAndFlush(message);
-    }
-    
-    private void sendMsg(String id,ActionType action,String groupId, String groupMemberId, String url,Object obj){
-        MessageProto.Message.Builder builder= MessageProto.Message.newBuilder();
-        JSONObject info = new JSONObject();
-        info.put("groupId",groupId);
-        info.put("groupMemberId",groupMemberId);
-        info.put("url",url);
-        info.put("obj",obj);
-        builder.setInfo(info.toJSONString());
-        builder.setId(id);
-        builder.setAction(action);
-        MessageProto.Message message = builder.build();
-        logger.debug("Send transaction message:\n" + message);
-        ctx.writeAndFlush(message);
-    }
-    
-    private void sendMsg(String id,ActionType action,String groupId, String groupMemberId, Method method,Object[] args){
-        MessageProto.Message.Builder builder= MessageProto.Message.newBuilder();
-        JSONObject info = new JSONObject();
-        info.put("groupId",groupId);
-        info.put("groupMemberId",groupMemberId);
-        info.put("method",method);
-        info.put("args",args);
-        builder.setInfo(info.toJSONString());
-        builder.setId(id);
-        builder.setAction(action);
-        MessageProto.Message message = builder.build();
-        logger.debug("Send transaction message:\n" + message);
-        ctx.writeAndFlush(message);
-    }
-    
-    private void sendMsg(String id,ActionType action,String groupId, String groupMemberSet){
-        MessageProto.Message.Builder builder= MessageProto.Message.newBuilder();
-        JSONObject info = new JSONObject();
-        info.put("groupId",groupId);
-        info.put("groupMemberSet",groupMemberSet);
-        builder.setInfo(info.toJSONString());
-        builder.setId(id);
-        builder.setAction(action);
-        MessageProto.Message message = builder.build();
-        logger.debug("Send transaction message:\n" + message);
-        ctx.writeAndFlush(message);
-    }
-    
-    private void sendMsg(String id,ActionType action,String groupId, String groupMemberSet,String memberId){
-        MessageProto.Message.Builder builder= MessageProto.Message.newBuilder();
-        JSONObject info = new JSONObject();
-        info.put("groupId",groupId);
-        info.put("groupMemberSet",groupMemberSet);
-        info.put("memberId",memberId);
-        builder.setInfo(info.toJSONString());
-        builder.setId(id);
-        builder.setAction(action);
-        MessageProto.Message message = builder.build();
-        logger.debug("Send transaction message:\n" + message);
-        ctx.writeAndFlush(message);
+    public void sendMsg(final BaseTransactionServiceInfo serviceInfo) {
+        SendMessageStrategyContext.getInstance().processSignalAccordingToAction(ctx, serviceInfo);
     }
     
 }
