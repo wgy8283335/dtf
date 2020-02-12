@@ -9,94 +9,87 @@ import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+
 /**
+ * Hear beat request handler.
+ * 
  * @Author: Jason
- * @date: 2018/10/2-14:11
  */
 @Component
 final class HeartBeatReqHandler extends ChannelInboundHandlerAdapter {
-
-	private Logger logger = LoggerFactory.getLogger(HeartBeatReqHandler.class);
-	
-	private volatile ScheduledFuture<?> heartBeat;
-
-	@Override
-	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception
-	{
-		MessageProto.Message message = (MessageProto.Message) msg;
-		if (message.getLength() != 2)
-		{
-			if (message.getAction() == MessageProto.Message.ActionType.LOGIN_RESP)
-			{
-				if (heartBeat == null)
-				{
-					heartBeat = ctx.executor().scheduleAtFixedRate(new HeartBeatTask(ctx),
-							0,
-							30,
-							TimeUnit.SECONDS);
-				}
-			}
-			else if (message.getAction() == MessageProto.Message.ActionType.HEARTBEAT_RESP)
-			{
-				logger.debug("Client receive server heart beat message :" + message);
-			}
-			else
-			{
-				ctx.fireChannelRead(msg);
-			}
-		}
-		else
-		{
-			ctx.fireExceptionCaught(new Throwable("No Header"));
-		}
-	}
-
-	@Override
-	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception
-	{
-		try
-		{
-			ctx.fireExceptionCaught(cause);
-		}
-		finally
-		{
-			closeHeartBeat();
-		}
-
-	}
-
-	private void closeHeartBeat()
-	{
-		if (heartBeat != null)
-		{
-			heartBeat.cancel(true);
-			heartBeat = null;
-		}
-	}
-
-	private class HeartBeatTask implements Runnable
-	{
-		final ChannelHandlerContext ctx;
-
-		public HeartBeatTask(final ChannelHandlerContext ctx)
-		{
-			this.ctx = ctx;
-		}
-
-		@Override
-		public void run()
-		{
-			ctx.writeAndFlush(buildHeartBeat());
-			logger.debug("Client send heart beat message to server : ----> " + heartBeat);
-		}
-
-	}
-
-	private MessageProto.Message buildHeartBeat()
-	{
-		MessageProto.Message.Builder builder = MessageProto.Message.newBuilder();
-		builder.setAction(MessageProto.Message.ActionType.HEARTBEAT_REQ);
-		return builder.build();
-	}
-
+    
+    /**
+     * Logger for HeartBeatReqHandler classs.
+     */
+    private Logger logger = LoggerFactory.getLogger(HeartBeatReqHandler.class);
+    
+    /**
+     * Asynchronous thread execution result.
+     */
+    private volatile ScheduledFuture<?> heartBeat;
+    
+    /**
+     * Responsible for hear beat.
+     * 
+     * @param ctx Channel handler context
+     * @param msg received message
+     */
+    @Override
+    public void channelRead(final ChannelHandlerContext ctx, final Object msg) throws Exception {
+        MessageProto.Message message = (MessageProto.Message) msg;
+        if (message.getLength() == 2) {
+            ctx.fireExceptionCaught(new Throwable("No Header"));
+        }
+        if (message.getAction() == MessageProto.Message.ActionType.LOGIN_RESP && heartBeat == null) {
+            heartBeat = ctx.executor().scheduleAtFixedRate(new HeartBeatTask(ctx), 0, 30, TimeUnit.SECONDS);
+        } else if (message.getAction() == MessageProto.Message.ActionType.HEARTBEAT_RESP) {
+            logger.debug("Client receive server heart beat message :" + message);
+        } else {
+            ctx.fireChannelRead(msg);
+        }
+    }
+    
+    /**
+     * Catch exception.
+     * 
+     * @param ctx channel handler context
+     * @param cause throwable cause
+     */
+    @Override
+    public void exceptionCaught(final ChannelHandlerContext ctx, final Throwable cause) throws Exception {
+        try {
+            ctx.fireExceptionCaught(cause);
+        } finally {
+            closeHeartBeat();
+        }
+    }
+    
+    private void closeHeartBeat() {
+        if (heartBeat != null) {
+            heartBeat.cancel(true);
+            heartBeat = null;
+        }
+    }
+    
+    private MessageProto.Message buildHeartBeat() {
+        MessageProto.Message.Builder builder = MessageProto.Message.newBuilder();
+        builder.setAction(MessageProto.Message.ActionType.HEARTBEAT_REQ);
+        return builder.build();
+    }
+    
+    private class HeartBeatTask implements Runnable {
+        
+        private final ChannelHandlerContext ctx;
+        
+        HeartBeatTask(final ChannelHandlerContext ctx) {
+            this.ctx = ctx;
+        }
+        
+        @Override
+        public void run() {
+            ctx.writeAndFlush(buildHeartBeat());
+            logger.debug("Client send heart beat message to server : ----> " + heartBeat);
+        }
+    }
+    
 }
