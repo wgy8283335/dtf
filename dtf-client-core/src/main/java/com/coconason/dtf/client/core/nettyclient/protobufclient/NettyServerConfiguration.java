@@ -5,17 +5,18 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 /**
+ * Netty service configuration.
+ * 
  * @Author: Jason
- * @date: 2018/8/22-17:22
  */
 @Component
 @PropertySource("classpath:application.properties")
 final class NettyServerConfiguration {
 
-    @Value(value="${nettyserver.host}")
+    @Value(value = "${nettyserver.host}")
     private String host;
 
-    @Value(value="${nettyserver.port}")
+    @Value(value = "${nettyserver.port}")
     private Integer port;
 
     String getHost() {
