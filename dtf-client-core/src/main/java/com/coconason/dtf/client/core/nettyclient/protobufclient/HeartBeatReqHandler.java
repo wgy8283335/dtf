@@ -39,6 +39,7 @@ final class HeartBeatReqHandler extends ChannelInboundHandlerAdapter {
         MessageProto.Message message = (MessageProto.Message) msg;
         if (message.getLength() == 2) {
             ctx.fireExceptionCaught(new Throwable("No Header"));
+            return;
         }
         if (message.getAction() == MessageProto.Message.ActionType.LOGIN_RESP && heartBeat == null) {
             heartBeat = ctx.executor().scheduleAtFixedRate(new HeartBeatTask(ctx), 0, 30, TimeUnit.SECONDS);
