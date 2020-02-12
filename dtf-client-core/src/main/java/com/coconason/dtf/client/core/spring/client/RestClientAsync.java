@@ -18,26 +18,35 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
+ * Restful request client in asynchronous mode.
+ * 
  * @Author: Jason
- * @date: 2018/8/27-15:24
  */
 @Component
 public final class RestClientAsync {
-
+    
     @Autowired
     private NettyService nettyService;
-
+    
     @Autowired
     @Qualifier("threadLockCacheProxy")
     private ThreadLockCacheProxy thirdThreadLockCacheProxy;
 
-    public void sendPost(String url, Object object) throws Exception{
+    /**
+     * Send request in post method.
+     *
+     * @param url http url
+     * @param object parameter
+     * @throws Exception when awaitLimitedTime() throw exception
+     */
+    public void sendPost(final String url, final Object object) throws Exception {
         BaseTransactionGroupInfo groupInfo = TransactionGroupInfo.getCurrent();
         ClientLockAndCondition lc = new ClientLockAndCondition(new ReentrantLock(), OperationType.DEFAULT);
-        thirdThreadLockCacheProxy.put(groupInfo.getGroupId(),lc);
+        thirdThreadLockCacheProxy.put(groupInfo.getGroupId(), lc);
         groupInfo.addNewMember();
         TransactionGroupInfo.setCurrent(groupInfo);
-        BaseTransactionServiceInfo transactionServiceInfo = TransactionServiceInfoFactory.newInstanceForRestful(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.ADD_ASYNC, groupInfo.getGroupId(), groupInfo.getMemberId(), url, object);
-        lc.awaitLimitedTime(nettyService,transactionServiceInfo,"RestClientAsync sendPost fail",10000, TimeUnit.MILLISECONDS);
+        BaseTransactionServiceInfo transactionServiceInfo = TransactionServiceInfoFactory.newInstanceForRestful(UuidGenerator.generateUuid(), 
+                MessageProto.Message.ActionType.ADD_ASYNC, groupInfo.getGroupId(), groupInfo.getMemberId(), url, object);
+        lc.awaitLimitedTime(nettyService, transactionServiceInfo, "RestClientAsync sendPost fail", 10000, TimeUnit.MILLISECONDS);
     }
 }

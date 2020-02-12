@@ -4,29 +4,46 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-import java.util.*;
+
+import java.util.Collections;
 
 /**
+ * Restful request client in synchronous mode.
+ * 
  * @Author: Jason
- * @date: 2018/8/27-15:24
  */
 @Component
 public final class RestClient {
-
+    
     @Autowired
     private ClientHttpRequestInterceptor dtfHttpRequestInterceptor;
-
-    public String sendPost(String url, Object object){
+    
+    /**
+     * Send request in post method.
+     * 
+     * @param url http url
+     * @param object parameter
+     * @return result of post request
+     */
+    public String sendPost(final String url, final Object object) {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.setInterceptors(Collections.singletonList(dtfHttpRequestInterceptor));
-        String result = restTemplate.postForObject(url,object,String.class);
+        String result = restTemplate.postForObject(url, object, String.class);
         return result;
     }
-
-    public String sendGet(String url, Object object){
+    
+    /**
+     * Send request in get method.
+     * 
+     * @param url http url
+     * @param object parameter
+     * @return result of get request
+     */
+    public String sendGet(final String url, final Object object) {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.setInterceptors(Collections.singletonList(dtfHttpRequestInterceptor));
-        String result = restTemplate.getForObject(url,String.class,object);
+        String result = restTemplate.getForObject(url, String.class, object);
         return result;
     }
+    
 }
