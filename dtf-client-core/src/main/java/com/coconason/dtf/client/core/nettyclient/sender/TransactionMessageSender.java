@@ -19,7 +19,7 @@ import java.util.concurrent.ExecutorService;
 
 @Component
 public final class TransactionMessageSender implements MessageSenderInterface {
-
+    
     /**
      * Logger for TransactionMessageSender class.
      */

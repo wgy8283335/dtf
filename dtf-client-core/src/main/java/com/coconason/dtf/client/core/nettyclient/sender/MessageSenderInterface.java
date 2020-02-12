@@ -7,5 +7,5 @@ package com.coconason.dtf.client.core.nettyclient.sender;
  */
 public interface MessageSenderInterface {
     
-    void startSendMessage() throws Exception;
+    void startSendMessage() throws InterruptedException;
 }

@@ -8,24 +8,31 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Service;
 
 /**
+ * Implementation of application listener interface.
+ * 
  * @Author: Jason
- * @date: 2018/8/22-16:46
  */
 
 @Service
-final class TransactionNettyListener implements ApplicationListener<ContextRefreshedEvent>{
+final class TransactionNettyListener implements ApplicationListener<ContextRefreshedEvent> {
 
     @Autowired
     private NettyService nettyService;
 
     @Autowired
     private MessageSenderInterface sender;
+
+    /**
+     * Start netty service during spring context setup.
+     * 
+     * @param contextRefreshedEvent context refresh event
+     */
     @Override
-    public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+    public void onApplicationEvent(final ContextRefreshedEvent contextRefreshedEvent) {
         nettyService.start();
-        try{
+        try {
             sender.startSendMessage();
-        }catch (Exception e){
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
