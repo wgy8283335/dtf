@@ -9,27 +9,56 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 
 /**
+ * The implementation of client lock and condition interface.
+ * Wait and send signal between data source and netty client.
+ * 
  * @Author: Jason
- * @date: 2018/8/22-11:44
  */
 public final class ClientLockAndCondition implements ClientLockAndConditionInterface {
+    
+    /**
+     * Lock used in signal and wait.
+     */
     private Lock lock;
+    
+    /**
+     * Condition used in signal and wait.
+     */
     private Condition condition;
+    
+    /**
+     * Operation type.
+     */
     private volatile OperationType state = OperationType.DEFAULT;
-
-    public ClientLockAndCondition(Lock lock, OperationType state) {
+    
+    public ClientLockAndCondition(final Lock lock, final OperationType state) {
         this.state = state;
         this.lock = lock;
         this.condition = lock.newCondition();
     }
+    
+    /**
+     * Get state.
+     * @return operation type.
+     */
     @Override
     public OperationType getState() {
         return state;
     }
+    
+    /**
+     * Set state.
+     * 
+     * @param state operation type
+     */
     @Override
-    public void setState(OperationType state) {
+    public void setState(final OperationType state) {
         this.state = state;
     }
+    
+    /**
+     * Condition signal.
+     */
     @Override
     public void signal() {
         try {
@@ -39,21 +68,40 @@ public final class ClientLockAndCondition implements ClientLockAndConditionInter
             lock.unlock();
         }
     }
+    
+    /**
+     * Wait until up in time or receive signal.
+     * 
+     * @param milliseconds milliseconds
+     * @param timeUnit time unit
+     * @return whether time out
+     */
     @Override
-    public boolean await(long milliseconds, TimeUnit timeUnit) {
+    public boolean await(final long milliseconds, final TimeUnit timeUnit) {
         boolean result = wait(milliseconds, timeUnit);
         return result;
     }
+    
+    /**
+     * Wait until receive signal. If haven't receive signal until up in time, will throw exception.
+     * 
+     * @param nettyService netty service
+     * @param serviceInfo base trasaction service information
+     * @param msg message
+     * @param milliseconds milliseconds
+     * @param timeUnit time unit
+     */
     @Override
-    public void awaitLimitedTime(NettyService nettyService, BaseTransactionServiceInfo serviceInfo, String msg, long milliseconds, TimeUnit timeUnit) throws Exception{
+    public void awaitLimitedTime(final NettyService nettyService, final BaseTransactionServiceInfo serviceInfo,
+                                 final String msg, final long milliseconds, final TimeUnit timeUnit) throws Exception {
         nettyService.sendMsg(serviceInfo);
         boolean receivedSignal = wait(milliseconds, timeUnit);
-        if(receivedSignal == false){
+        if (!receivedSignal) {
             throw new Exception(msg);
         }
     }
-
-    private boolean wait(long milliseconds, TimeUnit timeUnit){
+    
+    private boolean wait(final long milliseconds, final TimeUnit timeUnit) {
         boolean result = false;
         try {
             lock.lock();
@@ -65,4 +113,5 @@ public final class ClientLockAndCondition implements ClientLockAndConditionInter
         }
         return result;
     }
+    
 }
