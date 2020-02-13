@@ -3,36 +3,74 @@ package com.coconason.dtf.client.core.threadpools;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
+
 /**
+ * Thread pool for client configuration.
+ * 
  * @Author: Jason
- * @date: 2018/8/22-17:22
  */
 @Component
 @PropertySource("classpath:application.properties")
 final class ThreadPoolForClientConfiguration {
-    @Value(value="${threadpool.corePoolSize}")
+    
+    /**
+     * Core size of pool.
+     */
+    @Value(value = "${threadpool.corePoolSize}")
     private Integer corePoolSize;
-    @Value(value="${threadpool.maximumPoolSize}")
+    
+    /**
+     * maximum size of pool.
+     */
+    @Value(value = "${threadpool.maximumPoolSize}")
     private Integer maximumPoolSize;
-    @Value(value="${threadpool.keepAliveTime}")
+    
+    /**
+     * Keep alive time.
+     */
+    @Value(value = "${threadpool.keepAliveTime}")
     private Integer keepAliveTime;
-    @Value(value="${threadpool.queueSize}")
+    
+    /**
+     * Queue size.
+     */
+    @Value(value = "${threadpool.queueSize}")
     private Integer queueSize;
-
+    
+    /**
+     * Get core size of pool.
+     * 
+     * @return
+     */
     public Integer getCorePoolSize() {
         return corePoolSize;
     }
-
+    
+    /**
+     * Get maximum size of pool.
+     * 
+     * @return
+     */
     public Integer getMaximumPoolSize() {
         return maximumPoolSize;
     }
-
+    
+    /**
+     * Get keep alive time.
+     * 
+     * @return
+     */
     public Integer getKeepAliveTime() {
         return keepAliveTime;
     }
 
+    /**
+     * Get queue size.
+     * 
+     * @return
+     */
     public Integer getQueueSize() {
         return queueSize;
     }
-
+    
 }
