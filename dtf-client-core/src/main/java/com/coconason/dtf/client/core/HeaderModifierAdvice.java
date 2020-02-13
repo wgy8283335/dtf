@@ -14,26 +14,47 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 import javax.servlet.http.HttpServletResponse;
 
 /**
+ * Controller Advice used to modify response header.
+ * 
  * @Author: Jason
- * @date: 2018/9/23-10:20
  */
 @ControllerAdvice
 public final class HeaderModifierAdvice implements ResponseBodyAdvice<Object> {
+    
+    /**
+     * Intercept all of controller.
+     * 
+     * @param returnType method parameter
+     * @param converterType http message converter
+     * @return true
+     */
     @Override
-    public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
+    public boolean supports(final MethodParameter returnType, final Class<? extends HttpMessageConverter<?>> converterType) {
         return true;
     }
-
+    
+    /**
+     * Set group information in the response header.
+     * 
+     * @param body response body
+     * @param returnType return type
+     * @param selectedContentType media type
+     * @param selectedConverterType http message converter
+     * @param request server http request
+     * @param response response
+     * @return return response body
+     */
     @Override
-    public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType,
-                                  Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request,
-                                  ServerHttpResponse response) {
-        ServletServerHttpResponse ssResp = (ServletServerHttpResponse)response;
+    public Object beforeBodyWrite(final Object body, final MethodParameter returnType, final MediaType selectedContentType,
+                                  final Class<? extends HttpMessageConverter<?>> selectedConverterType, final ServerHttpRequest request,
+                                  final ServerHttpResponse response) {
+        ServletServerHttpResponse ssResp = (ServletServerHttpResponse) response;
         HttpServletResponse resp = ssResp.getServletResponse();
         BaseTransactionGroupInfo groupInfo = TransactionGroupInfo.getCurrent();
-        if(groupInfo != null){
-            resp.setHeader("groupInfo",groupInfo.toString());
+        if (groupInfo != null) {
+            resp.setHeader("groupInfo", groupInfo.toString());
         }
         return body;
     }
+    
 }
