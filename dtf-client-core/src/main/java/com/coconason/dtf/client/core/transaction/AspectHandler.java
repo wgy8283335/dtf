@@ -6,7 +6,7 @@ import com.coconason.dtf.client.core.dbconnection.OperationType;
 import com.coconason.dtf.client.core.nettyclient.protobufclient.NettyService;
 import com.coconason.dtf.client.core.thread.ClientLockAndCondition;
 import com.coconason.dtf.client.core.thread.ClientLockAndConditionInterface;
-import com.coconason.dtf.client.core.utils.GroupidGenerator;
+import com.coconason.dtf.client.core.utils.GroupIdGenerator;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.common.utils.UuidGenerator;
 import com.google.common.cache.Cache;
@@ -27,32 +27,48 @@ import java.util.concurrent.locks.ReentrantLock;
 import static com.coconason.dtf.client.core.constants.Member.ORIGINAL_ID;
 
 /**
+ * Aspect before the join point.
+ * 
  * @Author: Jason
- * @date: 2018/8/19-20:38
  */
 @Component
 public final class AspectHandler implements AspectInterface {
 
+    /**
+     * Logger of AspectHandler class.
+     */
     private Logger logger = LoggerFactory.getLogger(AspectHandler.class);
 
+    /**
+     * Queue of transaction message.
+     */
     @Autowired
     @Qualifier("transactionMessageQueueProxy")
     private Queue queue;
 
+    /**
+     * Netty service.
+     */
     @Autowired
     private NettyService nettyService;
 
+    /**
+     * Cache of lock and condition.
+     */
     @Autowired
     @Qualifier("threadLockCacheProxy")
-    private Cache<String,ClientLockAndConditionInterface>  asyncFinalCommitThreadLockCacheProxy;
+    private Cache<String,ClientLockAndConditionInterface>  finalCommitThreadLockCacheProxy;
 
-    @Autowired
-    @Qualifier("threadLockCacheProxy")
-    private Cache<String,ClientLockAndConditionInterface>  syncFinalCommitThreadLockCacheProxy;
-
+    /**
+     * Aspect before the join point.
+     * 
+     * @param info group information
+     * @param point join point
+     * @return result of method of the join point
+     * @throws Throwable
+     */
     @Override
     public Object before(String info,ProceedingJoinPoint point) throws Throwable {
-
         MethodSignature signature = (MethodSignature) point.getSignature();
         Method method = signature.getMethod();
         Class<?> clazz = point.getTarget().getClass();
@@ -66,16 +82,15 @@ public final class AspectHandler implements AspectInterface {
         if (transactional == null) {
             transactional = clazz.getAnnotation(Transactional.class);
         }
-
         if(TransactionType.ASYNC_FINAL == transactionType){
             //"info==null" means the current thread is transaction initiator.DtfClientInterceptor for reference.
             if(info==null) {
-                String groupIdTemp = GroupidGenerator.getStringId(0, 0);
+                String groupIdTemp = GroupIdGenerator.getStringId(0, 0);
                 BaseTransactionGroupInfo groupInfo = TransactionGroupInfoFactory.getInstance(groupIdTemp, ORIGINAL_ID);
                 TransactionGroupInfo.setCurrent(groupInfo);
                 result = point.proceed();
                 ClientLockAndConditionInterface asyncFinalCommitLc = new ClientLockAndCondition(new ReentrantLock(), OperationType.DEFAULT);
-                asyncFinalCommitThreadLockCacheProxy.put(TransactionGroupInfo.getCurrent().getGroupId(), asyncFinalCommitLc);
+                finalCommitThreadLockCacheProxy.put(TransactionGroupInfo.getCurrent().getGroupId(), asyncFinalCommitLc);
                 BaseTransactionServiceInfo serviceInfo = TransactionServiceInfoFactory.newInstanceForAsyncCommit(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.ASYNC_COMMIT, TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers());
                 asyncFinalCommitLc.awaitLimitedTime(nettyService,serviceInfo,"commit async fail",10000, TimeUnit.MILLISECONDS);
             }else{
@@ -86,7 +101,7 @@ public final class AspectHandler implements AspectInterface {
             BaseTransactionGroupInfo transactionGroupInfo = info == null ? null:TransactionGroupInfoFactory.getInstanceByParsingString(info);
             if(transactionGroupInfo == null) {
                 //1.
-                String groupIdTemp = GroupidGenerator.getStringId(0, 0);
+                String groupIdTemp = GroupIdGenerator.getStringId(0, 0);
                 BaseTransactionGroupInfo groupInfo = TransactionGroupInfoFactory.getInstance(groupIdTemp, ORIGINAL_ID);
                 TransactionGroupInfo.setCurrent(groupInfo);
                 switchTransactionType(transactionType,groupInfo,method,args);
@@ -105,7 +120,7 @@ public final class AspectHandler implements AspectInterface {
                 }
                 if(ORIGINAL_ID.equals(TransactionGroupInfo.getCurrent().getMemberId())){
                     if(TransactionType.SYNC_STRONG == transactionType){
-                        if(syncFinalCommitThreadLockCacheProxy.getIfPresent(TransactionGroupInfo.getCurrent().getGroupId()).getState()== OperationType.WHOLE_FAIL){
+                        if(finalCommitThreadLockCacheProxy.getIfPresent(TransactionGroupInfo.getCurrent().getGroupId()).getState()== OperationType.WHOLE_FAIL){
                             logger.error("system transaction error");
                             throw new Exception("system transaction error");
                         }
@@ -127,7 +142,7 @@ public final class AspectHandler implements AspectInterface {
         }
         return result;
     }
-
+    
     private void switchTransactionType(TransactionType transactionType,BaseTransactionGroupInfo transactionGroupInfo,Method method,Object[] args){
         switch (transactionType){
             case SYNC_FINAL:
