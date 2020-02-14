@@ -15,7 +15,8 @@ public interface AspectInterface {
      * @param info group information
      * @param point join point
      * @return result of method of the join point
+     * @throws Throwable throwable
      */
-    Object before(String info, ProceedingJoinPoint point);
+    Object before(String info, ProceedingJoinPoint point) throws Throwable;
     
 }

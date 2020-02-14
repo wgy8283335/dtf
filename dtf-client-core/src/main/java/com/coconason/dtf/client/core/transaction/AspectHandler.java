@@ -1,7 +1,13 @@
 package com.coconason.dtf.client.core.transaction;
 
 import com.coconason.dtf.client.core.annotation.DtfTransaction;
-import com.coconason.dtf.client.core.beans.*;
+import com.coconason.dtf.client.core.beans.BaseTransactionGroupInfo;
+import com.coconason.dtf.client.core.beans.BaseTransactionServiceInfo;
+import com.coconason.dtf.client.core.beans.TransactionGroupInfo;
+import com.coconason.dtf.client.core.beans.TransactionGroupInfoFactory;
+import com.coconason.dtf.client.core.beans.TransactionServiceInfoFactory;
+import com.coconason.dtf.client.core.beans.TransactionType;
+import com.coconason.dtf.client.core.constants.Member;
 import com.coconason.dtf.client.core.dbconnection.OperationType;
 import com.coconason.dtf.client.core.nettyclient.protobufclient.NettyService;
 import com.coconason.dtf.client.core.thread.ClientLockAndCondition;
@@ -17,14 +23,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Method;
 import java.util.Queue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
-
-import static com.coconason.dtf.client.core.constants.Member.ORIGINAL_ID;
 
 /**
  * Aspect before the join point.
@@ -33,126 +36,188 @@ import static com.coconason.dtf.client.core.constants.Member.ORIGINAL_ID;
  */
 @Component
 public final class AspectHandler implements AspectInterface {
-
+    
     /**
      * Logger of AspectHandler class.
      */
     private Logger logger = LoggerFactory.getLogger(AspectHandler.class);
-
+    
     /**
      * Queue of transaction message.
      */
     @Autowired
     @Qualifier("transactionMessageQueueProxy")
     private Queue queue;
-
+    
     /**
      * Netty service.
      */
     @Autowired
     private NettyService nettyService;
-
+    
     /**
      * Cache of lock and condition.
      */
     @Autowired
     @Qualifier("threadLockCacheProxy")
-    private Cache<String,ClientLockAndConditionInterface>  finalCommitThreadLockCacheProxy;
-
+    private Cache<String, ClientLockAndConditionInterface> finalCommitThreadLockCacheProxy;
+    
     /**
      * Aspect before the join point.
      * 
      * @param info group information
      * @param point join point
      * @return result of method of the join point
-     * @throws Throwable
+     * @throws Throwable throwable
      */
     @Override
-    public Object before(String info,ProceedingJoinPoint point) throws Throwable {
-        MethodSignature signature = (MethodSignature) point.getSignature();
-        Method method = signature.getMethod();
-        Class<?> clazz = point.getTarget().getClass();
-        Object[] args = point.getArgs();
-        Method currentMethod = clazz.getMethod(method.getName(), method.getParameterTypes());
-        DtfTransaction transaction = currentMethod.getAnnotation(DtfTransaction.class);
-        TransactionType transactionType = TransactionType.newInstance(transaction.type());
+    public Object before(final String info, final ProceedingJoinPoint point) throws Throwable {
+        Method method = getMethod(point);
+        Object[] args = getArgs(point);
+        TransactionType transactionType = getTransactionType(point, method);
         TransactionType.setCurrent(transactionType);
-        Object result = null;
-        Transactional transactional = currentMethod.getAnnotation(Transactional.class);
-        if (transactional == null) {
-            transactional = clazz.getAnnotation(Transactional.class);
-        }
-        if(TransactionType.ASYNC_FINAL == transactionType){
-            //"info==null" means the current thread is transaction initiator.DtfClientInterceptor for reference.
-            if(info==null) {
-                String groupIdTemp = GroupIdGenerator.getStringId(0, 0);
-                BaseTransactionGroupInfo groupInfo = TransactionGroupInfoFactory.getInstance(groupIdTemp, ORIGINAL_ID);
-                TransactionGroupInfo.setCurrent(groupInfo);
-                result = point.proceed();
-                ClientLockAndConditionInterface asyncFinalCommitLc = new ClientLockAndCondition(new ReentrantLock(), OperationType.DEFAULT);
-                finalCommitThreadLockCacheProxy.put(TransactionGroupInfo.getCurrent().getGroupId(), asyncFinalCommitLc);
-                BaseTransactionServiceInfo serviceInfo = TransactionServiceInfoFactory.newInstanceForAsyncCommit(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.ASYNC_COMMIT, TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers());
-                asyncFinalCommitLc.awaitLimitedTime(nettyService,serviceInfo,"commit async fail",10000, TimeUnit.MILLISECONDS);
-            }else{
-                result = point.proceed();
-            }
-        }else{
-            //"info==null" means the current thread is transaction initiator.DtfClientInterceptor for reference.
-            BaseTransactionGroupInfo transactionGroupInfo = info == null ? null:TransactionGroupInfoFactory.getInstanceByParsingString(info);
-            if(transactionGroupInfo == null) {
-                //1.
-                String groupIdTemp = GroupIdGenerator.getStringId(0, 0);
-                BaseTransactionGroupInfo groupInfo = TransactionGroupInfoFactory.getInstance(groupIdTemp, ORIGINAL_ID);
-                TransactionGroupInfo.setCurrent(groupInfo);
-                switchTransactionType(transactionType,groupInfo,method,args);
-                //2.
-                try {
-                    result = point.proceed();
-                }catch (Exception e){
-                    if(ORIGINAL_ID.equals(TransactionGroupInfo.getCurrent().getMemberId())){
-                        if(TransactionType.SYNC_FINAL == transactionType){
-                            queue.add(TransactionServiceInfoFactory.newInstanceWithGroupIdSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.CANCEL,TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
-                        }else if(TransactionType.SYNC_STRONG == transactionType){
-                            queue.add(TransactionServiceInfoFactory.newInstanceWithGroupIdSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.CANCEL,TransactionGroupInfo.getCurrent().getGroupId(),TransactionGroupInfo.getCurrent().getGroupMembers()));
-                        }
-                    }
-                    logger.error(e.getMessage());
-                }
-                if(ORIGINAL_ID.equals(TransactionGroupInfo.getCurrent().getMemberId())){
-                    if(TransactionType.SYNC_STRONG == transactionType){
-                        if(finalCommitThreadLockCacheProxy.getIfPresent(TransactionGroupInfo.getCurrent().getGroupId()).getState()== OperationType.WHOLE_FAIL){
-                            logger.error("system transaction error");
-                            throw new Exception("system transaction error");
-                        }
-                    }
-                }
-            }else{
-                //if the thread does not have transactionGroupInfo,set current transaction group information
-                BaseTransactionGroupInfo temp = TransactionGroupInfo.getCurrent();
-                if(temp==null){
-                    transactionGroupInfo.addNewMember();
-                    TransactionGroupInfo.setCurrent(transactionGroupInfo);
-                }
-                //if the thread does not have transactionServiceInfo,set current transaction service information
-                if(temp==null){
-                    switchTransactionType(transactionType,transactionGroupInfo,method,args);
-                }
-                result =  point.proceed();
-            }
-        }
+        Object result = proceedPointBy(transactionType, info, point, method, args);
         return result;
     }
     
-    private void switchTransactionType(TransactionType transactionType,BaseTransactionGroupInfo transactionGroupInfo,Method method,Object[] args){
-        switch (transactionType){
+    private Method getMethod(final ProceedingJoinPoint point) {
+        MethodSignature signature = (MethodSignature) point.getSignature();
+        Method result = signature.getMethod();
+        return result;
+    }
+    
+    private Object[] getArgs(final ProceedingJoinPoint point) {
+        Class<?> clazz = point.getTarget().getClass();
+        Object[] result = point.getArgs();
+        return result;
+    }
+    
+    private TransactionType getTransactionType(final ProceedingJoinPoint point, final Method method) throws Exception {
+        Class<?> clazz = point.getTarget().getClass();
+        Method currentMethod = clazz.getMethod(method.getName(), method.getParameterTypes());
+        DtfTransaction transaction = currentMethod.getAnnotation(DtfTransaction.class);
+        TransactionType result = TransactionType.newInstance(transaction.type());
+        return result;
+    }
+    
+    private Object proceedPointBy(final TransactionType transactionType, final String info, final ProceedingJoinPoint point, 
+                                  final Method method, final Object[] args) throws Throwable {
+        if (TransactionType.ASYNC_FINAL == transactionType) {
+            return proceedPointWhenAsyncFinal(transactionType, info, point, method, args);
+        }
+        if (TransactionType.SYNC_FINAL == transactionType) {
+            return proceedPointWhenSyncFinal(transactionType, info, point, method, args);
+        }
+        if (TransactionType.SYNC_STRONG == transactionType) {
+            return proceedPointWhenSyncStrong(transactionType, info, point, method, args);
+        }
+        return null;
+    }
+    
+    private Object proceedPointWhenAsyncFinal(final TransactionType transactionType, final String info, final ProceedingJoinPoint point, 
+                                                         final Method method, final Object[] args) throws Throwable {
+        if (null == info) {
+            String groupIdTemp = GroupIdGenerator.getStringId(0, 0);
+            BaseTransactionGroupInfo groupInfo = TransactionGroupInfoFactory.getInstance(groupIdTemp, Member.ORIGINAL_ID);
+            TransactionGroupInfo.setCurrent(groupInfo);
+            Object result = point.proceed();
+            ClientLockAndConditionInterface asyncFinalCommitLc = new ClientLockAndCondition(new ReentrantLock(), OperationType.DEFAULT);
+            finalCommitThreadLockCacheProxy.put(TransactionGroupInfo.getCurrent().getGroupId(), asyncFinalCommitLc);
+            BaseTransactionServiceInfo serviceInfo = TransactionServiceInfoFactory.newInstanceForAsyncCommit(UuidGenerator.generateUuid(),
+                    MessageProto.Message.ActionType.ASYNC_COMMIT, TransactionGroupInfo.getCurrent().getGroupId(), TransactionGroupInfo.getCurrent().getGroupMembers());
+            asyncFinalCommitLc.awaitLimitedTime(nettyService, serviceInfo, "commit async fail", 10000, TimeUnit.MILLISECONDS);
+            return result;
+        } else {
+            Object result = point.proceed();
+            return result;
+        }
+
+    }
+    
+    private Object proceedPointWhenSyncFinal(final TransactionType transactionType, final String info, final ProceedingJoinPoint point, 
+                                                        final Method method, final Object[] args) throws Throwable {
+        if (null == info) {
+            Object result = null;
+            //1.
+            String groupIdTemp = GroupIdGenerator.getStringId(0, 0);
+            BaseTransactionGroupInfo groupInfo = TransactionGroupInfoFactory.getInstance(groupIdTemp, Member.ORIGINAL_ID);
+            TransactionGroupInfo.setCurrent(groupInfo);
+            switchTransactionType(transactionType, groupInfo, method, args);
+            //2.
+            try {
+                result = point.proceed();
+            } catch (Throwable e) {
+                if (Member.ORIGINAL_ID.equals(TransactionGroupInfo.getCurrent().getMemberId())) {
+                    queue.add(TransactionServiceInfoFactory.newInstanceWithGroupIdSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.CANCEL,
+                            TransactionGroupInfo.getCurrent().getGroupId(), TransactionGroupInfo.getCurrent().getGroupMembers()));
+                }
+                logger.error(e.getMessage());
+            }
+            return result;
+        } else {
+            Object result = proceedPointWhenSyncWithInfo(transactionType, info, point, method, args);
+            return result;
+        }
+    }
+    
+    private Object proceedPointWhenSyncStrong(final TransactionType transactionType, final String info, final ProceedingJoinPoint point, 
+                                                         final Method method, final Object[] args) throws Throwable {
+        if (null == info) {
+            Object result = null;
+            //1.
+            String groupIdTemp = GroupIdGenerator.getStringId(0, 0);
+            BaseTransactionGroupInfo groupInfo = TransactionGroupInfoFactory.getInstance(groupIdTemp, Member.ORIGINAL_ID);
+            TransactionGroupInfo.setCurrent(groupInfo);
+            switchTransactionType(transactionType, groupInfo, method, args);
+            //2.
+            try {
+                result = point.proceed();
+            } catch (Throwable e) {
+                if (Member.ORIGINAL_ID.equals(TransactionGroupInfo.getCurrent().getMemberId())) {
+                    queue.add(TransactionServiceInfoFactory.newInstanceWithGroupIdSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.CANCEL,
+                            TransactionGroupInfo.getCurrent().getGroupId(), TransactionGroupInfo.getCurrent().getGroupMembers()));
+                }
+                logger.error(e.getMessage());
+            }
+            if (Member.ORIGINAL_ID.equals(TransactionGroupInfo.getCurrent().getMemberId())
+                    && finalCommitThreadLockCacheProxy.getIfPresent(TransactionGroupInfo.getCurrent().getGroupId()).getState() == OperationType.WHOLE_FAIL) {
+                logger.error("system transaction error");
+                throw new Exception("system transaction error");
+            }
+            return result;
+        } else {
+            Object result = proceedPointWhenSyncWithInfo(transactionType, info, point, method, args);
+            return result;
+        }
+    }
+    
+    private Object proceedPointWhenSyncWithInfo(final TransactionType transactionType, final String info, final ProceedingJoinPoint point, 
+                                                         final Method method, final Object[] args) throws Throwable {
+        BaseTransactionGroupInfo transactionGroupInfo = TransactionGroupInfoFactory.getInstanceByParsingString(info);
+        //if the thread does not have transactionGroupInfo,set current transaction group information and current transaction service information
+        BaseTransactionGroupInfo temp = TransactionGroupInfo.getCurrent();
+        if (null == temp) {
+            transactionGroupInfo.addNewMember();
+            TransactionGroupInfo.setCurrent(transactionGroupInfo);
+            switchTransactionType(transactionType, transactionGroupInfo, method, args);
+        }
+        Object result = point.proceed();
+        return result;
+    }
+    
+    private void switchTransactionType(final TransactionType transactionType, final BaseTransactionGroupInfo transactionGroupInfo, final Method method, final Object[] args) {
+        switch (transactionType) {
             case SYNC_FINAL:
-                BaseTransactionServiceInfo.setCurrent(TransactionServiceInfoFactory.newInstanceForSyncAdd(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.ADD,transactionGroupInfo.getGroupId(),transactionGroupInfo.getMemberId(),method,args));
+                BaseTransactionServiceInfo.setCurrent(TransactionServiceInfoFactory.newInstanceForSyncAdd(UuidGenerator.generateUuid(), 
+                        MessageProto.Message.ActionType.ADD, transactionGroupInfo.getGroupId(), transactionGroupInfo.getMemberId(), method, args));
                 break;
             case SYNC_STRONG:
-                BaseTransactionServiceInfo.setCurrent(TransactionServiceInfoFactory.newInstanceForSyncAdd(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.ADD_STRONG,transactionGroupInfo.getGroupId(),transactionGroupInfo.getMemberId(),method,args));
+                BaseTransactionServiceInfo.setCurrent(TransactionServiceInfoFactory.newInstanceForSyncAdd(UuidGenerator.generateUuid(), 
+                        MessageProto.Message.ActionType.ADD_STRONG, transactionGroupInfo.getGroupId(), transactionGroupInfo.getMemberId(), method, args));
                 break;
             default:
                 break;
         }
     }
+    
 }
