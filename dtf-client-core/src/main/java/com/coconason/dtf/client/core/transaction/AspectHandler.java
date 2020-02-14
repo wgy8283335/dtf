@@ -146,7 +146,7 @@ public final class AspectHandler implements AspectInterface {
             //2.
             try {
                 result = point.proceed();
-            } catch (Throwable e) {
+            } catch (Exception e) {
                 if (Member.ORIGINAL_ID.equals(TransactionGroupInfo.getCurrent().getMemberId())) {
                     queue.add(TransactionServiceInfoFactory.newInstanceWithGroupIdSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.CANCEL,
                             TransactionGroupInfo.getCurrent().getGroupId(), TransactionGroupInfo.getCurrent().getGroupMembers()));
@@ -172,7 +172,7 @@ public final class AspectHandler implements AspectInterface {
             //2.
             try {
                 result = point.proceed();
-            } catch (Throwable e) {
+            } catch (Exception e) {
                 if (Member.ORIGINAL_ID.equals(TransactionGroupInfo.getCurrent().getMemberId())) {
                     queue.add(TransactionServiceInfoFactory.newInstanceWithGroupIdSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.CANCEL,
                             TransactionGroupInfo.getCurrent().getGroupId(), TransactionGroupInfo.getCurrent().getGroupMembers()));
