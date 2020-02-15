@@ -1,6 +1,8 @@
 package com.coconason.dtf.manager.cache;
 
 import com.coconason.dtf.manager.message.MessageInfoInterface;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -8,116 +10,155 @@ import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
+ * Queue of asynchronous message.
+ * 
  * @Author: Jason
- * @date: 2018/9/6-12:15
  */
 public final class MessageAsyncQueueProxy implements Queue {
+    
+    /**
+     * Logger for MessageAsyncQueueProxy.
+     */
+    private Logger logger = LoggerFactory.getLogger(MessageAsyncQueueProxy.class);
+    
+    /**
+     * Queue of message information.
+     */
     private LinkedBlockingQueue<MessageInfoInterface> messageQueue;
-
+    
     public MessageAsyncQueueProxy() {
         messageQueue = new LinkedBlockingQueue<>(Integer.MAX_VALUE);
     }
-
+    
+    /**
+     * Whether queue is empty.
+     * 
+     * @return boolean
+     */
     @Override
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         return messageQueue.isEmpty();
     }
-
+    
+    /**
+     * Put element in the queue. If space of queue is not enough, wait.
+     * 
+     * @param o message information interface
+     * @return whether success
+     */
     @Override
-    public boolean add(Object o){
-        try{
-            messageQueue.put((MessageInfoInterface)o);
-        }catch (Exception e){
-            e.printStackTrace();
+    public boolean add(final Object o) {
+        try {
+            messageQueue.put((MessageInfoInterface) o);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
             return false;
         }
         return true;
     }
-
+    
+    /**
+     * Put element in the queue. If space of queue is not enough, return false.
+     * 
+     * @param o element
+     * @return whether success
+     */
     @Override
-    public boolean offer(Object o) {
-        return messageQueue.offer((MessageInfoInterface)o);
+    public boolean offer(final Object o) {
+        return messageQueue.offer((MessageInfoInterface) o);
     }
-
-    @Override
-    public Object remove() {
-        return messageQueue.remove();
-    }
-
+    
+    /**
+     * Acquire header element of queue. If queue is empty, wait.
+     * 
+     * @return message information
+     */
     @Override
     public MessageInfoInterface poll() {
         MessageInfoInterface result;
-        try{
-            result=messageQueue.take();
-        }catch (Exception e){
-            e.printStackTrace();
+        try {
+            result = messageQueue.take();
+        } catch (Exception e) {
+            logger.error(e.getMessage());
             return null;
         }
         return result;
     }
-
+    
+    /**
+     * Acquire header element of queue and remove. 
+     * If queue is empty, throw no such element exception.
+     *
+     * @return element
+     */
+    @Override
+    public Object remove() {
+        return messageQueue.remove();
+    }
+    
+    @Override
+    public boolean remove(final Object o) {
+        return messageQueue.remove(o);
+    }
+    
     @Override
     public Object element() {
         return messageQueue.element();
     }
-
+    
     @Override
     public Object peek() {
         return messageQueue.peek();
     }
-
+    
     @Override
     public void clear() {
         messageQueue.clear();
     }
-
+    
     @Override
     public int size() {
         return messageQueue.size();
     }
-
+    
     @Override
-    public boolean contains(Object o) {
+    public boolean contains(final Object o) {
         return messageQueue.contains(o);
     }
-
+    
     @Override
     public Iterator iterator() {
         return messageQueue.iterator();
     }
-
+    
     @Override
     public Object[] toArray() {
         return messageQueue.toArray();
     }
-
+    
     @Override
-    public Object[] toArray(Object[] a) {
+    public Object[] toArray(final Object[] a) {
         return messageQueue.toArray();
     }
-
+    
     @Override
-    public boolean remove(Object o) {
-        return messageQueue.remove(o);
-    }
-
-    @Override
-    public boolean containsAll(Collection c) {
+    public boolean containsAll(final Collection c) {
         return messageQueue.containsAll(c);
     }
-
+    
     @Override
-    public boolean addAll(Collection c) {
+    public boolean addAll(final Collection c) {
         return messageQueue.addAll(c);
     }
-
+    
     @Override
-    public boolean removeAll(Collection c) {
+    public boolean removeAll(final Collection c) {
         return messageQueue.removeAll(c);
     }
-
+    
     @Override
-    public boolean retainAll(Collection c) {
+    public boolean retainAll(final Collection c) {
         return messageQueue.retainAll(c);
     }
+    
 }

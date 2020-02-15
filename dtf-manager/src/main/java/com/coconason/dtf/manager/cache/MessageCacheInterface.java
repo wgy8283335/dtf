@@ -3,21 +3,47 @@ package com.coconason.dtf.manager.cache;
 import com.coconason.dtf.manager.message.TransactionMessageGroupInterface;
 
 /**
+ * Interface of management of message cache.
+ * 
  * @Author: Jason
- * @date: 2018/10/3-9:32
  */
-
 public interface MessageCacheInterface {
-
+    
+    /**
+     * Get TransactionMessageGroupInterface by group id.
+     *
+     * @param id group id
+     * @return transaction message group
+     */
     TransactionMessageGroupInterface get(String id);
 
-    void put(String id,TransactionMessageGroupInterface msg);
+    /**
+     * Put group id and transaction message group in the cache.
+     *
+     * @param id group id
+     * @param msg transaction message
+     */
+    void put(String id, TransactionMessageGroupInterface msg);
 
+    /**
+     * Put transaction message group in the cache.
+     *
+     * @param group transaction message group
+     */
     void putDependsOnCondition(TransactionMessageGroupInterface group);
 
+    /**
+     * Get size of cache.
+     *
+     * @return size
+     */
     long getSize();
 
+    /**
+     * Invalidate the id related element from the cache.
+     *
+     * @param id group id.
+     */
     void invalidate(Object id);
-
-
+    
 }

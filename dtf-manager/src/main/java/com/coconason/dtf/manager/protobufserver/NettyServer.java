@@ -52,10 +52,10 @@ public final class NettyServer {
     {
         EventLoopGroup boss = new NioEventLoopGroup();
         EventLoopGroup work = new NioEventLoopGroup();
-        final MessageCacheInterface messageSyncCacheProxy = new MessageSyncCacheProxy();
-        final MessageCacheInterface messageAsyncCacheProxy = new MessageAsyncCacheProxy();
-        final MessageCacheInterface messageForSubmitSyncCacheProxy = new MessageForSubmitSyncCacheProxy();
-        final MessageCacheInterface messageForSubmitAsyncCacheProxy = new MessageForSubmitAsyncCacheProxy();
+        final MessageCacheInterface messageSyncCache = new MessageSyncCache();
+        final MessageCacheInterface messageAsyncCache = new MessageAsyncCache();
+        final MessageCacheInterface messageForSubmitSyncCache = new MessageForSubmitSyncCache();
+        final MessageCacheInterface messageForSubmitAsyncCache = new MessageForSubmitAsyncCache();
         final MessageAsyncQueueProxy messageAsyncQueueProxy = messageAsyncQueueProxyTemp;
         final ThreadPoolForServerProxy threadPoolForServerProxy = threadPoolForServerProxyTemp;
         final ServerThreadLockCacheProxy serverThreadLockCacheProxy = new ServerThreadLockCacheProxy();
@@ -76,7 +76,7 @@ public final class NettyServer {
                         ch.pipeline().addLast(new ProtobufEncoder());
                         ch.pipeline().addLast(new ReadTimeoutHandler(50));
                         ch.pipeline().addLast(new LoginAuthRespHandler());
-                        ch.pipeline().addLast(new ServerTransactionHandler(messageSyncCacheProxy, messageAsyncCacheProxy, messageAsyncQueueProxy, threadPoolForServerProxy, messageForSubmitSyncCacheProxy, messageForSubmitAsyncCacheProxy, serverThreadLockCacheProxy));
+                        ch.pipeline().addLast(new ServerTransactionHandler(messageSyncCache, messageAsyncCache, messageAsyncQueueProxy, threadPoolForServerProxy, messageForSubmitSyncCache, messageForSubmitAsyncCache, serverThreadLockCacheProxy));
                         ch.pipeline().addLast(new HeartBeatRespHandler());
                     }
                 });
