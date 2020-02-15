@@ -5,48 +5,98 @@ import io.netty.channel.ChannelHandlerContext;
 import java.util.List;
 
 /**
+ * Adaptor of transaction message group interface for submitting.
+ * 
  * @Author: Jason
- * @date: 2018/8/24-17:04
  */
 public abstract class TransactionMessageForSubmitAdaptor implements TransactionMessageGroupInterface<String> {
-
+    
+    /**
+     * Override method.
+     */
     @Override
-    public void addMember(String memberId, String url, Object obj) {
+    public void addMember(final String memberId, final String url, final Object obj) {
     }
+    
+    /**
+     * Override method.
+     *
+     * @return null
+     */
     @Override
-    public String getGroupMemberId(){
+    public String getGroupMemberId() {
         return null;
     }
+    
+    /**
+     * Override method.
+     *
+     * @return null
+     */
     @Override
-    public Boolean isCommitted(){
+    public Boolean isCommitted() {
         return null;
     }
+    
+    /**
+     * Override method.
+     */
     @Override
-    public void setCommitted(boolean commited){
+    public void setCommitted(final boolean commited) {
     }
+    
+    /**
+     * Override method.
+     */
     @Override
-    public void addMemberToGroup(TransactionMessageForAddingInterface e) {
-
+    public void addMemberToGroup(final TransactionMessageForAddingInterface e) {
     }
+    
+    /**
+     * Override method.
+     */
     @Override
-    public void setCtxForSubmitting(ChannelHandlerContext ctxForSubmitting) {
-
+    public void setCtxForSubmitting(final ChannelHandlerContext ctxForSubmitting) {
     }
+    
+    /**
+     * Override method.
+     *
+     * @return null
+     */
     @Override
     public ChannelHandlerContext getCtx() {
         return null;
     }
+    
+    /**
+     * Override method.
+     *
+     * @return null
+     */
     @Override
     public List<TransactionMessageForAddingInterface> getMemberList() {
         return null;
     }
+    
+    /**
+     * Override method.
+     *
+     * @return null
+     */
     @Override
     public String getUrl() {
         return null;
     }
-
+    
+    /**
+     * Override method.
+     *
+     * @return null
+     */
     @Override
     public Object getObj() {
         return null;
     }
+    
 }
