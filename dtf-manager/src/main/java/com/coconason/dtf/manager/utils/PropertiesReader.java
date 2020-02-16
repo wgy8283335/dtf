@@ -5,20 +5,37 @@ import java.io.FileReader;
 import java.util.Properties;
 
 /**
+ * Reader of properties.
+ * 
  * @Author: Jason
- * @date: 2018/9/19-10:50
  */
 public final class PropertiesReader {
+    
+    /**
+     * Properties.
+     */
     private Properties properties;
-
-    public PropertiesReader(String filePath) throws Exception{
+    
+    /**
+     * Load file to initialize properties.
+     * 
+     * @param filePath path of file
+     * @throws Exception exception
+     */
+    public PropertiesReader(final String filePath) throws Exception {
         BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath));
         properties = new Properties();
         properties.load(bufferedReader);
     }
-
-    public String getProperty(String key){
+    
+    /**
+     * Get property by key.
+     * 
+     * @param key key.
+     * @return property.
+     */
+    public String getProperty(final String key) {
         return properties.getProperty(key);
     }
-
+    
 }
