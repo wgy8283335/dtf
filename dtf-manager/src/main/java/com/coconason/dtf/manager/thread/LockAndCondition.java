@@ -12,19 +12,35 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 
 /**
+ * Lock and condition.
+ * 
  * @Author: Jason
- * @date: 2018/8/22-11:44
  */
 public final class LockAndCondition implements LockAndConditionInterface {
-
-    private static final Logger logger = LoggerFactory.getLogger(LockAndCondition.class);
+    
+    /**
+     * Logger of LockAndCondition class.
+     */
+    private final Logger logger = LoggerFactory.getLogger(LockAndCondition.class);
+    
+    /**
+     * Lock.
+     */
     private Lock lock;
+    
+    /**
+     * Condition.
+     */
     private Condition condition;
-
-    public LockAndCondition(Lock lock) {
+    
+    public LockAndCondition(final Lock lock) {
         this.lock = lock;
         this.condition = lock.newCondition();
     }
+    
+    /**
+     * Sait for signal.
+     */
     @Override
     public void await() {
         try {
@@ -36,8 +52,15 @@ public final class LockAndCondition implements LockAndConditionInterface {
             lock.unlock();
         }
     }
+    
+    /**
+     * Wait for signal or overtime.
+     * @param milliseconds number
+     * @param timeUnit time unit
+     * @return
+     */
     @Override
-    public boolean await(long milliseconds, TimeUnit timeUnit) {
+    public boolean await(final long milliseconds, final TimeUnit timeUnit) {
         boolean result = false;
         try {
             lock.lock();
@@ -49,6 +72,10 @@ public final class LockAndCondition implements LockAndConditionInterface {
         }
         return result;
     }
+    
+    /**
+     * Send notification to unblock.
+     */
     @Override
     public void signal() {
         try {
@@ -58,40 +85,76 @@ public final class LockAndCondition implements LockAndConditionInterface {
             lock.unlock();
         }
     }
+    
+    /**
+     * Send message to netty channel and wait for signal.
+     * If fail, keep trying util success. 
+     * 
+     * @param groupId group id
+     * @param action action type
+     * @param ctx channel handler context
+     * @param msg string
+     * @throws Exception exception
+     */
     @Override
-    public void sendAndWaitForSignal(String groupId, MessageProto.Message.ActionType action, ChannelHandlerContext ctx, String msg) throws  Exception{
-        MessageSender.sendMsg(groupId,action,ctx);
+    public void sendAndWaitForSignal(final String groupId, final MessageProto.Message.ActionType action, 
+                                     final ChannelHandlerContext ctx, final String msg) throws Exception {
+        MessageSender.sendMsg(groupId, action, ctx);
         boolean receivedSignal = await(10000, TimeUnit.MILLISECONDS);
-        while(receivedSignal == false){
+        while (!receivedSignal) {
             boolean channelIsHealthy = NettyServer.isHealthy();
-            if(channelIsHealthy){
-                MessageSender.sendMsg(groupId,action,ctx);
+            if (channelIsHealthy) {
+                MessageSender.sendMsg(groupId, action, ctx);
                 receivedSignal = await(60000, TimeUnit.MILLISECONDS);
-            }else{
+            } else {
                 //should write log.
-                logger.error(msg+"\n"+"groupId:"+groupId+"\n"+"action:"+action);
+                logger.error(msg + "\n" + "groupId:" + groupId + "\n" + "action:" + action);
                 throw new Exception(msg);
             }
         }
     }
+    
+    /**
+     * Send message to netty channel and wait for signal.
+     * If fail, throw exception. 
+     *
+     * @param groupId group id
+     * @param action action type
+     * @param ctx channel handler context
+     * @param msg string
+     * @throws Exception exception
+     */
     @Override
-    public void sendAndWaitForSignalOnce(String groupId, MessageProto.Message.ActionType action, ChannelHandlerContext ctx, String msg) throws  Exception{
-        MessageSender.sendMsg(groupId,action,ctx);
+    public void sendAndWaitForSignalOnce(final String groupId, final MessageProto.Message.ActionType action, 
+                                         final ChannelHandlerContext ctx, final String msg) throws Exception {
+        MessageSender.sendMsg(groupId, action, ctx);
         boolean receivedSignal = await(10000, TimeUnit.MILLISECONDS);
-        if(receivedSignal == false){
-            logger.error(msg+"\n"+"groupId:"+groupId+"\n"+"action:"+action);
+        if (!receivedSignal) {
+            logger.error(msg + "\n" + "groupId:" + groupId + "\n" + "action:" + action);
             throw new Exception(msg);
         }
     }
+    
+    /**
+     * Send message to netty channel and wait for signal.
+     * If fail, send failure message to the channel. 
+     *
+     * @param groupId group id
+     * @param action action type
+     * @param ctx channel handler context
+     * @param msg string
+     * @throws Exception exception
+     */
     @Override
-    public void sendAndWaitForSignalIfFailSendMessage(String groupId, MessageProto.Message.ActionType action, ChannelHandlerContext ctx, String msg) throws  Exception{
-        MessageSender.sendMsg(groupId,action,ctx);
+    public void sendAndWaitForSignalIfFailSendMessage(final String groupId, final MessageProto.Message.ActionType action, 
+                                                      final ChannelHandlerContext ctx, final String msg) throws Exception {
+        MessageSender.sendMsg(groupId, action, ctx);
         boolean receivedSignal = await(10000, TimeUnit.MILLISECONDS);
-        if(receivedSignal == false){
-            logger.error(msg+"\n"+"groupId:"+groupId+"\n"+"action:"+action);
-            MessageSender.sendMsg(groupId.substring(0,18), MessageProto.Message.ActionType.WHOLE_FAIL_STRONG,ctx);
+        if (!receivedSignal) {
+            logger.error(msg + "\n" + "groupId:" + groupId + "\n" + "action:" + action);
+            MessageSender.sendMsg(groupId.substring(0, 18), MessageProto.Message.ActionType.WHOLE_FAIL_STRONG, ctx);
             throw new Exception(msg);
         }
     }
-
+    
 }
