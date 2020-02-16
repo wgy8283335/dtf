@@ -5,22 +5,41 @@ import io.netty.util.concurrent.DefaultThreadFactory;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 /**
+ * Thread pool. Proxy of ExecutorService.
+ * 
  * @Author: Jason
- * @date: 2018/9/17-11:36
  */
 public final class ThreadPoolForServerProxy implements ExecutorService {
+    
+    /**
+     * Thread pool.
+     */
     private ExecutorService pool;
-
-    private ThreadPoolForServerProxy(Integer corePoolSize, Integer maximumPoolSize, Integer keepAliveTime, Integer capacity) {
-        pool = new ThreadPoolExecutor(corePoolSize,maximumPoolSize,keepAliveTime, TimeUnit.MILLISECONDS,new LinkedBlockingDeque<Runnable>(capacity),new DefaultThreadFactory("defaultThreadFactory"),new ThreadPoolExecutor.AbortPolicy());
+    
+    private ThreadPoolForServerProxy(final Integer corePoolSize, final Integer maximumPoolSize, final Integer keepAliveTime, final Integer capacity) {
+        pool = new ThreadPoolExecutor(corePoolSize, maximumPoolSize, keepAliveTime, TimeUnit.MILLISECONDS, new LinkedBlockingDeque<Runnable>(capacity), 
+                new DefaultThreadFactory("defaultThreadFactory"), new ThreadPoolExecutor.AbortPolicy());
     }
-
-    public static ThreadPoolForServerProxy initialize() throws Exception{
+    
+    /**
+     * Initialize thread pool for server proxy.
+     * 
+     * @return thread pool for server proxy
+     * @throws Exception exception
+     */
+    public static ThreadPoolForServerProxy initialize() throws Exception {
         String classpath = Thread.currentThread().getContextClassLoader().getResource("").getPath();
-        PropertiesReader propertiesReader = new PropertiesReader(classpath+"config.properties");
+        PropertiesReader propertiesReader = new PropertiesReader(classpath + "config.properties");
         ThreadPoolForServerProxy threadPoolForServerProxy = new ThreadPoolForServerProxy(
                 Integer.valueOf(propertiesReader.getProperty("corePoolSize")),
                 Integer.valueOf(propertiesReader.getProperty("maximumPoolSize")),
@@ -28,69 +47,70 @@ public final class ThreadPoolForServerProxy implements ExecutorService {
                 Integer.valueOf(propertiesReader.getProperty("capacity")));
         return threadPoolForServerProxy;
     }
-
+    
     @Override
-    public void execute(Runnable runnable){
+    public void execute(final Runnable runnable) {
         pool.execute(runnable);
     }
-
+    
     @Override
     public void shutdown() {
         pool.shutdown();
     }
-
+    
     @Override
     public List<Runnable> shutdownNow() {
         return pool.shutdownNow();
     }
-
+    
     @Override
     public boolean isShutdown() {
         return pool.isShutdown();
     }
-
+    
     @Override
     public boolean isTerminated() {
         return pool.isTerminated();
     }
-
+    
     @Override
-    public boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException {
-        return pool.awaitTermination(timeout,unit);
+    public boolean awaitTermination(final long timeout, final TimeUnit unit) throws InterruptedException {
+        return pool.awaitTermination(timeout, unit);
     }
-
+    
     @Override
-    public <T> Future<T> submit(Callable<T> task) {
+    public <T> Future<T> submit(final Callable<T> task) {
         return pool.submit(task);
     }
-
+    
     @Override
-    public <T> Future<T> submit(Runnable task, T result) {
-        return pool.submit(task,result);
+    public <T> Future<T> submit(final Runnable task, final T result) {
+        return pool.submit(task, result);
     }
-
+    
     @Override
-    public Future<?> submit(Runnable task) {
+    public Future<?> submit(final Runnable task) {
         return pool.submit(task);
     }
-
+    
     @Override
-    public <T> List<Future<T>> invokeAll(Collection<? extends Callable<T>> tasks) throws InterruptedException {
+    public <T> List<Future<T>> invokeAll(final Collection<? extends Callable<T>> tasks) throws InterruptedException {
         return pool.invokeAll(tasks);
     }
-
+    
     @Override
-    public <T> List<Future<T>> invokeAll(Collection<? extends Callable<T>> tasks, long timeout, TimeUnit unit) throws InterruptedException {
-        return pool.invokeAll(tasks,timeout,unit);
+    public <T> List<Future<T>> invokeAll(final Collection<? extends Callable<T>> tasks, final long timeout, final TimeUnit unit) throws InterruptedException {
+        return pool.invokeAll(tasks, timeout, unit);
     }
-
+    
     @Override
-    public <T> T invokeAny(Collection<? extends Callable<T>> tasks) throws InterruptedException, ExecutionException {
+    public <T> T invokeAny(final Collection<? extends Callable<T>> tasks) throws InterruptedException, ExecutionException {
         return pool.invokeAny(tasks);
     }
-
+    
     @Override
-    public <T> T invokeAny(Collection<? extends Callable<T>> tasks, long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
-        return pool.invokeAny(tasks,timeout,unit);
+    public <T> T invokeAny(final Collection<? extends Callable<T>> tasks, final long timeout, final TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
+        return pool.invokeAny(tasks, timeout, unit);
     }
+    
 }
