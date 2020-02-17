@@ -11,95 +11,93 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * Login authorization response handler.
+ * 
  * @Author: Jason
- * @date: 2018/7/30-9:31
  */
 public final class LoginAuthRespHandler extends ChannelInboundHandlerAdapter {
-
+    
     private Logger logger = LoggerFactory.getLogger(LoginAuthRespHandler.class);
     
     /**
      * White list.
      */
-    private String[] writeList = { "/127.0.0.1" };
-
+    private String[] writeList = {"/127.0.0.1"};
+    
     /**
      * The cache of the IP logged, in case duplicated log in.
      */
     private Map<String, Boolean> nodeCheck = new ConcurrentHashMap();
 
+    /**
+     * Flush channel handler context.
+     * 
+     * @param ctx channel handler context
+     */
     @Override
-    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception
-    {
+    public void channelReadComplete(final ChannelHandlerContext ctx) {
         ctx.flush();
     }
 
+    /**
+     * Responsible for login.
+     * 
+     * @param ctx channel handler context
+     * @param msg message
+     */
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception
-    {
+    public void channelRead(final ChannelHandlerContext ctx, final Object msg) {
         MessageProto.Message message = (MessageProto.Message) msg;
-        if (message.getLength() != 2 && message.getAction() == ActionType.LOGIN_REQ)
-        {
-            logger.debug("receive client login req : " + message);
-            MessageProto.Message loginResp = null;
-            String nodeIndex = ctx.channel().remoteAddress().toString().split(":")[0];
-            // Check whether is duplicated log in.
-            if (nodeCheck.containsKey(nodeIndex))
-            {
-                loginResp = buildResponse("login_repeat");
-            }
-            else
-            {
-                // Check whether the ip is in the white list.
-                boolean tag = false;
-                for (String ip : writeList)
-                {
-                    if (ip.equals(nodeIndex))
-                    {
-                        tag = true;
-                        break;
-                    }
-                }
-                if (tag)
-                {
-                    nodeCheck.put(nodeIndex, true);
-                    loginResp = buildResponse("login_ok");
-                }
-                else
-                {
-                    loginResp = buildResponse("login_fail");
-                }
-                ctx.writeAndFlush(loginResp);
-                logger.debug("send login resp is : " + loginResp);
-            }
-        }
-        else
-        {
+        if (!(message.getLength() != 2 && message.getAction() == ActionType.LOGIN_REQ)) {
             ctx.fireChannelRead(msg);
+            return;
         }
-
+        logger.debug("receive client login req : " + message);
+        MessageProto.Message loginResp = null;
+        String nodeIndex = ctx.channel().remoteAddress().toString().split(":")[0];
+        // Check whether is duplicated log in.
+        if (nodeCheck.containsKey(nodeIndex)) {
+            loginResp = buildResponse("login_repeat");
+            return;
+        }
+        // Check whether the ip is in the white list.
+        boolean tag = false;
+        for (String ip : writeList) {
+            if (ip.equals(nodeIndex)) {
+                tag = true;
+                break;
+            }
+        }
+        if (tag) {
+            nodeCheck.put(nodeIndex, true);
+            loginResp = buildResponse("login_ok");
+        } else {
+            loginResp = buildResponse("login_fail");
+        }
+        ctx.writeAndFlush(loginResp);
+        logger.debug("send login resp is : " + loginResp);
     }
-
-    private MessageProto.Message buildResponse(String result)
-    {
-        MessageProto.Message.Builder builder= MessageProto.Message.newBuilder();
+    
+    private MessageProto.Message buildResponse(final String result) {
+        MessageProto.Message.Builder builder = MessageProto.Message.newBuilder();
         builder.setAction(ActionType.LOGIN_RESP);
         builder.setInfo(result);
         return builder.build();
     }
-
+    
+    /**
+     * Caught exception.
+     * 
+     * @param ctx channel handler context
+     * @param cause throwable
+     */
     @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception
-    {
-        try
-        {
+    public void exceptionCaught(final ChannelHandlerContext ctx, final Throwable cause) {
+        try {
             ctx.fireExceptionCaught(cause);
-        }
-        finally
-        {
-            // Clear the cache when exception happens
+        } finally {
             nodeCheck.remove("/127.0.0.1");
         }
-
     }
+    
 }

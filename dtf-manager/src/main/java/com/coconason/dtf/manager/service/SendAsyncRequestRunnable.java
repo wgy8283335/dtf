@@ -9,38 +9,50 @@ import java.util.Queue;
 import java.util.Set;
 
 /**
+ * Send asynchronous request.
+ * 
  * @Author: Jason
- * @date: 2018/9/6-13:04
  */
-public final class SendAsyncRequestRunnable implements Runnable{
-
+public final class SendAsyncRequestRunnable implements Runnable {
+    
+    /**
+     * Cache for message.
+     */
     private MessageCacheInterface messageAsyncCacheProxy;
 
+    /**
+     * Transaction message for submit.
+     */
     private TransactionMessageGroupInterface transactionMessageForSubmit;
 
+    /**
+     * Queue of asynchronous message.
+     */
     private Queue messageAsyncQueueProxy;
-
-    public SendAsyncRequestRunnable(MessageCacheInterface messageAsyncCacheProxy, TransactionMessageGroupInterface transactionMessageForSubmit, Queue messageAsyncQueueProxy) {
+    
+    public SendAsyncRequestRunnable(final MessageCacheInterface messageAsyncCacheProxy, final TransactionMessageGroupInterface transactionMessageForSubmit, final Queue messageAsyncQueueProxy) {
         this.messageAsyncCacheProxy = messageAsyncCacheProxy;
         this.transactionMessageForSubmit = transactionMessageForSubmit;
         this.messageAsyncQueueProxy = messageAsyncQueueProxy;
     }
-
+    
+    /**
+     * Get transactionMessageGroupAsync from the messageAsyncCacheProxy, and send request.
+     */
     @Override
     public void run() {
-            //get the TransactionMessageGroupAsync from the messageAsyncCacheProxy
-            TransactionMessageGroupInterface theMessageGroupAsync = messageAsyncCacheProxy.get(transactionMessageForSubmit.getGroupId());
-            Set<MessageInfoInterface> theMemberSet = theMessageGroupAsync.getMemberSet();
-            for(MessageInfoInterface messageInfo :theMemberSet){
-                String url= messageInfo.getUrl();
-                String obj = messageInfo.getObj().toString();
-                String result = HttpClientUtil.doPostJson(url,obj,transactionMessageForSubmit.getGroupId());
-                if("".equals(result)){
-                    messageAsyncQueueProxy.add(messageInfo);
-                }else{
-                    messageInfo.setCommitted(true);
-                }
+        TransactionMessageGroupInterface theMessageGroupAsync = messageAsyncCacheProxy.get(transactionMessageForSubmit.getGroupId());
+        Set<MessageInfoInterface> theMemberSet = theMessageGroupAsync.getMemberSet();
+        for (MessageInfoInterface messageInfo : theMemberSet) {
+            String url = messageInfo.getUrl();
+            String obj = messageInfo.getObj().toString();
+            String result = HttpClientUtil.doPostJson(url, obj, transactionMessageForSubmit.getGroupId());
+            if ("".equals(result)) {
+                messageAsyncQueueProxy.add(messageInfo);
+            } else {
+                messageInfo.setCommitted(true);
             }
-            messageAsyncCacheProxy.invalidate(transactionMessageForSubmit.getGroupId());
+        }
+        messageAsyncCacheProxy.invalidate(transactionMessageForSubmit.getGroupId());
     }
 }

@@ -7,27 +7,48 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * Send short message.
+ * 
  * @Author: Jason
- * @date: 2018/9/27-14:29
  */
 public final class SendShortMessageRunnable implements Runnable {
-    private String groupId;
-    private MessageProto.Message.ActionType actionType;
-    private ChannelHandlerContext ctx;
+    
+    /**
+     * Logger of send short message.
+     */
     private Logger logger = LoggerFactory.getLogger(SendShortMessageRunnable.class);
+    
+    /**
+     * Group id.
+     */
+    private String groupId;
 
-    public SendShortMessageRunnable(String groupId, MessageProto.Message.ActionType actionType, ChannelHandlerContext ctx) {
+    /**
+     * Action type.
+     */
+    private MessageProto.Message.ActionType actionType;
+
+    /**
+     * Channel handler context.
+     */
+    private ChannelHandlerContext ctx;
+    
+    public SendShortMessageRunnable(final String groupId, final MessageProto.Message.ActionType actionType, final ChannelHandlerContext ctx) {
         this.groupId = groupId;
         this.actionType = actionType;
         this.ctx = ctx;
     }
 
+    /**
+     * Send message.
+     */
     @Override
     public void run() {
-        try{
-            MessageSender.sendMsg(groupId, actionType,ctx);
-        }catch (Exception e){
+        try {
+            MessageSender.sendMsg(groupId, actionType, ctx);
+        } catch (Exception e) {
             logger.error(e.getMessage());
         }
     }
+    
 }
