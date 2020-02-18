@@ -44,11 +44,7 @@ public final class SendShortMessageRunnable implements Runnable {
      */
     @Override
     public void run() {
-        try {
-            MessageSender.sendMsg(groupId, actionType, ctx);
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-        }
+        MessageSender.sendMsg(groupId, actionType, ctx);
     }
     
 }

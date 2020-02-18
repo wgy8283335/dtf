@@ -10,7 +10,7 @@ public class ServerChannelException extends Exception {
      * 
      * @param message exception message
      */
-    public ServerChannelException(String message) {
+    public ServerChannelException(final String message) {
         super(message);
     }
     

@@ -94,7 +94,7 @@ public final class LockAndCondition implements LockAndConditionInterface {
      * @param action action type
      * @param ctx channel handler context
      * @param msg string
-     * @throws Exception exception
+     * @throws ServerChannelException exception
      */
     @Override
     public void sendAndWaitForSignal(final String groupId, final MessageProto.Message.ActionType action, 
@@ -122,7 +122,7 @@ public final class LockAndCondition implements LockAndConditionInterface {
      * @param action action type
      * @param ctx channel handler context
      * @param msg string
-     * @throws Exception exception
+     * @throws ServerChannelException exception
      */
     @Override
     public void sendAndWaitForSignalOnce(final String groupId, final MessageProto.Message.ActionType action, 
@@ -143,7 +143,7 @@ public final class LockAndCondition implements LockAndConditionInterface {
      * @param action action type
      * @param ctx channel handler context
      * @param msg string
-     * @throws Exception exception
+     * @throws ServerChannelException exception
      */
     @Override
     public void sendAndWaitForSignalIfFailSendMessage(final String groupId, final MessageProto.Message.ActionType action, 
