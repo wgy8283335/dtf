@@ -48,7 +48,7 @@ public final class HttpClientUtil {
             if (code == 200) {
                 resultString = EntityUtils.toString(response.getEntity(), "utf-8");
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             logger.error(e.getMessage());
         } finally {
             try {

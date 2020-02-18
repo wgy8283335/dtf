@@ -39,7 +39,7 @@ public final class ConsumerFailingAsyncRequestRunnable implements Runnable {
             if (messageInfo == null) {
                 try {
                     Thread.sleep(10000);
-                } catch (Exception e) {
+                } catch (InterruptedException e) {
                     logger.error(e.getMessage());
                 }
                 continue;

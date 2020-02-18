@@ -50,7 +50,7 @@ public final class MessageAsyncQueueProxy implements Queue {
     public boolean add(final Object o) {
         try {
             messageQueue.put((MessageInfoInterface) o);
-        } catch (Exception e) {
+        } catch (InterruptedException e) {
             logger.error(e.getMessage());
             return false;
         }
@@ -78,7 +78,7 @@ public final class MessageAsyncQueueProxy implements Queue {
         MessageInfoInterface result;
         try {
             result = messageQueue.take();
-        } catch (Exception e) {
+        } catch (InterruptedException e) {
             logger.error(e.getMessage());
             return null;
         }
