@@ -31,25 +31,52 @@ import java.util.concurrent.ExecutorService;
  * @Author: Jason
  */
 public final class ServerTransactionHandler extends ChannelInboundHandlerAdapter {
-
+    
+    /**
+     * Logger of server transaction handler.
+     */
     private Logger logger = LoggerFactory.getLogger(ServerTransactionHandler.class);
-
+    
+    /**
+     * Normal message cache in synchronous mode.
+     */
     private MessageCacheInterface messageSyncCacheProxy;
-
+    
+    /**
+     * Message cache of submitting in synchronous mode.
+     */
     private MessageCacheInterface messageForSubmitSyncCacheProxy;
-
+    
+    /**
+     * Normal message cache in asynchronous mode.
+     */
     private MessageCacheInterface messageAsyncCacheProxy;
-
+    
+    /**
+     * Message cache of submitting in asynchronous mode.
+     */
+    private MessageCacheInterface messageForSubmitAsyncCacheProxy;
+    
+    /**
+     * Queue of asynchronous message.
+     */
     private Queue messageAsyncQueueProxy;
 
+    /**
+     * Channel handler context.
+     */
     private ChannelHandlerContext ctx;
 
+    /**
+     * Thread pool.
+     */
     private ExecutorService threadPoolForServerProxy;
 
-    private MessageCacheInterface messageForSubmitAsyncCacheProxy;
-
+    /**
+     * Cache of thread lock.
+     */
     private ServerThreadLockCacheProxy serverThreadLockCacheProxy;
-
+    
     public ServerTransactionHandler(MessageCacheInterface messageSyncCacheProxy, MessageCacheInterface messageAsyncCacheProxy,
                                     MessageAsyncQueueProxy messageAsyncQueueProxy, ThreadPoolForServerProxy threadPoolForServerProxy,
                                     MessageCacheInterface messageForSubmitSyncCacheProxy, MessageCacheInterface messageForSubmitAsyncCacheProxy,
@@ -62,16 +89,25 @@ public final class ServerTransactionHandler extends ChannelInboundHandlerAdapter
         this.messageForSubmitAsyncCacheProxy = messageForSubmitAsyncCacheProxy;
         this.serverThreadLockCacheProxy = serverThreadLockCacheProxy;
     }
-
+    
+    /**
+     * Override channelActive() method.
+     * 
+     * @param ctx channel handler context
+     * @throws Exception
+     */
     @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception
-    {
+    public void channelActive(ChannelHandlerContext ctx) {
         this.ctx = ctx;
     }
 
+    /**
+     * Override
+     * 
+     * @param ctx channel handler context
+     */
     @Override
-    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception
-    {
+    public void channelReadComplete(ChannelHandlerContext ctx) {
         ctx.flush();
     }
 

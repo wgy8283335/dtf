@@ -112,7 +112,7 @@ public final class TransactionMessageGroup extends TransactionMessageGroupAdapto
     }
     
     /**
-     * Over ride toString method.
+     * Override toString method.
      *
      * @return string
      */

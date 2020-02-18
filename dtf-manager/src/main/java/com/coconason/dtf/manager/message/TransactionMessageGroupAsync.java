@@ -69,7 +69,7 @@ public final class TransactionMessageGroupAsync extends TransactionMessageGroupA
     }
     
     /**
-     * Over ride equals method.
+     * Override equals method.
      *
      * @param o MessageInfo object
      * @return true or false
@@ -95,7 +95,7 @@ public final class TransactionMessageGroupAsync extends TransactionMessageGroupA
     }
     
     /**
-     * Over ride hashCode method.
+     * Override hashCode method.
      *
      * @return hash code
      */

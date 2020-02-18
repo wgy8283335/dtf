@@ -38,7 +38,7 @@ public interface TransactionMessageForAddingInterface {
     void setCommitted(boolean commited);
     
     /**
-     * Over ride toString method.
+     * Override toString method.
      *
      * @return string
      */

@@ -83,7 +83,7 @@ public final class TransactionMessageForAdding implements TransactionMessageForA
     }
 
     /**
-     * Over ride toString method.
+     * Override toString method.
      * 
      * @return string
      */
