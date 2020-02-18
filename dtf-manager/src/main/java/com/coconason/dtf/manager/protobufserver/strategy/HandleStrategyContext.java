@@ -12,7 +12,7 @@ import java.util.Map;
  *
  * @Author: Jason
  */
-public class HandleStrategyContext {
+public final class HandleStrategyContext {
     
     private Map<ActionType, HandleMessageStrategy> map;
     
@@ -31,8 +31,11 @@ public class HandleStrategyContext {
     
     /**
      * Handle message according to action.
-     *
+     * 
+     * @param actionType action type
+     * @param serverTransactionHandler server transaction handler
      * @param ctx channel handler context
+     * @param msg message
      */
     public void handleMessageAccordingToAction(final ActionType actionType, final ServerTransactionHandler serverTransactionHandler, final ChannelHandlerContext ctx, final Object msg) {
         HandleMessageStrategy handleMessageStrategy = map.get(actionType);

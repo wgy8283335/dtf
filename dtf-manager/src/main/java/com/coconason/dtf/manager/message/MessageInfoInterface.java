@@ -5,7 +5,7 @@ package com.coconason.dtf.manager.message;
  *
  * @Author: Jason
  */
-public interface MessageInfoInterface{
+public interface MessageInfoInterface {
     
     /**
      * Get member id of group.
