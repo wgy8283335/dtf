@@ -2,6 +2,7 @@ package com.coconason.dtf.manager.service;
 
 import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
 import com.coconason.dtf.manager.thread.LockAndCondition;
+import com.coconason.dtf.manager.thread.ServerChannelException;
 import com.google.common.cache.Cache;
 import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;
@@ -74,7 +75,7 @@ public final class SendMessageRunnable implements Runnable {
                 lc.sendAndWaitForSignalOnce(groupId, actionType, ctx, message);
                 return;
             }
-        } catch (Exception e) {
+        } catch (ServerChannelException e) {
             logger.error(e.getMessage());
         }
     }

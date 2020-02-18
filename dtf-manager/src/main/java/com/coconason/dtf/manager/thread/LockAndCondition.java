@@ -98,7 +98,7 @@ public final class LockAndCondition implements LockAndConditionInterface {
      */
     @Override
     public void sendAndWaitForSignal(final String groupId, final MessageProto.Message.ActionType action, 
-                                     final ChannelHandlerContext ctx, final String msg) throws Exception {
+                                     final ChannelHandlerContext ctx, final String msg) throws ServerChannelException {
         MessageSender.sendMsg(groupId, action, ctx);
         boolean receivedSignal = await(10000, TimeUnit.MILLISECONDS);
         while (!receivedSignal) {
@@ -109,7 +109,7 @@ public final class LockAndCondition implements LockAndConditionInterface {
             } else {
                 //should write log.
                 logger.error(msg + "\n" + "groupId:" + groupId + "\n" + "action:" + action);
-                throw new Exception(msg);
+                throw new ServerChannelException(msg);
             }
         }
     }
@@ -126,12 +126,12 @@ public final class LockAndCondition implements LockAndConditionInterface {
      */
     @Override
     public void sendAndWaitForSignalOnce(final String groupId, final MessageProto.Message.ActionType action, 
-                                         final ChannelHandlerContext ctx, final String msg) throws Exception {
+                                         final ChannelHandlerContext ctx, final String msg) throws ServerChannelException {
         MessageSender.sendMsg(groupId, action, ctx);
         boolean receivedSignal = await(10000, TimeUnit.MILLISECONDS);
         if (!receivedSignal) {
             logger.error(msg + "\n" + "groupId:" + groupId + "\n" + "action:" + action);
-            throw new Exception(msg);
+            throw new ServerChannelException(msg);
         }
     }
     
@@ -147,13 +147,13 @@ public final class LockAndCondition implements LockAndConditionInterface {
      */
     @Override
     public void sendAndWaitForSignalIfFailSendMessage(final String groupId, final MessageProto.Message.ActionType action, 
-                                                      final ChannelHandlerContext ctx, final String msg) throws Exception {
+                                                      final ChannelHandlerContext ctx, final String msg) throws ServerChannelException {
         MessageSender.sendMsg(groupId, action, ctx);
         boolean receivedSignal = await(10000, TimeUnit.MILLISECONDS);
         if (!receivedSignal) {
             logger.error(msg + "\n" + "groupId:" + groupId + "\n" + "action:" + action);
             MessageSender.sendMsg(groupId.substring(0, 18), MessageProto.Message.ActionType.WHOLE_FAIL_STRONG, ctx);
-            throw new Exception(msg);
+            throw new ServerChannelException(msg);
         }
     }
     
