@@ -33,18 +33,13 @@ public class HandleMessageForAddAsynchronous implements HandleMessageStrategy {
         Queue messageAsyncQueueProxy = serverTransactionHandler.getMessageAsyncQueueProxy();
         MessageCacheInterface messageAsyncCacheProxy = serverTransactionHandler.getMessageAsyncCacheProxy();
         ExecutorService threadPoolForServerProxy = serverTransactionHandler.getThreadPoolForServerProxy();
-        MessageCacheInterface messageForSubmitAsyncCacheProxy = serverTransactionHandler.getMessageForSubmitAsyncCacheProxy();
         MessageProto.Message message = (MessageProto.Message) msg;
         TransactionMessageGroupInterface transactionMessageGroupAsync = null;
-        try {
-            transactionMessageGroupAsync = TransactionMessageFactory.getMessageGroupAsyncInstance(message);
-            //add message in messageAsyncCacheProxy
-            messageAsyncCacheProxy.putDependsOnCondition(transactionMessageGroupAsync);
-            threadPoolForServerProxy.execute(new SendShortMessageRunnable(transactionMessageGroupAsync.getGroupId(), MessageProto.Message.ActionType.ADD_SUCCESS_ASYNC, ctx));
-        } catch (Exception e) {
-            threadPoolForServerProxy.execute(new SendShortMessageRunnable(transactionMessageGroupAsync.getGroupId(), MessageProto.Message.ActionType.ADD_FAIL_ASYNC, ctx));
-        }
+        transactionMessageGroupAsync = TransactionMessageFactory.getMessageGroupAsyncInstance(message);
+        messageAsyncCacheProxy.putDependsOnCondition(transactionMessageGroupAsync);
+        threadPoolForServerProxy.execute(new SendShortMessageRunnable(transactionMessageGroupAsync.getGroupId(), MessageProto.Message.ActionType.ADD_SUCCESS_ASYNC, ctx));
         Set<String> setFromCacheTemp = SetUtil.setTransfer(messageAsyncCacheProxy.get(transactionMessageGroupAsync.getGroupId()).getMemberSet());
+        MessageCacheInterface messageForSubmitAsyncCacheProxy = serverTransactionHandler.getMessageForSubmitAsyncCacheProxy();
         TransactionMessageGroupInterface transactionMessageForSubmit1 = messageForSubmitAsyncCacheProxy.get(transactionMessageGroupAsync.getGroupId());
         if (transactionMessageForSubmit1 != null) {
             Set<String> setFromMessageTemp = transactionMessageForSubmit1.getMemberSet();
