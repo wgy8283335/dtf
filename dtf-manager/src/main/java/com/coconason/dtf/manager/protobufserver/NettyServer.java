@@ -41,7 +41,7 @@ public final class NettyServer {
     private Logger logger = LoggerFactory.getLogger(NettyServer.class);
     
     /**
-     * Initialize the server.
+     * Main entrance of server.
      *
      * @param args parameters
      * @throws Exception exception
