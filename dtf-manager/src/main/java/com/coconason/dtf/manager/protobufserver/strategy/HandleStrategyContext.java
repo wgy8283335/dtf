@@ -18,6 +18,19 @@ public final class HandleStrategyContext {
     
     private HandleStrategyContext() {
         map = new HashMap<>();
+        map.put(ActionType.ADD, new HandleMessageForAdd());
+        map.put(ActionType.ADD_ASYNC, new HandleMessageForAddAsynchronous());
+        map.put(ActionType.ADD_STRONG, new HandleMessageForAddStrong());
+        map.put(ActionType.APPLYFORSUBMIT, new HandleMessageForApplySubmit());
+        map.put(ActionType.APPLYFORSUBMIT_STRONG, new HandleMessageForApplySubmitStrong());
+        map.put(ActionType.ASYNC_COMMIT, new HandleMessageForAsynchronousCommit());
+        map.put(ActionType.CANCEL, new HandleMessageForCancel());
+        map.put(ActionType.SUB_FAIL, new HandleMessageForSubFail());
+        map.put(ActionType.SUB_FAIL_STRONG, new HandleMessageForSubFailStrong());
+        map.put(ActionType.SUB_SUCCESS, new HandleMessageForSubSuccess());
+        map.put(ActionType.SUB_SUCCESS_STRONG, new HandleMessageForSubSuccessStrong());
+        map.put(ActionType.WHOLE_FAIL_STRONG_ACK, new HandleMessageForWholeFailStrongAck());
+        map.put(ActionType.WHOLE_SUCCESS_STRONG_ACK, new HandleMessageForWholeSuccessStrongAck());
     }
     
     /**
