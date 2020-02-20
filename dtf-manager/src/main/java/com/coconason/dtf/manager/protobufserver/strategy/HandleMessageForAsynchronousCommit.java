@@ -24,6 +24,9 @@ public class HandleMessageForAsynchronousCommit implements HandleMessageStrategy
 
     /**
      * Handle message for asynchronous commit.
+     * Add message into the messageForSubmitAsyncCacheProxy, and send ack message.
+     * Check number of member of the submit message whether equals to the number of member of cache.
+     * If equal, means that the all of member of the transaction has been received by server, then run the request of each member.
      * 
      * @param serverTransactionHandler server transaction handler
      * @param ctx channel handler context
