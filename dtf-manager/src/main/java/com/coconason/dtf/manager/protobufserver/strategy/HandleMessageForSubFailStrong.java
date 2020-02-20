@@ -20,6 +20,7 @@ public class HandleMessageForSubFailStrong implements HandleMessageStrategy {
     
     /**
      * Handle message for sub failure strong action.
+     * If receive SUB_FAIL_STRONG, then send WHOLE_FAIL_STRONG and invalidate the corresponding element in the cache. 
      */
     @Override
     public void handleMessage(final ServerTransactionHandler serverTransactionHandler, final ChannelHandlerContext ctx, final Object msg) {
@@ -27,11 +28,11 @@ public class HandleMessageForSubFailStrong implements HandleMessageStrategy {
         ExecutorService threadPoolForServerProxy = serverTransactionHandler.getThreadPoolForServerProxy();
         ServerThreadLockCacheProxy serverThreadLockCacheProxy = serverTransactionHandler.getServerThreadLockCacheProxy();
         MessageProto.Message message = (MessageProto.Message) msg;
-        TransactionMessageGroupInterface groupTemp1 = messageSyncCacheProxy.get(JSONObject.parseObject(message.getInfo()).get("groupId").toString());
-        String groupId1 = groupTemp1.getGroupId();
-        threadPoolForServerProxy.execute(new SendMessageRunnable(groupId1, MessageProto.Message.ActionType.WHOLE_FAIL_STRONG, groupTemp1.getCtx(), 
+        TransactionMessageGroupInterface groupTemp = messageSyncCacheProxy.get(JSONObject.parseObject(message.getInfo()).get("groupId").toString());
+        String groupId1 = groupTemp.getGroupId();
+        threadPoolForServerProxy.execute(new SendMessageRunnable(groupId1, MessageProto.Message.ActionType.WHOLE_FAIL_STRONG, groupTemp.getCtx(), 
                 "send WHOLE_FAIL_STRONG message fail", serverThreadLockCacheProxy));
-        messageSyncCacheProxy.invalidate(groupTemp1.getGroupId());
+        messageSyncCacheProxy.invalidate(groupTemp.getGroupId());
     }
     
 }
