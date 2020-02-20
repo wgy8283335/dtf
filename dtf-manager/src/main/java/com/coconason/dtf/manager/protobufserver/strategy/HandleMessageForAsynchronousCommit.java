@@ -21,7 +21,7 @@ import java.util.concurrent.ExecutorService;
  * @Author: Jason
  */
 public class HandleMessageForAsynchronousCommit implements HandleMessageStrategy {
-
+    
     /**
      * Handle message for asynchronous commit.
      * Add message into the messageForSubmitAsyncCacheProxy, and send ack message.

@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
  * @Author: Jason
  */
 public class HandleMessageForSubFail implements HandleMessageStrategy {
-
+    
     /**
      * Logger of handle message for sub failure.
      */
@@ -23,15 +23,16 @@ public class HandleMessageForSubFail implements HandleMessageStrategy {
     
     /**
      * Handle message for sub failure action.
+     * If receive SUB_FAIL, then remove corresponding element from the cache.
      */
     @Override
     public void handleMessage(final ServerTransactionHandler serverTransactionHandler, final ChannelHandlerContext ctx, final Object msg) {
         MessageCacheInterface messageSyncCacheProxy = serverTransactionHandler.getMessageSyncCacheProxy();
         MessageProto.Message message = (MessageProto.Message) msg;
-        String groupTempId3 = JSONObject.parseObject(message.getInfo()).get("groupId").toString();
-        TransactionMessageGroupInterface groupInfoToLog = messageSyncCacheProxy.get(groupTempId3);
+        String groupTempId = JSONObject.parseObject(message.getInfo()).get("groupId").toString();
+        TransactionMessageGroupInterface groupInfoToLog = messageSyncCacheProxy.get(groupTempId);
         logger.error("SUB FAIL :" + groupInfoToLog.toString());
-        messageSyncCacheProxy.invalidate(groupTempId3);
+        messageSyncCacheProxy.invalidate(groupTempId);
     }
     
 }
