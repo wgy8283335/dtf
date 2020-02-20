@@ -18,7 +18,8 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 
 /**
- * Check and submit.
+ * Check and submit runnable.
+ * Process action, includes: ADD, ADD_STRONG, APPROVESUBMIT, APPROVESUBMIT_STRONG, CANCEL.
  * 
  * @Author: Jason
  */
@@ -50,13 +51,28 @@ public final class CheckAndSubmitRunnable implements Runnable {
         this.serverThreadLockCacheProxy = serverThreadLockCacheProxy;
         this.threadPoolForServerProxy = threadPoolForServerProxy;
     }
-    
+
+    /**
+     * Due to network delay. ADD message may be later than SUBMIT message.
+     * So, no matter receive ADD or SUBMIT, should check the cache to decide whether to approve request of the whole group.
+     * If action is add or add strong, try to get element from messageForSubmitSyncCacheProxy, then get member set1.
+     * If action is approve submit or approve submit strong or cancel,try create tmfs by message ,then get member set1.
+     * Then Get member set2 from element of messageSyncCacheProxy.
+     * If set1 equals set2, then send approve message. Otherwise, return.
+     * 
+     * ？？When ActionType is CANCEL，what should be done？？？
+     */
     @Override
     public void run() {
         JSONObject info = JSONObject.parseObject(message.getInfo());
         String groupId = info.get("groupId").toString();
         Object obj = info.get("groupMemberSet");
-        TransactionMessageGroupInterface tmfs = obj == null ? messageForSubmitSyncCacheProxy.get(groupId) : TransactionMessageFactory.getMessageForSubmitInstance(message);
+        TransactionMessageGroupInterface tmfs = null;
+        if(actionType == ActionType.ADD || actionType == ActionType.ADD_STRONG ) {
+            tmfs = messageForSubmitSyncCacheProxy.get(groupId);
+        } else if(actionType == ActionType.APPROVESUBMIT || actionType == ActionType.APPROVESUBMIT_STRONG || actionType == ActionType.CANCEL) {
+            tmfs = TransactionMessageFactory.getMessageForSubmitInstance(message);
+        }
         if (tmfs == null || tmfs.getMemberSet().isEmpty() || messageSyncCacheProxy.get(tmfs.getGroupId()) == null) {
             return;
         }
