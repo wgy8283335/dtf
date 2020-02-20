@@ -23,6 +23,9 @@ public class HandleMessageForAddAsynchronous implements HandleMessageStrategy {
     
     /**
      * Handle message for add synchronous.
+     * Add message into the messageAsyncCacheProxy, and send ack message.
+     * Check number of member of the submit message whether equals to the number of member of cache.
+     * If equal, means that the all of member of the transaction has been received by server, then run the request of each member.
      * 
      * @param serverTransactionHandler server transaction handler
      * @param ctx channel handler context
