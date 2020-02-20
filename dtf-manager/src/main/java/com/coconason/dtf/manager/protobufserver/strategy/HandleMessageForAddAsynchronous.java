@@ -20,7 +20,7 @@ import java.util.concurrent.ExecutorService;
  * @Author: Jason
  */
 public class HandleMessageForAddAsynchronous implements HandleMessageStrategy {
-
+    
     /**
      * Handle message for add synchronous.
      * 

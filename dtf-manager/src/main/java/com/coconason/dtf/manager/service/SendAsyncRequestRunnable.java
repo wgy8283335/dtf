@@ -19,12 +19,12 @@ public final class SendAsyncRequestRunnable implements Runnable {
      * Cache for message.
      */
     private MessageCacheInterface messageAsyncCacheProxy;
-
+    
     /**
      * Transaction message for submit.
      */
     private TransactionMessageGroupInterface transactionMessageForSubmit;
-
+    
     /**
      * Queue of asynchronous message.
      */
@@ -38,6 +38,7 @@ public final class SendAsyncRequestRunnable implements Runnable {
     
     /**
      * Get transactionMessageGroupAsync from the messageAsyncCacheProxy, and send request.
+     * If request fail, put the request in the queue. There will be a consumer to consume the queue to send request.
      */
     @Override
     public void run() {
@@ -55,4 +56,5 @@ public final class SendAsyncRequestRunnable implements Runnable {
         }
         messageAsyncCacheProxy.invalidate(transactionMessageForSubmit.getGroupId());
     }
+    
 }
