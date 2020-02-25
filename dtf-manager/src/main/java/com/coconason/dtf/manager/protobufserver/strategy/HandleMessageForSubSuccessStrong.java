@@ -23,6 +23,7 @@ public class HandleMessageForSubSuccessStrong implements HandleMessageStrategy {
 
     /**
      * Handle message for sub success strong action.
+     * ？？Why should “lc.signal”
      */
     @Override
     public void handleMessage(final ServerTransactionHandler serverTransactionHandler, final ChannelHandlerContext ctx, final Object msg) {

@@ -15,7 +15,7 @@ import io.netty.channel.ChannelHandlerContext;
 public class HandleMessageForWholeSuccessStrongAck implements HandleMessageStrategy {
     
     /**
-     * Handle message for shole success strong ack action.
+     * Handle message for whole success strong ack action.
      */
     @Override
     public void handleMessage(final ServerTransactionHandler serverTransactionHandler, final ChannelHandlerContext ctx, final Object msg) {
