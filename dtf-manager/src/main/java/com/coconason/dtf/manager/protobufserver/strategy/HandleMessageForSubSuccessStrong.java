@@ -56,4 +56,5 @@ public class HandleMessageForSubSuccessStrong implements HandleMessageStrategy {
             messageSyncCacheProxy.invalidate(groupId);
         }
     }
+    
 }
