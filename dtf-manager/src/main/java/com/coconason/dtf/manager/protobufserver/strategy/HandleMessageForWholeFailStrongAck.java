@@ -21,9 +21,9 @@ public class HandleMessageForWholeFailStrongAck implements HandleMessageStrategy
     public void handleMessage(final ServerTransactionHandler serverTransactionHandler, final ChannelHandlerContext ctx, final Object msg) {
         ServerThreadLockCacheProxy serverThreadLockCacheProxy = serverTransactionHandler.getServerThreadLockCacheProxy();
         MessageProto.Message message = (MessageProto.Message) msg;
-        String tempGroupId2 = JSONObject.parseObject(message.getInfo()).get("groupId").toString();
-        LockAndConditionInterface tempLc2 = serverThreadLockCacheProxy.getIfPresent(tempGroupId2);
-        tempLc2.signal();
+        String tempGroupId = JSONObject.parseObject(message.getInfo()).get("groupId").toString();
+        LockAndConditionInterface lc = serverThreadLockCacheProxy.getIfPresent(tempGroupId);
+        lc.signal();
     }
     
 }
