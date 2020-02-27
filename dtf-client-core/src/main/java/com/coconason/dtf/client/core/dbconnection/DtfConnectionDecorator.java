@@ -185,20 +185,15 @@ public final class DtfConnectionDecorator implements Connection {
         BaseTransactionGroupInfo transactionGroupInfo = TransactionGroupInfo.getCurrent();
         String groupId = transactionGroupInfo.getGroupId();
         Long memberId = transactionGroupInfo.getMemberId();
-        processWhenSyncFinal(memberId);
-        processWhenSyncStrong(memberId, groupId);
+        process(memberId, groupId);
     }
     
-    private void processWhenSyncFinal(final Long memberId) {
+    private void process(final Long memberId, final String groupId) throws SQLException {
         if (Member.ORIGINAL_ID.equals(memberId) && TransactionType.SYNC_FINAL == TransactionType.getCurrent()) {
             queue.add(TransactionServiceInfoFactory.newInstanceWithGroupIdSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT,
                     TransactionGroupInfo.getCurrent().getGroupId(), TransactionGroupInfo.getCurrent().getGroupMembers()));
             return;
-        }
-    }
-
-    private void processWhenSyncStrong(final Long memberId, final String groupId) throws SQLException {
-        if (Member.ORIGINAL_ID.equals(memberId) && TransactionType.SYNC_STRONG == TransactionType.getCurrent()) {
+        } else if (Member.ORIGINAL_ID.equals(memberId) && TransactionType.SYNC_STRONG == TransactionType.getCurrent()) {
             queue.add(TransactionServiceInfoFactory.newInstanceWithGroupIdSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT_STRONG,
                     TransactionGroupInfo.getCurrent().getGroupId(), TransactionGroupInfo.getCurrent().getGroupMembers()));
             ClientLockAndConditionInterface secondlc = new ClientLockAndCondition(new ReentrantLock(), OperationType.DEFAULT);
@@ -547,7 +542,7 @@ public final class DtfConnectionDecorator implements Connection {
             return false;
         }
 
-        private boolean transactionWhenAddStringOrCancel(Long memberId) {
+        private boolean transactionWhenAddStringOrCancel(final Long memberId) {
             if ((memberId != 1) && (transactionServiceInfo.getAction() == MessageProto.Message.ActionType.ADD_STRONG) || transactionServiceInfo.getAction() == MessageProto.Message.ActionType.CANCEL) {
                 try {
                     connection.close();
