@@ -142,7 +142,7 @@ public final class AspectHandler implements AspectInterface {
             String groupIdTemp = GroupIdGenerator.getStringId(0, 0);
             BaseTransactionGroupInfo groupInfo = TransactionGroupInfoFactory.getInstance(groupIdTemp, Member.ORIGINAL_ID);
             TransactionGroupInfo.setCurrent(groupInfo);
-            switchTransactionType(transactionType, groupInfo, method, args);
+            setCurrentTransactionService(transactionType, groupInfo, method, args);
             //2.
             try {
                 result = point.proceed();
@@ -168,7 +168,7 @@ public final class AspectHandler implements AspectInterface {
             String groupIdTemp = GroupIdGenerator.getStringId(0, 0);
             BaseTransactionGroupInfo groupInfo = TransactionGroupInfoFactory.getInstance(groupIdTemp, Member.ORIGINAL_ID);
             TransactionGroupInfo.setCurrent(groupInfo);
-            switchTransactionType(transactionType, groupInfo, method, args);
+            setCurrentTransactionService(transactionType, groupInfo, method, args);
             //2.
             try {
                 result = point.proceed();
@@ -199,13 +199,13 @@ public final class AspectHandler implements AspectInterface {
         if (null == temp) {
             transactionGroupInfo.addNewMember();
             TransactionGroupInfo.setCurrent(transactionGroupInfo);
-            switchTransactionType(transactionType, transactionGroupInfo, method, args);
+            setCurrentTransactionService(transactionType, transactionGroupInfo, method, args);
         }
         Object result = point.proceed();
         return result;
     }
     
-    private void switchTransactionType(final TransactionType transactionType, final BaseTransactionGroupInfo transactionGroupInfo, final Method method, final Object[] args) {
+    private void setCurrentTransactionService(final TransactionType transactionType, final BaseTransactionGroupInfo transactionGroupInfo, final Method method, final Object[] args) {
         switch (transactionType) {
             case SYNC_FINAL:
                 BaseTransactionServiceInfo.setCurrent(TransactionServiceInfoFactory.newInstanceForSyncAdd(UuidGenerator.generateUuid(), 
