@@ -181,7 +181,7 @@ public final class DtfConnectionDecorator implements Connection {
             connection.close();
             return;
         }
-        threadPoolForClientProxy.execute(new SubmitRunnable(TransactionGroupInfo.getCurrent()));
+        threadPoolForClientProxy.execute(new SubmitRunnable(TransactionGroupInfo.getCurrent(),transactionServiceInfo));
         BaseTransactionGroupInfo transactionGroupInfo = TransactionGroupInfo.getCurrent();
         String groupId = transactionGroupInfo.getGroupId();
         Long memberId = transactionGroupInfo.getMemberId();
@@ -477,12 +477,24 @@ public final class DtfConnectionDecorator implements Connection {
      * Main process of the dtf transaction is described at here.
      */
     private class SubmitRunnable implements Runnable {
+        
         private BaseTransactionGroupInfo transactionGroupInfo;
         
-        SubmitRunnable(final BaseTransactionGroupInfo transactionGroupInfo) {
+        private BaseTransactionServiceInfo transactionServiceInfo;
+        
+        SubmitRunnable(final BaseTransactionGroupInfo transactionGroupInfo,final BaseTransactionServiceInfo transactionServiceInfo) {
             this.transactionGroupInfo = transactionGroupInfo;
+            this.transactionServiceInfo = transactionServiceInfo;
         }
         
+        /**
+         * 1.Get groupId,groupMembers,memberId from transactionGroupInfo.TransactionGroupInfo is created by AspectHandler.
+         * 2.Put lc in the threadLockCacheProxy, and put transactionServiceInfo in the queue to send.
+         * 3.Netty channel receive signal, and set lc.state by SignalStrategyContext.
+         * 4.If lc time out, then transactionWhenTimeout().
+         * 5.Else if state get from the threadLockCacheProxy is OperationType.COMMIT or OperationType.ROLLBACK,then transactionWhenCommitOrRollback().
+         * 6.Else if action type is ADD_STRONG or CANCEL, then transactionWhenAddStringOrCancel().
+         */
         @Override
         public void run() {
             String groupId = transactionGroupInfo.getGroupId();
