@@ -56,7 +56,7 @@ public final class CheckAndSubmitRunnable implements Runnable {
      * Due to network delay. ADD message may be later than SUBMIT message.
      * So, no matter receive ADD or SUBMIT, should check the cache to decide whether to approve request of the whole group.
      * If action is add or add strong, try to get element from messageForSubmitSyncCacheProxy, then get member set1.
-     * If action is approve submit or approve submit strong or cancel,try create tmfs by message ,then get member set1.
+     * If action is approve submit or approve submit strong or cancel,try create tmfs by message ,then get member set2.
      * Then Get member set2 from element of messageSyncCacheProxy.
      * If set1 equals set2, then send approve message. Otherwise, return.
      * 
