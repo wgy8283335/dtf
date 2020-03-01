@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
+import java.sql.SQLException;
 import java.util.Queue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
@@ -151,6 +152,8 @@ public final class AspectHandler implements AspectInterface {
                 }
                 logger.error(e.getMessage());
             }
+            queue.add(TransactionServiceInfoFactory.newInstanceWithGroupIdSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT,
+                    TransactionGroupInfo.getCurrent().getGroupId(), TransactionGroupInfo.getCurrent().getGroupMembers()));
             return result;
         } else {
             Object result = proceedPointWhenSyncWithInfo(transactionType, info, point, method, args);
@@ -162,12 +165,10 @@ public final class AspectHandler implements AspectInterface {
                                                          final Method method, final Object[] args) throws Throwable {
         if (null == info) {
             Object result = null;
-            //1.
             String groupIdTemp = GroupIdGenerator.getStringId(0, 0);
             BaseTransactionGroupInfo groupInfo = TransactionGroupInfoFactory.getInstance(groupIdTemp, Member.ORIGINAL_ID);
             TransactionGroupInfo.setCurrent(groupInfo);
             setCurrentTransactionService(transactionType, groupInfo, method, args);
-            //2.
             try {
                 result = point.proceed();
             } catch (Exception e) {
@@ -177,6 +178,10 @@ public final class AspectHandler implements AspectInterface {
                 }
                 logger.error(e.getMessage());
             }
+
+            queue.add(TransactionServiceInfoFactory.newInstanceWithGroupIdSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT_STRONG,
+                    TransactionGroupInfo.getCurrent().getGroupId(), TransactionGroupInfo.getCurrent().getGroupMembers()));
+            
             if (Member.ORIGINAL_ID.equals(TransactionGroupInfo.getCurrent().getMemberId())
                     && finalCommitThreadLockCacheProxy.getIfPresent(TransactionGroupInfo.getCurrent().getGroupId()).getState() == OperationType.WHOLE_FAIL) {
                 logger.error("system transaction error");

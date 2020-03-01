@@ -190,12 +190,12 @@ public final class DtfConnectionDecorator implements Connection {
     
     private void process(final Long memberId, final String groupId) throws SQLException {
         if (Member.ORIGINAL_ID.equals(memberId) && TransactionType.SYNC_FINAL == TransactionType.getCurrent()) {
-            queue.add(TransactionServiceInfoFactory.newInstanceWithGroupIdSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT,
-                    TransactionGroupInfo.getCurrent().getGroupId(), TransactionGroupInfo.getCurrent().getGroupMembers()));
-            return;
+//            queue.add(TransactionServiceInfoFactory.newInstanceWithGroupIdSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT,
+//                    TransactionGroupInfo.getCurrent().getGroupId(), TransactionGroupInfo.getCurrent().getGroupMembers()));
+//            return;
         } else if (Member.ORIGINAL_ID.equals(memberId) && TransactionType.SYNC_STRONG == TransactionType.getCurrent()) {
-            queue.add(TransactionServiceInfoFactory.newInstanceWithGroupIdSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT_STRONG,
-                    TransactionGroupInfo.getCurrent().getGroupId(), TransactionGroupInfo.getCurrent().getGroupMembers()));
+//            queue.add(TransactionServiceInfoFactory.newInstanceWithGroupIdSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT_STRONG,
+//                    TransactionGroupInfo.getCurrent().getGroupId(), TransactionGroupInfo.getCurrent().getGroupMembers()));
             ClientLockAndConditionInterface secondlc = new ClientLockAndCondition(new ReentrantLock(), OperationType.DEFAULT);
             secondThreadLockCacheProxy.put(groupId, secondlc);
             boolean isWholeSuccess = secondlc.await(10000, TimeUnit.MILLISECONDS);
