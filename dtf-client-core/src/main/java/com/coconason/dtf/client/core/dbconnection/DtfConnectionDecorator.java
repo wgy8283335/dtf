@@ -533,22 +533,22 @@ public final class DtfConnectionDecorator implements Connection {
         private boolean transactionWhenCommitOrRollback(final JSONObject map, final Long memberId, final String groupId, final Set groupMembers) {
             state = threadLockCacheProxy.getIfPresent(map.get("groupId").toString() + memberId).getState();
             if (state == OperationType.COMMIT) {
-                addNewTransactionServicetoQueueWhenCommit(groupId, groupMembers, memberId);
                 logger.debug("commit");
                 try {
                     connection.commit();
                 } catch (SQLException e) {
                     logger.error(e.getMessage());
                 }
+                addNewTransactionServicetoQueueWhenCommit(groupId, groupMembers, memberId);
                 return true;
             } else if (state == OperationType.ROLLBACK) {
-                addNewTransactionServicetoQueueWhenRollback(groupId, groupMembers);
                 logger.debug("rollback");
                 try {
                     connection.rollback();
                 } catch (SQLException e) {
                     logger.error(e.getMessage());
                 }
+                addNewTransactionServicetoQueueWhenRollback(groupId, groupMembers);
                 return true;
             }
             return false;
