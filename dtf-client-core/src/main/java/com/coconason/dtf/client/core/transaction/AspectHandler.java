@@ -138,12 +138,10 @@ public final class AspectHandler implements AspectInterface {
                                                         final Method method, final Object[] args) throws Throwable {
         if (null == info) {
             Object result = null;
-            //1.
             String groupIdTemp = GroupIdGenerator.getStringId(0, 0);
             BaseTransactionGroupInfo groupInfo = TransactionGroupInfoFactory.getInstance(groupIdTemp, Member.ORIGINAL_ID);
             TransactionGroupInfo.setCurrent(groupInfo);
             setCurrentTransactionService(transactionType, groupInfo, method, args);
-            //2.
             try {
                 result = point.proceed();
             } catch (Exception e) {
