@@ -26,9 +26,9 @@ public final class SignalStrategyContext {
         map.put(ActionType.WHOLE_SUCCESS_STRONG, new SignalStrategyForWholeSuccessStrong());
         map.put(ActionType.WHOLE_FAIL_STRONG, new SignalStrategyForWholeFailStrong());
         map.put(ActionType.CANCEL, new SignalStrategyForCancel());
-        map.put(ActionType.ADD_SUCCESS_ASYNC, new SignalStrategyForCancel());
+        map.put(ActionType.ADD_SUCCESS_ASYNC, new SignalStrategyForAddSuccessAsynchronise());
         map.put(ActionType.ADD_FAIL_ASYNC, new SignalStrategyForAddFailAsynchronise());
-        map.put(ActionType.COMMIT_SUCCESS_ASYNC, new SignalStrategyForAddSuccessAsynchronise());
+        map.put(ActionType.COMMIT_SUCCESS_ASYNC, new SignalStrategyForCommitSuccesssAsynchronise());
     }
     
     /**
