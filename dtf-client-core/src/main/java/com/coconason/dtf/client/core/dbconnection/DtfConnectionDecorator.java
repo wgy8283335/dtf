@@ -529,7 +529,7 @@ public final class DtfConnectionDecorator implements Connection {
             }
             return false;
         }
-
+        
         private boolean transactionWhenCommitOrRollback(final JSONObject map, final Long memberId, final String groupId, final Set groupMembers) {
             state = threadLockCacheProxy.getIfPresent(map.get("groupId").toString() + memberId).getState();
             if (state == OperationType.COMMIT) {
@@ -553,7 +553,7 @@ public final class DtfConnectionDecorator implements Connection {
             }
             return false;
         }
-
+        
         private boolean transactionWhenAddStringOrCancel(final Long memberId) {
             if ((memberId != 1) && (transactionServiceInfo.getAction() == MessageProto.Message.ActionType.ADD_STRONG) || transactionServiceInfo.getAction() == MessageProto.Message.ActionType.CANCEL) {
                 try {
@@ -573,7 +573,7 @@ public final class DtfConnectionDecorator implements Connection {
                 queue.add(TransactionServiceInfoFactory.newInstanceWithGroupIdSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL, groupId, groupMembers));
             }
         }
-
+        
         private void addNewTransactionServicetoQueueWhenCommit(final String groupId, final Set groupMembers, final Long memberId) {
             if (transactionServiceInfo.getAction() == MessageProto.Message.ActionType.ADD_STRONG) {
                 queue.add(TransactionServiceInfoFactory.newInstanceForSub(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_SUCCESS_STRONG, groupId, groupMembers, memberId));
@@ -581,7 +581,7 @@ public final class DtfConnectionDecorator implements Connection {
                 queue.add(TransactionServiceInfoFactory.newInstanceForSub(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_SUCCESS, groupId, groupMembers, memberId));
             }
         }
-
+        
         private void addNewTransactionServicetoQueueWhenRollback(final String groupId, final Set groupMembers) {
             if (transactionServiceInfo.getAction() == MessageProto.Message.ActionType.ADD_STRONG) {
                 queue.add(TransactionServiceInfoFactory.newInstanceWithGroupIdSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL_STRONG, groupId, groupMembers));

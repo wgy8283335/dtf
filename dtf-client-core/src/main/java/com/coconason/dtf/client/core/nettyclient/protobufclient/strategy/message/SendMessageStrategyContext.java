@@ -19,24 +19,19 @@ public final class SendMessageStrategyContext {
     
     private SendMessageStrategyContext() {
         map = new HashMap<>();
-        SendMessageWithGroupMemberSet sendMessageWithGroupMemberSet = new SendMessageWithGroupMemberSet();
-        SendMessageWithMemberId sendMessageWithMemberId = new SendMessageWithMemberId();
-        SendMessageWithMethod sendMessageWithMethod = new SendMessageWithMethod();
-        SendMessageWithShortParameters sendMessageWithShortParameters = new SendMessageWithShortParameters();
-        SendMessageWithUrl sendMessageWithUrl = new SendMessageWithUrl();
-        map.put(ActionType.ADD, sendMessageWithMethod);
-        map.put(ActionType.APPLYFORSUBMIT, sendMessageWithGroupMemberSet);
-        map.put(ActionType.ADD_STRONG, sendMessageWithMethod);
-        map.put(ActionType.APPLYFORSUBMIT_STRONG, sendMessageWithGroupMemberSet);
-        map.put(ActionType.SUB_SUCCESS_STRONG, sendMessageWithMemberId);
-        map.put(ActionType.SUB_FAIL_STRONG, sendMessageWithGroupMemberSet);
-        map.put(ActionType.ADD_ASYNC, sendMessageWithUrl);
-        map.put(ActionType.ASYNC_COMMIT, sendMessageWithGroupMemberSet);
-        map.put(ActionType.CANCEL, sendMessageWithGroupMemberSet);
-        map.put(ActionType.WHOLE_SUCCESS_STRONG_ACK, sendMessageWithShortParameters);
-        map.put(ActionType.WHOLE_FAIL_STRONG_ACK, sendMessageWithShortParameters);
-        map.put(ActionType.SUB_SUCCESS, sendMessageWithMemberId);
-        map.put(ActionType.SUB_FAIL, sendMessageWithGroupMemberSet);
+        map.put(ActionType.ADD, new SendMessageWithMethod());
+        map.put(ActionType.APPLYFORSUBMIT, new SendMessageWithGroupMemberSet());
+        map.put(ActionType.ADD_STRONG, new SendMessageWithMethod());
+        map.put(ActionType.APPLYFORSUBMIT_STRONG, new SendMessageWithGroupMemberSet());
+        map.put(ActionType.SUB_SUCCESS_STRONG, new SendMessageWithMemberId());
+        map.put(ActionType.SUB_FAIL_STRONG, new SendMessageWithGroupMemberSet());
+        map.put(ActionType.ADD_ASYNC, new SendMessageWithUrl());
+        map.put(ActionType.ASYNC_COMMIT, new SendMessageWithGroupMemberSet());
+        map.put(ActionType.CANCEL, new SendMessageWithGroupMemberSet());
+        map.put(ActionType.WHOLE_SUCCESS_STRONG_ACK, new SendMessageWithShortParameters());
+        map.put(ActionType.WHOLE_FAIL_STRONG_ACK, new SendMessageWithShortParameters());
+        map.put(ActionType.SUB_SUCCESS, new SendMessageWithMemberId());
+        map.put(ActionType.SUB_FAIL, new SendMessageWithGroupMemberSet());
         
     }
     
