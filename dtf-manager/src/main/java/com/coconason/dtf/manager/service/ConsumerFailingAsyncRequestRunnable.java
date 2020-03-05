@@ -3,6 +3,7 @@ package com.coconason.dtf.manager.service;
 import com.coconason.dtf.manager.cache.MessageAsyncQueueProxy;
 import com.coconason.dtf.manager.message.MessageInfoInterface;
 import com.coconason.dtf.manager.utils.HttpClientUtil;
+import com.coconason.dtf.manager.utils.LogUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,7 +17,7 @@ import java.util.Queue;
 public final class ConsumerFailingAsyncRequestRunnable implements Runnable {
     
     /**
-     * Logger of LockAndCondition class.
+     * Logger of ConsumerFailingAsyncRequestRunnable class.
      */
     private final Logger logger = LoggerFactory.getLogger(ConsumerFailingAsyncRequestRunnable.class);
     
@@ -53,6 +54,7 @@ public final class ConsumerFailingAsyncRequestRunnable implements Runnable {
                     messageAsyncQueueProxy.add(messageInfo);
                 } else {
                     messageInfo.setCommitted(true);
+                    LogUtil.getInstance().put(messageInfo);
                 }
             }
             messageInfo = null;

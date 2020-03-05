@@ -1,5 +1,9 @@
 package com.coconason.dtf.manager.message;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+
 /**
  * Message information.
  * 
@@ -11,11 +15,6 @@ public final class MessageInfo implements MessageInfoInterface {
      * Member id.
      */
     private String memberId;
-
-    /**
-     * Whether is committed.
-     */
-    private boolean isCommitted;
     
     /**
      * Url of request.
@@ -23,17 +22,60 @@ public final class MessageInfo implements MessageInfoInterface {
     private String url;
     
     /**
-     * parameter of request.
+     * Parameter of request.
      */
     private Object obj;
-
-    public MessageInfo(final String memberId, final boolean isCommitted, final String url, final Object obj) {
+    
+    /**
+     * Time stamp of request.
+     */
+    private long timeStamp;
+    
+    /**
+     * Whether is committed.
+     */
+    private boolean isCommitted;
+    
+    /**
+     * Position in log.
+     */
+    private int position;
+    
+    public MessageInfo(final String memberId, final boolean isCommitted, final String url, final Object obj, final long timeStamp) {
         this.memberId = memberId;
         this.isCommitted = isCommitted;
         this.url = url;
         this.obj = obj;
+        this.timeStamp = timeStamp;
     }
-
+    
+    /**
+     * Get time stamp of group.
+     * @return time stamp
+     */
+    @Override
+    public long getTimeStamp() {
+        return timeStamp;
+    }
+    
+    /**
+     * Set position in log.
+     * @return time stamp
+     */
+    @Override
+    public void setPosition(int position) {
+        this.position = position;
+    }
+    
+    /**
+     * Get position in log.
+     * @return time stamp
+     */
+    @Override
+    public int getPosition() {
+        return position;
+    }
+    
     /**
      * Get member id of group.
      * @return member id
@@ -122,4 +164,25 @@ public final class MessageInfo implements MessageInfoInterface {
         result = 31 * result + getObj().hashCode();
         return result;
     }
+    
+    @Override
+    public String toString() {
+        return "{" +
+                "memberId:" + memberId + 
+                ", url:" + url +
+                ", obj:" + obj +
+                ", timeStamp:" + timeStamp +
+                ", isCommitted:" + isCommitted +
+                "}";
+    }
+    
+    @Override
+    public byte[] toBytes() throws IOException{
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(bos);
+        oos.writeObject(this);
+        byte[] result = bos.toByteArray();
+        return result;
+    }
+    
 }

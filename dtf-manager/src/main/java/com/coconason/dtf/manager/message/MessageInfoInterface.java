@@ -1,5 +1,7 @@
 package com.coconason.dtf.manager.message;
 
+import java.io.IOException;
+
 /**
  * Message information.
  *
@@ -39,4 +41,30 @@ public interface MessageInfoInterface {
      * @param committed boolean
      */
     void setCommitted(boolean committed);
+    
+    /**
+     * Get time stamp of group.
+     * @return time stamp
+     */
+    long getTimeStamp();
+
+    /**
+     * Get member information in byte[].
+     * 
+     * @return
+     */
+    byte[] toBytes() throws IOException;
+    
+    /**
+     * Get position in log.
+     * @return time stamp
+     */
+    int getPosition();
+    
+    /**
+     * Set position in log.
+     * @return time stamp
+     */
+    void setPosition(int position);
+    
 }

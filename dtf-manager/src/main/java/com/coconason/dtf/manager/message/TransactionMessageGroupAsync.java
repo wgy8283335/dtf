@@ -15,7 +15,7 @@ public final class TransactionMessageGroupAsync extends TransactionMessageGroupA
      * Group id.
      */
     private String groupId;
-
+    
     /**
      * Set of message information interface.
      */
@@ -65,7 +65,7 @@ public final class TransactionMessageGroupAsync extends TransactionMessageGroupA
      */
     @Override
     public void addMember(final String memberId, final String url, final Object obj) {
-        memberSet.add(new MessageInfo(memberId, false, url, obj));
+        memberSet.add(new MessageInfo(memberId, false, url, obj, System.currentTimeMillis()));
     }
     
     /**

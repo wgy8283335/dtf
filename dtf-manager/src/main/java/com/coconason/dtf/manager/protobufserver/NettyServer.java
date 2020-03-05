@@ -8,6 +8,7 @@ import com.coconason.dtf.manager.cache.MessageForSubmitAsyncCache;
 import com.coconason.dtf.manager.cache.MessageForSubmitSyncCache;
 import com.coconason.dtf.manager.cache.MessageSyncCache;
 import com.coconason.dtf.manager.service.ConsumerFailingAsyncRequestRunnable;
+import com.coconason.dtf.manager.service.RecoverLogToQueueRunnable;
 import com.coconason.dtf.manager.thread.ServerThreadLockCacheProxy;
 import com.coconason.dtf.manager.threadpools.ThreadPoolForServerProxy;
 import com.coconason.dtf.manager.utils.PropertiesReader;
@@ -51,6 +52,7 @@ public final class NettyServer {
         String classpath = Thread.currentThread().getContextClassLoader().getResource("").getPath();
         PropertiesReader propertiesReader = new PropertiesReader(classpath + "config.properties");
         ThreadPoolForServerProxy threadPoolForServerProxy = ThreadPoolForServerProxy.initialize();
+        threadPoolForServerProxy.execute(new RecoverLogToQueueRunnable(messageAsyncQueueProxy));
         threadPoolForServerProxy.execute(new ConsumerFailingAsyncRequestRunnable(messageAsyncQueueProxy));
         new NettyServer().bind(messageAsyncQueueProxy, threadPoolForServerProxy, Integer.valueOf(propertiesReader.getProperty("port")));
     }
