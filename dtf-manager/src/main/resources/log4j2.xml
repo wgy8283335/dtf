@@ -4,7 +4,7 @@
         <!--输出到控制台-->
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="%d{YYYY-MM-dd HH:mm:ss} [%logger{36}:%L] %-5level - %msg%n"/>
-            <!--<ThreSholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>-->
+            <ThreSholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY"/>
         </Console>
 
         <!--输出到日志文件中-->
@@ -30,7 +30,7 @@
 
     <loggers>
         <!--使appender生效-->
-        <root level="info">
+        <root level="debug">
             <appender-ref ref="Console"/>
             <appender-ref ref="InfoLog"/>
             <appender-ref ref="ErrorLog"/>

@@ -8,6 +8,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.net.URL;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
@@ -95,7 +96,8 @@ public class LogUtil {
     }
     
     private static class SingleHolder{
-        private static final LogUtil INSTANCE = new LogUtil("resources/logs/async-request.log");
+        private static URL url = LogUtil.class.getClassLoader().getResource("resources/logs/async-request.log");
+        private static final LogUtil INSTANCE = new LogUtil(url.getPath());
     }
     
 }

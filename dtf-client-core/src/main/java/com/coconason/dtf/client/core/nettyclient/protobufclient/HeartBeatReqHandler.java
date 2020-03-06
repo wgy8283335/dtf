@@ -42,7 +42,7 @@ final class HeartBeatReqHandler extends ChannelInboundHandlerAdapter {
             return;
         }
         if (message.getAction() == MessageProto.Message.ActionType.LOGIN_RESP && heartBeat == null) {
-            heartBeat = ctx.executor().scheduleAtFixedRate(new HeartBeatTask(ctx), 0, 30, TimeUnit.SECONDS);
+            heartBeat = ctx.executor().scheduleAtFixedRate(new HeartBeatTask(ctx), 0, 25, TimeUnit.SECONDS);
         } else if (message.getAction() == MessageProto.Message.ActionType.HEARTBEAT_RESP) {
             logger.debug("Client receive server heart beat message :" + message);
         } else {

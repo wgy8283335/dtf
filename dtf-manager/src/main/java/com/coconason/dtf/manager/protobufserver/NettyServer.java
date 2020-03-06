@@ -92,9 +92,9 @@ public final class NettyServer {
                     ch.pipeline().addLast(new ProtobufEncoder());
                     ch.pipeline().addLast(new ReadTimeoutHandler(50));
                     ch.pipeline().addLast(new LoginAuthRespHandler());
+                    ch.pipeline().addLast(new HeartBeatRespHandler());
                     ch.pipeline().addLast(new ServerTransactionHandler(messageSyncCache, messageAsyncCache, messageAsyncQueueProxy, 
                             threadPoolForServerProxy, messageForSubmitSyncCache, messageForSubmitAsyncCache, serverThreadLockCacheProxy));
-                    ch.pipeline().addLast(new HeartBeatRespHandler());
                 }
             });
         ChannelFuture f = b.bind(port).sync();
