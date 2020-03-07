@@ -27,7 +27,7 @@ public final class DtfDataSourceDecorator implements DataSource {
     private DataSource dataSource;
 
     /**
-     * 
+     * Cache for thread lock
      */
     @Autowired
     private ThreadLockCacheProxy threadLockCacheProxy;

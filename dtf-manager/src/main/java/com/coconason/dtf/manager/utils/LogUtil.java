@@ -14,6 +14,7 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 
 public class LogUtil {
     
@@ -22,11 +23,11 @@ public class LogUtil {
      */
     private Logger logger = LoggerFactory.getLogger(LogUtil.class);
     
-    FileChannel channel;
-    
-    MappedByteBuffer buffer;
-    
-    String filePath;
+    private static FileChannel channel;
+
+    private static MappedByteBuffer buffer;
+
+    private static String filePath;
     
     public static LogUtil getInstance() {
         return LogUtil.SingleHolder.INSTANCE;
@@ -36,8 +37,8 @@ public class LogUtil {
         this.filePath = filePath;
         Path filename = Paths.get(this.filePath);
         try{
-            channel = FileChannel.open(filename);
-            buffer = channel.map(FileChannel.MapMode.READ_ONLY,0,1073741824);
+            channel = FileChannel.open(filename, StandardOpenOption.WRITE,StandardOpenOption.READ);
+            buffer = channel.map(FileChannel.MapMode.READ_WRITE,0,channel.size());
         }catch (IOException e){
             logger.error(e.getMessage());
         }
@@ -96,7 +97,7 @@ public class LogUtil {
     }
     
     private static class SingleHolder{
-        private static URL url = LogUtil.class.getClassLoader().getResource("resources/logs/async-request.log");
+        private static URL url = LogUtil.class.getClassLoader().getResource("logs/async-request.log");
         private static final LogUtil INSTANCE = new LogUtil(url.getPath());
     }
     

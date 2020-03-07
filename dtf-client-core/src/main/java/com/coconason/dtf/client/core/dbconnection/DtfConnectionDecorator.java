@@ -176,8 +176,10 @@ public final class DtfConnectionDecorator implements Connection {
             return;
         }
         transactionServiceInfo = BaseTransactionServiceInfo.getCurrent();
-        if (TransactionType.SYNC_FINAL != TransactionType.getCurrent() && TransactionType.SYNC_STRONG != TransactionType.getCurrent()) {
-            connection.commit();
+        if (TransactionType.ASYNC_FINAL == TransactionType.getCurrent()) {
+            if (OperationType.COMMIT == state) {
+                connection.commit();
+            }
             connection.close();
             return;
         }
