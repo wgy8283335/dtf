@@ -327,7 +327,7 @@ public final class DtfConnectionDecorator implements Connection {
     
     @Override
     public Statement createStatement() throws SQLException {
-        return null;
+        return connection.createStatement();
     }
     
     @Override
@@ -349,10 +349,10 @@ public final class DtfConnectionDecorator implements Connection {
     public PreparedStatement prepareStatement(final String sql, final int resultSetType, final int resultSetConcurrency) throws SQLException {
         return connection.prepareStatement(sql, resultSetType, resultSetConcurrency);
     }
-    
+
     @Override
     public PreparedStatement prepareStatement(final String s) throws SQLException {
-        return null;
+        return connection.prepareStatement(s);
     }
     
     @Override

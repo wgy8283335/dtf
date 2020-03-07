@@ -95,7 +95,7 @@ public class CourseServiceImpl implements ICourseService {
     @DtfTransaction(type="ASYNC_FINAL")
     @Transactional
     public DemoResult addCourseInfoAsync(Course course) throws Exception {
-        courseMapper.insertSelective(course);
+        courseMapper.insert(course);
         //int kk = 6/0;
         Teacher teacher = new Teacher();
         teacher.setT(2);
