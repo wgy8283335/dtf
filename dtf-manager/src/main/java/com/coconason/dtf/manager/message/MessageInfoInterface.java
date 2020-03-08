@@ -1,13 +1,14 @@
 package com.coconason.dtf.manager.message;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 /**
  * Message information.
  *
  * @Author: Jason
  */
-public interface MessageInfoInterface {
+public interface MessageInfoInterface extends Serializable {
     
     /**
      * Get member id of group.

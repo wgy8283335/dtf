@@ -1,8 +1,16 @@
 package com.coconason.dtf.manager.message;
 
+import com.coconason.dtf.manager.service.ConsumerFailingAsyncRequestRunnable;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.nio.ByteBuffer;
 
 /**
  * Message information.
@@ -10,6 +18,13 @@ import java.io.ObjectOutputStream;
  * @Author: Jason
  */
 public final class MessageInfo implements MessageInfoInterface {
+    
+    private static final long serialVersionUID = -1L;
+
+    /**
+     * Logger of ConsumerFailingAsyncRequestRunnable class.
+     */
+    private final Logger logger = LoggerFactory.getLogger(MessageInfo.class);
     
     /**
      * Member id.
@@ -180,8 +195,17 @@ public final class MessageInfo implements MessageInfoInterface {
     public byte[] toBytes() throws IOException{
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(bos);
-        oos.writeObject(this);
-        byte[] result = bos.toByteArray();
+        byte[] result=null;
+        try {
+            oos.writeObject(this);
+            oos.flush();
+            result = bos.toByteArray();
+        } catch (IOException e) {
+            logger.error(e.getMessage());
+        } finally {
+            bos.close();
+            oos.close();
+        }
         return result;
     }
     

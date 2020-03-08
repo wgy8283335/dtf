@@ -98,11 +98,11 @@ public class CourseServiceImpl implements ICourseService {
         courseMapper.insert(course);
         //int kk = 6/0;
         Teacher teacher = new Teacher();
-        teacher.setT(2);
+        teacher.setT(3);
         teacher.setTname("Yun");
         restClientAsync.sendPost("http://localhost:8082/set_teacher_info_async",teacher);
         Sc sc = new Sc();
-        sc.setC(5);
+        sc.setC(3);
         sc.setS(7);
         sc.setScore(95);
         restClientAsync.sendPost("http://localhost:8083/add_sc_info_async",sc);

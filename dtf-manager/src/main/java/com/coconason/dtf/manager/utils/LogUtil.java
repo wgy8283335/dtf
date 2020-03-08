@@ -1,13 +1,16 @@
 package com.coconason.dtf.manager.utils;
 
+import com.coconason.dtf.manager.message.MessageInfo;
 import com.coconason.dtf.manager.message.MessageInfoInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
@@ -23,51 +26,45 @@ public class LogUtil {
      */
     private Logger logger = LoggerFactory.getLogger(LogUtil.class);
     
-    private static FileChannel channel;
+    private FileChannel channel;
 
-    private static MappedByteBuffer buffer;
+    private MappedByteBuffer buffer;
 
-    private static String filePath;
+    private String filePath;
     
     public static LogUtil getInstance() {
         return LogUtil.SingleHolder.INSTANCE;
     }
     
-    public LogUtil(String filePath){
-        this.filePath = filePath;
-        Path filename = Paths.get(this.filePath);
+    public long getLength(){
+        long result = -1;
         try{
-            channel = FileChannel.open(filename, StandardOpenOption.WRITE,StandardOpenOption.READ);
-            buffer = channel.map(FileChannel.MapMode.READ_WRITE,0,channel.size());
-        }catch (IOException e){
+            result = channel.size();
+        } catch (IOException e) {
             logger.error(e.getMessage());
         }
-        
-    }
-    
-    public long getLength(){
-        final File file = new File(filePath);
-        return file.length();
+        return result;
     }
     
     public int append(MessageInfoInterface message){
-        int position = -1;
+        int result = -1;
         try{
-            FileLock fl = channel.lock();
+            FileLock fl = channel.lock(channel.position(),4096,false);
             //根据文本内容获取当前位置
-            position = buffer.position();
-            buffer.put(message.toBytes());
+            int position = buffer.position();
+            buffer.put(objectToBytes(message));
             buffer.force();
+            result = 4096 + position;
             fl.release();
         }catch (IOException e) {
             logger.error(e.getMessage());
         }
-        return position;
+        return result;
     }
     
     public void put(MessageInfoInterface message){
         try{
-            FileLock fl = channel.lock();
+            FileLock fl = channel.lock(channel.position(),channel.size(),false);
             int originalPosition = buffer.position();
             buffer.position(message.getPosition());
             buffer.put(message.toBytes());
@@ -99,6 +96,31 @@ public class LogUtil {
     private static class SingleHolder{
         private static URL url = LogUtil.class.getClassLoader().getResource("logs/async-request.log");
         private static final LogUtil INSTANCE = new LogUtil(url.getPath());
+    }
+    
+    private LogUtil(String filePath){
+        this.filePath = filePath;
+        Path filename = Paths.get(this.filePath);
+        try{
+            channel = FileChannel.open(filename, StandardOpenOption.WRITE,StandardOpenOption.READ);
+            buffer = channel.map(FileChannel.MapMode.READ_WRITE,0,4096*10000);
+        }catch (IOException e){
+            logger.error(e.getMessage());
+        }
+    }
+
+    private byte[] objectToBytes(MessageInfoInterface obj){
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        byte[] result=null;
+        try {
+            ObjectOutputStream oos = new ObjectOutputStream(bos);
+            oos.writeObject(obj);
+            oos.flush();
+            result = bos.toByteArray();
+        } catch (IOException e) {
+            logger.error(e.getMessage());
+        }
+        return result;
     }
     
 }

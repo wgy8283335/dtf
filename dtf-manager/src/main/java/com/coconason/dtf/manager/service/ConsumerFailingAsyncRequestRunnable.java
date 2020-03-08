@@ -51,7 +51,8 @@ public final class ConsumerFailingAsyncRequestRunnable implements Runnable {
                 String result = HttpClientUtil.doPostJson(url, obj, "");
                 if ("".equals(result)) {
                     messageInfo.setCommitted(false);
-                    messageAsyncQueueProxy.add(messageInfo);
+//                    messageAsyncQueueProxy.add(messageInfo);
+                    logger.error(messageInfo.toString());
                 } else {
                     messageInfo.setCommitted(true);
                     LogUtil.getInstance().put(messageInfo);
