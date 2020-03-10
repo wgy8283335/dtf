@@ -1,17 +1,16 @@
 package com.coconason.dtf.manager.utils;
 
-import com.coconason.dtf.manager.message.MessageInfo;
 import com.coconason.dtf.manager.message.MessageInfoInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
@@ -32,6 +31,8 @@ public class LogUtil {
 
     private String filePath;
     
+    private final int SIZE = 1024; 
+    
     public static LogUtil getInstance() {
         return LogUtil.SingleHolder.INSTANCE;
     }
@@ -46,17 +47,20 @@ public class LogUtil {
         return result;
     }
     
-    public int append(MessageInfoInterface message){
+    public int append(MessageInfoInterface message) {
         int result = -1;
-        try{
-            FileLock fl = channel.lock(channel.position(),4096,false);
-            //根据文本内容获取当前位置
+        try {
+            FileLock fl = channel.lock(channel.position(),SIZE,false);
             int position = buffer.position();
+//            ByteBuffer temp = ByteBuffer.allocate(SIZE);
+//            temp.put(objectToBytes(message));
+//            temp.flip();
+//            buffer.put(temp);
             buffer.put(objectToBytes(message));
             buffer.force();
-            result = 4096 + position;
+            result = SIZE + position;
             fl.release();
-        }catch (IOException e) {
+        } catch (IOException e) {
             logger.error(e.getMessage());
         }
         return result;
@@ -67,7 +71,7 @@ public class LogUtil {
             FileLock fl = channel.lock(channel.position(),channel.size(),false);
             int originalPosition = buffer.position();
             buffer.position(message.getPosition());
-            buffer.put(message.toBytes());
+            buffer.put(objectToBytes(message));
             buffer.force();
             buffer.position(originalPosition);
             fl.release();
@@ -77,14 +81,19 @@ public class LogUtil {
     }
     
     public MessageInfoInterface get(int position) {
-        byte[] temp = new byte[4096]; 
-        buffer.get(temp,position,4096);
-        ByteArrayInputStream bais = new ByteArrayInputStream(temp);
+        byte[] temp = new byte[SIZE];
+        buffer.flip();
+        buffer.position(position);
+        buffer.get(temp,0,231);
+        ByteArrayInputStream bis = new ByteArrayInputStream(temp);
         ObjectInputStream ois;
         MessageInfoInterface result = null;
         try {
-            ois = new ObjectInputStream(bais);
-            result = (MessageInfoInterface)ois.readObject();
+            ois = new ObjectInputStream(bis);
+            Object obj = ois.readObject();
+            result = (MessageInfoInterface)obj;
+            ois.close();
+            bis.close();
         } catch (IOException e) {
             logger.error(e.getMessage());
         } catch (ClassNotFoundException e) {
@@ -103,12 +112,12 @@ public class LogUtil {
         Path filename = Paths.get(this.filePath);
         try{
             channel = FileChannel.open(filename, StandardOpenOption.WRITE,StandardOpenOption.READ);
-            buffer = channel.map(FileChannel.MapMode.READ_WRITE,0,4096*10000);
+            buffer = channel.map(FileChannel.MapMode.READ_WRITE,0,SIZE*10000);
         }catch (IOException e){
             logger.error(e.getMessage());
         }
     }
-
+    
     private byte[] objectToBytes(MessageInfoInterface obj){
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         byte[] result=null;
@@ -117,6 +126,8 @@ public class LogUtil {
             oos.writeObject(obj);
             oos.flush();
             result = bos.toByteArray();
+            oos.close();
+            bos.close();
         } catch (IOException e) {
             logger.error(e.getMessage());
         }

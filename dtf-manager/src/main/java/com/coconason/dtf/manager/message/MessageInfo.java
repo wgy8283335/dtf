@@ -20,11 +20,6 @@ import java.nio.ByteBuffer;
 public final class MessageInfo implements MessageInfoInterface {
     
     private static final long serialVersionUID = -1L;
-
-    /**
-     * Logger of ConsumerFailingAsyncRequestRunnable class.
-     */
-    private final Logger logger = LoggerFactory.getLogger(MessageInfo.class);
     
     /**
      * Member id.
@@ -39,7 +34,7 @@ public final class MessageInfo implements MessageInfoInterface {
     /**
      * Parameter of request.
      */
-    private Object obj;
+    private String obj;
     
     /**
      * Time stamp of request.
@@ -60,7 +55,7 @@ public final class MessageInfo implements MessageInfoInterface {
         this.memberId = memberId;
         this.isCommitted = isCommitted;
         this.url = url;
-        this.obj = obj;
+        this.obj = obj.toString();
         this.timeStamp = timeStamp;
     }
     
@@ -125,7 +120,7 @@ public final class MessageInfo implements MessageInfoInterface {
      * @return parameter of request
      */
     @Override
-    public Object getObj() {
+    public String getObj() {
         return obj;
     }
 
@@ -189,24 +184,6 @@ public final class MessageInfo implements MessageInfoInterface {
                 ", timeStamp:" + timeStamp +
                 ", isCommitted:" + isCommitted +
                 "}";
-    }
-    
-    @Override
-    public byte[] toBytes() throws IOException{
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        ObjectOutputStream oos = new ObjectOutputStream(bos);
-        byte[] result=null;
-        try {
-            oos.writeObject(this);
-            oos.flush();
-            result = bos.toByteArray();
-        } catch (IOException e) {
-            logger.error(e.getMessage());
-        } finally {
-            bos.close();
-            oos.close();
-        }
-        return result;
     }
     
 }

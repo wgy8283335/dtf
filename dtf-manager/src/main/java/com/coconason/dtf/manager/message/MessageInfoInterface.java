@@ -48,13 +48,6 @@ public interface MessageInfoInterface extends Serializable {
      * @return time stamp
      */
     long getTimeStamp();
-
-    /**
-     * Get member information in byte[].
-     * 
-     * @return
-     */
-    byte[] toBytes() throws IOException;
     
     /**
      * Get position in log.
