@@ -1,17 +1,5 @@
 package com.coconason.dtf.manager.message;
 
-import com.coconason.dtf.manager.service.ConsumerFailingAsyncRequestRunnable;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.nio.ByteBuffer;
-
 /**
  * Message information.
  * 
@@ -70,16 +58,15 @@ public final class MessageInfo implements MessageInfoInterface {
     
     /**
      * Set position in log.
-     * @return time stamp
      */
     @Override
-    public void setPosition(int position) {
+    public void setPosition(final int position) {
         this.position = position;
     }
     
     /**
      * Get position in log.
-     * @return time stamp
+     * @return position
      */
     @Override
     public int getPosition() {
@@ -177,13 +164,13 @@ public final class MessageInfo implements MessageInfoInterface {
     
     @Override
     public String toString() {
-        return "{" +
-                "memberId:" + memberId + 
-                ", url:" + url +
-                ", obj:" + obj +
-                ", timeStamp:" + timeStamp +
-                ", isCommitted:" + isCommitted +
-                "}";
+        return "{" 
+                + "memberId:" + memberId
+                + ", url:" + url
+                + ", obj:" + obj
+                + ", timeStamp:" + timeStamp
+                + ", isCommitted:" + isCommitted
+                + "}";
     }
     
 }

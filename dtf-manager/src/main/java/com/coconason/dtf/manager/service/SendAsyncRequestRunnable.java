@@ -8,7 +8,6 @@ import com.coconason.dtf.manager.utils.LogUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.util.Queue;
 import java.util.Set;
 
@@ -50,12 +49,12 @@ public final class SendAsyncRequestRunnable implements Runnable {
      * If request fail, put the request in the queue. There will be a consumer to consume the queue to send request.
      */
     @Override
-    public void run(){
+    public void run() {
         TransactionMessageGroupInterface theMessageGroupAsync = messageAsyncCacheProxy.get(transactionMessageForSubmit.getGroupId());
         Set<MessageInfoInterface> theMemberSet = theMessageGroupAsync.getMemberSet();
         for (MessageInfoInterface messageInfo : theMemberSet) {
             int position = LogUtil.getInstance().append(messageInfo);
-            if(position < 0){
+            if (position < 0) {
                 //???可能需要考虑抛出一个信号终止server的运行。
                 logger.error("Record in async-request.log failure" + messageInfo.toString());
                 continue;

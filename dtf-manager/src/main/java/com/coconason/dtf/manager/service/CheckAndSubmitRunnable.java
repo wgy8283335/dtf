@@ -59,7 +59,6 @@ public final class CheckAndSubmitRunnable implements Runnable {
      * If action is approve submit or approve submit strong or cancel,try create tmfs by message ,then get member set2.
      * Then Get member set2 from element of messageSyncCacheProxy.
      * If set1 equals set2, then send approve message. Otherwise, return.
-     * 
      * ？？When ActionType is CANCEL，what should be done？？？
      */
     @Override
@@ -68,9 +67,9 @@ public final class CheckAndSubmitRunnable implements Runnable {
         String groupId = info.get("groupId").toString();
         Object obj = info.get("groupMemberSet");
         TransactionMessageGroupInterface tmfs = null;
-        if(actionType == ActionType.ADD || actionType == ActionType.ADD_STRONG ) {
+        if (actionType == ActionType.ADD || actionType == ActionType.ADD_STRONG) {
             tmfs = messageForSubmitSyncCacheProxy.get(groupId);
-        } else if(actionType == ActionType.APPROVESUBMIT || actionType == ActionType.APPROVESUBMIT_STRONG || actionType == ActionType.CANCEL) {
+        } else if (actionType == ActionType.APPROVESUBMIT || actionType == ActionType.APPROVESUBMIT_STRONG || actionType == ActionType.CANCEL) {
             tmfs = TransactionMessageFactory.getMessageForSubmitInstance(message);
         }
         if (tmfs == null || tmfs.getMemberSet().isEmpty() || messageSyncCacheProxy.get(tmfs.getGroupId()) == null) {

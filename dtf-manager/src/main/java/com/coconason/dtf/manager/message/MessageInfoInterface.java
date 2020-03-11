@@ -1,6 +1,5 @@
 package com.coconason.dtf.manager.message;
 
-import java.io.IOException;
 import java.io.Serializable;
 
 /**
@@ -51,13 +50,13 @@ public interface MessageInfoInterface extends Serializable {
     
     /**
      * Get position in log.
-     * @return time stamp
+     * @return position
      */
     int getPosition();
     
     /**
      * Set position in log.
-     * @return time stamp
+     * @param position position in log
      */
     void setPosition(int position);
     

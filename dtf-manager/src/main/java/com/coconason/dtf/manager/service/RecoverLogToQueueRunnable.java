@@ -2,7 +2,6 @@ package com.coconason.dtf.manager.service;
 
 import com.coconason.dtf.manager.cache.MessageAsyncQueueProxy;
 import com.coconason.dtf.manager.message.MessageInfoInterface;
-import com.coconason.dtf.manager.utils.HttpClientUtil;
 import com.coconason.dtf.manager.utils.LogUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -17,7 +17,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
-public class LogUtil {
+public final class LogUtil {
     
     /**
      * Logger of log utility.
@@ -36,18 +36,53 @@ public class LogUtil {
 
     private String metadataFilePath;
     
-    private final int SIZE = 100000; 
+    private final int size = 100000;
     
+    private LogUtil(final String logFilePath, final String metadataFilePath) {
+        this.logFilePath = logFilePath;
+        Path filename = Paths.get(this.logFilePath);
+        try {
+            logChannel = FileChannel.open(filename, StandardOpenOption.WRITE, StandardOpenOption.READ);
+            logBuffer = logChannel.map(FileChannel.MapMode.READ_WRITE, 0, 2048 * size);
+        } catch (IOException e) {
+            logger.error(e.getMessage());
+        }
+        this.metadataFilePath = metadataFilePath;
+        Path filename2 = Paths.get(this.metadataFilePath);
+        try {
+            metadataChannel = FileChannel.open(filename2, StandardOpenOption.WRITE, StandardOpenOption.READ);
+            metadataBuffer = metadataChannel.map(FileChannel.MapMode.READ_WRITE, 0, 92 * size);
+        } catch (IOException e) {
+            logger.error(e.getMessage());
+        }
+    }
+    
+    /**
+     * Get single instance of LogUtil.
+     * 
+     * @return object of LogUtil
+     */
     public static LogUtil getInstance() {
         return LogUtil.SingleHolder.INSTANCE;
     }
-    
-    public int getLength(){
+
+    /**
+     * Get the length of buffer has been written.
+     * 
+     * @return the length of buffer has been written
+     */
+    public int getLength() {
         int result = metadataBuffer.position();
         return result;
     }
-    
-    public int append(MessageInfoInterface message) {
+
+    /**
+     * Append message in buffer.
+     * 
+     * @param message message information interface
+     * @return position in log metadata
+     */
+    public int append(final MessageInfoInterface message) {
         LogMetadata logMetadata = add(message);
         if (null == logMetadata) {
             return -1;
@@ -56,11 +91,11 @@ public class LogUtil {
         return result;
     }
     
-    private int add (LogMetadata logMetadata) {
+    private int add(final LogMetadata logMetadata) {
         int result = -1;
         byte[] bytes = objectToBytes(logMetadata);
         try {
-            FileLock fl = metadataChannel.lock(metadataChannel.position(),SIZE,false);
+            FileLock fl = metadataChannel.lock(metadataChannel.position(), size, false);
             result = metadataBuffer.position();
             metadataBuffer.put(bytes);
             metadataBuffer.force();
@@ -71,11 +106,11 @@ public class LogUtil {
         return result;
     }
     
-    private LogMetadata add(MessageInfoInterface message) {
+    private LogMetadata add(final MessageInfoInterface message) {
         int position = -1;
         byte[] bytes = objectToBytes(message);
         try {
-            FileLock fl = logChannel.lock(logChannel.position(),SIZE,false);
+            FileLock fl = logChannel.lock(logChannel.position(), size, false);
             position = logBuffer.position();
             logBuffer.put(bytes);
             logBuffer.force();
@@ -89,23 +124,28 @@ public class LogUtil {
         LogMetadata result = new LogMetadata(position, bytes.length);
         return result;
     }
-    
-    public void updateCommitStatus(MessageInfoInterface message){
+
+    /**
+     * Update message information in log.
+     * 
+     * @param message message information interface
+     */
+    public void updateCommitStatus(final MessageInfoInterface message) {
         LogMetadata logMetadata = getMetadata(message.getPosition());
         update(message, logMetadata);
     }
     
-    private LogMetadata getMetadata(int position) {
+    private LogMetadata getMetadata(final int position) {
         byte[] temp = new byte[92];
         metadataBuffer.position(position);
-        metadataBuffer.get(temp,0,92);
+        metadataBuffer.get(temp, 0, 92);
         ByteArrayInputStream bis = new ByteArrayInputStream(temp);
         ObjectInputStream ois;
         LogMetadata result = null;
         try {
             ois = new ObjectInputStream(bis);
             Object obj = ois.readObject();
-            result = (LogMetadata)obj;
+            result = (LogMetadata) obj;
             ois.close();
             bis.close();
         } catch (IOException e) {
@@ -116,35 +156,41 @@ public class LogUtil {
         return result;
     }
     
-    private void update(MessageInfoInterface message, LogMetadata logMetadata) {
-        try{
-            FileLock fl = logChannel.lock(logMetadata.getPosition(),logMetadata.getLength(),false);
+    private void update(final MessageInfoInterface message, final LogMetadata logMetadata) {
+        try {
+            FileLock fl = logChannel.lock(logMetadata.getPosition(), logMetadata.getLength(), false);
             logBuffer.position(logMetadata.getPosition());
             logBuffer.put(objectToBytes(message));
             logBuffer.force();
             fl.release();
-        }catch (IOException e) {
+        } catch (IOException e) {
             logger.error(e.getMessage());
         }
     }
-    
-    public MessageInfoInterface get(int position) {
+
+    /**
+     * Get message according to position.
+     * 
+     * @param position position of message.
+     * @return message information interface
+     */
+    public MessageInfoInterface get(final int position) {
         LogMetadata logMetadata = getMetadata(position);
         MessageInfoInterface result = getMessage(logMetadata);
         return result;
     }
     
-    private MessageInfoInterface getMessage(LogMetadata logMetadata ){
+    private MessageInfoInterface getMessage(final LogMetadata logMetadata) {
         byte[] temp = new byte[logMetadata.getLength()];
         logBuffer.position(logMetadata.getPosition());
-        logBuffer.get(temp,0,logMetadata.getLength());
+        logBuffer.get(temp, 0, logMetadata.getLength());
         ByteArrayInputStream bis = new ByteArrayInputStream(temp);
         ObjectInputStream ois;
         MessageInfoInterface result = null;
         try {
             ois = new ObjectInputStream(bis);
             Object obj = ois.readObject();
-            result = (MessageInfoInterface)obj;
+            result = (MessageInfoInterface) obj;
             ois.close();
             bis.close();
         } catch (IOException e) {
@@ -155,34 +201,9 @@ public class LogUtil {
         return result;
     }
     
-    private static class SingleHolder{
-        private static URL urlForLog = LogUtil.class.getClassLoader().getResource("logs/async-request.log");
-        private static URL urlForMetadata = LogUtil.class.getClassLoader().getResource("logs/catalog.log");
-        private static final LogUtil INSTANCE = new LogUtil(urlForLog.getPath(),urlForMetadata.getPath());
-    }
-    
-    private LogUtil(String logFilePath,String metadataFilePath){
-        this.logFilePath = logFilePath;
-        Path filename = Paths.get(this.logFilePath);
-        try{
-            logChannel = FileChannel.open(filename, StandardOpenOption.WRITE,StandardOpenOption.READ);
-            logBuffer = logChannel.map(FileChannel.MapMode.READ_WRITE,0,2048*SIZE);
-        }catch (IOException e){
-            logger.error(e.getMessage());
-        }
-        this.metadataFilePath = metadataFilePath;
-        Path filename2 = Paths.get(this.metadataFilePath);
-        try{
-            metadataChannel = FileChannel.open(filename2, StandardOpenOption.WRITE,StandardOpenOption.READ);
-            metadataBuffer = metadataChannel.map(FileChannel.MapMode.READ_WRITE,0,92*SIZE);
-        }catch (IOException e){
-            logger.error(e.getMessage());
-        }
-    }
-    
-    private byte[] objectToBytes(MessageInfoInterface obj){
+    private byte[] objectToBytes(final MessageInfoInterface obj) {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        byte[] result=null;
+        byte[] result = null;
         try {
             ObjectOutputStream oos = new ObjectOutputStream(bos);
             oos.writeObject(obj);
@@ -196,9 +217,9 @@ public class LogUtil {
         return result;
     }
 
-    private byte[] objectToBytes(LogMetadata obj){
+    private byte[] objectToBytes(final LogMetadata obj) {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        byte[] result=null;
+        byte[] result = null;
         try {
             ObjectOutputStream oos = new ObjectOutputStream(bos);
             oos.writeObject(obj);
@@ -210,6 +231,12 @@ public class LogUtil {
             logger.error(e.getMessage());
         }
         return result;
+    }
+    
+    private static class SingleHolder {
+        private static URL urlForLog = LogUtil.class.getClassLoader().getResource("logs/async-request.log");
+        private static URL urlForMetadata = LogUtil.class.getClassLoader().getResource("logs/catalog.log");
+        private static final LogUtil INSTANCE = new LogUtil(urlForLog.getPath(), urlForMetadata.getPath());
     }
     
 }
