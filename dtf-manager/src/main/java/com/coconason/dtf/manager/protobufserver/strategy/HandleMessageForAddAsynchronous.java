@@ -40,7 +40,6 @@ public class HandleMessageForAddAsynchronous implements HandleMessageStrategy {
         TransactionMessageGroupInterface transactionMessageGroupAsync = null;
         transactionMessageGroupAsync = TransactionMessageFactory.getMessageGroupAsyncInstance(message);
         messageAsyncCacheProxy.putDependsOnCondition(transactionMessageGroupAsync);
-        threadPoolForServerProxy.execute(new SendShortMessageRunnable(transactionMessageGroupAsync.getGroupId(), MessageProto.Message.ActionType.ADD_SUCCESS_ASYNC, ctx));
         Set<String> setFromCacheTemp = SetUtil.setTransfer(messageAsyncCacheProxy.get(transactionMessageGroupAsync.getGroupId()).getMemberSet());
         MessageCacheInterface messageForSubmitAsyncCacheProxy = serverTransactionHandler.getMessageForSubmitAsyncCacheProxy();
         TransactionMessageGroupInterface transactionMessageForSubmit1 = messageForSubmitAsyncCacheProxy.get(transactionMessageGroupAsync.getGroupId());
@@ -51,6 +50,7 @@ public class HandleMessageForAddAsynchronous implements HandleMessageStrategy {
                 threadPoolForServerProxy.execute(new SendAsyncRequestRunnable(messageAsyncCacheProxy, transactionMessageForSubmit1, messageAsyncQueueProxy));
             }
         }
+        threadPoolForServerProxy.execute(new SendShortMessageRunnable(transactionMessageGroupAsync.getGroupId(), MessageProto.Message.ActionType.ADD_SUCCESS_ASYNC, ctx));
     }
     
 }

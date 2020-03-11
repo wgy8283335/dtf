@@ -43,7 +43,6 @@ public class HandleMessageForAsynchronousCommit implements HandleMessageStrategy
         String groupId = map.get("groupId").toString();
         TransactionMessageGroupInterface transactionMessageForSubmitTemp = TransactionMessageFactory.getMessageForSubmitInstance(message);
         messageForSubmitAsyncCacheProxy.put(transactionMessageForSubmitTemp.getGroupId(), transactionMessageForSubmitTemp);
-        threadPoolForServerProxy.execute(new SendShortMessageRunnable(groupId, MessageProto.Message.ActionType.COMMIT_SUCCESS_ASYNC, ctx));
         TransactionMessageGroupInterface transactionMessageGroupAsync1 = messageAsyncCacheProxy.get(groupId);
         if (transactionMessageGroupAsync1 != null) {
             Set<String> setFromCache = SetUtil.setTransfer(transactionMessageGroupAsync1.getMemberSet());
@@ -53,6 +52,7 @@ public class HandleMessageForAsynchronousCommit implements HandleMessageStrategy
                 threadPoolForServerProxy.execute(new SendAsyncRequestRunnable(messageAsyncCacheProxy, transactionMessageForSubmitTemp, messageAsyncQueueProxy));
             }
         }
+        threadPoolForServerProxy.execute(new SendShortMessageRunnable(groupId, MessageProto.Message.ActionType.COMMIT_SUCCESS_ASYNC, ctx));
     }
     
 }

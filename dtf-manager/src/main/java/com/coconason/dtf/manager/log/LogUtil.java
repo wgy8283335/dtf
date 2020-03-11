@@ -37,6 +37,8 @@ public final class LogUtil {
     private String metadataFilePath;
     
     private final int size = 100000;
+
+    private final int metadataSize = 90;
     
     private LogUtil(final String logFilePath, final String metadataFilePath) {
         this.logFilePath = logFilePath;
@@ -51,7 +53,7 @@ public final class LogUtil {
         Path filename2 = Paths.get(this.metadataFilePath);
         try {
             metadataChannel = FileChannel.open(filename2, StandardOpenOption.WRITE, StandardOpenOption.READ);
-            metadataBuffer = metadataChannel.map(FileChannel.MapMode.READ_WRITE, 0, 92 * size);
+            metadataBuffer = metadataChannel.map(FileChannel.MapMode.READ_WRITE, 0, metadataSize * size);
         } catch (IOException e) {
             logger.error(e.getMessage());
         }
@@ -71,9 +73,13 @@ public final class LogUtil {
      *
      * @return the position of metadata buffer has been written
      */
-    public int getLength() {
-        int result = metadataBuffer.limit();
-        return result;
+    public long getInitialLength() {
+        try {
+            return metadataChannel.size();
+        } catch (IOException e) {
+            logger.error(e.getMessage());
+        }
+        return -1L;
     }
     
     /**
@@ -119,14 +125,17 @@ public final class LogUtil {
      */
     public MessageInfoInterface get(final int position) {
         LogMetadata logMetadata = getMetadata(position);
+        if(null == logMetadata){
+            return null;
+        }
         MessageInfoInterface result = getMessage(logMetadata);
         return result;
     }
     
     private LogMetadata getMetadata(final int position) {
-        byte[] temp = new byte[92];
+        byte[] temp = new byte[metadataSize];
         metadataBuffer.position(position);
-        metadataBuffer.get(temp, 0, 92);
+        metadataBuffer.get(temp, 0, metadataSize);
         ByteArrayInputStream bis = new ByteArrayInputStream(temp);
         ObjectInputStream ois;
         LogMetadata result = null;
@@ -137,7 +146,7 @@ public final class LogUtil {
             ois.close();
             bis.close();
         } catch (IOException e) {
-            logger.error(e.getMessage());
+            logger.info(e.getMessage());
         } catch (ClassNotFoundException e) {
             logger.error(e.getMessage());
         }

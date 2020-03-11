@@ -32,7 +32,7 @@ public final class RecoverLogToQueueRunnable implements Runnable {
     @Override
     public void run() {
         int i = 0;
-        long length = LogUtil.getInstance().getLength();
+        long length = LogUtil.getInstance().getInitialLength();
         while (i < length) {
             MessageInfoInterface message = LogUtil.getInstance().get(i);
             if (null == message) {
@@ -42,7 +42,7 @@ public final class RecoverLogToQueueRunnable implements Runnable {
                 continue;
             }
             messageAsyncQueueProxy.add(message);
-            i = i + 92;
+            i = i + 90;
             return;
         }
     }
