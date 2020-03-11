@@ -68,7 +68,7 @@ public final class SendAsyncRequestRunnable implements Runnable {
                 messageAsyncQueueProxy.add(messageInfo);
             } else {
                 messageInfo.setCommitted(true);
-                LogUtil.getInstance().put(messageInfo);
+                LogUtil.getInstance().updateCommitStatus(messageInfo);
             }
         }
         messageAsyncCacheProxy.invalidate(transactionMessageForSubmit.getGroupId());

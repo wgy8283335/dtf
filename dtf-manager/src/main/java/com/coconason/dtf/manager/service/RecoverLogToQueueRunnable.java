@@ -43,7 +43,7 @@ public final class RecoverLogToQueueRunnable implements Runnable {
                 continue;
             }
             messageAsyncQueueProxy.add(message);
-            i = i + 4096;
+            i = i + 92;
             return;
         }
     }

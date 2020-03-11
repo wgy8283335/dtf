@@ -55,7 +55,7 @@ public final class ConsumerFailingAsyncRequestRunnable implements Runnable {
                     logger.error(messageInfo.toString());
                 } else {
                     messageInfo.setCommitted(true);
-                    LogUtil.getInstance().put(messageInfo);
+                    LogUtil.getInstance().updateCommitStatus(messageInfo);
                 }
             }
             messageInfo = null;
