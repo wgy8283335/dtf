@@ -1,4 +1,4 @@
-package com.coconason.dtf.manager.utils;
+package com.coconason.dtf.manager.log;
 
 import java.io.Serializable;
 

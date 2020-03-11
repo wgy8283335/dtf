@@ -1,9 +1,9 @@
 package com.coconason.dtf.manager.service;
 
 import com.coconason.dtf.manager.cache.MessageAsyncQueueProxy;
+import com.coconason.dtf.manager.log.LogUtil;
 import com.coconason.dtf.manager.message.MessageInfoInterface;
 import com.coconason.dtf.manager.utils.HttpClientUtil;
-import com.coconason.dtf.manager.utils.LogUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,7 +51,6 @@ public final class ConsumerFailingAsyncRequestRunnable implements Runnable {
                 String result = HttpClientUtil.doPostJson(url, obj, "");
                 if ("".equals(result)) {
                     messageInfo.setCommitted(false);
-//                    messageAsyncQueueProxy.add(messageInfo);
                     logger.error(messageInfo.toString());
                 } else {
                     messageInfo.setCommitted(true);

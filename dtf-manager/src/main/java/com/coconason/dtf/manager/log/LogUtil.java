@@ -1,4 +1,4 @@
-package com.coconason.dtf.manager.utils;
+package com.coconason.dtf.manager.log;
 
 import com.coconason.dtf.manager.message.MessageInfoInterface;
 import org.slf4j.Logger;
@@ -65,17 +65,27 @@ public final class LogUtil {
     public static LogUtil getInstance() {
         return LogUtil.SingleHolder.INSTANCE;
     }
-
+    
     /**
-     * Get the length of buffer has been written.
-     * 
-     * @return the length of buffer has been written
+     * Get the position of metadata buffer has been written.
+     *
+     * @return the position of metadata buffer has been written
      */
     public int getLength() {
+        int result = metadataBuffer.limit();
+        return result;
+    }
+    
+    /**
+     * Get the position of metadata buffer has been written.
+     * 
+     * @return the position of metadata buffer has been written
+     */
+    public int getPosition() {
         int result = metadataBuffer.position();
         return result;
     }
-
+    
     /**
      * Append message in buffer.
      * 
@@ -91,40 +101,6 @@ public final class LogUtil {
         return result;
     }
     
-    private int add(final LogMetadata logMetadata) {
-        int result = -1;
-        byte[] bytes = objectToBytes(logMetadata);
-        try {
-            FileLock fl = metadataChannel.lock(metadataChannel.position(), size, false);
-            result = metadataBuffer.position();
-            metadataBuffer.put(bytes);
-            metadataBuffer.force();
-            fl.release();
-        } catch (IOException e) {
-            logger.error(e.getMessage());
-        }
-        return result;
-    }
-    
-    private LogMetadata add(final MessageInfoInterface message) {
-        int position = -1;
-        byte[] bytes = objectToBytes(message);
-        try {
-            FileLock fl = logChannel.lock(logChannel.position(), size, false);
-            position = logBuffer.position();
-            logBuffer.put(bytes);
-            logBuffer.force();
-            fl.release();
-        } catch (IOException e) {
-            logger.error(e.getMessage());
-        }
-        if (position == -1) {
-            return null;
-        }
-        LogMetadata result = new LogMetadata(position, bytes.length);
-        return result;
-    }
-
     /**
      * Update message information in log.
      * 
@@ -133,6 +109,18 @@ public final class LogUtil {
     public void updateCommitStatus(final MessageInfoInterface message) {
         LogMetadata logMetadata = getMetadata(message.getPosition());
         update(message, logMetadata);
+    }
+    
+    /**
+     * Get message according to position.
+     *
+     * @param position position of message.
+     * @return message information interface
+     */
+    public MessageInfoInterface get(final int position) {
+        LogMetadata logMetadata = getMetadata(position);
+        MessageInfoInterface result = getMessage(logMetadata);
+        return result;
     }
     
     private LogMetadata getMetadata(final int position) {
@@ -166,18 +154,6 @@ public final class LogUtil {
         } catch (IOException e) {
             logger.error(e.getMessage());
         }
-    }
-
-    /**
-     * Get message according to position.
-     * 
-     * @param position position of message.
-     * @return message information interface
-     */
-    public MessageInfoInterface get(final int position) {
-        LogMetadata logMetadata = getMetadata(position);
-        MessageInfoInterface result = getMessage(logMetadata);
-        return result;
     }
     
     private MessageInfoInterface getMessage(final LogMetadata logMetadata) {
@@ -216,7 +192,7 @@ public final class LogUtil {
         }
         return result;
     }
-
+    
     private byte[] objectToBytes(final LogMetadata obj) {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         byte[] result = null;
@@ -230,6 +206,40 @@ public final class LogUtil {
         } catch (IOException e) {
             logger.error(e.getMessage());
         }
+        return result;
+    }
+    
+    private int add(final LogMetadata logMetadata) {
+        int result = -1;
+        byte[] bytes = objectToBytes(logMetadata);
+        try {
+            FileLock fl = metadataChannel.lock(metadataChannel.position(), size, false);
+            result = metadataBuffer.position();
+            metadataBuffer.put(bytes);
+            metadataBuffer.force();
+            fl.release();
+        } catch (IOException e) {
+            logger.error(e.getMessage());
+        }
+        return result;
+    }
+    
+    private LogMetadata add(final MessageInfoInterface message) {
+        int position = -1;
+        byte[] bytes = objectToBytes(message);
+        try {
+            FileLock fl = logChannel.lock(logChannel.position(), size, false);
+            position = logBuffer.position();
+            logBuffer.put(bytes);
+            logBuffer.force();
+            fl.release();
+        } catch (IOException e) {
+            logger.error(e.getMessage());
+        }
+        if (position == -1) {
+            return null;
+        }
+        LogMetadata result = new LogMetadata(position, bytes.length);
         return result;
     }
     
