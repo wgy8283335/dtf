@@ -42,9 +42,8 @@ public class LogUtil {
         return LogUtil.SingleHolder.INSTANCE;
     }
     
-    public long getLength(){
-        metadataBuffer.flip();
-        int result = metadataBuffer.limit();
+    public int getLength(){
+        int result = metadataBuffer.position();
         return result;
     }
     
@@ -98,7 +97,6 @@ public class LogUtil {
     
     private LogMetadata getMetadata(int position) {
         byte[] temp = new byte[92];
-//        metadataBuffer.flip();
         metadataBuffer.position(position);
         metadataBuffer.get(temp,0,92);
         ByteArrayInputStream bis = new ByteArrayInputStream(temp);
@@ -138,7 +136,6 @@ public class LogUtil {
     
     private MessageInfoInterface getMessage(LogMetadata logMetadata ){
         byte[] temp = new byte[logMetadata.getLength()];
-//        logBuffer.flip();
         logBuffer.position(logMetadata.getPosition());
         logBuffer.get(temp,0,logMetadata.getLength());
         ByteArrayInputStream bis = new ByteArrayInputStream(temp);
