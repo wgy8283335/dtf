@@ -47,7 +47,8 @@ public class HandleMessageForAddAsynchronous implements HandleMessageStrategy {
             Set<String> setFromMessageTemp = transactionMessageForSubmit1.getMemberSet();
             setFromMessageTemp.remove("1");
             if (setFromMessageTemp != null && SetUtil.isSetEqual(setFromCacheTemp, setFromMessageTemp)) {
-                threadPoolForServerProxy.execute(new SendAsyncRequestRunnable(messageAsyncCacheProxy, transactionMessageForSubmit1, messageAsyncQueueProxy));
+                threadPoolForServerProxy.execute(new SendAsyncRequestRunnable(messageAsyncCacheProxy, transactionMessageForSubmit1, messageAsyncQueueProxy,
+                        transactionMessageGroupAsync.getGroupId(), MessageProto.Message.ActionType.COMMIT_SUCCESS_ASYNC, ctx));
             }
         }
         threadPoolForServerProxy.execute(new SendShortMessageRunnable(transactionMessageGroupAsync.getGroupId(), MessageProto.Message.ActionType.ADD_SUCCESS_ASYNC, ctx));

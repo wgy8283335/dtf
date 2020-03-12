@@ -49,10 +49,10 @@ public class HandleMessageForAsynchronousCommit implements HandleMessageStrategy
             Set<String> setFromMessage = transactionMessageForSubmitTemp.getMemberSet();
             setFromMessage.remove("1");
             if (SetUtil.isSetEqual(setFromCache, setFromMessage)) {
-                threadPoolForServerProxy.execute(new SendAsyncRequestRunnable(messageAsyncCacheProxy, transactionMessageForSubmitTemp, messageAsyncQueueProxy));
+                threadPoolForServerProxy.execute(new SendAsyncRequestRunnable(messageAsyncCacheProxy, transactionMessageForSubmitTemp, messageAsyncQueueProxy,
+                        groupId, MessageProto.Message.ActionType.COMMIT_SUCCESS_ASYNC, ctx));
             }
         }
-        threadPoolForServerProxy.execute(new SendShortMessageRunnable(groupId, MessageProto.Message.ActionType.COMMIT_SUCCESS_ASYNC, ctx));
     }
     
 }
