@@ -2,10 +2,13 @@ package com.coconason.dtf.manager.service;
 
 import com.coconason.dtf.manager.cache.MessageAsyncQueueProxy;
 import com.coconason.dtf.manager.log.LogUtil;
+import com.coconason.dtf.manager.message.MessageInfo;
 import com.coconason.dtf.manager.message.MessageInfoInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Queue;
 
 /**
@@ -33,17 +36,20 @@ public final class RecoverLogToQueueRunnable implements Runnable {
     public void run() {
         int i = 0;
         long length = LogUtil.getInstance().getInitialLength();
+        List<MessageInfoInterface> messageInfoList = new ArrayList<>();
         while (i < length) {
             MessageInfoInterface message = LogUtil.getInstance().get(i);
+            i = i + 90;
             if (null == message) {
                 break;
             }
             if (message.isCommitted()) {
                 continue;
             }
+            messageInfoList.add(message);
+        }
+        for (MessageInfoInterface message : messageInfoList) {
             messageAsyncQueueProxy.add(message);
-            i = i + 90;
-            return;
         }
     }
     

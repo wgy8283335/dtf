@@ -146,8 +146,10 @@ public final class LogUtil {
             ois.close();
             bis.close();
         } catch (IOException e) {
+            metadataBuffer.position(position);
             logger.info(e.getMessage());
         } catch (ClassNotFoundException e) {
+            metadataBuffer.position(position);
             logger.error(e.getMessage());
         }
         return result;
@@ -194,6 +196,7 @@ public final class LogUtil {
             oos.writeObject(obj);
             oos.flush();
             result = bos.toByteArray();
+            logger.info(obj.toString()+result.length);
             oos.close();
             bos.close();
         } catch (IOException e) {

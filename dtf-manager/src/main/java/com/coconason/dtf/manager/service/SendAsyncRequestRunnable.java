@@ -64,6 +64,8 @@ public final class SendAsyncRequestRunnable implements Runnable {
             messageInfo.setPosition(position);
             String result = HttpClientUtil.doPostJson(url, obj, transactionMessageForSubmit.getGroupId());
             if ("".equals(result)) {
+                messageInfo.setCommitted(false);
+                LogUtil.getInstance().updateCommitStatus(messageInfo);
                 messageAsyncQueueProxy.add(messageInfo);
             } else {
                 messageInfo.setCommitted(true);

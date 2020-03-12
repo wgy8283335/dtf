@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 /**
  * @Author: Jason
@@ -41,13 +43,13 @@ public class CourseServiceImpl implements ICourseService {
         courseMapper.insertSelective(course);
         Teacher teacher = new Teacher();
         // uuid
-        teacher.setT(1);
+        teacher.setT((int)Math.random());
         teacher.setTname("Lin");
         logger.debug("before sendPost ---------------------------"+System.currentTimeMillis());
         String result = restClient.sendPost("http://localhost:8082/set_teacher_info_without_dtf",teacher);
         logger.debug("after sendPost ---------------------------"+System.currentTimeMillis());
         Teacher teacher1 = new Teacher();
-        teacher1.setT(2);
+        teacher1.setT((int)Math.random());
         teacher1.setTname("Yun");
         logger.debug("before 2 sendPost ---------------------------"+System.currentTimeMillis());
         String result2 = restClient.sendPost("http://localhost:8082/set_teacher_info_without_dtf",teacher1);
@@ -61,13 +63,13 @@ public class CourseServiceImpl implements ICourseService {
     public DemoResult addCourseInfo(Course course) throws Exception {
         courseMapper.insertSelective(course);
         Teacher teacher = new Teacher();
-        teacher.setT(1);
+        teacher.setT((int)Math.random());
         teacher.setTname("Lin");
         logger.debug("before sendPost ---------------------------"+System.currentTimeMillis());
         String result = restClient.sendPost("http://localhost:8082/set_teacher_info",teacher);
         logger.debug("after sendPost ---------------------------"+System.currentTimeMillis());
         Teacher teacher1 = new Teacher();
-        teacher1.setT(2);
+        teacher1.setT((int)Math.random());
         teacher1.setTname("Yun");
         logger.debug("before 2 sendPost ---------------------------"+System.currentTimeMillis());
         String result2 = restClient.sendPost("http://localhost:8082/set_teacher_info",teacher1);
@@ -81,11 +83,11 @@ public class CourseServiceImpl implements ICourseService {
     public DemoResult addCourseInfoStrong(Course course) throws Exception {
         courseMapper.insertSelective(course);
         Teacher teacher = new Teacher();
-        teacher.setT(1);
+        teacher.setT((int)Math.random());
         teacher.setTname("Lin");
         restClient.sendPost("http://localhost:8082/set_teacher_info_strong",teacher);
         Teacher teacher1 = new Teacher();
-        teacher1.setT(2);
+        teacher1.setT((int)Math.random());
         teacher1.setTname("Yun");
         restClient.sendPost("http://localhost:8082/set_teacher_info_strong",teacher1);
         return new DemoResult().ok();
@@ -98,11 +100,11 @@ public class CourseServiceImpl implements ICourseService {
         courseMapper.insert(course);
         //int kk = 6/0;
         Teacher teacher = new Teacher();
-        teacher.setT(3);
+        teacher.setT((int)Math.random());
         teacher.setTname("Yun");
         restClientAsync.sendPost("http://localhost:8082/set_teacher_info_async",teacher);
         Sc sc = new Sc();
-        sc.setC(3);
+        sc.setC((int)Math.random());
         sc.setS(7);
         sc.setScore(95);
         restClientAsync.sendPost("http://localhost:8083/add_sc_info_async",sc);

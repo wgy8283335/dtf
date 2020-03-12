@@ -54,4 +54,16 @@ public class LogUtilTest {
         assertThat(messageInfo2.getGroupMemberId(), is(messageInfo22.getGroupMemberId()));
     }
     
+    @Test
+    public void assertQGet() {
+        LogUtil logUtil = LogUtil.getInstance();
+        MessageInfoInterface messageInfo1 = logUtil.get(0);
+        MessageInfoInterface messageInfo2 = logUtil.get(90);
+        assertThat(messageInfo1.getUrl(), is("http://localhost:8080/test"));
+        assertThat(messageInfo1.getGroupMemberId(), is("1"));
+        assertThat(messageInfo2.getUrl(), is("http://localhost:8082/test"));
+        assertThat(messageInfo2.getGroupMemberId(), is("2"));
+        assertThat(messageInfo2.isCommitted(), is(false));
+    }
+    
 }
