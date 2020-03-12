@@ -66,7 +66,7 @@ public class TransactionMessageFactory {
         JSONObject map = JSONObject.parseObject(message.getInfo());
         String groupId = map.get("groupId").toString(); 
         TransactionMessageGroupInterface transactionMessageGroupAsync = new TransactionMessageGroupAsync(groupId);
-        transactionMessageGroupAsync.addMember(map.get("groupMemberId").toString(), map.get("url").toString(), map.get("obj"));
+        transactionMessageGroupAsync.addMember(map.get("groupMemberId").toString(), map.get("url").toString(), map.get("obj"), map.get("httpAction").toString());
         return transactionMessageGroupAsync;
     }
     

@@ -28,9 +28,9 @@ public class LogUtilTest {
     public void assertAppend(){
         LogUtil logUtil = LogUtil.getInstance();
         int position = LogUtil.getInstance().getPosition();
-        MessageInfoInterface messageInfo1 = new MessageInfo("1", true, "http://localhost:8080/test", new Object(), System.currentTimeMillis());
+        MessageInfoInterface messageInfo1 = new MessageInfo("1", true, "http://localhost:8080/test", new Object(), System.currentTimeMillis(), "post");
         int position1 = logUtil.append(messageInfo1);
-        MessageInfoInterface messageInfo2 = new MessageInfo("2", true, "http://localhost:8082/test", new Object(), System.currentTimeMillis());
+        MessageInfoInterface messageInfo2 = new MessageInfo("2", true, "http://localhost:8082/test", new Object(), System.currentTimeMillis(), "post");
         int position2 = logUtil.append(messageInfo2);
         assertThat(position1,is(position));
         assertThat(position2,is(position+90));
@@ -46,7 +46,7 @@ public class LogUtilTest {
     @Test
     public void assertPut(){
         LogUtil logUtil = LogUtil.getInstance();
-        MessageInfoInterface messageInfo2 = new MessageInfo("2", false, "http://localhost:8082/test", new Object(), System.currentTimeMillis());
+        MessageInfoInterface messageInfo2 = new MessageInfo("2", false, "http://localhost:8082/test", new Object(), System.currentTimeMillis(), "post");
         messageInfo2.setPosition(90);
         logUtil.updateCommitStatus(messageInfo2);
         MessageInfoInterface messageInfo22 = logUtil.get(90);

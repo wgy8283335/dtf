@@ -10,6 +10,12 @@ import java.io.Serializable;
 public interface MessageInfoInterface extends Serializable {
     
     /**
+     * Get http action.
+     * @return http action
+     */
+    String getHttpAction();
+    
+    /**
      * Get member id of group.
      * @return member id
      */

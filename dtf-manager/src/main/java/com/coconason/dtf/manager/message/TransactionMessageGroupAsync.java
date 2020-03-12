@@ -64,8 +64,8 @@ public final class TransactionMessageGroupAsync extends TransactionMessageGroupA
      * @param obj parameters of request
      */
     @Override
-    public void addMember(final String memberId, final String url, final Object obj) {
-        memberSet.add(new MessageInfo(memberId, false, url, obj, System.currentTimeMillis()));
+    public void addMember(final String memberId, final String url, final Object obj, final String httpAction) {
+        memberSet.add(new MessageInfo(memberId, false, url, obj, System.currentTimeMillis(), httpAction));
     }
     
     /**

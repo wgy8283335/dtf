@@ -65,7 +65,7 @@ public final class MessageAsyncCache implements MessageCacheInterface {
         }
         Set<MessageInfoInterface> memberSet = groupAsync.getMemberSet();
         for (MessageInfoInterface messageInfo:memberSet) {
-            transactionMessageGroupAsync.addMember(messageInfo.getGroupMemberId(), messageInfo.getUrl(), messageInfo.getObj());
+            transactionMessageGroupAsync.addMember(messageInfo.getGroupMemberId(), messageInfo.getUrl(), messageInfo.getObj(), messageInfo.getHttpAction());
         }
         cache.put(transactionMessageGroupAsync.getGroupId(), transactionMessageGroupAsync);
         return;

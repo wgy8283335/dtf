@@ -9,6 +9,12 @@ public final class MessageInfo implements MessageInfoInterface {
     
     private static final long serialVersionUID = -1L;
     
+    //?需要添加http动作作为属性
+    /**
+     * HTTP Action.
+     */
+    private String httpAction;
+    
     /**
      * Member id.
      */
@@ -39,12 +45,21 @@ public final class MessageInfo implements MessageInfoInterface {
      */
     private int position;
     
-    public MessageInfo(final String memberId, final boolean isCommitted, final String url, final Object obj, final long timeStamp) {
+    public MessageInfo(final String memberId, final boolean isCommitted, final String url, final Object obj, final long timeStamp, final String httpAction) {
         this.memberId = memberId;
         this.isCommitted = isCommitted;
         this.url = url;
         this.obj = obj.toString();
         this.timeStamp = timeStamp;
+        this.httpAction = httpAction;
+    }
+    
+    /**
+     * Get http action.
+     * @return http action
+     */
+    public String getHttpAction(){
+        return httpAction;
     }
     
     /**

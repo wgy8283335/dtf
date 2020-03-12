@@ -32,6 +32,7 @@ public class SendMessageWithUrl implements SendMessageStrategy {
         info.put("groupMemberId", serviceInfo.getInfo().get("groupMemberId").toString());
         info.put("url", serviceInfo.getInfo().get("url").toString());
         info.put("obj", serviceInfo.getInfo().get("obj"));
+        info.put("httpAction", serviceInfo.getInfo().get("httpAction"));
         MessageProto.Message.Builder builder = MessageProto.Message.newBuilder();
         builder.setInfo(info.toJSONString());
         builder.setId(serviceInfo.getId());

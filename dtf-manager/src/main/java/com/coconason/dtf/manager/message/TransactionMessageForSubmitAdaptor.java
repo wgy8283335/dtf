@@ -15,7 +15,7 @@ public abstract class TransactionMessageForSubmitAdaptor implements TransactionM
      * Override method.
      */
     @Override
-    public void addMember(final String memberId, final String url, final Object obj) {
+    public void addMember(final String memberId, final String url, final Object obj, final String httpAction) {
     }
     
     /**

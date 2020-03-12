@@ -42,12 +42,12 @@ public interface TransactionMessageGroupInterface<T> {
     
     /**
      * Add member to member set.
-     * 
+     *
      * @param memberId member id
      * @param url url of request
      * @param obj parameters of request
      */
-    void addMember(String memberId, String url, Object obj);
+    void addMember(String memberId, String url, Object obj, String httpAction);
     
     /**
      * Add member to group.

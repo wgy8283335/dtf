@@ -46,7 +46,7 @@ public final class RestClientAsync {
         groupInfo.addNewMember();
         TransactionGroupInfo.setCurrent(groupInfo);
         BaseTransactionServiceInfo transactionServiceInfo = TransactionServiceInfoFactory.newInstanceForRestful(UuidGenerator.generateUuid(), 
-                MessageProto.Message.ActionType.ADD_ASYNC, groupInfo.getGroupId(), groupInfo.getMemberId(), url, object);
+                MessageProto.Message.ActionType.ADD_ASYNC, groupInfo.getGroupId(), groupInfo.getMemberId(), url, object, "post");
         lc.awaitLimitedTime(nettyService, transactionServiceInfo, "RestClientAsync sendPost fail", 10000, TimeUnit.MILLISECONDS);
     }
 }

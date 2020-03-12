@@ -24,12 +24,14 @@ public class TransactionServiceInfoFactory {
      * @param obj object
      * @return base transaction service information
      */
-    public static BaseTransactionServiceInfo newInstanceForRestful(final String id, final ActionType action, final String groupId, final Long groupMemberId, final String url, final Object obj) {
+    public static BaseTransactionServiceInfo newInstanceForRestful(final String id, final ActionType action, final String groupId, 
+                                                                   final Long groupMemberId, final String url, final Object obj, final String httpAction) {
         JSONObject info = new JSONObject();
         info.put("groupId", groupId);
         info.put("groupMemberId", groupMemberId);
         info.put("url", url);
         info.put("obj", obj);
+        info.put("httpAction", httpAction);
         return new TransactionServiceInfo(id, info, action);
     }
     
