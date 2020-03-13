@@ -8,13 +8,17 @@ public class LogMetadata implements Serializable {
     
     private int length;
     
-    public LogMetadata(final int position, final int length) {
+    private long timeStamp;
+    
+    public LogMetadata(final int position, final int length, final long timeStamp) {
         this.position = position;
         this.length = length;
+        this.timeStamp = timeStamp;
     }
     
     /**
      * Get position of record in async-request.log.
+     * 
      * @return position of record in async-request.log
      */
     public int getPosition() {
@@ -23,10 +27,19 @@ public class LogMetadata implements Serializable {
 
     /**
      * Get length of record in async-request.log.
+     * 
      * @return length of record in async-request.log
      */
     public int getLength() {
         return length;
     }
-    
+
+    /**
+     * Get time stamp.
+     * 
+     * @return time stamp
+     */
+    public long getTimeStamp() {
+        return timeStamp;
+    }
 }

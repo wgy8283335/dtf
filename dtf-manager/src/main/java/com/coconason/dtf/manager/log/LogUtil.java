@@ -16,6 +16,8 @@ import java.nio.channels.FileLock;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.LinkedList;
+import java.util.List;
 
 public final class LogUtil {
     
@@ -38,14 +40,20 @@ public final class LogUtil {
     
     private final int size = 100000;
 
-    private final int metadataSize = 90;
+    private final int metadataSize = 110;
+    
+    private final int messageSize = 2048;
+    
+    private int positionForAppendMetadata = 0;
+
+    private int positionForAppendMessage = 0;
     
     private LogUtil(final String logFilePath, final String metadataFilePath) {
         this.logFilePath = logFilePath;
         Path filename = Paths.get(this.logFilePath);
         try {
             logChannel = FileChannel.open(filename, StandardOpenOption.WRITE, StandardOpenOption.READ);
-            logBuffer = logChannel.map(FileChannel.MapMode.READ_WRITE, 0, 2048 * size);
+            logBuffer = logChannel.map(FileChannel.MapMode.READ_WRITE, 0, messageSize * size);
         } catch (IOException e) {
             logger.error(e.getMessage());
         }
@@ -66,30 +74,6 @@ public final class LogUtil {
      */
     public static LogUtil getInstance() {
         return LogUtil.SingleHolder.INSTANCE;
-    }
-    
-    /**
-     * Get the position of metadata buffer has been written.
-     *
-     * @return the position of metadata buffer has been written
-     */
-    public long getInitialLength() {
-        try {
-            return metadataChannel.size();
-        } catch (IOException e) {
-            logger.error(e.getMessage());
-        }
-        return -1L;
-    }
-    
-    /**
-     * Get the position of metadata buffer has been written.
-     * 
-     * @return the position of metadata buffer has been written
-     */
-    public int getPosition() {
-        int result = metadataBuffer.position();
-        return result;
     }
     
     /**
@@ -130,6 +114,71 @@ public final class LogUtil {
         }
         MessageInfoInterface result = getMessage(logMetadata);
         return result;
+    }
+    
+    /**
+     * Get message according to position.
+     *
+     * @return message information interface
+     */
+    public List<MessageInfoInterface> goThrough(int initialPosition) {
+        int length = metadataSize * size;
+        int i = 0;
+        List<MessageInfoInterface> result = new LinkedList<>();
+        while (i < length) {
+            MessageInfoInterface message = LogUtil.getInstance().get((i + initialPosition) % length);
+            if(null == message){
+                break;
+            }
+            for(MessageInfoInterface each : result){
+                if(each.getHttpAction().equals(message.getHttpAction())&&each.getUrl().equals(message.getHttpAction())){
+                    if (message.isCommitted()) {
+                        result.remove(each);
+                    } else {
+                        result.remove(each);
+                        result.add(message);
+                    }
+                }
+            }
+            i = i + metadataSize;
+            result.add(message);
+        }
+        return result;
+    }
+    
+    /**
+     * Get position for append.
+     * 
+     * @return position for append
+     */
+    public int getPositionForAppend() {
+        return positionForAppendMetadata;
+    }
+    
+    /**
+     * Initialize metadata position.
+     * 
+     * @return metadata position
+     */
+    public int initializeMetadataPosition() {
+        int length = metadataSize * size;
+        int minimum = 0;
+        MessageInfoInterface messageInfo = LogUtil.getInstance().get(0);
+        if (null == messageInfo) {
+            return minimum;
+        }
+        long timeStamp = messageInfo.getTimeStamp();
+        for(int j = 0; j < length ; j=j+metadataSize){
+            if (null == LogUtil.getInstance().get(j)) {
+                return minimum;
+            }
+            if(timeStamp > LogUtil.getInstance().get(j).getTimeStamp()) {
+                timeStamp = LogUtil.getInstance().get(j).getTimeStamp();
+                minimum = j;
+            }
+        }
+        positionForAppendMetadata = minimum;
+        return minimum;
     }
     
     private LogMetadata getMetadata(final int position) {
@@ -226,32 +275,37 @@ public final class LogUtil {
         byte[] bytes = objectToBytes(logMetadata);
         try {
             FileLock fl = metadataChannel.lock(metadataChannel.position(), size, false);
-            result = metadataBuffer.position();
+            if ((positionForAppendMetadata+bytes.length) >= (size * metadataSize)) {
+                positionForAppendMetadata = 0;
+            }
+            metadataBuffer.position(positionForAppendMetadata);
             metadataBuffer.put(bytes);
             metadataBuffer.force();
             fl.release();
         } catch (IOException e) {
             logger.error(e.getMessage());
         }
+        result = positionForAppendMetadata;
+        positionForAppendMetadata = positionForAppendMetadata + metadataSize;
         return result;
     }
     
     private LogMetadata add(final MessageInfoInterface message) {
-        int position = -1;
         byte[] bytes = objectToBytes(message);
         try {
             FileLock fl = logChannel.lock(logChannel.position(), size, false);
-            position = logBuffer.position();
+            if ((positionForAppendMessage+bytes.length) >= (size * messageSize)) {
+                positionForAppendMessage = 0;
+            }
+            logBuffer.position(positionForAppendMessage);
             logBuffer.put(bytes);
             logBuffer.force();
             fl.release();
         } catch (IOException e) {
             logger.error(e.getMessage());
         }
-        if (position == -1) {
-            return null;
-        }
-        LogMetadata result = new LogMetadata(position, bytes.length);
+        LogMetadata result = new LogMetadata(positionForAppendMessage, bytes.length, System.currentTimeMillis());
+        positionForAppendMessage = positionForAppendMessage + bytes.length;
         return result;
     }
     

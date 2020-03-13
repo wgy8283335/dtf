@@ -34,20 +34,8 @@ public final class RecoverLogToQueueRunnable implements Runnable {
      */
     @Override
     public void run() {
-        int i = 0;
-        long length = LogUtil.getInstance().getInitialLength();
-        List<MessageInfoInterface> messageInfoList = new ArrayList<>();
-        while (i < length) {
-            MessageInfoInterface message = LogUtil.getInstance().get(i);
-            i = i + 90;
-            if (null == message) {
-                break;
-            }
-            if (message.isCommitted()) {
-                continue;
-            }
-            messageInfoList.add(message);
-        }
+        int position = LogUtil.getInstance().initializeMetadataPosition();
+        List<MessageInfoInterface> messageInfoList = LogUtil.getInstance().goThrough(position);
         for (MessageInfoInterface message : messageInfoList) {
             messageAsyncQueueProxy.add(message);
         }
