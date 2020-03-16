@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>integration-test</artifactId>
+        <groupId>com.coconason</groupId>
+        <version>0.1</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>base</artifactId>
+    <packaging>jar</packaging>
+
+    <dependencies>
+        <!-- junit -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+        <!--demo-->
+        <dependency>
+            <groupId>com.coconason</groupId>
+            <artifactId>spring-demo</artifactId>
+            <version>0.1</version>
+        </dependency>
+        <!--demo2-->
+        <dependency>
+            <groupId>com.coconason</groupId>
+            <artifactId>spring-demo-2</artifactId>
+            <version>0.1</version>
+        </dependency>
+        <!--demo3-->
+        <dependency>
+            <groupId>com.coconason</groupId>
+            <artifactId>spring-demo-3</artifactId>
+            <version>0.1</version>
+        </dependency>
+        <!--dtf-manager-->
+        <dependency>
+            <groupId>com.coconason</groupId>
+            <artifactId>dtf-manager</artifactId>
+            <version>0.1</version>
+        </dependency>
+    </dependencies>
+</project>

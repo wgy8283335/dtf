@@ -44,10 +44,9 @@ public final class NettyServer {
     /**
      * Main entrance of server.
      *
-     * @param args parameters
      * @throws Exception exception
      */
-    public static void main(final String[] args) throws Exception {
+    public static void main() throws Exception {
         MessageAsyncQueueProxy messageAsyncQueueProxy = new MessageAsyncQueueProxy();
         String classpath = Thread.currentThread().getContextClassLoader().getResource("").getPath();
         PropertiesReader propertiesReader = new PropertiesReader(classpath + "config.properties");
