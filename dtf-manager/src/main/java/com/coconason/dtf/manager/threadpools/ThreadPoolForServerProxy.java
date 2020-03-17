@@ -37,9 +37,7 @@ public final class ThreadPoolForServerProxy implements ExecutorService {
      * @return thread pool for server proxy
      * @throws Exception exception
      */
-    public static ThreadPoolForServerProxy initialize() throws Exception {
-        String classpath = Thread.currentThread().getContextClassLoader().getResource("").getPath();
-        PropertiesReader propertiesReader = new PropertiesReader(classpath + "config.properties");
+    public static ThreadPoolForServerProxy initialize(PropertiesReader propertiesReader) throws Exception {
         ThreadPoolForServerProxy threadPoolForServerProxy = new ThreadPoolForServerProxy(
                 Integer.valueOf(propertiesReader.getProperty("corePoolSize")),
                 Integer.valueOf(propertiesReader.getProperty("maximumPoolSize")),

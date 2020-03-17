@@ -30,6 +30,8 @@ import io.netty.handler.timeout.ReadTimeoutHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.InputStream;
+
 /**
  * Netty Server.
  * 
@@ -48,9 +50,10 @@ public final class NettyServer {
      */
     public static void main() throws Exception {
         MessageAsyncQueueProxy messageAsyncQueueProxy = new MessageAsyncQueueProxy();
-        String classpath = Thread.currentThread().getContextClassLoader().getResource("").getPath();
-        PropertiesReader propertiesReader = new PropertiesReader(classpath + "config.properties");
-        ThreadPoolForServerProxy threadPoolForServerProxy = ThreadPoolForServerProxy.initialize();
+//        String configPath = NettyServer.class.getClassLoader().getResource("config.properties").getPath();
+        InputStream configPath = NettyServer.class.getClassLoader().getResourceAsStream("config.properties");
+        PropertiesReader propertiesReader = new PropertiesReader(configPath);
+        ThreadPoolForServerProxy threadPoolForServerProxy = ThreadPoolForServerProxy.initialize(propertiesReader);
         threadPoolForServerProxy.execute(new RecoverLogToQueueRunnable(messageAsyncQueueProxy));
         threadPoolForServerProxy.execute(new ConsumerFailingAsyncRequestRunnable(messageAsyncQueueProxy));
         new NettyServer().bind(messageAsyncQueueProxy, threadPoolForServerProxy, Integer.valueOf(propertiesReader.getProperty("port")));
