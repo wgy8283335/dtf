@@ -77,7 +77,7 @@ public final class SendAsyncRequestRunnable implements Runnable {
             int position = LogUtil.getInstance().append(messageInfo);
             if (position < 0) {
                 //???可能需要考虑抛出一个信号终止server的运行。
-                logger.error("Record in async-request.log failure" + messageInfo.toString());
+                logger.error("Record in async-request.bin failure" + messageInfo.toString());
                 continue;
             }
             messageInfo.setPosition(position);

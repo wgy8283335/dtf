@@ -17,18 +17,18 @@ public class LogMetadata implements Serializable {
     }
     
     /**
-     * Get position of record in async-request.log.
+     * Get position of record in async-request.bin.
      * 
-     * @return position of record in async-request.log
+     * @return position of record in async-request.bin
      */
     public int getPosition() {
         return position;
     }
 
     /**
-     * Get length of record in async-request.log.
+     * Get length of record in async-request.bin.
      * 
-     * @return length of record in async-request.log
+     * @return length of record in async-request.bin
      */
     public int getLength() {
         return length;

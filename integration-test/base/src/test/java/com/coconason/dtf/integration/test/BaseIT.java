@@ -19,11 +19,10 @@ public class BaseIT {
             InputStream inputStream = process.getInputStream();
             readStreamInfo(errorStream, inputStream);
             int i = process.waitFor();
-            //process.destroy();
             if(i==0) {
-                System.out.println("子进程正常完成");
+                System.out.println("Sub process success");
             } else {
-                System.out.println("子进程异常结束");
+                System.out.println("Sub process failure");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -32,8 +31,22 @@ public class BaseIT {
     
     @Test
     public void finalSynchronizeTest() {
+        
     }
 
+
+    @Test
+    public void strongSynchronizeTest() {
+        
+    }
+
+
+    @Test
+    public void asynchronizeTest() {
+        
+    }
+    
+    
     private static void readStreamInfo(InputStream... inputStreams) {
         for (InputStream in : inputStreams) {
             new Thread(()->{

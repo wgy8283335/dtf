@@ -6,10 +6,10 @@ import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.URL;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
@@ -48,7 +48,21 @@ public final class LogUtil {
 
     private int positionForAppendMessage = 0;
     
+    private static final String LOG_DIR="./logs/";
+
+    private static final String LOG_FILE_NAME="async-request.bin";
+
+    private static final String META_FILE_NAME="catalog.bin";
+    
     private LogUtil(final String logFilePath, final String metadataFilePath) {
+        try {
+            logger.debug(logFilePath);
+            logger.debug(metadataFilePath);
+            createFile(metadataFilePath);
+            createFile(logFilePath);
+        } catch (IOException e) {
+            logger.error(e.getMessage());
+        }
         this.logFilePath = logFilePath;
         Path filename = Paths.get(this.logFilePath);
         try {
@@ -310,9 +324,20 @@ public final class LogUtil {
     }
     
     private static class SingleHolder {
-        private static URL urlForLog = LogUtil.class.getClassLoader().getResource("logs/async-request.log");
-        private static URL urlForMetadata = LogUtil.class.getClassLoader().getResource("logs/catalog.log");
-        private static final LogUtil INSTANCE = new LogUtil(urlForLog.getPath(), urlForMetadata.getPath());
+        private static String shortForLog = LOG_DIR + LOG_FILE_NAME;
+        private static String shortForMetadata = LOG_DIR + META_FILE_NAME;
+        private static final LogUtil INSTANCE = new LogUtil(shortForLog, shortForMetadata);
+    }
+    
+    private static void createFile(String url) throws IOException{
+        File directory = new File(LOG_DIR);
+        if(!directory.exists()) {
+            directory.mkdir();
+        }
+        File file = new File(url);
+        if(!file.exists()){
+            file.createNewFile();
+        }
     }
     
 }
