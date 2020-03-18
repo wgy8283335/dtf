@@ -27,16 +27,18 @@ import java.util.UUID;
  */
 @Service
 public class CourseServiceImpl implements ICourseService {
-
+    
     private Logger logger = LoggerFactory.getLogger(CourseServiceImpl.class);
-
+    
     @Autowired
     private CourseMapper courseMapper;
+    
     @Autowired
     private RestClient restClient;
+    
     @Autowired
     private RestClientAsync restClientAsync;
-
+    
     @Override
     @Transactional
     public DemoResult addCourseInfoWithoutDtf(Course course) throws Exception {
@@ -56,7 +58,7 @@ public class CourseServiceImpl implements ICourseService {
         logger.debug("after 2 sendPost ---------------------------"+System.currentTimeMillis());
         return new DemoResult().ok();
     }
-
+    
     @Override
     @DtfTransaction
     @Transactional
@@ -76,7 +78,7 @@ public class CourseServiceImpl implements ICourseService {
         logger.debug("after 2 sendPost ---------------------------"+System.currentTimeMillis());
         return new DemoResult().ok();
     }
-
+    
     @Override
     @DtfTransaction(type="SYNC_STRONG")
     @Transactional
@@ -92,7 +94,7 @@ public class CourseServiceImpl implements ICourseService {
         restClient.sendPost("http://localhost:8082/set_teacher_info_strong",teacher1);
         return new DemoResult().ok();
     }
-
+    
     @Override
     @DtfTransaction(type="ASYNC_FINAL")
     @Transactional
@@ -110,6 +112,7 @@ public class CourseServiceImpl implements ICourseService {
         restClientAsync.sendPost("http://localhost:8083/add_sc_info_async",sc);
         return new DemoResult().ok();
     }
+    
     @Override
     @DtfTransaction
     @Transactional(readOnly=true)
@@ -126,7 +129,7 @@ public class CourseServiceImpl implements ICourseService {
         DemoResult demoResult = new DemoResult().ok(map.get("datum"));
         return  demoResult;
     }
-
+    
     @Override
     public Course getCourse(int id) throws Exception {
         CourseExample courseExample = new CourseExample();
@@ -136,4 +139,5 @@ public class CourseServiceImpl implements ICourseService {
         Course result = courseList.get(0);
         return result;
     }
+    
 }
