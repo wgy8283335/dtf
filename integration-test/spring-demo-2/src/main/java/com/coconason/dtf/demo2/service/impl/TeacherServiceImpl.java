@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Random;
 
 /**
  * @Author: Jason
@@ -21,7 +22,7 @@ import java.util.List;
  */
 @Service
 public class TeacherServiceImpl implements ITeacherService {
-
+    
     @Autowired
     private TeacherMapper teacherMapper;
     @Autowired
@@ -34,8 +35,8 @@ public class TeacherServiceImpl implements ITeacherService {
             //int kk =6/0;
             if(teacher.getT()==2){
                 Sc sc = new Sc();
-                sc.setC(5);
-                sc.setS(7);
+                sc.setC(new Random().nextInt());
+                sc.setS(new Random().nextInt());
                 sc.setScore(95);
                 restClient.sendPost("http://localhost:8083/add_sc_info_without_dtf",sc);
             }
@@ -44,7 +45,7 @@ public class TeacherServiceImpl implements ITeacherService {
             return new DemoResult().build(ErrorCode.SYS_ERROR.value(), ErrorCode.SYS_ERROR.msg());
         }
     }
-
+    
     @Override
     @DtfTransaction
     @Transactional
@@ -53,8 +54,8 @@ public class TeacherServiceImpl implements ITeacherService {
             //int kk =6/0;
             if(teacher.getT()==2){
                 Sc sc = new Sc();
-                sc.setC(5);
-                sc.setS(7);
+                sc.setC(new Random().nextInt());
+                sc.setS(new Random().nextInt());
                 sc.setScore(95);
                 restClient.sendPost("http://localhost:8083/add_sc_info",sc);
             }
@@ -63,7 +64,7 @@ public class TeacherServiceImpl implements ITeacherService {
             return new DemoResult().build(ErrorCode.SYS_ERROR.value(), ErrorCode.SYS_ERROR.msg());
         }
     }
-
+    
     @Override
     @DtfTransaction(type="SYNC_STRONG")
     @Transactional
@@ -71,8 +72,8 @@ public class TeacherServiceImpl implements ITeacherService {
         if(teacherMapper.insertSelective(teacher)>0){
             if(teacher.getT()==2){
                 Sc sc = new Sc();
-                sc.setC(5);
-                sc.setS(7);
+                sc.setC(new Random().nextInt());
+                sc.setS(new Random().nextInt());
                 sc.setScore(95);
                 restClient.sendPost("http://localhost:8083/add_sc_info_strong",sc);
             }
@@ -81,7 +82,7 @@ public class TeacherServiceImpl implements ITeacherService {
             return new DemoResult().build(ErrorCode.SYS_ERROR.value(), ErrorCode.SYS_ERROR.msg());
         }
     }
-
+    
     @Override
     @DtfTransaction(type="ASYNC_FINAL")
     @Transactional
@@ -93,7 +94,7 @@ public class TeacherServiceImpl implements ITeacherService {
             return new DemoResult().build(ErrorCode.SYS_ERROR.value(), ErrorCode.SYS_ERROR.msg());
         }
     }
-
+    
     @Override
     @DtfTransaction
     @Transactional(readOnly=true)
@@ -106,4 +107,5 @@ public class TeacherServiceImpl implements ITeacherService {
         //int kk = 6/0;
         return teacher;
     }
+    
 }
