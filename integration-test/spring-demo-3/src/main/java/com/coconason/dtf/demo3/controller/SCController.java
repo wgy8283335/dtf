@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -15,31 +16,38 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class SCController {
-
+    
     @Autowired
     ISCService scService;
-
+    
     @RequestMapping(value="/add_sc_info_without_dtf",method = RequestMethod.POST)
     public DemoResult addSCInfoWithoutDtf(@RequestBody Sc sc) throws Exception{
         DemoResult demoResult = scService.addSCInfoWithoutDtf(sc);
         return demoResult;
     }
-
+    
     @RequestMapping(value="/add_sc_info",method = RequestMethod.POST)
     public DemoResult addSCInfo(@RequestBody Sc sc) throws Exception{
         DemoResult demoResult = scService.addSCInfo(sc);
         return demoResult;
     }
-
+    
     @RequestMapping(value="/add_sc_info_strong",method = RequestMethod.POST)
     public DemoResult addSCInfoStrong(@RequestBody Sc sc) throws Exception{
         DemoResult demoResult = scService.addSCInfoStrong(sc);
         return demoResult;
     }
-
+    
     @RequestMapping(value="/add_sc_info_async",method = RequestMethod.POST)
     public DemoResult addSCInfoAsync(@RequestBody Sc sc) throws Exception{
         DemoResult demoResult = scService.addSCInfoAsync(sc);
         return demoResult;
     }
+    
+    @RequestMapping(value="/get_sc",method = RequestMethod.GET)
+    public DemoResult getCourse(@RequestParam int id) throws Exception{
+        Sc sc = scService.getSCInfo(id);
+        return new DemoResult().ok(sc);
+    }
+    
 }

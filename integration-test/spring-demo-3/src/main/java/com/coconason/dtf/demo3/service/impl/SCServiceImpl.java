@@ -6,10 +6,13 @@ import com.coconason.dtf.client.core.spring.client.RestClientAsync;
 import com.coconason.dtf.demo3.dao.ScMapper;
 import com.coconason.dtf.demo3.model.DemoResult;
 import com.coconason.dtf.demo3.po.Sc;
+import com.coconason.dtf.demo3.po.ScExample;
 import com.coconason.dtf.demo3.service.ISCService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * @Author: Jason
@@ -57,5 +60,15 @@ public class SCServiceImpl implements ISCService {
     public DemoResult addSCInfoAsync(Sc sc) throws Exception {
         scMapper.insertSelective(sc);
         return new DemoResult().ok();
+    }
+
+    @Override
+    public Sc getSCInfo(int id) throws Exception {
+        ScExample scExample = new ScExample();
+        ScExample.Criteria criteria = scExample.createCriteria();
+        criteria.andSEqualTo(id);
+        List<Sc> list = scMapper.selectByExample(scExample);
+        Sc result = list.get(0);
+        return result;
     }
 }

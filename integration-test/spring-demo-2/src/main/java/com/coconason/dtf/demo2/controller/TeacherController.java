@@ -49,4 +49,10 @@ public class TeacherController {
         Teacher teacher = teacherService.getTeacherInfo(id);
         return new DemoResult().ok(teacher);
     }
+    
+    @RequestMapping(value="/get_teacher",method = RequestMethod.GET)
+    public DemoResult getTeacher(@RequestParam int id) throws Exception{
+        Teacher teacher = teacherService.getTeacherInfo(id);
+        return new DemoResult().ok(teacher);
+    }
 }

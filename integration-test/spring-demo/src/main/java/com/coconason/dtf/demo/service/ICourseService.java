@@ -20,4 +20,5 @@ public interface ICourseService {
 
     DemoResult getCourseInfo(int id) throws Exception;
 
+    Course getCourse(int id) throws Exception;
 }

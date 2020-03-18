@@ -17,4 +17,6 @@ public interface ISCService {
 
     DemoResult addSCInfoAsync(Sc course) throws Exception;
 
+    Sc getSCInfo(int id) throws Exception;
+
 }

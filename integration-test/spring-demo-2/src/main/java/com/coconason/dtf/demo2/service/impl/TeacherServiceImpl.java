@@ -35,8 +35,8 @@ public class TeacherServiceImpl implements ITeacherService {
             //int kk =6/0;
             if(teacher.getT()==2){
                 Sc sc = new Sc();
-                sc.setC(new Random().nextInt());
-                sc.setS(new Random().nextInt());
+                sc.setC(teacher.getT());
+                sc.setS(teacher.getT());
                 sc.setScore(95);
                 restClient.sendPost("http://localhost:8083/add_sc_info_without_dtf",sc);
             }
@@ -54,8 +54,8 @@ public class TeacherServiceImpl implements ITeacherService {
             //int kk =6/0;
             if(teacher.getT()==2){
                 Sc sc = new Sc();
-                sc.setC(new Random().nextInt());
-                sc.setS(new Random().nextInt());
+                sc.setC(teacher.getT());
+                sc.setS(teacher.getT());
                 sc.setScore(95);
                 restClient.sendPost("http://localhost:8083/add_sc_info",sc);
             }
@@ -72,8 +72,8 @@ public class TeacherServiceImpl implements ITeacherService {
         if(teacherMapper.insertSelective(teacher)>0){
             if(teacher.getT()==2){
                 Sc sc = new Sc();
-                sc.setC(new Random().nextInt());
-                sc.setS(new Random().nextInt());
+                sc.setC(teacher.getT());
+                sc.setS(teacher.getT());
                 sc.setScore(95);
                 restClient.sendPost("http://localhost:8083/add_sc_info_strong",sc);
             }

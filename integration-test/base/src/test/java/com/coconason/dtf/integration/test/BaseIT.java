@@ -2,7 +2,6 @@ package com.coconason.dtf.integration.test;
 
 import com.alibaba.fastjson.JSONObject;
 import com.coconason.dtf.integration.test.entity.Course;
-import com.coconason.dtf.integration.test.entity.DemoResult;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -57,16 +56,20 @@ public class BaseIT {
     }
     
     @Test
-    public void asynchronizeTest() {
+    public void assertSuccessAsynchronizeTest() {
         Course course = new Course();
-        int id = new Random().nextInt();
+        Integer id = new Random().nextInt();
         course.setC(id);
         course.setCname("math");
-        course.setT(new Random().nextInt());
+        course.setT(id);
         String resultPost = sendPost("http://localhost:8081/add_course_info_async", course);
-        String resultGet = sendGet("http://localhost:8081/get_course_info?id="+id);
+        String resultGetCourse = sendGet("http://localhost:8081/get_course?id="+id);
+        String resultGetSC = sendGet("http://localhost:8082/get_sc?id="+id);
+        String resultGetTeacher = sendGet("http://localhost:8083/get_teacher?id="+id);
         assertThat(checkResult(resultPost),is(true));
-        assertThat(checkResult(resultGet),is(true));
+        assertThat(checkResult(resultGetCourse),is(true));
+        assertThat(checkResult(resultGetSC),is(true));
+        assertThat(checkResult(resultGetTeacher),is(true));
     }
     
     @AfterClass
