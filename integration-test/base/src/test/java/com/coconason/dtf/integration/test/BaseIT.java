@@ -2,9 +2,12 @@ package com.coconason.dtf.integration.test;
 
 import com.alibaba.fastjson.JSONObject;
 import com.coconason.dtf.integration.test.entity.Course;
+import com.coconason.dtf.integration.test.entity.DemoResult;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.BufferedReader;
@@ -63,19 +66,44 @@ public class BaseIT {
         course.setCname("math");
         course.setT(id);
         String resultPost = sendPost("http://localhost:8081/add_course_info_async", course);
+        try{
+            Thread.sleep(5000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         String resultGetCourse = sendGet("http://localhost:8081/get_course?id="+id);
-        String resultGetSC = sendGet("http://localhost:8082/get_sc?id="+id);
-        String resultGetTeacher = sendGet("http://localhost:8083/get_teacher?id="+id);
+        String resultGetSC = sendGet("http://localhost:8083/get_sc?id="+id);
+        String resultGetTeacher = sendGet("http://localhost:8082/get_teacher?id="+id);
         assertThat(checkResult(resultPost),is(true));
         assertThat(checkResult(resultGetCourse),is(true));
         assertThat(checkResult(resultGetSC),is(true));
         assertThat(checkResult(resultGetTeacher),is(true));
     }
     
+    @Test
+    public void assertFailureAsynchronizeTest() {
+        Course course = new Course();
+        Integer id = new Random().nextInt();
+        course.setC(null);
+        course.setCname("math");
+        course.setT(id);
+        String resultPost = sendPost("http://localhost:8081/add_course_info_async", course);
+        try{
+            Thread.sleep(5000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String resultGetSC = sendGet("http://localhost:8083/get_sc?id="+id);
+        String resultGetTeacher = sendGet("http://localhost:8082/get_teacher?id="+id);
+        assertThat(checkResult(resultPost),is(false));
+        assertThat(checkResult(resultGetSC),is(false));
+        assertThat(checkResult(resultGetTeacher),is(false));
+    }
+    
     @AfterClass
     public static void destruction() {
         try {
-            Thread.sleep(10000);
+            Thread.sleep(5000);
             String filePath = Thread.currentThread().getContextClassLoader().getResource("destruction-demo.sh").getPath();
             Process process = Runtime.getRuntime().exec(filePath);
             InputStream errorStream = process.getErrorStream();
@@ -116,13 +144,29 @@ public class BaseIT {
     
     private String sendPost(final String url, final Object object) {
         RestTemplate restTemplate = new RestTemplate();
-        String result = restTemplate.postForObject(url, object, String.class);
+        String result = null;
+        try {
+            result = restTemplate.postForObject(url, object, String.class);
+        } catch (RestClientException e) {
+            return new DemoResult(500, "", null).toString();
+        }
+        if(null == result){
+            return new DemoResult(500, "", null).toString();
+        }
         return result;
     }
     
     private String sendGet(final String url) {
         RestTemplate restTemplate = new RestTemplate();
-        String result = restTemplate.getForObject(url, String.class);
+        String result = null;
+        try {
+            result = restTemplate.getForObject(url, String.class);
+        } catch (RestClientException e) {
+            return new DemoResult(500, "", null).toString();
+        }
+        if(null == result){
+            return new DemoResult(500, "", null).toString();
+        }
         return result;
     }
     

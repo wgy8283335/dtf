@@ -20,4 +20,6 @@ public interface ITeacherService {
     DemoResult addTeacherInfoAsync(Teacher teacher) throws Exception;
 
     Teacher getTeacherInfo(int id) throws Exception;
+
+    Teacher getTeacher(int id) throws Exception;
 }

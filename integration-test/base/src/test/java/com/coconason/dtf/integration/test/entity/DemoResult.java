@@ -74,5 +74,12 @@ public class DemoResult<T> implements Serializable {
         return new DemoResult(null);
     }
 
-
+    @Override
+    public String toString() {
+        return "{" +
+                "code:" + code +
+                ", message:'" + message + '\'' +
+                ", datum:" + datum +
+                '}';
+    }
 }

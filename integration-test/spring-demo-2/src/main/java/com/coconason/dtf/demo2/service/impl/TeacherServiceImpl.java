@@ -87,18 +87,27 @@ public class TeacherServiceImpl implements ITeacherService {
     @DtfTransaction(type="ASYNC_FINAL")
     @Transactional
     public DemoResult addTeacherInfoAsync(Teacher teacher) throws Exception {
-        if(teacherMapper.insertSelective(teacher)>0){
+        teacherMapper.insertSelective(teacher);
             //int kk = 6/0;
-            return new DemoResult().ok();
-        }else{
-            return new DemoResult().build(ErrorCode.SYS_ERROR.value(), ErrorCode.SYS_ERROR.msg());
-        }
+        return new DemoResult().ok();
     }
     
     @Override
     @DtfTransaction
     @Transactional(readOnly=true)
     public Teacher getTeacherInfo(int id) throws Exception {
+        TeacherExample teacherExample = new TeacherExample();
+        TeacherExample.Criteria criteria = teacherExample.createCriteria();
+        criteria.andTEqualTo(id);
+        List<Teacher> teacherList = teacherMapper.selectByExample(teacherExample);
+        Teacher teacher = teacherList.get(0);
+        //int kk = 6/0;
+        return teacher;
+    }
+
+
+    @Override
+    public Teacher getTeacher(int id) throws Exception {
         TeacherExample teacherExample = new TeacherExample();
         TeacherExample.Criteria criteria = teacherExample.createCriteria();
         criteria.andTEqualTo(id);
