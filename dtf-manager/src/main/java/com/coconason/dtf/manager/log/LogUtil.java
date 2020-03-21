@@ -96,7 +96,7 @@ public final class LogUtil {
      * @param message message information interface
      * @return position in log metadata
      */
-    public int append(final MessageInfoInterface message) {
+    public synchronized int append(final MessageInfoInterface message) {
         LogMetadata logMetadata = add(message);
         if (null == logMetadata) {
             return -1;
@@ -110,7 +110,7 @@ public final class LogUtil {
      * 
      * @param message message information interface
      */
-    public void updateCommitStatus(final MessageInfoInterface message) {
+    public synchronized void updateCommitStatus(final MessageInfoInterface message) {
         LogMetadata logMetadata = getMetadata(message.getPosition());
         update(message, logMetadata);
     }
@@ -220,7 +220,10 @@ public final class LogUtil {
     
     private void update(final MessageInfoInterface message, final LogMetadata logMetadata) {
         try {
-            FileLock fl = logChannel.lock(logMetadata.getPosition(), logMetadata.getLength(), false);
+            FileLock fl = logChannel.tryLock(logMetadata.getPosition(), logMetadata.getLength(), false);
+            while(null == fl || (!fl.isValid())){
+                fl = logChannel.tryLock(logMetadata.getPosition(), logMetadata.getLength(), false);
+            }
             logBuffer.position(logMetadata.getPosition());
             logBuffer.put(objectToBytes(message));
             logBuffer.force();
@@ -289,6 +292,9 @@ public final class LogUtil {
         byte[] bytes = objectToBytes(logMetadata);
         try {
             FileLock fl = metadataChannel.lock(metadataChannel.position(), size, false);
+            while(null == fl || (!fl.isValid())){
+                fl = metadataChannel.lock(metadataChannel.position(), size, false);
+            }
             if ((positionForAppendMetadata+bytes.length) >= (size * metadataSize)) {
                 positionForAppendMetadata = 0;
             }
@@ -308,6 +314,9 @@ public final class LogUtil {
         byte[] bytes = objectToBytes(message);
         try {
             FileLock fl = logChannel.lock(logChannel.position(), size, false);
+            while(null == fl || (!fl.isValid())){
+                fl = logChannel.lock(logChannel.position(), size, false);
+            }
             if ((positionForAppendMessage+bytes.length) >= (size * messageSize)) {
                 positionForAppendMessage = 0;
             }

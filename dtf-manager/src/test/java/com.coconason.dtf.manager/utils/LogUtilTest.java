@@ -1,11 +1,17 @@
 package com.coconason.dtf.manager.utils;
 
 import com.coconason.dtf.manager.log.LogUtil;
+import com.coconason.dtf.manager.log.LogUtilForSyncApproveSubmit;
+import com.coconason.dtf.manager.log.LogUtilForSyncFinalSuspend;
 import com.coconason.dtf.manager.message.MessageInfo;
 import com.coconason.dtf.manager.message.MessageInfoInterface;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
+
+import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -66,5 +72,39 @@ public class LogUtilTest {
         assertThat(messageInfo1.isCommitted(), is(false));
     }
     
+    @Test
+    public void assertQMultiThread(){
+        LogUtil logUtil = LogUtil.getInstance();
+        ExecutorService executorService =  Executors.newCachedThreadPool();
+        for(int i = 0; i < 50; i++) {
+            executorService.execute(new LogRunnable(logUtil));
+        }
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        MessageInfoInterface messageInfo = logUtil.get(110*50*100);
+        assertThat(messageInfo.getUrl(), is("http://localhost:8083/test"));
+        assertThat(messageInfo.isCommitted(), is(true));
+        assertThat(messageInfo.getHttpAction(), is("post"));
+    }
+
+
+    private class LogRunnable implements Runnable {
+
+        LogUtil logUtil;
+
+        public LogRunnable(LogUtil logUtil) {
+            this.logUtil = logUtil;
+        }
+
+        @Override
+        public void run() {
+            for(int i = 0; i < 100; i++){
+                logUtil.append(new MessageInfo(UUID.randomUUID().toString(), true, "http://localhost:8083/test", new Object(), System.currentTimeMillis(), "post"));
+            }
+        }
+    }
     
 }

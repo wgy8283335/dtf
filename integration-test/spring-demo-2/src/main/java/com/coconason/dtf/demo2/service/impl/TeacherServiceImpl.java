@@ -51,14 +51,11 @@ public class TeacherServiceImpl implements ITeacherService {
     @Transactional
     public DemoResult addTeacherInfo(Teacher teacher) throws Exception {
         if(teacherMapper.insertSelective(teacher)>0){
-            //int kk =6/0;
-            if(teacher.getT()==2){
-                Sc sc = new Sc();
-                sc.setC(teacher.getT());
-                sc.setS(teacher.getT());
-                sc.setScore(95);
-                restClient.sendPost("http://localhost:8083/add_sc_info",sc);
-            }
+            Sc sc = new Sc();
+            sc.setC(teacher.getT());
+            sc.setS(teacher.getT());
+            sc.setScore(95);
+            restClient.sendPost("http://localhost:8083/add_sc_info",sc);
             return new DemoResult().ok();
         }else{
             return new DemoResult().build(ErrorCode.SYS_ERROR.value(), ErrorCode.SYS_ERROR.msg());

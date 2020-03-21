@@ -70,12 +70,6 @@ public class CourseServiceImpl implements ICourseService {
         logger.debug("before sendPost ---------------------------"+System.currentTimeMillis());
         String result = restClient.sendPost("http://localhost:8082/set_teacher_info",teacher);
         logger.debug("after sendPost ---------------------------"+System.currentTimeMillis());
-        Teacher teacher1 = new Teacher();
-        teacher1.setT(course.getC());
-        teacher1.setTname("Yun");
-        logger.debug("before 2 sendPost ---------------------------"+System.currentTimeMillis());
-        String result2 = restClient.sendPost("http://localhost:8082/set_teacher_info",teacher1);
-        logger.debug("after 2 sendPost ---------------------------"+System.currentTimeMillis());
         return new DemoResult().ok();
     }
     

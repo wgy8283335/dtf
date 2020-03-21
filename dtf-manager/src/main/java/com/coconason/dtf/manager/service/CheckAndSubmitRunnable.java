@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
 import com.coconason.dtf.manager.cache.MessageCacheInterface;
+import com.coconason.dtf.manager.log.LogUtil;
+import com.coconason.dtf.manager.log.LogUtilForSyncApproveSubmit;
 import com.coconason.dtf.manager.message.TransactionMessageForAdding;
 import com.coconason.dtf.manager.message.TransactionMessageFactory;
 import com.coconason.dtf.manager.message.TransactionMessageGroupInterface;
@@ -96,11 +98,10 @@ public final class CheckAndSubmitRunnable implements Runnable {
     private void goThroughMemberListAndSendMessage(final List<TransactionMessageForAdding> memberList, final TransactionMessageGroupInterface elementFromCache) {
         for (TransactionMessageForAdding messageForAdding : memberList) {
             if (actionType == ActionType.ADD || actionType == ActionType.APPROVESUBMIT) {
-                logger.debug("Send transaction message:\n" + message);
+                LogUtilForSyncApproveSubmit.getInstance().append(messageForAdding.toString());
                 threadPoolForServerProxy.execute(new SendMessageRunnable(elementFromCache.getGroupId() + messageForAdding.getGroupMemberId(),
                         ActionType.APPROVESUBMIT, messageForAdding.getCtx(), "send APPROVESUBMIT message fail", serverThreadLockCacheProxy));
             } else {
-                logger.debug("Send transaction message:\n" + message);
                 threadPoolForServerProxy.execute(new SendMessageRunnable(elementFromCache.getGroupId() + messageForAdding.getGroupMemberId(),
                         ActionType.APPROVESUBMIT_STRONG, messageForAdding.getCtx(), "send APPROVESUBMIT_STRONG message fail", serverThreadLockCacheProxy));
             }
