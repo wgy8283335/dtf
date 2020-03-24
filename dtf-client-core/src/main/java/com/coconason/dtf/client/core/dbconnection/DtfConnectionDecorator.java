@@ -132,10 +132,7 @@ public final class DtfConnectionDecorator implements Connection {
             hasRead = true;
             return;
         }
-        logger.info("commit");
         state = OperationType.COMMIT;
-        close();
-        hasClose = true;
     }
     
     /**
@@ -152,12 +149,13 @@ public final class DtfConnectionDecorator implements Connection {
         }
         logger.info("rollback");
         state = OperationType.ROLLBACK;
-        close();
-        hasClose = true;
+        connection.rollback();
     }
     
     @Override
     public void rollback(final Savepoint savepoint) throws SQLException {
+        logger.info("rollback");
+        state = OperationType.ROLLBACK;
         connection.rollback(savepoint);
     }
     
@@ -167,12 +165,8 @@ public final class DtfConnectionDecorator implements Connection {
      */
     @Override
     public void close() throws SQLException {
-        if (readOnly || hasRead) {
+        if (readOnly || hasRead || state == OperationType.ROLLBACK) {
             connection.close();
-            return;
-        }
-        if (hasClose) {
-            hasClose = false;
             return;
         }
         transactionServiceInfo = BaseTransactionServiceInfo.getCurrent();
@@ -189,20 +183,13 @@ public final class DtfConnectionDecorator implements Connection {
             return;
         }
         threadPoolForClientProxy.execute(new SubmitRunnable(TransactionGroupInfo.getCurrent(),transactionServiceInfo));
-        BaseTransactionGroupInfo transactionGroupInfo = TransactionGroupInfo.getCurrent();
-        String groupId = transactionGroupInfo.getGroupId();
-        Long memberId = transactionGroupInfo.getMemberId();
-        process(memberId, groupId);
+        processForSyncStrong(TransactionGroupInfo.getCurrent());
     }
     
-    private void process(final Long memberId, final String groupId) throws SQLException {
-        if (Member.ORIGINAL_ID.equals(memberId) && TransactionType.SYNC_FINAL == TransactionType.getCurrent()) {
-//            queue.add(TransactionServiceInfoFactory.newInstanceWithGroupIdSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT,
-//                    TransactionGroupInfo.getCurrent().getGroupId(), TransactionGroupInfo.getCurrent().getGroupMembers()));
-//            return;
-        } else if (Member.ORIGINAL_ID.equals(memberId) && TransactionType.SYNC_STRONG == TransactionType.getCurrent()) {
-//            queue.add(TransactionServiceInfoFactory.newInstanceWithGroupIdSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT_STRONG,
-//                    TransactionGroupInfo.getCurrent().getGroupId(), TransactionGroupInfo.getCurrent().getGroupMembers()));
+    private void processForSyncStrong(final BaseTransactionGroupInfo transactionGroupInfo) throws SQLException {
+        String groupId = transactionGroupInfo.getGroupId();
+        Long memberId = transactionGroupInfo.getMemberId();
+        if (Member.ORIGINAL_ID.equals(memberId) && TransactionType.SYNC_STRONG == TransactionType.getCurrent()) {
             ClientLockAndConditionInterface secondlc = new ClientLockAndCondition(new ReentrantLock(), OperationType.DEFAULT);
             secondThreadLockCacheProxy.put(groupId, secondlc);
             boolean isWholeSuccess = secondlc.await(10000, TimeUnit.MILLISECONDS);
@@ -511,11 +498,11 @@ public final class DtfConnectionDecorator implements Connection {
             JSONObject map = transactionServiceInfo.getInfo();
             threadLockCacheProxy.put(map.get("groupId").toString() + memberId, lc);
             queue.add(transactionServiceInfo);
-            boolean result = lc.await(10000, TimeUnit.MILLISECONDS);
-            if (transactionWhenTimeout(result, groupId, groupMembers)) {
+            boolean result = lc.await(20000, TimeUnit.MILLISECONDS);
+            if (transactionWhenTimeout(result, memberId, groupId, groupMembers)) {
                 return;
             }
-            if (transactionWhenCommitOrRollback(map, memberId, groupId, groupMembers)) {
+            if (transactionWhenCommit(map, memberId, groupId, groupMembers)) {
                 return;
             }
             if (transactionWhenAddStringOrCancel(memberId)) {
@@ -523,39 +510,32 @@ public final class DtfConnectionDecorator implements Connection {
             }
         }
         
-        private boolean transactionWhenTimeout(final boolean result, final String groupId, final Set groupMembers) {
+        private boolean transactionWhenTimeout(final boolean result, final Long memberId, final String groupId, final Set groupMembers) {
             if (!result) {
+                logger.info("timeout and rollback");
                 try {
                     connection.rollback();
                     connection.close();
                 } catch (SQLException e) {
                     logger.error(e.getMessage());
                 }
-                addNewTransactionServicetoQueueWhenFalse(groupId, groupMembers);
                 return true;
             }
             return false;
         }
         
-        private boolean transactionWhenCommitOrRollback(final JSONObject map, final Long memberId, final String groupId, final Set groupMembers) {
+        private boolean transactionWhenCommit(final JSONObject map, final Long memberId, final String groupId, final Set groupMembers) {
             state = threadLockCacheProxy.getIfPresent(map.get("groupId").toString() + memberId).getState();
             if (state == OperationType.COMMIT) {
-                logger.debug("commit");
                 try {
                     connection.commit();
                 } catch (SQLException e) {
                     logger.error(e.getMessage());
+                    logger.info("commit failure");
+                    addNewTransactionServiceToQueueWhenFalse(groupId, groupMembers, memberId);
                 }
-                addNewTransactionServicetoQueueWhenCommit(groupId, groupMembers, memberId);
-                return true;
-            } else if (state == OperationType.ROLLBACK) {
-                logger.debug("rollback");
-                try {
-                    connection.rollback();
-                } catch (SQLException e) {
-                    logger.error(e.getMessage());
-                }
-                addNewTransactionServicetoQueueWhenRollback(groupId, groupMembers);
+                logger.info("commit success");
+                addNewTransactionServiceToQueueWhenCommit(groupId, groupMembers, memberId);
                 return true;
             }
             return false;
@@ -573,27 +553,19 @@ public final class DtfConnectionDecorator implements Connection {
             return false;
         }
         
-        private void addNewTransactionServicetoQueueWhenFalse(final String groupId, final Set groupMembers) {
+        private void addNewTransactionServiceToQueueWhenFalse(final String groupId, final Set groupMembers, final Long memberId) {
             if (transactionServiceInfo.getAction() == MessageProto.Message.ActionType.ADD_STRONG) {
-                queue.add(TransactionServiceInfoFactory.newInstanceWithGroupIdSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL_STRONG, groupId, groupMembers));
+                queue.add(TransactionServiceInfoFactory.newInstanceForSub(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL_STRONG, groupId, groupMembers, memberId));
             } else if (transactionServiceInfo.getAction() == MessageProto.Message.ActionType.ADD) {
-                queue.add(TransactionServiceInfoFactory.newInstanceWithGroupIdSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL, groupId, groupMembers));
+                queue.add(TransactionServiceInfoFactory.newInstanceForSub(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL, groupId, groupMembers, memberId));
             }
         }
         
-        private void addNewTransactionServicetoQueueWhenCommit(final String groupId, final Set groupMembers, final Long memberId) {
+        private void addNewTransactionServiceToQueueWhenCommit(final String groupId, final Set groupMembers, final Long memberId) {
             if (transactionServiceInfo.getAction() == MessageProto.Message.ActionType.ADD_STRONG) {
                 queue.add(TransactionServiceInfoFactory.newInstanceForSub(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_SUCCESS_STRONG, groupId, groupMembers, memberId));
             } else if (transactionServiceInfo.getAction() == MessageProto.Message.ActionType.ADD) {
                 queue.add(TransactionServiceInfoFactory.newInstanceForSub(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_SUCCESS, groupId, groupMembers, memberId));
-            }
-        }
-        
-        private void addNewTransactionServicetoQueueWhenRollback(final String groupId, final Set groupMembers) {
-            if (transactionServiceInfo.getAction() == MessageProto.Message.ActionType.ADD_STRONG) {
-                queue.add(TransactionServiceInfoFactory.newInstanceWithGroupIdSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL_STRONG, groupId, groupMembers));
-            } else if (transactionServiceInfo.getAction() == MessageProto.Message.ActionType.ADD) {
-                queue.add(TransactionServiceInfoFactory.newInstanceWithGroupIdSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL, groupId, groupMembers));
             }
         }
     }

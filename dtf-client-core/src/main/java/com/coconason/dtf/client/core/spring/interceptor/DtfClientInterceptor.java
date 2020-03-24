@@ -46,14 +46,7 @@ final class DtfClientInterceptor {
         RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
         HttpServletRequest request = requestAttributes == null ? null : ((ServletRequestAttributes) requestAttributes).getRequest();
         String info = request == null ? null : request.getHeader("groupInfo");
-        Object result = null;
-        try {
-            result = aspectHandler.before(info, joinPoint);
-        } catch (Exception exception) {
-            logger.error(exception.getMessage());
-        } catch (Throwable error) {
-            throw error;
-        }
+        Object result = aspectHandler.before(info, joinPoint);
         return result;
     }
 }

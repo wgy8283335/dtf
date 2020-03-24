@@ -1,5 +1,7 @@
 package com.coconason.dtf.demo2.model;
 
+import com.alibaba.fastjson.JSONObject;
+
 import java.io.Serializable;
 
 
@@ -38,7 +40,9 @@ public class DemoResult<T> implements Serializable {
     }
 
     public DemoResult(){
-
+        this.code = 200;
+        this.message = "OK";
+        this.datum = null;
     }
 
     public DemoResult(Integer code, String message, T datum) {
@@ -58,8 +62,13 @@ public class DemoResult<T> implements Serializable {
         this.message = "OK";
         this.datum = datum;
     }
-
-
+    
+    public DemoResult(String information) {
+        JSONObject map = new JSONObject().parseObject(information);
+        code = map.getInteger("code");
+        message = map.getString("message");
+    }
+    
     public DemoResult build(Integer code, String message, T datum) {
         return new DemoResult(code, message, datum);
     }
@@ -72,7 +81,8 @@ public class DemoResult<T> implements Serializable {
     }
 
     public DemoResult ok() {
-        return new DemoResult(null);
+        return new DemoResult();
     }
+
 
 }

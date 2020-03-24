@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.coconason.dtf.client.core.annotation.DtfTransaction;
 import com.coconason.dtf.client.core.spring.client.RestClient;
 import com.coconason.dtf.client.core.spring.client.RestClientAsync;
+import com.coconason.dtf.demo.constant.ErrorCode;
 import com.coconason.dtf.demo.dao.CourseMapper;
 import com.coconason.dtf.demo.model.DemoResult;
 import com.coconason.dtf.demo.po.Course;
@@ -62,13 +63,17 @@ public class CourseServiceImpl implements ICourseService {
     @Override
     @DtfTransaction
     @Transactional
-    public DemoResult addCourseInfo(Course course) throws Exception {
+    public DemoResult addCourseInfo(Course course) {
         courseMapper.insertSelective(course);
         Teacher teacher = new Teacher();
-        teacher.setT(course.getC());
+        teacher.setT(course.getT());
         teacher.setTname("Lin");
         logger.debug("before sendPost ---------------------------"+System.currentTimeMillis());
-        String result = restClient.sendPost("http://localhost:8082/set_teacher_info",teacher);
+        String response = restClient.sendPost("http://localhost:8082/set_teacher_info",teacher);
+        DemoResult result = new DemoResult(response);
+        if(200 != result.getCode()) {
+            return new DemoResult().build(ErrorCode.SYS_ERROR.value(), ErrorCode.SYS_ERROR.msg());
+        }
         logger.debug("after sendPost ---------------------------"+System.currentTimeMillis());
         return new DemoResult().ok();
     }

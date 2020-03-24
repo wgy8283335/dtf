@@ -71,7 +71,7 @@ public final class CheckAndSubmitRunnable implements Runnable {
         TransactionMessageGroupInterface tmfs = null;
         if (actionType == ActionType.ADD || actionType == ActionType.ADD_STRONG) {
             tmfs = messageForSubmitSyncCacheProxy.get(groupId);
-        } else if (actionType == ActionType.APPROVESUBMIT || actionType == ActionType.APPROVESUBMIT_STRONG || actionType == ActionType.CANCEL) {
+        } else if (actionType == ActionType.APPLYFORSUBMIT || actionType == ActionType.APPLYFORSUBMIT_STRONG || actionType == ActionType.CANCEL) {
             tmfs = TransactionMessageFactory.getMessageForSubmitInstance(message);
         }
         if (tmfs == null || tmfs.getMemberSet().isEmpty() || messageSyncCacheProxy.get(tmfs.getGroupId()) == null) {
@@ -90,9 +90,9 @@ public final class CheckAndSubmitRunnable implements Runnable {
             return;
         }
         goThroughMemberListAndSendMessage(memberList, elementFromCache);
-        if (actionType == ActionType.ADD || actionType == ActionType.APPROVESUBMIT) {
-            messageSyncCacheProxy.invalidate(tmfs.getGroupId());
-        }
+//        if (actionType == ActionType.ADD || actionType == ActionType.APPROVESUBMIT) {
+//            messageSyncCacheProxy.invalidate(tmfs.getGroupId());
+//        }
     }
     
     private void goThroughMemberListAndSendMessage(final List<TransactionMessageForAdding> memberList, final TransactionMessageGroupInterface elementFromCache) {
@@ -101,9 +101,12 @@ public final class CheckAndSubmitRunnable implements Runnable {
                 LogUtilForSyncApproveSubmit.getInstance().append(messageForAdding.toString());
                 threadPoolForServerProxy.execute(new SendMessageRunnable(elementFromCache.getGroupId() + messageForAdding.getGroupMemberId(),
                         ActionType.APPROVESUBMIT, messageForAdding.getCtx(), "send APPROVESUBMIT message fail", serverThreadLockCacheProxy));
-            } else {
+            } else if (actionType == ActionType.ADD_STRONG || actionType == ActionType.APPROVESUBMIT_STRONG) {
                 threadPoolForServerProxy.execute(new SendMessageRunnable(elementFromCache.getGroupId() + messageForAdding.getGroupMemberId(),
                         ActionType.APPROVESUBMIT_STRONG, messageForAdding.getCtx(), "send APPROVESUBMIT_STRONG message fail", serverThreadLockCacheProxy));
+            } else if (actionType == ActionType.CANCEL){
+                threadPoolForServerProxy.execute(new SendMessageRunnable(elementFromCache.getGroupId() + messageForAdding.getGroupMemberId(),
+                        ActionType.CANCEL, messageForAdding.getCtx(), "send CANCEL message fail", serverThreadLockCacheProxy));
             }
         }
     }

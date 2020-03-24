@@ -24,14 +24,14 @@ public final class SendMessageStrategyContext {
         map.put(ActionType.ADD_STRONG, new SendMessageWithMethod());
         map.put(ActionType.APPLYFORSUBMIT_STRONG, new SendMessageWithGroupMemberSet());
         map.put(ActionType.SUB_SUCCESS_STRONG, new SendMessageWithMemberId());
-        map.put(ActionType.SUB_FAIL_STRONG, new SendMessageWithGroupMemberSet());
+        map.put(ActionType.SUB_FAIL_STRONG, new SendMessageWithMemberId());
         map.put(ActionType.ADD_ASYNC, new SendMessageWithUrl());
         map.put(ActionType.ASYNC_COMMIT, new SendMessageWithGroupMemberSet());
         map.put(ActionType.CANCEL, new SendMessageWithGroupMemberSet());
         map.put(ActionType.WHOLE_SUCCESS_STRONG_ACK, new SendMessageWithShortParameters());
         map.put(ActionType.WHOLE_FAIL_STRONG_ACK, new SendMessageWithShortParameters());
         map.put(ActionType.SUB_SUCCESS, new SendMessageWithMemberId());
-        map.put(ActionType.SUB_FAIL, new SendMessageWithGroupMemberSet());
+        map.put(ActionType.SUB_FAIL, new SendMessageWithMemberId());
         
     }
     

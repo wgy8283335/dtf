@@ -1,6 +1,7 @@
 package com.coconason.dtf.manager.thread;
 
 import com.coconason.dtf.common.protobuf.MessageProto;
+import com.coconason.dtf.manager.log.LogUtilForSyncFinalSuspend;
 import com.coconason.dtf.manager.protobufserver.NettyServer;
 import com.coconason.dtf.manager.utils.MessageSender;
 import io.netty.channel.ChannelHandlerContext;
@@ -101,14 +102,13 @@ public final class LockAndCondition implements LockAndConditionInterface {
                                      final ChannelHandlerContext ctx, final String msg) throws ServerChannelException {
         MessageSender.sendMsg(groupId, action, ctx);
         boolean receivedSignal = await(10000, TimeUnit.MILLISECONDS);
-        while (!receivedSignal) {
+        if (!receivedSignal) {
             boolean channelIsHealthy = NettyServer.isHealthy();
             if (channelIsHealthy) {
                 MessageSender.sendMsg(groupId, action, ctx);
-                receivedSignal = await(60000, TimeUnit.MILLISECONDS);
             } else {
-                //should write log.
                 logger.error(msg + "\n" + "groupId:" + groupId + "\n" + "action:" + action);
+                LogUtilForSyncFinalSuspend.getInstance().append(msg + "\n" + "groupId:" + groupId + "\n" + "action:" + action);
                 throw new ServerChannelException(msg);
             }
         }

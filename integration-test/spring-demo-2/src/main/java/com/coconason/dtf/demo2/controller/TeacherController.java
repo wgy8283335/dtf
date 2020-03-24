@@ -1,5 +1,6 @@
 package com.coconason.dtf.demo2.controller;
 
+import com.coconason.dtf.demo2.constant.ErrorCode;
 import com.coconason.dtf.demo2.model.DemoResult;
 import com.coconason.dtf.demo2.po.Teacher;
 import com.coconason.dtf.demo2.service.ITeacherService;
@@ -27,8 +28,13 @@ public class TeacherController {
     }
 
     @RequestMapping(value="/set_teacher_info",method = RequestMethod.POST)
-    public DemoResult setTeacherInfo(@RequestBody Teacher teacher) throws Exception{
-        DemoResult demoResult = teacherService.addTeacherInfo(teacher);
+    public DemoResult setTeacherInfo(@RequestBody Teacher teacher) {
+        DemoResult demoResult;
+        try{
+            demoResult = teacherService.addTeacherInfo(teacher);
+        } catch (Exception e) {
+            demoResult = new DemoResult().build(ErrorCode.SYS_ERROR.value(), ErrorCode.SYS_ERROR.msg());
+        }
         return demoResult;
     }
 

@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Random;
 
 /**
  * @Author: Jason
@@ -49,17 +48,18 @@ public class TeacherServiceImpl implements ITeacherService {
     @Override
     @DtfTransaction
     @Transactional
-    public DemoResult addTeacherInfo(Teacher teacher) throws Exception {
-        if(teacherMapper.insertSelective(teacher)>0){
-            Sc sc = new Sc();
-            sc.setC(teacher.getT());
-            sc.setS(teacher.getT());
-            sc.setScore(95);
-            restClient.sendPost("http://localhost:8083/add_sc_info",sc);
-            return new DemoResult().ok();
-        }else{
+    public DemoResult addTeacherInfo(Teacher teacher) {
+        teacherMapper.insertSelective(teacher);
+        Sc sc = new Sc();
+        sc.setC(teacher.getT());
+        sc.setS(teacher.getT());
+        sc.setScore(95);
+        String response = restClient.sendPost("http://localhost:8083/add_sc_info",sc);
+        DemoResult result = new DemoResult(response);
+        if(200 != result.getCode()) {
             return new DemoResult().build(ErrorCode.SYS_ERROR.value(), ErrorCode.SYS_ERROR.msg());
         }
+        return new DemoResult().ok();
     }
     
     @Override

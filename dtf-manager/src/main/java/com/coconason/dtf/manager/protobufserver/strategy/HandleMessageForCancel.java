@@ -3,6 +3,7 @@ package com.coconason.dtf.manager.protobufserver.strategy;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.manager.cache.MessageCacheInterface;
 import com.coconason.dtf.manager.protobufserver.ServerTransactionHandler;
+import com.coconason.dtf.manager.service.CancelRunnable;
 import com.coconason.dtf.manager.service.CheckAndSubmitRunnable;
 import com.coconason.dtf.manager.thread.ServerThreadLockCacheProxy;
 import io.netty.channel.ChannelHandlerContext;
@@ -27,11 +28,10 @@ public class HandleMessageForCancel implements HandleMessageStrategy {
     public void handleMessage(final ServerTransactionHandler serverTransactionHandler, final ChannelHandlerContext ctx, final Object msg) {
         MessageCacheInterface messageSyncCacheProxy = serverTransactionHandler.getMessageSyncCacheProxy();
         ExecutorService threadPoolForServerProxy = serverTransactionHandler.getThreadPoolForServerProxy();
-        MessageCacheInterface messageForSubmitSyncCacheProxy = serverTransactionHandler.getMessageForSubmitSyncCacheProxy();
         ServerThreadLockCacheProxy serverThreadLockCacheProxy = serverTransactionHandler.getServerThreadLockCacheProxy();
         MessageProto.Message message = (MessageProto.Message) msg;
-        threadPoolForServerProxy.execute(new CheckAndSubmitRunnable(message, MessageProto.Message.ActionType.CANCEL, ctx, 
-                messageForSubmitSyncCacheProxy, messageSyncCacheProxy, serverThreadLockCacheProxy, threadPoolForServerProxy));
+        threadPoolForServerProxy.execute(new CancelRunnable(message, MessageProto.Message.ActionType.CANCEL, ctx, 
+                messageSyncCacheProxy, serverThreadLockCacheProxy, threadPoolForServerProxy));
     }
     
 }
