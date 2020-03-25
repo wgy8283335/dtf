@@ -89,13 +89,11 @@ public final class CheckAndSubmitRunnable implements Runnable {
         if (!SetUtil.isSetEqual(setFromMessage, setFromCache)) {
             return;
         }
-        goThroughMemberListAndSendMessage(memberList, elementFromCache);
-//        if (actionType == ActionType.ADD || actionType == ActionType.APPROVESUBMIT) {
-//            messageSyncCacheProxy.invalidate(tmfs.getGroupId());
-//        }
+        goThroughMemberListAndSendMessage(memberList, elementFromCache, tmfs);
     }
     
-    private void goThroughMemberListAndSendMessage(final List<TransactionMessageForAdding> memberList, final TransactionMessageGroupInterface elementFromCache) {
+    private void goThroughMemberListAndSendMessage(final List<TransactionMessageForAdding> memberList, final TransactionMessageGroupInterface elementFromCache, 
+                                                   final TransactionMessageGroupInterface tmfs) {
         for (TransactionMessageForAdding messageForAdding : memberList) {
             if (actionType == ActionType.ADD || actionType == ActionType.APPROVESUBMIT) {
                 LogUtilForSyncApproveSubmit.getInstance().append(messageForAdding.toString());

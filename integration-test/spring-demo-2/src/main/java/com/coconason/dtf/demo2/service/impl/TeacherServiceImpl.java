@@ -59,6 +59,8 @@ public class TeacherServiceImpl implements ITeacherService {
         if(200 != result.getCode()) {
             return new DemoResult().build(ErrorCode.SYS_ERROR.value(), ErrorCode.SYS_ERROR.msg());
         }
+        teacher.setT(teacher.getT()*10);
+        teacherMapper.insertSelective(teacher);
         return new DemoResult().ok();
     }
     

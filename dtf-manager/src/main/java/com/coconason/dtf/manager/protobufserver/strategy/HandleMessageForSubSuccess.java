@@ -26,8 +26,7 @@ public class HandleMessageForSubSuccess implements HandleMessageStrategy {
     
     /**
      * Handle message for sub success.
-     * lc signal the SendMessageRunnable with APPROVESUBMIT. 
-     * 
+     * lc signal the SendMessageRunnable with APPROVESUBMIT.
      */
     @Override
     public void handleMessage(final ServerTransactionHandler serverTransactionHandler, final ChannelHandlerContext ctx, final Object msg) {
@@ -36,9 +35,9 @@ public class HandleMessageForSubSuccess implements HandleMessageStrategy {
         String groupTempId = JSONObject.parseObject(message.getInfo()).get("groupId").toString();
         MessageCacheInterface messageSyncCacheProxy = serverTransactionHandler.getMessageSyncCacheProxy();
         TransactionMessageGroupInterface groupInfoToLog = messageSyncCacheProxy.get(groupTempId);
-        logger.debug("SUB SUCCESS:" + groupInfoToLog.toString());
+        //logger.debug("SUB SUCCESS:" + groupInfoToLog.toString());
+        logger.debug("SUB SUCCESS:" + message.getInfo());
         LogUtilForSyncFinalSuccess.getInstance().append(groupInfoToLog.toString());
-        messageSyncCacheProxy.invalidate(groupTempId);
         ServerThreadLockCacheProxy serverThreadLockCacheProxy = serverTransactionHandler.getServerThreadLockCacheProxy();
         LockAndConditionInterface lc = serverThreadLockCacheProxy.getIfPresent(groupTempId + memberId);
         lc.signal();

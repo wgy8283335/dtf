@@ -70,7 +70,7 @@ final class ClientTransactionHandler extends AbstractClientTransactionHandler {
         ClientLockAndConditionInterface lc = null;
         OperationType state = null;
         if (action == ActionType.APPROVESUBMIT || action == ActionType.APPROVESUBMIT_STRONG || action == ActionType.CANCEL) {
-            map = JSONObject.parseObject(message.getInfo().toString());
+            map = JSONObject.parseObject(message.getInfo());
             lc = threadLockCacheProxy.getIfPresent(map.get("groupId").toString());
             state = lc.getState();
         }

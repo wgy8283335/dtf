@@ -37,7 +37,6 @@ public class HandleMessageForSubFail implements HandleMessageStrategy {
         TransactionMessageGroupInterface groupInfoToLog = messageSyncCacheProxy.get(groupTempId);
         logger.error("SUB FAIL :" + groupInfoToLog.toString());
         LogUtilForSyncFinalFailure.getInstance().append(groupInfoToLog.toString());
-        messageSyncCacheProxy.invalidate(groupTempId);
         ServerThreadLockCacheProxy serverThreadLockCacheProxy = serverTransactionHandler.getServerThreadLockCacheProxy();
         LockAndConditionInterface lc = serverThreadLockCacheProxy.getIfPresent(groupTempId + memberId);
         lc.signal();

@@ -146,10 +146,8 @@ public final class AspectHandler implements AspectInterface {
             try {
                 result = point.proceed();
             } catch (Exception e) {
-                if (Member.ORIGINAL_ID.equals(TransactionGroupInfo.getCurrent().getMemberId())) {
-                    queue.add(TransactionServiceInfoFactory.newInstanceWithGroupIdSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.CANCEL,
-                            TransactionGroupInfo.getCurrent().getGroupId(), TransactionGroupInfo.getCurrent().getGroupMembers()));
-                }
+                queue.add(TransactionServiceInfoFactory.newInstanceWithGroupIdSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.CANCEL,
+                        TransactionGroupInfo.getCurrent().getGroupId(), TransactionGroupInfo.getCurrent().getGroupMembers()));
                 logger.error(e.getMessage());
             }
             queue.add(TransactionServiceInfoFactory.newInstanceWithGroupIdSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT,
@@ -172,10 +170,8 @@ public final class AspectHandler implements AspectInterface {
             try {
                 result = point.proceed();
             } catch (Exception e) {
-                if (Member.ORIGINAL_ID.equals(TransactionGroupInfo.getCurrent().getMemberId())) {
-                    queue.add(TransactionServiceInfoFactory.newInstanceWithGroupIdSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.CANCEL,
-                            TransactionGroupInfo.getCurrent().getGroupId(), TransactionGroupInfo.getCurrent().getGroupMembers()));
-                }
+                queue.add(TransactionServiceInfoFactory.newInstanceWithGroupIdSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.CANCEL,
+                        TransactionGroupInfo.getCurrent().getGroupId(), TransactionGroupInfo.getCurrent().getGroupMembers()));
                 logger.error(e.getMessage());
             }
 
@@ -198,12 +194,10 @@ public final class AspectHandler implements AspectInterface {
                                                          final Method method, final Object[] args) throws Throwable {
         BaseTransactionGroupInfo transactionGroupInfo = TransactionGroupInfoFactory.getInstanceByParsingString(info);
         //if the thread does not have transactionGroupInfo,set current transaction group information and current transaction service information
-        BaseTransactionGroupInfo temp = TransactionGroupInfo.getCurrent();
-        if (null == temp) {
-            transactionGroupInfo.addNewMember();
-            TransactionGroupInfo.setCurrent(transactionGroupInfo);
-            setCurrentTransactionService(transactionType, transactionGroupInfo, method, args);
-        }
+        transactionGroupInfo.addNewMember();
+        TransactionGroupInfo.setCurrent(transactionGroupInfo);
+        setCurrentTransactionService(transactionType, transactionGroupInfo, method, args);
+        logger.debug("transactionGroupInfo------------------------"+transactionGroupInfo.toString());
         Object result = point.proceed();
         return result;
     }
