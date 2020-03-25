@@ -3,10 +3,8 @@ package com.coconason.dtf.manager.log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
@@ -15,6 +13,10 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
 public final class LogUtilForSyncApproveSubmit {
+
+    private static final String LOG_DIR = "./logs/";
+
+    private static final String LOG_FILE_NAME = "sync-approve-submit.log";
     
     /**
      * Logger of log utility.
@@ -31,11 +33,7 @@ public final class LogUtilForSyncApproveSubmit {
     
     private final int messageSize = 2048;
     
-    private int positionForAppendMessage = 0;
-    
-    private static final String LOG_DIR="./logs/";
-    
-    private static final String LOG_FILE_NAME="sync-approve-submit.log";
+    private int positionForAppendMessage;
     
     private LogUtilForSyncApproveSubmit(final String logFilePath) {
         try {
@@ -66,13 +64,12 @@ public final class LogUtilForSyncApproveSubmit {
      * Append message in buffer.
      * 
      * @param message message information interface
-     * @return position in log metadata
      */
     public synchronized void append(final String message) {
         byte[] bytes = message.getBytes();
         try {
             FileLock fl = logChannel.lock(logChannel.position(), size, false);
-            if ((positionForAppendMessage+bytes.length) >= (size * messageSize)) {
+            if ((positionForAppendMessage + bytes.length) >= (size * messageSize)) {
                 positionForAppendMessage = 0;
             }
             logBuffer.position(positionForAppendMessage);
@@ -85,6 +82,13 @@ public final class LogUtilForSyncApproveSubmit {
         positionForAppendMessage = positionForAppendMessage + messageSize;
     }
 
+    /**
+     * Get log according position and size.
+     * 
+     * @param position start position of log
+     * @param size size of log
+     * @return log message
+     */
     public String getMessage(final int position, final int size) {
         byte[] temp = new byte[size];
         logBuffer.position(position);
@@ -93,20 +97,20 @@ public final class LogUtilForSyncApproveSubmit {
         return result;
     }
     
-    private static class SingleHolder {
-        private static String shortForLog = LOG_DIR + LOG_FILE_NAME;
-        private static final LogUtilForSyncApproveSubmit INSTANCE = new LogUtilForSyncApproveSubmit(shortForLog);
-    }
-    
-    private static void createFile(String url) throws IOException{
+    private static void createFile(final String url) throws IOException {
         File directory = new File(LOG_DIR);
-        if(!directory.exists()) {
+        if (!directory.exists()) {
             directory.mkdir();
         }
         File file = new File(url);
-        if(!file.exists()){
+        if (!file.exists()) {
             file.createNewFile();
         }
+    }
+    
+    private static class SingleHolder {
+        private static String shortForLog = LOG_DIR + LOG_FILE_NAME;
+        private static final LogUtilForSyncApproveSubmit INSTANCE = new LogUtilForSyncApproveSubmit(shortForLog);
     }
     
 }

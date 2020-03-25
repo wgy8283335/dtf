@@ -7,7 +7,6 @@ import com.coconason.dtf.manager.message.TransactionMessageFactory;
 import com.coconason.dtf.manager.message.TransactionMessageGroupInterface;
 import com.coconason.dtf.manager.protobufserver.ServerTransactionHandler;
 import com.coconason.dtf.manager.service.SendAsyncRequestRunnable;
-import com.coconason.dtf.manager.service.SendShortMessageRunnable;
 import com.coconason.dtf.manager.utils.SetUtil;
 import io.netty.channel.ChannelHandlerContext;
 

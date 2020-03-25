@@ -29,8 +29,7 @@ public final class PropertiesReader {
         properties = new Properties();
         properties.load(bufferedReader);
     }
-
-
+    
     /**
      * Read input stream to initialize properties.
      *

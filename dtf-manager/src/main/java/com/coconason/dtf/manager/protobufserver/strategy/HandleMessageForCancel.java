@@ -4,7 +4,6 @@ import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.manager.cache.MessageCacheInterface;
 import com.coconason.dtf.manager.protobufserver.ServerTransactionHandler;
 import com.coconason.dtf.manager.service.CancelRunnable;
-import com.coconason.dtf.manager.service.CheckAndSubmitRunnable;
 import com.coconason.dtf.manager.thread.ServerThreadLockCacheProxy;
 import io.netty.channel.ChannelHandlerContext;
 

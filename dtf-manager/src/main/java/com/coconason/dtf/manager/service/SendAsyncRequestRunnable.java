@@ -40,6 +40,7 @@ public final class SendAsyncRequestRunnable implements Runnable {
      * Queue of asynchronous message.
      */
     private Queue messageAsyncQueueProxy;
+    
     /**
      * Group id.
      */

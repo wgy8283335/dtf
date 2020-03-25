@@ -54,7 +54,7 @@ public final class CancelRunnable implements Runnable {
         JSONObject info = JSONObject.parseObject(message.getInfo());
         String groupId = info.get("groupId").toString();
         TransactionMessageGroupInterface elementFromCache = messageSyncCacheProxy.get(groupId);
-        if(null == elementFromCache) {
+        if (null == elementFromCache) {
             return;
         }
         elementFromCache.setCtxForSubmitting(ctx);

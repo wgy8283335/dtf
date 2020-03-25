@@ -2,12 +2,10 @@ package com.coconason.dtf.manager.service;
 
 import com.coconason.dtf.manager.cache.MessageAsyncQueueProxy;
 import com.coconason.dtf.manager.log.LogUtil;
-import com.coconason.dtf.manager.message.MessageInfo;
 import com.coconason.dtf.manager.message.MessageInfoInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 

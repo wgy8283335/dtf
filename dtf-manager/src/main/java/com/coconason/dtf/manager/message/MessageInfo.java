@@ -58,7 +58,7 @@ public final class MessageInfo implements MessageInfoInterface {
      * Get http action.
      * @return http action
      */
-    public String getHttpAction(){
+    public String getHttpAction() {
         return httpAction;
     }
     

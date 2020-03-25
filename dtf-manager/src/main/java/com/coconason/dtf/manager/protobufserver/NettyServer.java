@@ -50,7 +50,6 @@ public final class NettyServer {
      */
     public static void main() throws Exception {
         MessageAsyncQueueProxy messageAsyncQueueProxy = new MessageAsyncQueueProxy();
-//        String configPath = NettyServer.class.getClassLoader().getResource("config.properties").getPath();
         InputStream configPath = NettyServer.class.getClassLoader().getResourceAsStream("config.properties");
         PropertiesReader propertiesReader = new PropertiesReader(configPath);
         ThreadPoolForServerProxy threadPoolForServerProxy = ThreadPoolForServerProxy.initialize(propertiesReader);

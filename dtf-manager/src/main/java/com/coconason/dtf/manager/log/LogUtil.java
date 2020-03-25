@@ -21,6 +21,12 @@ import java.util.List;
 
 public final class LogUtil {
     
+    private static final String LOG_DIR = "./logs/";
+
+    private static final String LOG_FILE_NAME = "async-request.bin";
+
+    private static final String META_FILE_NAME = "catalog.bin";
+    
     /**
      * Logger of log utility.
      */
@@ -44,15 +50,9 @@ public final class LogUtil {
     
     private final int messageSize = 2048;
     
-    private int positionForAppendMetadata = 0;
+    private int positionForAppendMetadata;
 
-    private int positionForAppendMessage = 0;
-    
-    private static final String LOG_DIR="./logs/";
-
-    private static final String LOG_FILE_NAME="async-request.bin";
-
-    private static final String META_FILE_NAME="catalog.bin";
+    private int positionForAppendMessage;
     
     private LogUtil(final String logFilePath, final String metadataFilePath) {
         try {
@@ -123,7 +123,7 @@ public final class LogUtil {
      */
     public MessageInfoInterface get(final int position) {
         LogMetadata logMetadata = getMetadata(position);
-        if(null == logMetadata){
+        if (null == logMetadata) {
             return null;
         }
         MessageInfoInterface result = getMessage(logMetadata);
@@ -135,17 +135,17 @@ public final class LogUtil {
      *
      * @return message information interface
      */
-    public List<MessageInfoInterface> goThrough(int initialPosition) {
+    public List<MessageInfoInterface> goThrough(final int initialPosition) {
         int length = metadataSize * size;
         int i = 0;
         List<MessageInfoInterface> result = new LinkedList<>();
         while (i < length) {
             MessageInfoInterface message = LogUtil.getInstance().get((i + initialPosition) % length);
-            if(null == message){
+            if (null == message) {
                 break;
             }
-            for(MessageInfoInterface each : result){
-                if(each.getHttpAction().equals(message.getHttpAction())&&each.getUrl().equals(message.getHttpAction())){
+            for (MessageInfoInterface each : result) {
+                if (each.getHttpAction().equals(message.getHttpAction()) && each.getUrl().equals(message.getHttpAction())) {
                     if (message.isCommitted()) {
                         result.remove(each);
                     } else {
@@ -182,11 +182,11 @@ public final class LogUtil {
             return minimum;
         }
         long timeStamp = messageInfo.getTimeStamp();
-        for(int j = 0; j < length ; j=j+metadataSize){
+        for (int j = 0; j < length; j = j + metadataSize) {
             if (null == LogUtil.getInstance().get(j)) {
                 return minimum;
             }
-            if(timeStamp > LogUtil.getInstance().get(j).getTimeStamp()) {
+            if (timeStamp > LogUtil.getInstance().get(j).getTimeStamp()) {
                 timeStamp = LogUtil.getInstance().get(j).getTimeStamp();
                 minimum = j;
             }
@@ -221,7 +221,7 @@ public final class LogUtil {
     private void update(final MessageInfoInterface message, final LogMetadata logMetadata) {
         try {
             FileLock fl = logChannel.tryLock(logMetadata.getPosition(), logMetadata.getLength(), false);
-            while(null == fl || (!fl.isValid())){
+            while (null == fl || (!fl.isValid())) {
                 fl = logChannel.tryLock(logMetadata.getPosition(), logMetadata.getLength(), false);
             }
             logBuffer.position(logMetadata.getPosition());
@@ -262,7 +262,7 @@ public final class LogUtil {
             oos.writeObject(obj);
             oos.flush();
             result = bos.toByteArray();
-            logger.info(obj.toString()+result.length);
+            logger.info(obj.toString() + result.length);
             oos.close();
             bos.close();
         } catch (IOException e) {
@@ -292,10 +292,10 @@ public final class LogUtil {
         byte[] bytes = objectToBytes(logMetadata);
         try {
             FileLock fl = metadataChannel.lock(metadataChannel.position(), size, false);
-            while(null == fl || (!fl.isValid())){
+            while (null == fl || (!fl.isValid())) {
                 fl = metadataChannel.lock(metadataChannel.position(), size, false);
             }
-            if ((positionForAppendMetadata+bytes.length) >= (size * metadataSize)) {
+            if ((positionForAppendMetadata + bytes.length) >= (size * metadataSize)) {
                 positionForAppendMetadata = 0;
             }
             metadataBuffer.position(positionForAppendMetadata);
@@ -314,10 +314,10 @@ public final class LogUtil {
         byte[] bytes = objectToBytes(message);
         try {
             FileLock fl = logChannel.lock(logChannel.position(), size, false);
-            while(null == fl || (!fl.isValid())){
+            while (null == fl || (!fl.isValid())) {
                 fl = logChannel.lock(logChannel.position(), size, false);
             }
-            if ((positionForAppendMessage+bytes.length) >= (size * messageSize)) {
+            if ((positionForAppendMessage + bytes.length) >= (size * messageSize)) {
                 positionForAppendMessage = 0;
             }
             logBuffer.position(positionForAppendMessage);
@@ -332,21 +332,21 @@ public final class LogUtil {
         return result;
     }
     
+    private static void createFile(final String url) throws IOException {
+        File directory = new File(LOG_DIR);
+        if (!directory.exists()) {
+            directory.mkdir();
+        }
+        File file = new File(url);
+        if (!file.exists()) {
+            file.createNewFile();
+        }
+    }
+    
     private static class SingleHolder {
         private static String shortForLog = LOG_DIR + LOG_FILE_NAME;
         private static String shortForMetadata = LOG_DIR + META_FILE_NAME;
         private static final LogUtil INSTANCE = new LogUtil(shortForLog, shortForMetadata);
-    }
-    
-    private static void createFile(String url) throws IOException{
-        File directory = new File(LOG_DIR);
-        if(!directory.exists()) {
-            directory.mkdir();
-        }
-        File file = new File(url);
-        if(!file.exists()){
-            file.createNewFile();
-        }
     }
     
 }

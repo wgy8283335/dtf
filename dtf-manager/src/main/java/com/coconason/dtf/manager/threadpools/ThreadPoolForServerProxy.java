@@ -34,10 +34,10 @@ public final class ThreadPoolForServerProxy implements ExecutorService {
     /**
      * Initialize thread pool for server proxy.
      * 
+     * @param propertiesReader PropertiesReader
      * @return thread pool for server proxy
-     * @throws Exception exception
      */
-    public static ThreadPoolForServerProxy initialize(PropertiesReader propertiesReader) throws Exception {
+    public static ThreadPoolForServerProxy initialize(final PropertiesReader propertiesReader) {
         ThreadPoolForServerProxy threadPoolForServerProxy = new ThreadPoolForServerProxy(
                 Integer.valueOf(propertiesReader.getProperty("corePoolSize")),
                 Integer.valueOf(propertiesReader.getProperty("maximumPoolSize")),

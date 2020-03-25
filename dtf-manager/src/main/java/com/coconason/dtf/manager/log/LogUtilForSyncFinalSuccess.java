@@ -14,6 +14,10 @@ import java.nio.file.StandardOpenOption;
 
 public final class LogUtilForSyncFinalSuccess {
     
+    private static final String LOG_DIR = "./logs/";
+
+    private static final String LOG_FILE_NAME = "sync-final-success.log";
+    
     /**
      * Logger of log utility.
      */
@@ -29,11 +33,7 @@ public final class LogUtilForSyncFinalSuccess {
     
     private final int messageSize = 2048;
     
-    private int positionForAppendMessage = 0;
-    
-    private static final String LOG_DIR="./logs/";
-    
-    private static final String LOG_FILE_NAME="sync-final-success.log";
+    private int positionForAppendMessage;
     
     private LogUtilForSyncFinalSuccess(final String logFilePath) {
         try {
@@ -64,13 +64,12 @@ public final class LogUtilForSyncFinalSuccess {
      * Append message in buffer.
      * 
      * @param message message information interface
-     * @return position in log metadata
      */
     public synchronized void append(final String message) {
         byte[] bytes = message.getBytes();
         try {
             FileLock fl = logChannel.lock(logChannel.position(), size, false);
-            if ((positionForAppendMessage+bytes.length) >= (size * messageSize)) {
+            if ((positionForAppendMessage + bytes.length) >= (size * messageSize)) {
                 positionForAppendMessage = 0;
             }
             logBuffer.position(positionForAppendMessage);
@@ -82,7 +81,14 @@ public final class LogUtilForSyncFinalSuccess {
         }
         positionForAppendMessage = positionForAppendMessage + messageSize;
     }
-
+    
+    /**
+     * Get log according position and size.
+     *
+     * @param position start position of log
+     * @param size size of log
+     * @return log message
+     */
     public String getMessage(final int position, final int size) {
         byte[] temp = new byte[size];
         logBuffer.position(position);
@@ -91,20 +97,20 @@ public final class LogUtilForSyncFinalSuccess {
         return result;
     }
     
-    private static class SingleHolder {
-        private static String shortForLog = LOG_DIR + LOG_FILE_NAME;
-        private static final LogUtilForSyncFinalSuccess INSTANCE = new LogUtilForSyncFinalSuccess(shortForLog);
-    }
-    
-    private static void createFile(String url) throws IOException{
+    private static void createFile(final String url) throws IOException {
         File directory = new File(LOG_DIR);
-        if(!directory.exists()) {
+        if (!directory.exists()) {
             directory.mkdir();
         }
         File file = new File(url);
-        if(!file.exists()){
+        if (!file.exists()) {
             file.createNewFile();
         }
+    }
+    
+    private static class SingleHolder {
+        private static String shortForLog = LOG_DIR + LOG_FILE_NAME;
+        private static final LogUtilForSyncFinalSuccess INSTANCE = new LogUtilForSyncFinalSuccess(shortForLog);
     }
     
 }

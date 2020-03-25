@@ -46,6 +46,7 @@ public interface TransactionMessageGroupInterface<T> {
      * @param memberId member id
      * @param url url of request
      * @param obj parameters of request
+     * @param httpAction parameters of http action
      */
     void addMember(String memberId, String url, Object obj, String httpAction);
     
