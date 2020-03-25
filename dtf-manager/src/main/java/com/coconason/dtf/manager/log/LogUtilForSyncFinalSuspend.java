@@ -68,10 +68,10 @@ public final class LogUtilForSyncFinalSuspend {
     public synchronized void append(final String message) {
         byte[] bytes = message.getBytes();
         try {
-            FileLock fl = logChannel.lock(logChannel.position(), size, false);
             if ((positionForAppendMessage + bytes.length) >= (size * messageSize)) {
                 positionForAppendMessage = 0;
             }
+            FileLock fl = logChannel.lock(logChannel.position(), size, false);
             logBuffer.position(positionForAppendMessage);
             logBuffer.put(bytes);
             logBuffer.force();

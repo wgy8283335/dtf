@@ -133,7 +133,8 @@ public final class LogUtil {
     /**
      * Get message according to position.
      *
-     * @return message information interface
+     * @param initialPosition initial position
+     * @return list of message information interface
      */
     public List<MessageInfoInterface> goThrough(final int initialPosition) {
         int length = metadataSize * size;
@@ -344,8 +345,11 @@ public final class LogUtil {
     }
     
     private static class SingleHolder {
+        
         private static String shortForLog = LOG_DIR + LOG_FILE_NAME;
+        
         private static String shortForMetadata = LOG_DIR + META_FILE_NAME;
+        
         private static final LogUtil INSTANCE = new LogUtil(shortForLog, shortForMetadata);
     }
     
