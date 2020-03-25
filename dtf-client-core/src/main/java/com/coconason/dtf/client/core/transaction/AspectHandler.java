@@ -25,7 +25,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
-import java.sql.SQLException;
 import java.util.Queue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
@@ -174,7 +173,6 @@ public final class AspectHandler implements AspectInterface {
                         TransactionGroupInfo.getCurrent().getGroupId(), TransactionGroupInfo.getCurrent().getGroupMembers()));
                 logger.error(e.getMessage());
             }
-
             queue.add(TransactionServiceInfoFactory.newInstanceWithGroupIdSet(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.APPLYFORSUBMIT_STRONG,
                     TransactionGroupInfo.getCurrent().getGroupId(), TransactionGroupInfo.getCurrent().getGroupMembers()));
             
@@ -197,7 +195,7 @@ public final class AspectHandler implements AspectInterface {
         transactionGroupInfo.addNewMember();
         TransactionGroupInfo.setCurrent(transactionGroupInfo);
         setCurrentTransactionService(transactionType, transactionGroupInfo, method, args);
-        logger.debug("transactionGroupInfo------------------------"+transactionGroupInfo.toString());
+        logger.debug("transactionGroupInfo------------------------" + transactionGroupInfo.toString());
         Object result = point.proceed();
         return result;
     }

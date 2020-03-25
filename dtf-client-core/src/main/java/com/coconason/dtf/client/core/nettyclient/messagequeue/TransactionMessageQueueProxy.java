@@ -28,7 +28,7 @@ public final class TransactionMessageQueueProxy implements Queue {
      * @return If success, return true. Else, return false
      */
     @Override
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         return messageQueue.isEmpty();
     }
 
@@ -40,10 +40,10 @@ public final class TransactionMessageQueueProxy implements Queue {
      * @return If success, return true. Else, return false
      */
     @Override
-    public boolean add(Object o){
-        try{
-            messageQueue.put((BaseTransactionServiceInfo)o);
-        }catch (Exception e){
+    public boolean add(final Object o) {
+        try {
+            messageQueue.put((BaseTransactionServiceInfo) o);
+        } catch (InterruptedException e) {
             e.printStackTrace();
             return false;
         }
@@ -58,8 +58,8 @@ public final class TransactionMessageQueueProxy implements Queue {
      * @return If success, return true. Else, return false
      */
     @Override
-    public boolean offer(Object o) {
-        return messageQueue.offer((BaseTransactionServiceInfo)o);
+    public boolean offer(final Object o) {
+        return messageQueue.offer((BaseTransactionServiceInfo) o);
     }
 
     /**
@@ -82,9 +82,9 @@ public final class TransactionMessageQueueProxy implements Queue {
     @Override
     public BaseTransactionServiceInfo poll() {
         BaseTransactionServiceInfo result;
-        try{
-            result=messageQueue.take();
-        }catch (Exception e){
+        try { 
+            result = messageQueue.take();
+        } catch (InterruptedException e) {
             e.printStackTrace();
             return null;
         }
@@ -112,7 +112,7 @@ public final class TransactionMessageQueueProxy implements Queue {
     }
 
     @Override
-    public boolean contains(Object o) {
+    public boolean contains(final Object o) {
         return messageQueue.contains(o);
     }
 
@@ -127,32 +127,32 @@ public final class TransactionMessageQueueProxy implements Queue {
     }
 
     @Override
-    public Object[] toArray(Object[] a) {
+    public Object[] toArray(final Object[] a) {
         return messageQueue.toArray();
     }
 
     @Override
-    public boolean remove(Object o) {
+    public boolean remove(final Object o) {
         return messageQueue.remove(o);
     }
 
     @Override
-    public boolean containsAll(Collection c) {
+    public boolean containsAll(final Collection c) {
         return messageQueue.containsAll(c);
     }
 
     @Override
-    public boolean addAll(Collection c) {
+    public boolean addAll(final Collection c) {
         return messageQueue.addAll(c);
     }
 
     @Override
-    public boolean removeAll(Collection c) {
+    public boolean removeAll(final Collection c) {
         return messageQueue.removeAll(c);
     }
 
     @Override
-    public boolean retainAll(Collection c) {
+    public boolean retainAll(final Collection c) {
         return messageQueue.retainAll(c);
     }
 }

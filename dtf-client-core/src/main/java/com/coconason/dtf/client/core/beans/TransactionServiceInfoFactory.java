@@ -22,6 +22,7 @@ public class TransactionServiceInfoFactory {
      * @param groupMemberId group member id
      * @param url url
      * @param obj object
+     * @param httpAction http action
      * @return base transaction service information
      */
     public static BaseTransactionServiceInfo newInstanceForRestful(final String id, final ActionType action, final String groupId, 

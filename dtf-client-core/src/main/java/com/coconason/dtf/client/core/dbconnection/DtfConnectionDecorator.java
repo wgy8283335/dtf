@@ -170,7 +170,7 @@ public final class DtfConnectionDecorator implements Connection {
             return;
         }
         transactionServiceInfo = BaseTransactionServiceInfo.getCurrent();
-        if(null == transactionServiceInfo){
+        if (null == transactionServiceInfo) {
             connection.commit();
             connection.close();
             return;
@@ -182,7 +182,7 @@ public final class DtfConnectionDecorator implements Connection {
             connection.close();
             return;
         }
-        threadPoolForClientProxy.execute(new SubmitRunnable(TransactionGroupInfo.getCurrent(),transactionServiceInfo));
+        threadPoolForClientProxy.execute(new SubmitRunnable(TransactionGroupInfo.getCurrent(), transactionServiceInfo));
         processForSyncStrong(TransactionGroupInfo.getCurrent());
     }
     
@@ -476,7 +476,7 @@ public final class DtfConnectionDecorator implements Connection {
         
         private BaseTransactionServiceInfo transactionServiceInfo;
         
-        SubmitRunnable(final BaseTransactionGroupInfo transactionGroupInfo,final BaseTransactionServiceInfo transactionServiceInfo) {
+        SubmitRunnable(final BaseTransactionGroupInfo transactionGroupInfo, final BaseTransactionServiceInfo transactionServiceInfo) {
             this.transactionGroupInfo = transactionGroupInfo;
             this.transactionServiceInfo = transactionServiceInfo;
         }

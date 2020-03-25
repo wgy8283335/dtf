@@ -17,7 +17,7 @@ public final class TransactionGroupInfo extends BaseTransactionGroupInfo {
     
     private Set<Long> groupMembers;
 
-    TransactionGroupInfo(String groupId,Long memberId, Set<Long> groupMembers) {
+    TransactionGroupInfo(final String groupId, final Long memberId, final Set<Long> groupMembers) {
         this.groupId = groupId;
         this.memberId = memberId;
         this.groupMembers = groupMembers;
@@ -27,7 +27,7 @@ public final class TransactionGroupInfo extends BaseTransactionGroupInfo {
      * Generate uuid as new member id, and store it in groupMembers.
      */
     @Override
-    public void addNewMember(){
+    public void addNewMember() {
         this.memberId = UuidGenerator.generateLongId();
         groupMembers.add(this.memberId);
     }
@@ -38,7 +38,7 @@ public final class TransactionGroupInfo extends BaseTransactionGroupInfo {
      * @param tempSet set of members
      */
     @Override
-    public void addMembers(Set<Long> tempSet){
+    public void addMembers(final Set<Long> tempSet) {
         groupMembers.addAll(tempSet);
     }
     
@@ -63,7 +63,7 @@ public final class TransactionGroupInfo extends BaseTransactionGroupInfo {
     }
     
     /**
-     * Get group members
+     * Get group members.
      * 
      * @return set of group members
      */
@@ -82,7 +82,7 @@ public final class TransactionGroupInfo extends BaseTransactionGroupInfo {
         StringBuffer buffer = new StringBuffer(groupId);
         buffer.append("-");
         buffer.append(memberId);
-        for(Long member:groupMembers){
+        for (Long member:groupMembers) {
             buffer.append("-");
             buffer.append(member);
         }

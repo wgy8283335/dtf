@@ -20,15 +20,9 @@ import java.util.logging.Logger;
  * @Author: Jason
  */
 public final class DtfDataSourceDecorator implements DataSource {
-
-    /**
-     * Java sql data source.
-     */
+    
     private DataSource dataSource;
-
-    /**
-     * Cache for thread lock
-     */
+    
     @Autowired
     private ThreadLockCacheProxy threadLockCacheProxy;
     
@@ -46,19 +40,21 @@ public final class DtfDataSourceDecorator implements DataSource {
     @Autowired
     private ThreadLockCacheProxy syncFinalCommitThreadLockCacheProxy;
     
-    public DtfDataSourceDecorator(DataSource dataSource) {
+    public DtfDataSourceDecorator(final DataSource dataSource) {
         this.dataSource = dataSource;
     }
     
     @Override
     public Connection getConnection() throws SQLException {
-        Connection connection = new DtfConnectionDecorator(dataSource.getConnection(), threadLockCacheProxy,queue, secondThreadLockCacheProxy, threadPoolForClientProxy, syncFinalCommitThreadLockCacheProxy);
+        Connection connection = new DtfConnectionDecorator(dataSource.getConnection(), threadLockCacheProxy, queue, 
+                secondThreadLockCacheProxy, threadPoolForClientProxy, syncFinalCommitThreadLockCacheProxy);
         return connection;
     }
     
     @Override
-    public Connection getConnection(String username, String password) throws SQLException {
-        Connection connection = new DtfConnectionDecorator(dataSource.getConnection(username,password), threadLockCacheProxy,queue, secondThreadLockCacheProxy, threadPoolForClientProxy, syncFinalCommitThreadLockCacheProxy);
+    public Connection getConnection(final String username, final String password) throws SQLException {
+        Connection connection = new DtfConnectionDecorator(dataSource.getConnection(username, password), threadLockCacheProxy, 
+                queue, secondThreadLockCacheProxy, threadPoolForClientProxy, syncFinalCommitThreadLockCacheProxy);
         return connection;
     }
     
@@ -68,12 +64,12 @@ public final class DtfDataSourceDecorator implements DataSource {
     }
     
     @Override
-    public void setLogWriter(PrintWriter out) throws SQLException {
+    public void setLogWriter(final PrintWriter out) throws SQLException {
         
     }
     
     @Override
-    public void setLoginTimeout(int seconds) throws SQLException {
+    public void setLoginTimeout(final int seconds) throws SQLException {
         
     }
     
@@ -88,12 +84,12 @@ public final class DtfDataSourceDecorator implements DataSource {
     }
     
     @Override
-    public <T> T unwrap(Class<T> iface) throws SQLException {
+    public <T> T unwrap(final Class<T> iface) throws SQLException {
         return null;
     }
     
     @Override
-    public boolean isWrapperFor(Class<?> iface) throws SQLException {
+    public boolean isWrapperFor(final Class<?> iface) throws SQLException {
         return false;
     }
     

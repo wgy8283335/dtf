@@ -4,18 +4,14 @@ import com.alibaba.fastjson.JSONObject;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
 import com.coconason.dtf.manager.cache.MessageCacheInterface;
-import com.coconason.dtf.manager.log.LogUtilForSyncApproveSubmit;
-import com.coconason.dtf.manager.message.TransactionMessageFactory;
 import com.coconason.dtf.manager.message.TransactionMessageForAdding;
 import com.coconason.dtf.manager.message.TransactionMessageGroupInterface;
-import com.coconason.dtf.manager.utils.SetUtil;
 import com.google.common.cache.Cache;
 import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.ExecutorService;
 
 /**
@@ -51,7 +47,7 @@ public final class CancelRunnable implements Runnable {
     }
 
     /**
-     * 
+     * Send CANCEL to member in the list.
      */
     @Override
     public void run() {

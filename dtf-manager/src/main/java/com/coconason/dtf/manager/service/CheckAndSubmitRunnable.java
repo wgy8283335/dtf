@@ -4,10 +4,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
 import com.coconason.dtf.manager.cache.MessageCacheInterface;
-import com.coconason.dtf.manager.log.LogUtil;
 import com.coconason.dtf.manager.log.LogUtilForSyncApproveSubmit;
-import com.coconason.dtf.manager.message.TransactionMessageForAdding;
 import com.coconason.dtf.manager.message.TransactionMessageFactory;
+import com.coconason.dtf.manager.message.TransactionMessageForAdding;
 import com.coconason.dtf.manager.message.TransactionMessageGroupInterface;
 import com.coconason.dtf.manager.utils.SetUtil;
 import com.google.common.cache.Cache;
@@ -61,7 +60,6 @@ public final class CheckAndSubmitRunnable implements Runnable {
      * If action is approve submit or approve submit strong or cancel,try create tmfs by message ,then get member set2.
      * Then Get member set2 from element of messageSyncCacheProxy.
      * If set1 equals set2, then send approve message. Otherwise, return.
-     * ？？When ActionType is CANCEL，what should be done？？？
      */
     @Override
     public void run() {
@@ -102,7 +100,7 @@ public final class CheckAndSubmitRunnable implements Runnable {
             } else if (actionType == ActionType.ADD_STRONG || actionType == ActionType.APPROVESUBMIT_STRONG) {
                 threadPoolForServerProxy.execute(new SendMessageRunnable(elementFromCache.getGroupId() + messageForAdding.getGroupMemberId(),
                         ActionType.APPROVESUBMIT_STRONG, messageForAdding.getCtx(), "send APPROVESUBMIT_STRONG message fail", serverThreadLockCacheProxy));
-            } else if (actionType == ActionType.CANCEL){
+            } else if (actionType == ActionType.CANCEL) {
                 threadPoolForServerProxy.execute(new SendMessageRunnable(elementFromCache.getGroupId() + messageForAdding.getGroupMemberId(),
                         ActionType.CANCEL, messageForAdding.getCtx(), "send CANCEL message fail", serverThreadLockCacheProxy));
             }
