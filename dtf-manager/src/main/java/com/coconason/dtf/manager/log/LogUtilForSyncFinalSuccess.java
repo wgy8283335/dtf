@@ -109,7 +109,9 @@ public final class LogUtilForSyncFinalSuccess {
     }
     
     private static class SingleHolder {
+        
         private static String shortForLog = LOG_DIR + LOG_FILE_NAME;
+        
         private static final LogUtilForSyncFinalSuccess INSTANCE = new LogUtilForSyncFinalSuccess(shortForLog);
     }
     

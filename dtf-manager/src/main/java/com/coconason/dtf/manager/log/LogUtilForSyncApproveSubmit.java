@@ -109,7 +109,9 @@ public final class LogUtilForSyncApproveSubmit {
     }
     
     private static class SingleHolder {
+        
         private static String shortForLog = LOG_DIR + LOG_FILE_NAME;
+        
         private static final LogUtilForSyncApproveSubmit INSTANCE = new LogUtilForSyncApproveSubmit(shortForLog);
     }
     

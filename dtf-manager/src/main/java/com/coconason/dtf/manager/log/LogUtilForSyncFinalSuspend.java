@@ -109,7 +109,9 @@ public final class LogUtilForSyncFinalSuspend {
     }
     
     private static class SingleHolder {
+        
         private static String shortForLog = LOG_DIR + LOG_FILE_NAME;
+        
         private static final LogUtilForSyncFinalSuspend INSTANCE = new LogUtilForSyncFinalSuspend(shortForLog);
     }
     
