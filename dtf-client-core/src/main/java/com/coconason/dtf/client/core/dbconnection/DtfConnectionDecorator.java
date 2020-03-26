@@ -498,7 +498,7 @@ public final class DtfConnectionDecorator implements Connection {
             JSONObject map = transactionServiceInfo.getInfo();
             threadLockCacheProxy.put(map.get("groupId").toString() + memberId, lc);
             queue.add(transactionServiceInfo);
-            boolean result = lc.await(20000, TimeUnit.MILLISECONDS);
+            boolean result = lc.await(10000, TimeUnit.MILLISECONDS);
             if (transactionWhenTimeout(result, memberId, groupId, groupMembers)) {
                 return;
             }
