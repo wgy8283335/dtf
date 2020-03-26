@@ -183,37 +183,6 @@ public final class DtfConnectionDecorator implements Connection {
             return;
         }
         threadPoolForClientProxy.execute(new SubmitRunnable(TransactionGroupInfo.getCurrent(), transactionServiceInfo));
-        processForSyncStrong(TransactionGroupInfo.getCurrent());
-    }
-    
-    private void processForSyncStrong(final BaseTransactionGroupInfo transactionGroupInfo) throws SQLException {
-        String groupId = transactionGroupInfo.getGroupId();
-        Long memberId = transactionGroupInfo.getMemberId();
-        if (Member.ORIGINAL_ID.equals(memberId) && TransactionType.SYNC_STRONG == TransactionType.getCurrent()) {
-            ClientLockAndConditionInterface secondlc = new ClientLockAndCondition(new ReentrantLock(), OperationType.DEFAULT);
-            secondThreadLockCacheProxy.put(groupId, secondlc);
-            boolean isWholeSuccess = secondlc.await(10000, TimeUnit.MILLISECONDS);
-            if (!isWholeSuccess) {
-                connection.close();
-                ClientLockAndConditionInterface syncFinalCommitLc = syncFinalCommitThreadLockCacheProxy.getIfPresent(groupId);
-                syncFinalCommitLc.setState(OperationType.WHOLE_FAIL);
-                throw new SQLException("Distributed transaction fail to receive WHOLE_SUCCESS_STRONG , groupId is :" + groupId);
-            }
-            ClientLockAndConditionInterface secondlc2 = secondThreadLockCacheProxy.getIfPresent(groupId);
-            if (secondlc2.getState() == OperationType.WHOLE_FAIL) {
-                queue.add(TransactionServiceInfoFactory.newInstanceForShortMessage(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.WHOLE_FAIL_STRONG_ACK, groupId));
-                connection.close();
-                ClientLockAndConditionInterface syncFinalCommitLc = syncFinalCommitThreadLockCacheProxy.getIfPresent(groupId);
-                syncFinalCommitLc.setState(OperationType.WHOLE_FAIL);
-                throw new SQLException("Distributed transaction failed and groupId:" + groupId);
-            } else {
-                queue.add(TransactionServiceInfoFactory.newInstanceForShortMessage(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.WHOLE_SUCCESS_STRONG_ACK, groupId));
-                connection.close();
-                ClientLockAndConditionInterface syncFinalCommitLc = syncFinalCommitThreadLockCacheProxy.getIfPresent(groupId);
-                syncFinalCommitLc.setState(OperationType.WHOLE_SUCCESS);
-                return;
-            }
-        }
     }
     
     @Override
