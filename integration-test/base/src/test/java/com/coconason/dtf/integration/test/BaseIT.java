@@ -40,33 +40,15 @@ public class BaseIT {
     }
     
     @Test
-    public void finalSynchronizeTest() {
-//        Course course = new Course();
-//        course.setC(new Random().nextInt());
-//        course.setCname("math");
-//        course.setT(new Random().nextInt());
-//        sendPost("http://localhost:8081/add_course_info", course);
-    }
-    
-    @Test
-    public void strongSynchronizeTest() {
-//        Course course = new Course();
-//        course.setC(new Random().nextInt());
-//        course.setCname("math");
-//        course.setT(new Random().nextInt());
-//        sendPost("http://localhost:8081/add_course_info_strong", course);
-    }
-    
-    @Test
-    public void assertSuccessAsynchronizeTest() {
+    public void assertSuccessFinalSynchronizationTest() {
         Course course = new Course();
-        Integer id = new Random().nextInt();
+        Integer id =  new Random().nextInt(1000000);
         course.setC(id);
         course.setCname("math");
         course.setT(id);
-        String resultPost = sendPost("http://localhost:8081/add_course_info_async", course);
+        String resultPost = sendPost("http://localhost:8081/add_course_info", course);
         try{
-            Thread.sleep(5000);
+            Thread.sleep(2000);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -80,15 +62,78 @@ public class BaseIT {
     }
     
     @Test
-    public void assertFailureAsynchronizeTest() {
+    public void assertFailureFinalSynchronizationTest() {
         Course course = new Course();
-        Integer id = new Random().nextInt();
+        Integer id =  new Random().nextInt(1000000);
+        course.setC(null);
+        course.setCname("math");
+        course.setT(id);
+        String resultPost = sendPost("http://localhost:8081/add_course_info", course);
+        try{
+            Thread.sleep(2000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String resultGetSC = sendGet("http://localhost:8083/get_sc?id="+id);
+        String resultGetTeacher = sendGet("http://localhost:8082/get_teacher?id="+id);
+        assertThat(checkResult(resultPost),is(false));
+        assertThat(checkResult(resultGetSC),is(false));
+        assertThat(checkResult(resultGetTeacher),is(false));
+    }
+
+
+    @Test
+    public void assertFailureFinalSynchronizationWithNullTest() {
+        Course course = new Course();
+        Integer id =  new Random().nextInt(1000000);
+        course.setC(id);
+        course.setCname("math");
+        course.setT(null);
+        String resultPost = sendPost("http://localhost:8081/add_course_info", course);
+        try{
+            Thread.sleep(2000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String resultGetSC = sendGet("http://localhost:8083/get_sc?id="+id);
+        String resultGetTeacher = sendGet("http://localhost:8082/get_teacher?id="+id);
+        assertThat(checkResult(resultPost),is(false));
+        assertThat(checkResult(resultGetSC),is(false));
+        assertThat(checkResult(resultGetTeacher),is(false));
+    }
+    
+    @Test
+    public void assertSuccessAsynchronizationTest() {
+        Course course = new Course();
+        Integer id =  new Random().nextInt(1000000);
+        course.setC(id);
+        course.setCname("math");
+        course.setT(id);
+        String resultPost = sendPost("http://localhost:8081/add_course_info_async", course);
+        try{
+            Thread.sleep(2000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String resultGetCourse = sendGet("http://localhost:8081/get_course?id="+id);
+        String resultGetSC = sendGet("http://localhost:8083/get_sc?id="+id);
+        String resultGetTeacher = sendGet("http://localhost:8082/get_teacher?id="+id);
+        assertThat(checkResult(resultPost),is(true));
+        assertThat(checkResult(resultGetCourse),is(true));
+        assertThat(checkResult(resultGetSC),is(true));
+        assertThat(checkResult(resultGetTeacher),is(true));
+    }
+    
+    @Test
+    public void assertFailureAsynchronizationTest() {
+        Course course = new Course();
+        Integer id =  new Random().nextInt(1000000);
         course.setC(null);
         course.setCname("math");
         course.setT(id);
         String resultPost = sendPost("http://localhost:8081/add_course_info_async", course);
         try{
-            Thread.sleep(5000);
+            Thread.sleep(2000);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -102,7 +147,7 @@ public class BaseIT {
     @AfterClass
     public static void destruction() {
         try {
-            Thread.sleep(5000);
+            Thread.sleep(2000);
             String filePath = Thread.currentThread().getContextClassLoader().getResource("destruction-demo.sh").getPath();
             Process process = Runtime.getRuntime().exec(filePath);
             InputStream errorStream = process.getErrorStream();
