@@ -2,8 +2,11 @@ package com.coconason.dtf.manager.cache;
 
 import com.coconason.dtf.manager.message.TransactionMessageForAdding;
 import com.coconason.dtf.manager.message.TransactionMessageGroupInterface;
+import com.coconason.dtf.manager.service.CheckAndSubmitRunnable;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeUnit;
 
@@ -13,6 +16,8 @@ import java.util.concurrent.TimeUnit;
  * @Author: Jason
  */
 public final class MessageSyncCache implements MessageCacheInterface {
+    
+    private Logger logger = LoggerFactory.getLogger(MessageSyncCache.class);
     
     /**
      * Key store group id. 
@@ -42,7 +47,7 @@ public final class MessageSyncCache implements MessageCacheInterface {
      * @param msg transaction message
      */
     @Override
-    public void put(final String id, final TransactionMessageGroupInterface msg) {
+    public synchronized void put(final String id, final TransactionMessageGroupInterface msg) {
         cache.put(id, msg);
     }
     
@@ -52,7 +57,7 @@ public final class MessageSyncCache implements MessageCacheInterface {
      * @param group transaction message group
      */
     @Override
-    public void putDependsOnCondition(final TransactionMessageGroupInterface group) {
+    public synchronized void putDependsOnCondition(final TransactionMessageGroupInterface group) {
         Object element = cache.getIfPresent(group.getGroupId());
         if (element == null) {
             cache.put(group.getGroupId(), group);
@@ -81,7 +86,7 @@ public final class MessageSyncCache implements MessageCacheInterface {
      * @param id group id.
      */
     @Override
-    public void invalidate(final Object id) {
+    public synchronized void invalidate(final Object id) {
         cache.invalidate(id);
     }
     

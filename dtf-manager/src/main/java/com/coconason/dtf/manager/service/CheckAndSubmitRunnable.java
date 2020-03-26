@@ -81,10 +81,14 @@ public final class CheckAndSubmitRunnable implements Runnable {
         messageSyncCacheProxy.put(elementFromCache.getGroupId(), elementFromCache);
         List<TransactionMessageForAdding> memberList = elementFromCache.getMemberList();
         if (setFromMessage.isEmpty()) {
+            logger.debug("setFromMessage.isEmpty()");
             return;
         }
         Set setFromCache = elementFromCache.getMemberSet();
+        logger.debug("setFromMessage-------------------------------" + setFromMessage.toString());
+        logger.debug("setFromCache-------------------------------" + setFromCache.toString());
         if (!SetUtil.isSetEqual(setFromMessage, setFromCache)) {
+            logger.debug("!SetUtil.isSetEqual(setFromMessage, setFromCache)");
             return;
         }
         goThroughMemberListAndSendMessage(memberList, elementFromCache, tmfs);
