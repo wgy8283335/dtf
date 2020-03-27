@@ -38,6 +38,68 @@ public class BaseIT {
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void assertSuccessStrongSynchronizationTest() {
+        Course course = new Course();
+        Integer id =  new Random().nextInt(1000000);
+        course.setC(id);
+        course.setCname("math");
+        course.setT(id);
+        String resultPost = sendPost("http://localhost:8081/add_course_info_strong", course);
+        try{
+            Thread.sleep(2000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String resultGetCourse = sendGet("http://localhost:8081/get_course?id="+id);
+        String resultGetSC = sendGet("http://localhost:8083/get_sc?id="+id);
+        String resultGetTeacher = sendGet("http://localhost:8082/get_teacher?id="+id);
+        assertThat(checkResult(resultPost),is(true));
+        assertThat(checkResult(resultGetCourse),is(true));
+        assertThat(checkResult(resultGetSC),is(true));
+        assertThat(checkResult(resultGetTeacher),is(true));
+    }
+    
+    @Test
+    public void assertFailureStrongSynchronizationTest() {
+        Course course = new Course();
+        Integer id =  new Random().nextInt(1000000);
+        course.setC(null);
+        course.setCname("math");
+        course.setT(id);
+        String resultPost = sendPost("http://localhost:8081/add_course_info_strong", course);
+        try{
+            Thread.sleep(2000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String resultGetSC = sendGet("http://localhost:8083/get_sc?id="+id);
+        String resultGetTeacher = sendGet("http://localhost:8082/get_teacher?id="+id);
+        assertThat(checkResult(resultPost),is(false));
+        assertThat(checkResult(resultGetSC),is(false));
+        assertThat(checkResult(resultGetTeacher),is(false));
+    }
+    
+    @Test
+    public void assertFailureStrongSynchronizationWithNullTest() {
+        Course course = new Course();
+        Integer id =  new Random().nextInt(1000000);
+        course.setC(id);
+        course.setCname("math");
+        course.setT(null);
+        String resultPost = sendPost("http://localhost:8081/add_course_info_strong", course);
+        try{
+            Thread.sleep(2000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String resultGetSC = sendGet("http://localhost:8083/get_sc?id="+id);
+        String resultGetTeacher = sendGet("http://localhost:8082/get_teacher?id="+id);
+        assertThat(checkResult(resultPost),is(false));
+        assertThat(checkResult(resultGetSC),is(false));
+        assertThat(checkResult(resultGetTeacher),is(false));
+    }
     
     @Test
     public void assertSuccessFinalSynchronizationTest() {
@@ -80,8 +142,7 @@ public class BaseIT {
         assertThat(checkResult(resultGetSC),is(false));
         assertThat(checkResult(resultGetTeacher),is(false));
     }
-
-
+    
     @Test
     public void assertFailureFinalSynchronizationWithNullTest() {
         Course course = new Course();

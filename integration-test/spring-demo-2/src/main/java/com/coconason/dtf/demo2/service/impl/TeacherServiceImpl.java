@@ -69,13 +69,11 @@ public class TeacherServiceImpl implements ITeacherService {
     @Transactional
     public DemoResult addTeacherInfoStrong(Teacher teacher) throws Exception {
         if(teacherMapper.insertSelective(teacher)>0){
-            if(teacher.getT()==2){
-                Sc sc = new Sc();
-                sc.setC(teacher.getT());
-                sc.setS(teacher.getT());
-                sc.setScore(95);
-                restClient.sendPost("http://localhost:8083/add_sc_info_strong",sc);
-            }
+            Sc sc = new Sc();
+            sc.setC(teacher.getT());
+            sc.setS(teacher.getT());
+            sc.setScore(95);
+            restClient.sendPost("http://localhost:8083/add_sc_info_strong",sc);
             return new DemoResult().ok();
         }else{
             return new DemoResult().build(ErrorCode.SYS_ERROR.value(), ErrorCode.SYS_ERROR.msg());
@@ -103,8 +101,7 @@ public class TeacherServiceImpl implements ITeacherService {
         //int kk = 6/0;
         return teacher;
     }
-
-
+    
     @Override
     public Teacher getTeacher(int id) throws Exception {
         TeacherExample teacherExample = new TeacherExample();

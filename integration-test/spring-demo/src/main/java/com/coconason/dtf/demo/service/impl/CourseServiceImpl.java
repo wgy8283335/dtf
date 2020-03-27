@@ -84,11 +84,11 @@ public class CourseServiceImpl implements ICourseService {
     public DemoResult addCourseInfoStrong(Course course) throws Exception {
         courseMapper.insertSelective(course);
         Teacher teacher = new Teacher();
-        teacher.setT(course.getC());
+        teacher.setT(course.getT());
         teacher.setTname("Lin");
         restClient.sendPost("http://localhost:8082/set_teacher_info_strong",teacher);
         Teacher teacher1 = new Teacher();
-        teacher1.setT(course.getC());
+        teacher1.setT(course.getT()*10);
         teacher1.setTname("Yun");
         restClient.sendPost("http://localhost:8082/set_teacher_info_strong",teacher1);
         return new DemoResult().ok();

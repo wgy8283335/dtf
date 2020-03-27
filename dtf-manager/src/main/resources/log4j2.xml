@@ -8,6 +8,16 @@
         </Console>
 
         <!--输出到日志文件中-->
+        <RollingFile name="DebugLog" fileName="server-logs/debugLog.log"
+                     filePattern="server-logs/$${date:yyyy-MM}/debug-%d{yyyy-MM-dd}-%i.log">
+            <ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout  pattern="%d{YYYY-MM-dd HH:mm:ss} [%logger{36}:%L] %-5level - %msg%n"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="50MB"/>
+            </Policies>
+        </RollingFile>
+        
+        <!--输出到日志文件中-->
         <RollingFile name="InfoLog" fileName="server-logs/infoLog.log"
                      filePattern="server-logs/$${date:yyyy-MM}/info-%d{yyyy-MM-dd}-%i.log">
             <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>

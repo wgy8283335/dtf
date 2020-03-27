@@ -9,7 +9,7 @@
             <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level [%logger{50}:%L] [%X{X-B3-TraceId},%X{X-B3-SpanId}] - %msg%n" charset="UTF-8"/>
         </Console>
 
-        <RollingRandomAccessFile name="FILE-INFO" fileName="logs/spring-demo2-info.log"
+        <RollingRandomAccessFile name="FILE-INFO" fileName="logs/spring-demo3-info.log"
                                  filePattern="logs/spring-demo22-info.%d{yyyy-MM-dd-HH}.log">
             <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY" />
             <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level [%logger{50}:%L] [%X{X-B3-TraceId},%X{X-B3-SpanId}] - %msg%n" charset="UTF-8" />
@@ -23,7 +23,7 @@
         </RollingRandomAccessFile>
 
 
-        <RollingRandomAccessFile name="FILE-DEBUG" fileName="logs/spring-demo2-debug.log"
+        <RollingRandomAccessFile name="FILE-DEBUG" fileName="logs/spring-demo3-debug.log"
                                  filePattern="logs/spring-demo2-debug.%d{yyyy-MM-dd-HH}.log">
             <ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY" />
             <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS}  [%t] %-5level [%logger{50}:%L] [%X{X-B3-TraceId},%X{X-B3-SpanId}] - %msg%n" charset="UTF-8" />
@@ -36,7 +36,7 @@
             </DefaultRolloverStrategy>
         </RollingRandomAccessFile>
 
-        <RollingRandomAccessFile name="FILE-WARN" fileName="logs/spring-demo2-warn.log"
+        <RollingRandomAccessFile name="FILE-WARN" fileName="logs/spring-demo3-warn.log"
                                  filePattern="logs/spring-demo2-warn.%d{yyyy-MM-dd-HH}.log">
             <ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY" />
             <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level [%logger{50}:%L] [%X{X-B3-TraceId},%X{X-B3-SpanId}] - %msg%n" charset="UTF-8" />
@@ -49,7 +49,7 @@
             </DefaultRolloverStrategy>
         </RollingRandomAccessFile>
 
-        <RollingRandomAccessFile name="FILE-ERROR" fileName="logs/spring-demo2-error.log"
+        <RollingRandomAccessFile name="FILE-ERROR" fileName="logs/spring-demo3-error.log"
                                  filePattern="logs/spring-demo2-error.%d{yyyy-MM-dd-HH}.log">
             <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY" />
             <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level [%logger{50}:%L] [%X{X-B3-TraceId},%X{X-B3-SpanId}] - %msg%n" charset="UTF-8" />

@@ -100,6 +100,8 @@ public final class DtfConnectionDecorator implements Connection {
     
     private boolean hasClose;
     
+    private final int waitTime = 10000;
+    
     public DtfConnectionDecorator(final Connection connection) {
         this.connection = connection;
         this.readOnly = false;
@@ -467,7 +469,7 @@ public final class DtfConnectionDecorator implements Connection {
             JSONObject map = transactionServiceInfo.getInfo();
             threadLockCacheProxy.put(map.get("groupId").toString() + memberId, lc);
             queue.add(transactionServiceInfo);
-            boolean result = lc.await(10000, TimeUnit.MILLISECONDS);
+            boolean result = lc.await(waitTime, TimeUnit.MILLISECONDS);
             if (transactionWhenTimeout(result, memberId, groupId, groupMembers)) {
                 return;
             }

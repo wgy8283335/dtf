@@ -33,6 +33,11 @@ public final class LockAndCondition implements LockAndConditionInterface {
      * Condition.
      */
     private Condition condition;
+
+    /**
+     * Time for wait.
+     */
+    private final int waitTime = 10000;
     
     public LockAndCondition(final Lock lock) {
         this.lock = lock;
@@ -101,7 +106,7 @@ public final class LockAndCondition implements LockAndConditionInterface {
     public void sendAndWaitForSignal(final String groupId, final MessageProto.Message.ActionType action, 
                                      final ChannelHandlerContext ctx, final String msg) throws ServerChannelException {
         MessageSender.sendMsg(groupId, action, ctx);
-        boolean receivedSignal = await(10000, TimeUnit.MILLISECONDS);
+        boolean receivedSignal = await(waitTime, TimeUnit.MILLISECONDS);
         if (!receivedSignal) {
             boolean channelIsHealthy = NettyServer.isHealthy();
             if (channelIsHealthy) {
@@ -128,7 +133,7 @@ public final class LockAndCondition implements LockAndConditionInterface {
     public void sendAndWaitForSignalOnce(final String groupId, final MessageProto.Message.ActionType action, 
                                          final ChannelHandlerContext ctx, final String msg) throws ServerChannelException {
         MessageSender.sendMsg(groupId, action, ctx);
-        boolean receivedSignal = await(10000, TimeUnit.MILLISECONDS);
+        boolean receivedSignal = await(waitTime, TimeUnit.MILLISECONDS);
         if (!receivedSignal) {
             logger.error(msg + "\n" + "groupId:" + groupId + "\n" + "action:" + action);
             throw new ServerChannelException(msg);
@@ -149,7 +154,7 @@ public final class LockAndCondition implements LockAndConditionInterface {
     public void sendAndWaitForSignalIfFailSendMessage(final String groupId, final MessageProto.Message.ActionType action, 
                                                       final ChannelHandlerContext ctx, final String msg) throws ServerChannelException {
         MessageSender.sendMsg(groupId, action, ctx);
-        boolean receivedSignal = await(10000, TimeUnit.MILLISECONDS);
+        boolean receivedSignal = await(waitTime, TimeUnit.MILLISECONDS);
         if (!receivedSignal) {
             logger.error(msg + "\n" + "groupId:" + groupId + "\n" + "action:" + action);
             MessageSender.sendMsg(groupId.substring(0, 18), MessageProto.Message.ActionType.WHOLE_FAIL_STRONG, ctx);

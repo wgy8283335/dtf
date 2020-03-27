@@ -30,10 +30,13 @@ public class SignalStrategyForWholeSuccessStrong implements SignalStrategy {
         if (null != map) {
             temp = map;
         } else {
-            temp = JSONObject.parseObject(message.getInfo().toString());
+            temp = JSONObject.parseObject(message.getInfo());
         }
-        ClientLockAndConditionInterface secondlc = threadLockCacheProxy.getIfPresent(temp.get("groupId").toString());
-        secondlc.setState(OperationType.WHOLE_SUCCESS);
-        secondlc.signal();
+        ClientLockAndConditionInterface lc2 = threadLockCacheProxy.getIfPresent(temp.get("groupId").toString());
+        if (null == lc2) {
+            return;
+        }
+        lc2.setState(OperationType.WHOLE_SUCCESS);
+        lc2.signal();
     }
 }

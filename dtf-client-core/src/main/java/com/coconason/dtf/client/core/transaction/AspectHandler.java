@@ -68,6 +68,11 @@ public final class AspectHandler implements AspectInterface {
     @Autowired
     @Qualifier("threadLockCacheProxy")
     private Cache<String, ClientLockAndConditionInterface> threadLockCacheProxy;
+
+    /**
+     * Time for waiting.
+     */
+    private final int waitTime = 10000;
     
     /**
      * Aspect before the join point.
@@ -132,7 +137,7 @@ public final class AspectHandler implements AspectInterface {
             finalCommitThreadLockCacheProxy.put(TransactionGroupInfo.getCurrent().getGroupId(), asyncFinalCommitLc);
             BaseTransactionServiceInfo serviceInfo = TransactionServiceInfoFactory.newInstanceForAsyncCommit(UuidGenerator.generateUuid(),
                     MessageProto.Message.ActionType.ASYNC_COMMIT, TransactionGroupInfo.getCurrent().getGroupId(), TransactionGroupInfo.getCurrent().getGroupMembers());
-            asyncFinalCommitLc.awaitLimitedTime(nettyService, serviceInfo, "commit async fail", 10000, TimeUnit.MILLISECONDS);
+            asyncFinalCommitLc.awaitLimitedTime(nettyService, serviceInfo, "commit async fail", waitTime, TimeUnit.MILLISECONDS);
             return result;
         } else {
             Object result = point.proceed();
@@ -189,20 +194,21 @@ public final class AspectHandler implements AspectInterface {
             return result;
         }
     }
-
+    
     private void processForSyncStrong(final BaseTransactionGroupInfo transactionGroupInfo) throws Exception{
         String groupId = transactionGroupInfo.getGroupId();
         ClientLockAndConditionInterface lc = new ClientLockAndCondition(new ReentrantLock(), OperationType.DEFAULT);
         threadLockCacheProxy.put(groupId, lc);
-        boolean temp = lc.await(10000, TimeUnit.MILLISECONDS);
+        boolean temp = lc.await(waitTime, TimeUnit.MILLISECONDS);
         if(temp && lc.getState() == OperationType.WHOLE_SUCCESS) {
             queue.add(TransactionServiceInfoFactory.newInstanceForShortMessage(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.WHOLE_SUCCESS_STRONG_ACK, groupId));
             return;
         }
         if (temp && lc.getState() == OperationType.WHOLE_FAIL) {
             queue.add(TransactionServiceInfoFactory.newInstanceForShortMessage(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.WHOLE_FAIL_STRONG_ACK, groupId));
+            throw new Exception("system transaction error, receive WHOLE_FAIL message");
         }
-        throw new Exception("system transaction error");
+        throw new Exception("system transaction error, haven't receive WHOLE_SUCCESS message");
     }
     
     private Object proceedPointWhenSyncWithInfo(final TransactionType transactionType, final String info, final ProceedingJoinPoint point, 

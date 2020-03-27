@@ -31,7 +31,12 @@ public final class RestClientAsync {
     @Autowired
     @Qualifier("threadLockCacheProxy")
     private ThreadLockCacheProxy thirdThreadLockCacheProxy;
-
+    
+    /**
+     * Time for waiting.
+     */
+    private final int waitTime = 10000;
+    
     /**
      * Send request in post method.
      *
@@ -47,6 +52,6 @@ public final class RestClientAsync {
         TransactionGroupInfo.setCurrent(groupInfo);
         BaseTransactionServiceInfo transactionServiceInfo = TransactionServiceInfoFactory.newInstanceForRestful(UuidGenerator.generateUuid(), 
                 MessageProto.Message.ActionType.ADD_ASYNC, groupInfo.getGroupId(), groupInfo.getMemberId(), url, object, "post");
-        lc.awaitLimitedTime(nettyService, transactionServiceInfo, "RestClientAsync sendPost fail", 10000, TimeUnit.MILLISECONDS);
+        lc.awaitLimitedTime(nettyService, transactionServiceInfo, "RestClientAsync sendPost fail", waitTime, TimeUnit.MILLISECONDS);
     }
 }
