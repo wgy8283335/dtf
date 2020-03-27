@@ -56,7 +56,7 @@ public class Course implements Serializable {
      *
      * @mbggenerated Mon Aug 27 14:24:30 CST 2018
      */
-    public void setC(Integer c) {
+    public void setC(final Integer c) {
         this.c = c;
     }
 
@@ -80,7 +80,7 @@ public class Course implements Serializable {
      *
      * @mbggenerated Mon Aug 27 14:24:30 CST 2018
      */
-    public void setCname(String cname) {
+    public void setCname(final String cname) {
         this.cname = cname == null ? null : cname.trim();
     }
 
@@ -104,7 +104,7 @@ public class Course implements Serializable {
      *
      * @mbggenerated Mon Aug 27 14:24:30 CST 2018
      */
-    public void setT(Integer t) {
+    public void setT(final Integer t) {
         this.t = t;
     }
 }

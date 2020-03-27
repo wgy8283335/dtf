@@ -3,7 +3,7 @@ package com.coconason.dtf.manager;
 import com.coconason.dtf.manager.protobufserver.NettyServer;
 
 public class ManagerServerApplication {
-
+    
     /**
      * Entrance of Server.
      * 

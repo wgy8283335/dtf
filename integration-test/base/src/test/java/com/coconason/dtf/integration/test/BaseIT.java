@@ -42,7 +42,7 @@ public class BaseIT {
     @Test
     public void assertSuccessStrongSynchronizationTest() {
         Course course = new Course();
-        Integer id =  new Random().nextInt(1000000);
+        Integer id =  new Random().nextInt(100000000);
         course.setC(id);
         course.setCname("math");
         course.setT(id);
@@ -64,7 +64,7 @@ public class BaseIT {
     @Test
     public void assertFailureStrongSynchronizationTest() {
         Course course = new Course();
-        Integer id =  new Random().nextInt(1000000);
+        Integer id =  new Random().nextInt(100000000);
         course.setC(null);
         course.setCname("math");
         course.setT(id);
@@ -84,7 +84,7 @@ public class BaseIT {
     @Test
     public void assertFailureStrongSynchronizationWithNullTest() {
         Course course = new Course();
-        Integer id =  new Random().nextInt(1000000);
+        Integer id =  new Random().nextInt(100000000);
         course.setC(id);
         course.setCname("math");
         course.setT(null);
@@ -104,7 +104,7 @@ public class BaseIT {
     @Test
     public void assertSuccessFinalSynchronizationTest() {
         Course course = new Course();
-        Integer id =  new Random().nextInt(1000000);
+        Integer id =  new Random().nextInt(100000000);
         course.setC(id);
         course.setCname("math");
         course.setT(id);
@@ -126,7 +126,7 @@ public class BaseIT {
     @Test
     public void assertFailureFinalSynchronizationTest() {
         Course course = new Course();
-        Integer id =  new Random().nextInt(1000000);
+        Integer id =  new Random().nextInt(100000000);
         course.setC(null);
         course.setCname("math");
         course.setT(id);
@@ -146,7 +146,7 @@ public class BaseIT {
     @Test
     public void assertFailureFinalSynchronizationWithNullTest() {
         Course course = new Course();
-        Integer id =  new Random().nextInt(1000000);
+        Integer id =  new Random().nextInt(100000000);
         course.setC(id);
         course.setCname("math");
         course.setT(null);
@@ -166,7 +166,7 @@ public class BaseIT {
     @Test
     public void assertSuccessAsynchronizationTest() {
         Course course = new Course();
-        Integer id =  new Random().nextInt(1000000);
+        Integer id =  new Random().nextInt(100000000);
         course.setC(id);
         course.setCname("math");
         course.setT(id);
@@ -188,7 +188,7 @@ public class BaseIT {
     @Test
     public void assertFailureAsynchronizationTest() {
         Course course = new Course();
-        Integer id =  new Random().nextInt(1000000);
+        Integer id =  new Random().nextInt(100000000);
         course.setC(null);
         course.setCname("math");
         course.setT(id);
