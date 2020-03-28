@@ -7,7 +7,7 @@ import java.util.Set;
  * 
  * @Author: Jason
  */
-public final class TransactionMessageForSubmit extends TransactionMessageForSubmitAdaptor {
+public final class TransactionMessageForSubmit extends TransactionMessageForSubmitAdapter {
     
     /**
      * Group id.

@@ -9,7 +9,7 @@ import java.util.Set;
  * 
  * @Author: Jason
  */
-public final class TransactionMessageGroupAsync extends TransactionMessageGroupAsyncAdaptor {
+public final class TransactionMessageGroupAsync extends TransactionMessageGroupAsyncAdapter {
     
     /**
      * Group id.

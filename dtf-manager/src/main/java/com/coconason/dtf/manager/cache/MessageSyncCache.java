@@ -2,7 +2,6 @@ package com.coconason.dtf.manager.cache;
 
 import com.coconason.dtf.manager.message.TransactionMessageForAdding;
 import com.coconason.dtf.manager.message.TransactionMessageGroupInterface;
-import com.coconason.dtf.manager.service.CheckAndSubmitRunnable;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import org.slf4j.Logger;

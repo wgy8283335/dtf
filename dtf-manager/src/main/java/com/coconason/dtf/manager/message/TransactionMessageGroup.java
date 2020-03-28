@@ -12,7 +12,7 @@ import java.util.Set;
  *
  * @Author: Jason
  */
-public final class TransactionMessageGroup extends TransactionMessageGroupAdaptor {
+public final class TransactionMessageGroup extends TransactionMessageGroupAdapter {
     
     /**
      * Group id.

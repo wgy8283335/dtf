@@ -71,7 +71,7 @@ public final class LogUtilForSyncFinalSuspend {
             if ((positionForAppendMessage + bytes.length) >= (size * messageSize)) {
                 positionForAppendMessage = 0;
             }
-            FileLock fl = logChannel.lock(logChannel.position(), size, false);
+            final FileLock fl = logChannel.lock(logChannel.position(), size, false);
             logBuffer.position(positionForAppendMessage);
             logBuffer.put(bytes);
             logBuffer.force();

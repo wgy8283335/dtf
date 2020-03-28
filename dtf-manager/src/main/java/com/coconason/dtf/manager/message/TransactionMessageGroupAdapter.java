@@ -1,11 +1,11 @@
 package com.coconason.dtf.manager.message;
 
 /**
- * Adaptor of transaction message group.
+ * Adapter of transaction message group.
  * 
  * @Author: Jason
  */
-public abstract class TransactionMessageGroupAdaptor implements TransactionMessageGroupInterface<String> {
+public abstract class TransactionMessageGroupAdapter implements TransactionMessageGroupInterface<String> {
     
     /**
      * Override method.

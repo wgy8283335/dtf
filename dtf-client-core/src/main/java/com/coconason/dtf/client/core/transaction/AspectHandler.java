@@ -195,12 +195,12 @@ public final class AspectHandler implements AspectInterface {
         }
     }
     
-    private void processForSyncStrong(final BaseTransactionGroupInfo transactionGroupInfo) throws Exception{
+    private void processForSyncStrong(final BaseTransactionGroupInfo transactionGroupInfo) throws Exception {
         String groupId = transactionGroupInfo.getGroupId();
         ClientLockAndConditionInterface lc = new ClientLockAndCondition(new ReentrantLock(), OperationType.DEFAULT);
         threadLockCacheProxy.put(groupId, lc);
         boolean temp = lc.await(waitTime, TimeUnit.MILLISECONDS);
-        if(temp && lc.getState() == OperationType.WHOLE_SUCCESS) {
+        if (temp && lc.getState() == OperationType.WHOLE_SUCCESS) {
             queue.add(TransactionServiceInfoFactory.newInstanceForShortMessage(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.WHOLE_SUCCESS_STRONG_ACK, groupId));
             return;
         }

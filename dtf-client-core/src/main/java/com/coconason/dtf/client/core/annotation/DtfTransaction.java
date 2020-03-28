@@ -15,11 +15,12 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 public @interface DtfTransaction {
+    
     /**
      * There are three types of Dtf Transaction,as below: SYNC_FINAL SYNC_STRONG ASYNC_FINAL.
      * 
      * @return transaction type name
      */
     String type() default "SYNC_FINAL";
-
+    
 }

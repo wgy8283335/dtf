@@ -72,7 +72,12 @@ public final class TransactionMessageQueueProxy implements Queue {
     public Object remove() {
         return messageQueue.remove();
     }
-
+        
+    @Override
+    public boolean remove(final Object o) {
+        return messageQueue.remove(o);
+    }
+    
     /**
      * Get first base transaction service information from queue.
      * Blocking method.
@@ -129,11 +134,6 @@ public final class TransactionMessageQueueProxy implements Queue {
     @Override
     public Object[] toArray(final Object[] a) {
         return messageQueue.toArray();
-    }
-
-    @Override
-    public boolean remove(final Object o) {
-        return messageQueue.remove(o);
     }
 
     @Override
