@@ -6,6 +6,7 @@ package com.coconason.dtf.demo3.service;
  */
 
 import com.coconason.dtf.demo3.model.DemoResult;
+import com.coconason.dtf.demo3.po.Sc;
 
 public interface ISCService {
     DemoResult addSCInfoWithoutDtf(Sc course) throws Exception;

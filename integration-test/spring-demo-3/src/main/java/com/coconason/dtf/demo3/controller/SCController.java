@@ -1,6 +1,7 @@
 package com.coconason.dtf.demo3.controller;
 
 import com.coconason.dtf.demo3.model.DemoResult;
+import com.coconason.dtf.demo3.po.Sc;
 import com.coconason.dtf.demo3.service.ISCService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
