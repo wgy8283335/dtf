@@ -2,7 +2,6 @@ package com.coconason.dtf.demo2.controller;
 
 import com.coconason.dtf.demo2.constant.ErrorCode;
 import com.coconason.dtf.demo2.model.DemoResult;
-import com.coconason.dtf.demo2.po.Teacher;
 import com.coconason.dtf.demo2.service.ITeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;

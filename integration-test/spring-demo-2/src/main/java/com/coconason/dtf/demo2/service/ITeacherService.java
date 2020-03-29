@@ -7,7 +7,6 @@ package com.coconason.dtf.demo2.service;
 
 
 import com.coconason.dtf.demo2.model.DemoResult;
-import com.coconason.dtf.demo2.po.Teacher;
 
 public interface ITeacherService {
 

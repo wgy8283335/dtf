@@ -5,8 +5,6 @@ import com.coconason.dtf.client.core.spring.client.RestClient;
 import com.coconason.dtf.client.core.spring.client.RestClientAsync;
 import com.coconason.dtf.demo3.dao.ScMapper;
 import com.coconason.dtf.demo3.model.DemoResult;
-import com.coconason.dtf.demo3.po.Sc;
-import com.coconason.dtf.demo3.po.ScExample;
 import com.coconason.dtf.demo3.service.ISCService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
