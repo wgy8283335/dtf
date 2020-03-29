@@ -1,14 +1,18 @@
 package com.coconason.dtf.demo;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class SpringDemoApplication {
-
-	public static void main(String[] args) {
-		SpringApplication.run(SpringDemoApplication.class, args);
-	}
-
+    
+    /**
+     * Main entrance.
+     *
+     * @param args startup arguments
+     */
+    public static void main(final String[] args) {
+        SpringApplication.run(SpringDemoApplication.class, args);
+    }
+    
 }

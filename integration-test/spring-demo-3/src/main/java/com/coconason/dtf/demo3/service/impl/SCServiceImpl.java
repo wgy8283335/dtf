@@ -15,55 +15,94 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
+ * Implementation of SC Service.
+ * 
  * @Author: Jason
  * @date: 2018/8/27-15:08
  */
 @Service
 public class SCServiceImpl implements ISCService {
-
+    
     @Autowired
     private ScMapper scMapper;
+    
     @Autowired
     private RestClient restClient;
+    
     @Autowired
     private RestClientAsync restClientAsync;
 
+    /**
+     * Add SC information without distributed transaction.
+     *
+     * @param sc Sc
+     * @return DemoResult
+     * @throws Exception exception
+     */
     @Override
     @Transactional
-    public DemoResult addSCInfoWithoutDtf(Sc sc) throws Exception {
+    public DemoResult addSCInfoWithoutDtf(final Sc sc) throws Exception {
         //int i = 6/0;
         scMapper.insertSelective(sc);
         return new DemoResult().ok();
     }
 
+    /**
+     * Add SC information with distributed transaction in final synchronization mode.
+     *
+     * @param sc Sc
+     * @return DemoResult
+     * @throws Exception exception
+     */
     @Override
     @DtfTransaction
     @Transactional
-    public DemoResult addSCInfo(Sc sc) {
+    public DemoResult addSCInfo(final Sc sc) {
         //int i = 6/0;
         scMapper.insertSelective(sc);
         return new DemoResult().ok();
     }
 
+    /**
+     * Add SC information with distributed transaction in strong synchronization mode.
+     *
+     * @param sc Sc
+     * @return DemoResult
+     * @throws Exception exception
+     */
     @Override
-    @DtfTransaction(type="SYNC_STRONG")
+    @DtfTransaction(type = "SYNC_STRONG")
     @Transactional
-    public DemoResult addSCInfoStrong(Sc sc) throws Exception {
+    public DemoResult addSCInfoStrong(final Sc sc) throws Exception {
         //int i = 6/0;
         scMapper.insertSelective(sc);
         return new DemoResult().ok();
     }
 
+    /**
+     * Add SC information with distributed transaction in asynchronization mode.
+     *
+     * @param sc Sc
+     * @return DemoResult
+     * @throws Exception exception
+     */
     @Override
-    @DtfTransaction(type="ASYNC_FINAL")
+    @DtfTransaction(type = "ASYNC_FINAL")
     @Transactional
-    public DemoResult addSCInfoAsync(Sc sc) throws Exception {
+    public DemoResult addSCInfoAsync(final Sc sc) throws Exception {
         scMapper.insertSelective(sc);
         return new DemoResult().ok();
     }
 
+    /**
+     * Get sc information.
+     *
+     * @param id int
+     * @return Sc
+     * @throws Exception exception
+     */
     @Override
-    public Sc getSCInfo(int id) throws Exception {
+    public Sc getSCInfo(final int id) throws Exception {
         ScExample scExample = new ScExample();
         ScExample.Criteria criteria = scExample.createCriteria();
         criteria.andSEqualTo(id);
@@ -71,4 +110,5 @@ public class SCServiceImpl implements ISCService {
         Sc result = list.get(0);
         return result;
     }
+    
 }
