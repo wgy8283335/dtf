@@ -4,85 +4,140 @@ import com.alibaba.fastjson.JSONObject;
 
 import java.io.Serializable;
 
-
 public class DemoResult<T> implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // 响应业务状态
+
     private Integer code;
-    // 响应消息
+
     private String message;
-    // 响应中的数据
+
     private T datum;
 
-    public Integer getCode() {
-		return code;
-	}
-
-	public void setCode(Integer code) {
-		this.code = code;
-	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
-
-    public T getDatum() {
-        return datum;
-    }
-
-    public void setDatum(T datum) {
-        this.datum = datum;
-    }
-
-    public DemoResult(){
+    public DemoResult() {
         this.code = 200;
         this.message = "OK";
         this.datum = null;
     }
 
-    public DemoResult(Integer code, String message, T datum) {
+    public DemoResult(final Integer code, final String message, final T datum) {
         this.code = code;
         this.message = message;
         this.datum = datum;
     }
 
-    public DemoResult(Integer code, String message) {
+    public DemoResult(final Integer code, final String message) {
         this.code = code;
         this.message = message;
         this.datum = null;
     }
 
-    public DemoResult(T datum) {
+    public DemoResult(final T datum) {
         this.code = 200;
         this.message = "OK";
         this.datum = datum;
     }
-    
-    public DemoResult(String information) {
+
+    public DemoResult(final String information) {
         JSONObject map = new JSONObject().parseObject(information);
         code = map.getInteger("code");
         message = map.getString("message");
     }
-    
-    public DemoResult build(Integer code, String message, T datum) {
+
+    /**
+     * Get code value.
+     *
+     * @return code
+     */
+    public Integer getCode() {
+        return code;
+    }
+
+    /**
+     * Set code value.
+     *
+     * @param code Integer
+     */
+    public void setCode(final Integer code) {
+        this.code = code;
+    }
+
+    /**
+     * Get message.
+     *
+     * @return message
+     */
+    public String getMessage() {
+        return message;
+    }
+
+    /**
+     * Set message.
+     *
+     * @param message String
+     */
+    public void setMessage(final String message) {
+        this.message = message;
+    }
+
+    /**
+     * Get datum.
+     *
+     * @return datum value
+     */
+    public T getDatum() {
+        return datum;
+    }
+
+    /**
+     * Set datum.
+     *
+     * @param datum T
+     */
+    public void setDatum(final T datum) {
+        this.datum = datum;
+    }
+
+    /**
+     * Build DemoResult and return.
+     *
+     * @param code Integer
+     * @param message Integer
+     * @param datum T
+     * @return DemoResult
+     */
+    public DemoResult build(final Integer code, final String message, final T datum) {
         return new DemoResult(code, message, datum);
     }
-    public DemoResult build(Integer code, String message) {
+
+    /**
+     * Build DemoResult and return.
+     *
+     * @param code Integer
+     * @param message Integer
+     * @return DemoResult
+     */
+    public DemoResult build(final Integer code, final String message) {
         return new DemoResult(code, message, null);
     }
-    
-    public DemoResult ok(T datum) {
+
+    /**
+     * Build DemoResult and return ok.
+     *
+     * @param datum T
+     * @return DemoResult
+     */
+    public DemoResult ok(final T datum) {
         return new DemoResult(datum);
     }
 
+    /**
+     * Build DemoResult and return ok.
+     *
+     * @return DemoResult
+     */
     public DemoResult ok() {
         return new DemoResult();
     }
-
 
 }
