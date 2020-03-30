@@ -1,8 +1,8 @@
 package com.coconason.dtf.client.core.spring.client;
 
-import com.coconason.dtf.client.core.beans.BaseTransactionGroupInfo;
-import com.coconason.dtf.client.core.beans.TransactionGroupInfo;
-import com.coconason.dtf.client.core.beans.TransactionGroupInfoFactory;
+import com.coconason.dtf.client.core.beans.group.BaseTransactionGroupInfo;
+import com.coconason.dtf.client.core.beans.group.TransactionGroupInfo;
+import com.coconason.dtf.client.core.beans.group.TransactionGroupInfoFactory;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;

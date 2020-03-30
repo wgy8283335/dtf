@@ -1,7 +1,7 @@
 package com.coconason.dtf.client.core;
 
-import com.coconason.dtf.client.core.beans.BaseTransactionGroupInfo;
-import com.coconason.dtf.client.core.beans.TransactionGroupInfo;
+import com.coconason.dtf.client.core.beans.group.BaseTransactionGroupInfo;
+import com.coconason.dtf.client.core.beans.group.TransactionGroupInfo;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;

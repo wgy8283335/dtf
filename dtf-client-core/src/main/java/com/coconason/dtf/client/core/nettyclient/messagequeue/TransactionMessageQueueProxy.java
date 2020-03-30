@@ -1,6 +1,6 @@
 package com.coconason.dtf.client.core.nettyclient.messagequeue;
 
-import com.coconason.dtf.client.core.beans.BaseTransactionServiceInfo;
+import com.coconason.dtf.client.core.beans.service.BaseTransactionServiceInfo;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;

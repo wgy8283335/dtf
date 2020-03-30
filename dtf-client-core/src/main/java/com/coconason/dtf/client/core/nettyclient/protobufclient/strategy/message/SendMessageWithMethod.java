@@ -1,7 +1,7 @@
 package com.coconason.dtf.client.core.nettyclient.protobufclient.strategy.message;
 
 import com.alibaba.fastjson.JSONObject;
-import com.coconason.dtf.client.core.beans.BaseTransactionServiceInfo;
+import com.coconason.dtf.client.core.beans.service.BaseTransactionServiceInfo;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;

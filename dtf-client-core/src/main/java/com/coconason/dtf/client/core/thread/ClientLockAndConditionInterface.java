@@ -1,6 +1,6 @@
 package com.coconason.dtf.client.core.thread;
 
-import com.coconason.dtf.client.core.beans.BaseTransactionServiceInfo;
+import com.coconason.dtf.client.core.beans.service.BaseTransactionServiceInfo;
 import com.coconason.dtf.client.core.dbconnection.OperationType;
 import com.coconason.dtf.client.core.nettyclient.protobufclient.NettyService;
 

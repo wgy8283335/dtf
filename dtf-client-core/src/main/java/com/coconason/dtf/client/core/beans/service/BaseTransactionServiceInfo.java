@@ -1,4 +1,4 @@
-package com.coconason.dtf.client.core.beans;
+package com.coconason.dtf.client.core.beans.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.coconason.dtf.common.protobuf.MessageProto;

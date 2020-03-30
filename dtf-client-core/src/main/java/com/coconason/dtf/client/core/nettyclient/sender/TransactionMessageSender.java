@@ -1,6 +1,6 @@
 package com.coconason.dtf.client.core.nettyclient.sender;
 
-import com.coconason.dtf.client.core.beans.BaseTransactionServiceInfo;
+import com.coconason.dtf.client.core.beans.service.BaseTransactionServiceInfo;
 import com.coconason.dtf.client.core.nettyclient.protobufclient.NettyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

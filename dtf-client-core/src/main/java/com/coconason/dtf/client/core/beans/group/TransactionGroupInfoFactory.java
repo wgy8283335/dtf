@@ -1,4 +1,4 @@
-package com.coconason.dtf.client.core.beans;
+package com.coconason.dtf.client.core.beans.group;
 
 import java.util.HashSet;
 import java.util.Set;

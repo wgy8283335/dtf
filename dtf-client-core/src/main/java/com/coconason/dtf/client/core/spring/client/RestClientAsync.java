@@ -1,9 +1,9 @@
 package com.coconason.dtf.client.core.spring.client;
 
-import com.coconason.dtf.client.core.beans.BaseTransactionGroupInfo;
-import com.coconason.dtf.client.core.beans.BaseTransactionServiceInfo;
-import com.coconason.dtf.client.core.beans.TransactionGroupInfo;
-import com.coconason.dtf.client.core.beans.TransactionServiceInfoFactory;
+import com.coconason.dtf.client.core.beans.group.BaseTransactionGroupInfo;
+import com.coconason.dtf.client.core.beans.service.BaseTransactionServiceInfo;
+import com.coconason.dtf.client.core.beans.group.TransactionGroupInfo;
+import com.coconason.dtf.client.core.beans.service.TransactionServiceInfoFactory;
 import com.coconason.dtf.client.core.dbconnection.OperationType;
 import com.coconason.dtf.client.core.nettyclient.protobufclient.NettyService;
 import com.coconason.dtf.client.core.thread.ClientLockAndCondition;

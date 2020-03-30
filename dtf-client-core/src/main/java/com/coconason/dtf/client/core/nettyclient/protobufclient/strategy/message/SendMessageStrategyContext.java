@@ -1,6 +1,6 @@
 package com.coconason.dtf.client.core.nettyclient.protobufclient.strategy.message;
 
-import com.coconason.dtf.client.core.beans.BaseTransactionServiceInfo;
+import com.coconason.dtf.client.core.beans.service.BaseTransactionServiceInfo;
 import io.netty.channel.ChannelHandlerContext;
 
 import java.util.HashMap;

@@ -1,12 +1,12 @@
 package com.coconason.dtf.client.core.transaction;
 
 import com.coconason.dtf.client.core.annotation.DtfTransaction;
-import com.coconason.dtf.client.core.beans.BaseTransactionGroupInfo;
-import com.coconason.dtf.client.core.beans.BaseTransactionServiceInfo;
-import com.coconason.dtf.client.core.beans.TransactionGroupInfo;
-import com.coconason.dtf.client.core.beans.TransactionGroupInfoFactory;
-import com.coconason.dtf.client.core.beans.TransactionServiceInfoFactory;
-import com.coconason.dtf.client.core.beans.TransactionType;
+import com.coconason.dtf.client.core.beans.group.BaseTransactionGroupInfo;
+import com.coconason.dtf.client.core.beans.service.BaseTransactionServiceInfo;
+import com.coconason.dtf.client.core.beans.group.TransactionGroupInfo;
+import com.coconason.dtf.client.core.beans.group.TransactionGroupInfoFactory;
+import com.coconason.dtf.client.core.beans.service.TransactionServiceInfoFactory;
+import com.coconason.dtf.client.core.beans.type.TransactionType;
 import com.coconason.dtf.client.core.constants.Member;
 import com.coconason.dtf.client.core.dbconnection.OperationType;
 import com.coconason.dtf.client.core.nettyclient.protobufclient.NettyService;
