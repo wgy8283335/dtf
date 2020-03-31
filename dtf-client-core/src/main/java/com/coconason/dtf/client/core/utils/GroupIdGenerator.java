@@ -11,15 +11,15 @@ public class GroupIdGenerator {
      * Generate snowflake id according to worker id and data center id.
      * 
      * @param workerId work id
-     * @param datacenterId data center id
+     * @param dataCenterId data center id
      * @return snow flake id
      */
-    public static String getStringId(final long workerId, final long datacenterId) {
-        return String.valueOf(getId(workerId, datacenterId));
+    public static String getStringId(final long workerId, final long dataCenterId) {
+        return String.valueOf(getId(workerId, dataCenterId));
     }
     
-    private static long getId(final long workerId, final long datacenterId) {
-        return SnowflakeIdWorker.nextId(workerId, datacenterId);
+    private static long getId(final long workerId, final long dataCenterId) {
+        return SnowflakeIdWorker.nextId(workerId, dataCenterId);
     }
     
     private static class SnowflakeIdWorker {
@@ -73,7 +73,7 @@ public class GroupIdGenerator {
          * @param dataCenterIdTemp data center id
          * @return SnowflakeId
          */
-        public static long nextId(final long workerIdTemp, final long dataCenterIdTemp) {
+        static long nextId(final long workerIdTemp, final long dataCenterIdTemp) {
             if (workerId > MAX_WORKER_ID || workerId < 0) {
                 throw new IllegalArgumentException(String.format("worker Id can't be greater than %d or less than 0", MAX_WORKER_ID));
             }
@@ -107,7 +107,7 @@ public class GroupIdGenerator {
          * @param lastTimestamp last time stamp
          * @return time stamp
          */
-        protected static long tilNextMillis(final long lastTimestamp) {
+        private static long tilNextMillis(final long lastTimestamp) {
             long timestamp = timeGen();
             while (timestamp <= lastTimestamp) {
                 timestamp = timeGen();
@@ -120,7 +120,7 @@ public class GroupIdGenerator {
          * 
          * @return current time in millisecond
          */
-        protected static long timeGen() {
+        private static long timeGen() {
             return System.currentTimeMillis();
         }
     }

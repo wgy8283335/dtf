@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @PropertySource("classpath:application.properties")
-final class ThreadPoolForClientConfiguration {
+public final class ThreadPoolForClientConfiguration {
     
     /**
      * Core size of pool.

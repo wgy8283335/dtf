@@ -94,8 +94,8 @@ public final class DtfConnectionDecorator implements Connection {
         this.hasRead = false;
     }
     
-    public DtfConnectionDecorator(final Connection connection, final ThreadLockCacheProxy threadLockCacheProxy, final Queue queue, final ThreadLockCacheProxy secondThreadLockCacheProxy,
-                                  final ExecutorService threadPoolForClientProxy, final ThreadLockCacheProxy syncFinalCommitThreadLockCacheProxy) {
+    public DtfConnectionDecorator(final Connection connection, final ThreadLockCacheProxy threadLockCacheProxy, 
+                                  final Queue queue, final ExecutorService threadPoolForClientProxy) {
         this.connection = connection;
         this.threadLockCacheProxy = threadLockCacheProxy;
         this.queue = queue;

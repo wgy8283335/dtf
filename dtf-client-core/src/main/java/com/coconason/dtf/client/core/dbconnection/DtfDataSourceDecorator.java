@@ -29,16 +29,16 @@ public final class DtfDataSourceDecorator implements DataSource {
     @Autowired
     @Qualifier("transactionMessageQueueProxy")
     private Queue queue;
-    
-    @Autowired
-    private ThreadLockCacheProxy secondThreadLockCacheProxy;
+//    
+//    @Autowired
+//    private ThreadLockCacheProxy secondThreadLockCacheProxy;
     
     @Autowired
     @Qualifier("threadPoolForClientProxy")
     private ExecutorService threadPoolForClientProxy;
-    
-    @Autowired
-    private ThreadLockCacheProxy syncFinalCommitThreadLockCacheProxy;
+//    
+//    @Autowired
+//    private ThreadLockCacheProxy syncFinalCommitThreadLockCacheProxy;
     
     public DtfDataSourceDecorator(final DataSource dataSource) {
         this.dataSource = dataSource;
@@ -47,14 +47,14 @@ public final class DtfDataSourceDecorator implements DataSource {
     @Override
     public Connection getConnection() throws SQLException {
         Connection connection = new DtfConnectionDecorator(dataSource.getConnection(), threadLockCacheProxy, queue, 
-                secondThreadLockCacheProxy, threadPoolForClientProxy, syncFinalCommitThreadLockCacheProxy);
+                threadPoolForClientProxy);
         return connection;
     }
     
     @Override
     public Connection getConnection(final String username, final String password) throws SQLException {
         Connection connection = new DtfConnectionDecorator(dataSource.getConnection(username, password), threadLockCacheProxy, 
-                queue, secondThreadLockCacheProxy, threadPoolForClientProxy, syncFinalCommitThreadLockCacheProxy);
+                queue, threadPoolForClientProxy);
         return connection;
     }
     
