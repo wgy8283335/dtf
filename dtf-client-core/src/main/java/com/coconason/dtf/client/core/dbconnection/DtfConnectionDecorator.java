@@ -78,25 +78,13 @@ public final class DtfConnectionDecorator implements Connection {
     private BaseTransactionServiceInfo transactionServiceInfo;
     
     /**
-     * Cache for thread lock.
-     */
-    private Cache<String, ClientLockAndConditionInterface> secondThreadLockCacheProxy;
-    
-    /**
      * Thread pool to execute transaction operations.
      */
     private ExecutorService threadPoolForClientProxy;
     
-    /**
-     * Cache for thread lock. Used as synchronous final commit.
-     */
-    private ThreadLockCacheProxy syncFinalCommitThreadLockCacheProxy;
-    
     private boolean readOnly;
     
     private boolean hasRead;
-    
-    private boolean hasClose;
     
     private final int waitTime = 10000;
     
@@ -104,7 +92,6 @@ public final class DtfConnectionDecorator implements Connection {
         this.connection = connection;
         this.readOnly = false;
         this.hasRead = false;
-        this.hasClose = false;
     }
     
     public DtfConnectionDecorator(final Connection connection, final ThreadLockCacheProxy threadLockCacheProxy, final Queue queue, final ThreadLockCacheProxy secondThreadLockCacheProxy,
@@ -112,12 +99,9 @@ public final class DtfConnectionDecorator implements Connection {
         this.connection = connection;
         this.threadLockCacheProxy = threadLockCacheProxy;
         this.queue = queue;
-        this.secondThreadLockCacheProxy = secondThreadLockCacheProxy;
         this.threadPoolForClientProxy = threadPoolForClientProxy;
-        this.syncFinalCommitThreadLockCacheProxy = syncFinalCommitThreadLockCacheProxy;
         this.readOnly = false;
         this.hasRead = false;
-        this.hasClose = false;
     }
     
     /**
