@@ -48,7 +48,7 @@ public class ClientLockAndConditionInterfaceTest {
         boolean actual = lc.await(1000, TimeUnit.MILLISECONDS);
         assertFalse(actual);
     }
-
+    
     @Test
     public void assertAwaitWithSignal() {
         ClientLockAndCondition lc = createLC();
@@ -87,13 +87,13 @@ public class ClientLockAndConditionInterfaceTest {
     }
     
     private class SignalRunnable implements Runnable {
-
+        
         ClientLockAndCondition lc;
-
+        
         public SignalRunnable(ClientLockAndCondition lc) {
             this.lc = lc;
         }
-
+        
         @Override
         public void run() {
             try {
