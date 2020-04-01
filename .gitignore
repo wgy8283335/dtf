@@ -10,7 +10,7 @@ logs/
 server-logs/
 out
 gen
-.lst
+*.lst
 dtf-client-core/target/
 dtf-client-demo/target/
 dtf-manager/target/

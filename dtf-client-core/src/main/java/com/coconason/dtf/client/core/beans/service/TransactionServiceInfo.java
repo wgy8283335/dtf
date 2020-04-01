@@ -25,7 +25,7 @@ public final class TransactionServiceInfo extends BaseTransactionServiceInfo {
      */
     private ActionType action;
     
-    TransactionServiceInfo(final String id, final JSONObject info, final ActionType action) {
+    public TransactionServiceInfo(final String id, final JSONObject info, final ActionType action) {
         this.id = id;
         this.info = info;
         this.action = action;

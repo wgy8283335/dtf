@@ -341,5 +341,4 @@ public class DtfConnectionDecoratorTest {
         };
         return result;
     }
-    
 }
