@@ -26,10 +26,7 @@ public class DtfHttpRequestInterceptorTest {
     
     @Test
     public void testIntercept() throws IOException {
-        Set set = new HashSet<Long>();
-        set.add(1L);
-        TransactionGroupInfo info = new TransactionGroupInfo("989", 1L, set);
-        TransactionGroupInfo.setCurrent(info);
+        prepare();
         ClientHttpRequestExecution clientHttpRequestExecution = mock(ClientHttpRequestExecution.class);
         HttpRequest request = createHttpRequest();
         byte[] bytes = new byte[10];
@@ -41,6 +38,13 @@ public class DtfHttpRequestInterceptorTest {
         assertEquals(expectedResponse, actual);
         assertTrue(groupInfo.getGroupMembers().contains(77L));
         assertTrue(groupInfo.getGroupMembers().contains(9876L));
+    }
+    
+    private void prepare() throws IOException {
+        Set set = new HashSet<Long>();
+        set.add(1L);
+        TransactionGroupInfo info = new TransactionGroupInfo("989", 1L, set);
+        TransactionGroupInfo.setCurrent(info);
     }
     
     private HttpRequest createHttpRequest() {
