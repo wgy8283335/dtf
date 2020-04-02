@@ -17,7 +17,7 @@ public final class TransactionGroupInfo extends BaseTransactionGroupInfo {
     
     private Set<Long> groupMembers;
 
-    TransactionGroupInfo(final String groupId, final Long memberId, final Set<Long> groupMembers) {
+    public TransactionGroupInfo(final String groupId, final Long memberId, final Set<Long> groupMembers) {
         this.groupId = groupId;
         this.memberId = memberId;
         this.groupMembers = groupMembers;

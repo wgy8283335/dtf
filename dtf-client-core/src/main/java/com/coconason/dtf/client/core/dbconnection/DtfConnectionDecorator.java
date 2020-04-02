@@ -2,8 +2,8 @@ package com.coconason.dtf.client.core.dbconnection;
 
 import com.alibaba.fastjson.JSONObject;
 import com.coconason.dtf.client.core.beans.group.BaseTransactionGroupInfo;
-import com.coconason.dtf.client.core.beans.service.BaseTransactionServiceInfo;
 import com.coconason.dtf.client.core.beans.group.TransactionGroupInfo;
+import com.coconason.dtf.client.core.beans.service.BaseTransactionServiceInfo;
 import com.coconason.dtf.client.core.beans.service.TransactionServiceInfoFactory;
 import com.coconason.dtf.client.core.beans.type.TransactionType;
 import com.coconason.dtf.client.core.thread.ClientLockAndCondition;
@@ -11,7 +11,6 @@ import com.coconason.dtf.client.core.thread.ClientLockAndConditionInterface;
 import com.coconason.dtf.client.core.thread.ThreadLockCacheProxy;
 import com.coconason.dtf.common.protobuf.MessageProto;
 import com.coconason.dtf.common.utils.UuidGenerator;
-import com.google.common.cache.Cache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -486,6 +485,7 @@ public final class DtfConnectionDecorator implements Connection {
                     logger.error(e.getMessage());
                     logger.info("commit failure");
                     addNewTransactionServiceToQueueWhenFalse(groupId, groupMembers, memberId);
+                    return true;
                 }
                 logger.info("commit success");
                 addNewTransactionServiceToQueueWhenCommit(groupId, groupMembers, memberId);
