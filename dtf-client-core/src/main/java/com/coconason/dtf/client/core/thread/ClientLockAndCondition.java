@@ -97,7 +97,7 @@ public final class ClientLockAndCondition implements ClientLockAndConditionInter
         nettyService.sendMsg(serviceInfo);
         boolean receivedSignal = wait(milliseconds, timeUnit);
         if (!receivedSignal) {
-            throw new Exception(msg);
+            throw new InterruptedException(msg);
         }
     }
     
