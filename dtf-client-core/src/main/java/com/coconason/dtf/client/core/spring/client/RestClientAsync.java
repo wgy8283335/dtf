@@ -45,13 +45,51 @@ public final class RestClientAsync {
      * @throws Exception when awaitLimitedTime() throw exception
      */
     public void sendPost(final String url, final Object object) throws Exception {
+        send(url, object, "post");
+    }
+    
+    /**
+     * Send request in put method.
+     *
+     * @param url http url
+     * @param object parameter
+     * @throws Exception when awaitLimitedTime() throw exception
+     */
+    public void sendPut(final String url, final Object object) throws Exception {
+        send(url, object, "put");
+    }
+    
+    /**
+     * Send request in delete method.
+     *
+     * @param url http url
+     * @param object parameter
+     * @throws Exception when awaitLimitedTime() throw exception
+     */
+    public void sendDelete(final String url, final Object object) throws Exception {
+        send(url, object, "delete");
+    }
+    
+    /**
+     * Send request in get method.
+     *
+     * @param url http url
+     * @param object parameter
+     * @throws Exception when awaitLimitedTime() throw exception
+     */
+    public void sendGet(final String url, final Object object) throws Exception {
+        send(url, object, "get");
+    }
+    
+    private void send(final String url, final Object object, final String httpAction) throws Exception {
         BaseTransactionGroupInfo groupInfo = TransactionGroupInfo.getCurrent();
         ClientLockAndCondition lc = new ClientLockAndCondition(new ReentrantLock(), OperationType.DEFAULT);
         thirdThreadLockCacheProxy.put(groupInfo.getGroupId(), lc);
         groupInfo.addNewMember();
         TransactionGroupInfo.setCurrent(groupInfo);
-        BaseTransactionServiceInfo transactionServiceInfo = TransactionServiceInfoFactory.newInstanceForRestful(UuidGenerator.generateUuid(), 
-                MessageProto.Message.ActionType.ADD_ASYNC, groupInfo.getGroupId(), groupInfo.getMemberId(), url, object, "post");
+        BaseTransactionServiceInfo transactionServiceInfo = TransactionServiceInfoFactory.newInstanceForRestful(UuidGenerator.generateUuid(),
+                MessageProto.Message.ActionType.ADD_ASYNC, groupInfo.getGroupId(), groupInfo.getMemberId(), url, object, httpAction);
         lc.awaitLimitedTime(nettyService, transactionServiceInfo, "RestClientAsync sendPost fail", waitTime, TimeUnit.MILLISECONDS);
     }
+    
 }
