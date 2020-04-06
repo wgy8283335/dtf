@@ -19,7 +19,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
-public class ClientLockAndConditionInterfaceTest {
+public class ClientLockAndConditionTest {
     
     @Test
     public void assertConstructor() {

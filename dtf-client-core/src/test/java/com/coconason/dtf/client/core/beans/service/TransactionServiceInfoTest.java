@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class BaseTransactionServiceInfoTest {
+public class TransactionServiceInfoTest {
     
     @Test
     public void assertCurrent() {

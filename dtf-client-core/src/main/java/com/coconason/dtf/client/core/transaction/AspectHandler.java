@@ -9,6 +9,7 @@ import com.coconason.dtf.client.core.beans.service.TransactionServiceInfoFactory
 import com.coconason.dtf.client.core.beans.type.TransactionType;
 import com.coconason.dtf.client.core.constants.Member;
 import com.coconason.dtf.client.core.dbconnection.OperationType;
+import com.coconason.dtf.client.core.exception.DtfException;
 import com.coconason.dtf.client.core.nettyclient.protobufclient.NettyService;
 import com.coconason.dtf.client.core.thread.ClientLockAndCondition;
 import com.coconason.dtf.client.core.thread.ClientLockAndConditionInterface;
@@ -206,9 +207,9 @@ public final class AspectHandler implements AspectInterface {
         }
         if (temp && lc.getState() == OperationType.WHOLE_FAIL) {
             queue.add(TransactionServiceInfoFactory.newInstanceForShortMessage(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.WHOLE_FAIL_STRONG_ACK, groupId));
-            throw new Exception("system transaction error, receive WHOLE_FAIL message");
+            throw new DtfException("system transaction error, receive WHOLE_FAIL message");
         }
-        throw new Exception("system transaction error, haven't receive WHOLE_SUCCESS message");
+        throw new DtfException("system transaction error, haven't receive WHOLE_SUCCESS message");
     }
     
     private Object proceedPointWhenSyncWithInfo(final TransactionType transactionType, final String info, final ProceedingJoinPoint point, 
