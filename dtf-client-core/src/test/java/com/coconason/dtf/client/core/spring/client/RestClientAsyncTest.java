@@ -24,14 +24,44 @@ public class RestClientAsyncTest {
         Set<Long> actual = transactionGroupInfo.getGroupMembers();
         assertEquals(2, actual.size());
     }
-
+    
+    @Test(expected = InterruptedException.class)
+    public void testSendPut() throws Exception {
+        setEnv();
+        RestClientAsync restClientAsync = createRestClientAsync();
+        restClientAsync.sendPut("http://test-url", new Object());
+        BaseTransactionGroupInfo transactionGroupInfo = TransactionGroupInfo.getCurrent();
+        Set<Long> actual = transactionGroupInfo.getGroupMembers();
+        assertEquals(2, actual.size());
+    }
+    
+    @Test(expected = InterruptedException.class)
+    public void testSendDelete() throws Exception {
+        setEnv();
+        RestClientAsync restClientAsync = createRestClientAsync();
+        restClientAsync.sendDelete("http://test-url", new Object());
+        BaseTransactionGroupInfo transactionGroupInfo = TransactionGroupInfo.getCurrent();
+        Set<Long> actual = transactionGroupInfo.getGroupMembers();
+        assertEquals(2, actual.size());
+    }
+    
+    @Test(expected = InterruptedException.class)
+    public void testSendGet() throws Exception {
+        setEnv();
+        RestClientAsync restClientAsync = createRestClientAsync();
+        restClientAsync.sendGet("http://test-url", new Object());
+        BaseTransactionGroupInfo transactionGroupInfo = TransactionGroupInfo.getCurrent();
+        Set<Long> actual = transactionGroupInfo.getGroupMembers();
+        assertEquals(2, actual.size());
+    }
+    
     private void setEnv() {
         Set<Long> setMembers = new HashSet<Long>();
         setMembers.add(1L);
         TransactionGroupInfo transactionGroupInfo = new TransactionGroupInfo("1234", 1L, setMembers);
         TransactionGroupInfo.setCurrent(transactionGroupInfo);
     }
-
+    
     private RestClientAsync createRestClientAsync() throws NoSuchFieldException, IllegalAccessException {
         RestClientAsync result = new RestClientAsync();
         Field field = result.getClass().getDeclaredField("thirdThreadLockCacheProxy");
