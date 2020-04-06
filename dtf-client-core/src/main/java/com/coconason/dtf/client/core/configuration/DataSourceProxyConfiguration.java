@@ -1,4 +1,4 @@
-package com.coconason.dtf.client.core;
+package com.coconason.dtf.client.core.configuration;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.coconason.dtf.client.core.dbconnection.DtfDataSourceDecorator;

@@ -1,4 +1,4 @@
-package com.coconason.dtf.client.core;
+package com.coconason.dtf.client.core.spring.client;
 
 import com.coconason.dtf.client.core.beans.group.BaseTransactionGroupInfo;
 import com.coconason.dtf.client.core.beans.group.TransactionGroupInfo;

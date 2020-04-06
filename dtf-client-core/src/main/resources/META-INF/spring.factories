@@ -1,1 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.coconason.dtf.client.core.DataSourceProxyConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.coconason.dtf.client.core.configuration.DataSourceProxyConfiguration
