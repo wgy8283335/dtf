@@ -19,7 +19,7 @@ public final class TransactionMessageForSubmit extends TransactionMessageForSubm
      */
     private Set<String> memberSet;
         
-    TransactionMessageForSubmit(final String groupId, final Set<String> memberSet) {
+    public TransactionMessageForSubmit(final String groupId, final Set<String> memberSet) {
         this.groupId = groupId;
         this.memberSet = memberSet;
     }

@@ -89,7 +89,7 @@ public final class SendAsyncRequestRunnable implements Runnable {
         for (MessageInfoInterface messageInfo : theMemberSet) {
             String url = messageInfo.getUrl();
             String obj = messageInfo.getObj().toString();
-            String result = HttpClientUtil.doPostJson(url, obj, transactionMessageForSubmit.getGroupId());
+            String result = sendByHttpAction(url, obj, null, "post");
             if ("".equals(result)) {
                 messageAsyncQueueProxy.add(messageInfo);
             } else {
@@ -98,6 +98,23 @@ public final class SendAsyncRequestRunnable implements Runnable {
             }
         }
         messageAsyncCacheProxy.invalidate(transactionMessageForSubmit.getGroupId());
+    }
+    
+    private String sendByHttpAction(String url, String request, Object uriVariables, String httpAction) {
+        String result = null;
+        switch (httpAction) {
+            case "post" :
+                result = HttpClientUtil.doPostJson(url, request, transactionMessageForSubmit.getGroupId());
+                break;
+            case "get" :
+                
+                break;
+            case "put" :
+                break;
+            case "delete" :
+                break;
+        }
+        return  result;
     }
     
 }

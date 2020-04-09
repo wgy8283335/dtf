@@ -1,7 +1,6 @@
-package com.coconason.dtf.manager.utils;
+package com.coconason.dtf.manager.log;
 
-import com.coconason.dtf.manager.log.LogUtilForSyncApproveSubmit;
-import com.coconason.dtf.manager.log.LogUtilForSyncFinalSuspend;
+import com.coconason.dtf.manager.log.LogUtilForSyncFinalSuccess;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -14,11 +13,11 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class LogUtilForSyncFinalSuspendTest {
+public class LogUtilForSyncFinalSuccessTest {
     
     @Test
     public void assertAppendAndGet(){
-        LogUtilForSyncFinalSuspend logUtil = LogUtilForSyncFinalSuspend.getInstance();
+        LogUtilForSyncFinalSuccess logUtil = LogUtilForSyncFinalSuccess.getInstance();
         logUtil.append("first log for test message");
         logUtil.append("second log for test message");
         String result1 = logUtil.getMessage(0,"first log for test message".length());
@@ -29,14 +28,14 @@ public class LogUtilForSyncFinalSuspendTest {
     
     @Test
     public void assertGetInstanceTwice() {
-        LogUtilForSyncFinalSuspend logUtil1 = LogUtilForSyncFinalSuspend.getInstance();
-        LogUtilForSyncFinalSuspend logUtil2 = LogUtilForSyncFinalSuspend.getInstance();
+        LogUtilForSyncFinalSuccess logUtil1 = LogUtilForSyncFinalSuccess.getInstance();
+        LogUtilForSyncFinalSuccess logUtil2 = LogUtilForSyncFinalSuccess.getInstance();
         assertThat(logUtil1, is(logUtil2));
     }
     
     @Test
     public void assertAppendWihtMultiThread(){
-        LogUtilForSyncFinalSuspend logUtil = LogUtilForSyncFinalSuspend.getInstance();
+        LogUtilForSyncFinalSuccess logUtil = LogUtilForSyncFinalSuccess.getInstance();
         ExecutorService executorService =  Executors.newCachedThreadPool();
         for(int i = 0; i < 50; i++) {
             executorService.execute(new LogRunnable(logUtil));
@@ -51,10 +50,10 @@ public class LogUtilForSyncFinalSuspendTest {
     }
     
     private class LogRunnable implements Runnable {
+        
+        LogUtilForSyncFinalSuccess logUtil;
 
-        LogUtilForSyncFinalSuspend logUtil;
-
-        public LogRunnable(LogUtilForSyncFinalSuspend logUtil) {
+        public LogRunnable(LogUtilForSyncFinalSuccess logUtil) {
             this.logUtil = logUtil;
         }
     
@@ -64,6 +63,6 @@ public class LogUtilForSyncFinalSuspendTest {
                 logUtil.append(UUID.randomUUID().toString());
             }
         }
+        
     }
-    
 }

@@ -34,7 +34,7 @@ public final class TransactionMessageGroup extends TransactionMessageGroupAdapte
      */
     private ChannelHandlerContext ctxForSubmitting;
     
-    TransactionMessageGroup(final String groupId) {
+    public TransactionMessageGroup(final String groupId) {
         this.groupId = groupId;
         this.memberList = new ArrayList<TransactionMessageForAddingInterface>();
         this.memberSet = new HashSet<String>();

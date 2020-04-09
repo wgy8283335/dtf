@@ -1,6 +1,6 @@
-package com.coconason.dtf.manager.utils;
+package com.coconason.dtf.manager.log;
 
-import com.coconason.dtf.manager.log.LogUtilForSyncFinalSuccess;
+import com.coconason.dtf.manager.log.LogUtilForSyncApproveSubmit;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -13,11 +13,11 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class LogUtilForSyncFinalSuccessTest {
+public class LogUtilForSyncApproveSubmitTest {
     
     @Test
     public void assertAppendAndGet(){
-        LogUtilForSyncFinalSuccess logUtil = LogUtilForSyncFinalSuccess.getInstance();
+        LogUtilForSyncApproveSubmit logUtil = LogUtilForSyncApproveSubmit.getInstance();
         logUtil.append("first log for test message");
         logUtil.append("second log for test message");
         String result1 = logUtil.getMessage(0,"first log for test message".length());
@@ -28,14 +28,14 @@ public class LogUtilForSyncFinalSuccessTest {
     
     @Test
     public void assertGetInstanceTwice() {
-        LogUtilForSyncFinalSuccess logUtil1 = LogUtilForSyncFinalSuccess.getInstance();
-        LogUtilForSyncFinalSuccess logUtil2 = LogUtilForSyncFinalSuccess.getInstance();
+        LogUtilForSyncApproveSubmit logUtil1 = LogUtilForSyncApproveSubmit.getInstance();
+        LogUtilForSyncApproveSubmit logUtil2 = LogUtilForSyncApproveSubmit.getInstance();
         assertThat(logUtil1, is(logUtil2));
     }
-    
+
     @Test
     public void assertAppendWihtMultiThread(){
-        LogUtilForSyncFinalSuccess logUtil = LogUtilForSyncFinalSuccess.getInstance();
+        LogUtilForSyncApproveSubmit logUtil = LogUtilForSyncApproveSubmit.getInstance();
         ExecutorService executorService =  Executors.newCachedThreadPool();
         for(int i = 0; i < 50; i++) {
             executorService.execute(new LogRunnable(logUtil));
@@ -51,9 +51,9 @@ public class LogUtilForSyncFinalSuccessTest {
     
     private class LogRunnable implements Runnable {
         
-        LogUtilForSyncFinalSuccess logUtil;
+        LogUtilForSyncApproveSubmit logUtil;
 
-        public LogRunnable(LogUtilForSyncFinalSuccess logUtil) {
+        public LogRunnable(LogUtilForSyncApproveSubmit logUtil) {
             this.logUtil = logUtil;
         }
     
