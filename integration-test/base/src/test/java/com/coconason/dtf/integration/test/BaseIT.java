@@ -29,7 +29,7 @@ public class BaseIT {
             InputStream inputStream = process.getInputStream();
             readStreamInfo(errorStream, inputStream);
             int i = process.waitFor();
-            if(i==0) {
+            if (i == 0) {
                 System.out.println("Initialization process success");
             } else {
                 System.out.println("Initialization process failure");
@@ -47,7 +47,7 @@ public class BaseIT {
         course.setCname("math");
         course.setT(id);
         String resultPost = sendPost("http://localhost:8081/add_course_info_strong", course);
-        try{
+        try {
             Thread.sleep(2000);
         } catch (Exception e) {
             e.printStackTrace();
@@ -69,7 +69,7 @@ public class BaseIT {
         course.setCname("math");
         course.setT(id);
         String resultPost = sendPost("http://localhost:8081/add_course_info_strong", course);
-        try{
+        try {
             Thread.sleep(2000);
         } catch (Exception e) {
             e.printStackTrace();
@@ -89,7 +89,7 @@ public class BaseIT {
         course.setCname("math");
         course.setT(null);
         String resultPost = sendPost("http://localhost:8081/add_course_info_strong", course);
-        try{
+        try {
             Thread.sleep(2000);
         } catch (Exception e) {
             e.printStackTrace();
@@ -109,7 +109,7 @@ public class BaseIT {
         course.setCname("math");
         course.setT(id);
         String resultPost = sendPost("http://localhost:8081/add_course_info", course);
-        try{
+        try {
             Thread.sleep(2000);
         } catch (Exception e) {
             e.printStackTrace();
@@ -131,7 +131,7 @@ public class BaseIT {
         course.setCname("math");
         course.setT(id);
         String resultPost = sendPost("http://localhost:8081/add_course_info", course);
-        try{
+        try {
             Thread.sleep(2000);
         } catch (Exception e) {
             e.printStackTrace();
@@ -151,7 +151,7 @@ public class BaseIT {
         course.setCname("math");
         course.setT(null);
         String resultPost = sendPost("http://localhost:8081/add_course_info", course);
-        try{
+        try {
             Thread.sleep(2000);
         } catch (Exception e) {
             e.printStackTrace();
@@ -171,7 +171,7 @@ public class BaseIT {
         course.setCname("math");
         course.setT(id);
         String resultPost = sendPost("http://localhost:8081/add_course_info_async", course);
-        try{
+        try {
             Thread.sleep(2000);
         } catch (Exception e) {
             e.printStackTrace();
@@ -193,7 +193,7 @@ public class BaseIT {
         course.setCname("math");
         course.setT(id);
         String resultPost = sendPost("http://localhost:8081/add_course_info_async", course);
-        try{
+        try {
             Thread.sleep(2000);
         } catch (Exception e) {
             e.printStackTrace();
@@ -215,7 +215,7 @@ public class BaseIT {
             InputStream inputStream = process.getInputStream();
             readStreamInfo(errorStream, inputStream);
             int i = process.waitFor();
-            if(i == 0) {
+            if (i == 0) {
                 System.out.println("Destruction process success");
             } else {
                 System.out.println("Destruction process failure");
@@ -227,11 +227,11 @@ public class BaseIT {
     
     private static void readStreamInfo(InputStream... inputStreams) {
         for (InputStream in : inputStreams) {
-            new Thread(()->{
-                try{
+            new Thread(() -> {
+                try {
                     BufferedReader br = new BufferedReader(new InputStreamReader(in));
                     String line = null;
-                    while((line = br.readLine()) != null) {
+                    while ((line = br.readLine()) != null) {
                         System.out.println(line);
                     }
                 } catch (IOException e) {
@@ -255,7 +255,7 @@ public class BaseIT {
         } catch (RestClientException e) {
             return new DemoResult(500, "", null).toString();
         }
-        if(null == result){
+        if (null == result) {
             return new DemoResult(500, "", null).toString();
         }
         return result;
@@ -269,7 +269,7 @@ public class BaseIT {
         } catch (RestClientException e) {
             return new DemoResult(500, "", null).toString();
         }
-        if(null == result){
+        if (null == result) {
             return new DemoResult(500, "", null).toString();
         }
         return result;

@@ -2,6 +2,8 @@ package com.coconason.dtf.manager.message;
 
 import io.netty.channel.ChannelHandlerContext;
 
+import java.util.List;
+
 /**
  * Adapter of transaction message group interface for asynchronous.
  *
@@ -84,6 +86,16 @@ public abstract class TransactionMessageGroupAsyncAdapter implements Transaction
      */
     @Override
     public Object getObj() {
+        return null;
+    }
+    
+    /**
+     * Get member list.
+     *
+     * @return list of TransactionMessageForAddingInterface
+     */
+    @Override
+    public List<TransactionMessageForAddingInterface> getMemberList() {
         return null;
     }
     

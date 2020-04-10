@@ -26,7 +26,7 @@ public class TransactionMessageFactory {
     public static TransactionMessageGroupInterface getMessageForSubmitInstance(final MessageProto.Message message) {
         JSONObject info = JSONObject.parseObject(message.getInfo());
         String groupId = info.get("groupId").toString();
-        String[] strArray = info.get("groupMemberSet").toString().replace("[", "").replace("]", "").split(", ");
+        String[] strArray = info.get("groupMemberSet").toString().replace("[", "").replace("]", "").split(",");
         Set<String> memberSet = new HashSet<String>();
         CollectionUtils.addAll(memberSet, strArray);
         TransactionMessageGroupInterface transactionMessageForSubmit = new TransactionMessageForSubmit(groupId, memberSet);
@@ -47,10 +47,6 @@ public class TransactionMessageFactory {
         String method = info.get("method").toString();
         String args = info.get("args").toString();
         TransactionMessageForAddingInterface tmfa = new TransactionMessageForAdding(groupMemberId, ctx, method, args);
-        List<TransactionMessageForAddingInterface> memberList = new ArrayList<TransactionMessageForAddingInterface>();
-        Set<String> memberSet = new HashSet<String>();
-        memberList.add(tmfa);
-        memberSet.add(tmfa.getGroupMemberId());
         TransactionMessageGroupInterface result = new TransactionMessageGroup(groupId);
         result.addMemberToGroup(tmfa);
         return result;

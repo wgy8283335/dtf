@@ -47,16 +47,6 @@ public final class TransactionMessageGroupAsync extends TransactionMessageGroupA
     }
     
     /**
-     * Get member list.
-     *
-     * @return list of TransactionMessageForAddingInterface
-     */
-    @Override
-    public List<TransactionMessageForAddingInterface> getMemberList() {
-        return null;
-    }
-    
-    /**
      * Add member to member set.
      *
      * @param memberId member id
