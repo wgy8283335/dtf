@@ -48,7 +48,8 @@ public final class ConsumerFailingAsyncRequestRunnable implements Runnable {
             if (!messageInfo.isCommitted()) {
                 String url = messageInfo.getUrl();
                 String obj = messageInfo.getObj().toString();
-                String result = HttpClientUtil.doPostJson(url, obj, "");
+                String httpAction = messageInfo.getHttpAction();
+                String result = sendByHttpAction(url, obj, "", httpAction);
                 if ("".equals(result)) {
                     messageInfo.setCommitted(false);
                     logger.error(messageInfo.toString());
@@ -60,6 +61,25 @@ public final class ConsumerFailingAsyncRequestRunnable implements Runnable {
             messageInfo = null;
             continue;
         }
+    }
+    
+    private String sendByHttpAction(String url, String request, String groupId, String httpAction) {
+        String result = null;
+        switch (httpAction) {
+            case "post" :
+                result = HttpClientUtil.doPostJson(url, request, groupId);
+                break;
+            case "get" :
+                result = HttpClientUtil.doGet(url, groupId);
+                break;
+            case "put" :
+                result = HttpClientUtil.doPutJson(url, request, groupId);
+                break;
+            case "delete" :
+                result = HttpClientUtil.doDelete(url, groupId);
+                break;
+        }
+        return  result;
     }
     
 }

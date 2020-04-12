@@ -107,11 +107,13 @@ public final class SendAsyncRequestRunnable implements Runnable {
                 result = HttpClientUtil.doPostJson(url, request, transactionMessageForSubmit.getGroupId());
                 break;
             case "get" :
-                
+                result = HttpClientUtil.doGet(url, transactionMessageForSubmit.getGroupId());
                 break;
             case "put" :
+                result = HttpClientUtil.doPutJson(url, request, transactionMessageForSubmit.getGroupId());
                 break;
             case "delete" :
+                result = HttpClientUtil.doDelete(url, transactionMessageForSubmit.getGroupId());
                 break;
         }
         return  result;
