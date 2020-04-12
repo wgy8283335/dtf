@@ -38,4 +38,5 @@ public final class MessageSender {
         logger.debug("Send transaction message:\n" + message);
         ctx.writeAndFlush(message);
     }
+    
 }
