@@ -1,6 +1,5 @@
 package com.coconason.dtf.manager.log;
 
-import com.coconason.dtf.manager.log.LogUtilForSyncApproveSubmit;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -14,18 +13,18 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class LogUtilForSyncApproveSubmitTest {
-    
+
     @Test
-    public void assertAppendAndGet(){
+    public void assertAppendAndGet() {
         LogUtilForSyncApproveSubmit logUtil = LogUtilForSyncApproveSubmit.getInstance();
         logUtil.append("first log for test message");
         logUtil.append("second log for test message");
-        String result1 = logUtil.getMessage(0,"first log for test message".length());
-        String result2 = logUtil.getMessage(2048,"second log for test message".length());
+        String result1 = logUtil.getMessage(0, "first log for test message".length());
+        String result2 = logUtil.getMessage(2048, "second log for test message".length());
         assertThat(result1, is("first log for test message"));
         assertThat(result2, is("second log for test message"));
     }
-    
+
     @Test
     public void assertGetInstanceTwice() {
         LogUtilForSyncApproveSubmit logUtil1 = LogUtilForSyncApproveSubmit.getInstance();
@@ -34,7 +33,7 @@ public class LogUtilForSyncApproveSubmitTest {
     }
 
     @Test
-    public void assertAppendWihtMultiThread(){
+    public void assertAppendWithMultiThread() {
         LogUtilForSyncApproveSubmit logUtil = LogUtilForSyncApproveSubmit.getInstance();
         ExecutorService executorService =  Executors.newCachedThreadPool();
         for(int i = 0; i < 50; i++) {
@@ -45,24 +44,24 @@ public class LogUtilForSyncApproveSubmitTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        String result = logUtil.getMessage(2048*50*100,UUID.randomUUID().toString().length());
+        String result = logUtil.getMessage(2048*50*100, UUID.randomUUID().toString().length());
         assertThat(result.length(), is(UUID.randomUUID().toString().length()));
     }
     
     private class LogRunnable implements Runnable {
         
-        LogUtilForSyncApproveSubmit logUtil;
-
-        public LogRunnable(LogUtilForSyncApproveSubmit logUtil) {
+        private LogUtilForSyncApproveSubmit logUtil;
+        
+        LogRunnable(LogUtilForSyncApproveSubmit logUtil) {
             this.logUtil = logUtil;
         }
-    
+        
         @Override
         public void run() {
-            for(int i = 0; i < 100; i++){
+            for (int i = 0; i < 100; i++) {
                 logUtil.append(UUID.randomUUID().toString());
             }
         }
-        
     }
+    
 }

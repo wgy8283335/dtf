@@ -1,6 +1,5 @@
 package com.coconason.dtf.manager.log;
 
-import com.coconason.dtf.manager.log.LogUtilForSyncFinalSuccess;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -14,9 +13,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class LogUtilForSyncFinalSuccessTest {
-    
+
     @Test
-    public void assertAppendAndGet(){
+    public void assertAppendAndGet() {
         LogUtilForSyncFinalSuccess logUtil = LogUtilForSyncFinalSuccess.getInstance();
         logUtil.append("first log for test message");
         logUtil.append("second log for test message");
@@ -25,16 +24,16 @@ public class LogUtilForSyncFinalSuccessTest {
         assertThat(result1, is("first log for test message"));
         assertThat(result2, is("second log for test message"));
     }
-    
+
     @Test
     public void assertGetInstanceTwice() {
         LogUtilForSyncFinalSuccess logUtil1 = LogUtilForSyncFinalSuccess.getInstance();
         LogUtilForSyncFinalSuccess logUtil2 = LogUtilForSyncFinalSuccess.getInstance();
         assertThat(logUtil1, is(logUtil2));
     }
-    
+
     @Test
-    public void assertAppendWihtMultiThread(){
+    public void assertAppendWithMultiThread() {
         LogUtilForSyncFinalSuccess logUtil = LogUtilForSyncFinalSuccess.getInstance();
         ExecutorService executorService =  Executors.newCachedThreadPool();
         for(int i = 0; i < 50; i++) {
@@ -48,21 +47,21 @@ public class LogUtilForSyncFinalSuccessTest {
         String result = logUtil.getMessage(2048*50*100,UUID.randomUUID().toString().length());
         assertThat(result.length(), is(UUID.randomUUID().toString().length()));
     }
-    
-    private class LogRunnable implements Runnable {
-        
-        LogUtilForSyncFinalSuccess logUtil;
 
-        public LogRunnable(LogUtilForSyncFinalSuccess logUtil) {
+    private class LogRunnable implements Runnable {
+
+        private LogUtilForSyncFinalSuccess logUtil;
+
+        LogRunnable(LogUtilForSyncFinalSuccess logUtil) {
             this.logUtil = logUtil;
         }
-    
+
         @Override
         public void run() {
-            for(int i = 0; i < 100; i++){
+            for (int i = 0; i < 100; i++) {
                 logUtil.append(UUID.randomUUID().toString());
             }
         }
-        
+
     }
 }
