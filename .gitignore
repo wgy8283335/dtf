@@ -21,7 +21,9 @@ spring-demo-3/.mvn
 spring-demo-3/mvnw
 spring-demo-3/mvnw.cmd
 dtf-common/target/
-spring-demo/target/
-spring-demo-2/target/
-spring-demo-3/target/
+integration-test/base/target/
+integration-test/spring-demo/target/
+integration-test/spring-demo-2/target/
+integration-test/spring-demo-3/target/
+target/
 dtf-common/src/main/resources/

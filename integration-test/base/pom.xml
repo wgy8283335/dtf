@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>integration-test</artifactId>
-        <groupId>com.coconason</groupId>
+        <groupId>com.dtf</groupId>
         <version>0.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -22,25 +22,25 @@
         </dependency>
         <!--demo-->
         <dependency>
-            <groupId>com.coconason</groupId>
+            <groupId>com.dtf</groupId>
             <artifactId>spring-demo</artifactId>
             <version>0.1</version>
         </dependency>
         <!--demo2-->
         <dependency>
-            <groupId>com.coconason</groupId>
+            <groupId>com.dtf</groupId>
             <artifactId>spring-demo-2</artifactId>
             <version>0.1</version>
         </dependency>
         <!--demo3-->
         <dependency>
-            <groupId>com.coconason</groupId>
+            <groupId>com.dtf</groupId>
             <artifactId>spring-demo-3</artifactId>
             <version>0.1</version>
         </dependency>
         <!--dtf-manager-->
         <dependency>
-            <groupId>com.coconason</groupId>
+            <groupId>com.dtf</groupId>
             <artifactId>dtf-manager</artifactId>
             <version>0.1</version>
         </dependency>
