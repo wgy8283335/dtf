@@ -65,7 +65,7 @@
 
     <loggers>
         <AsyncLogger name="springfox" level="OFF"></AsyncLogger>
-        <AsyncLogger level="DEBUG" name="com.coconason.dtf.demo.dao" additivity="false">
+        <AsyncLogger level="DEBUG" name="com.dtf.demo.dao" additivity="false">
             <appender-ref ref="FILE-DEBUG" />
             <appender-ref ref="STDOUT" />
         </AsyncLogger>
