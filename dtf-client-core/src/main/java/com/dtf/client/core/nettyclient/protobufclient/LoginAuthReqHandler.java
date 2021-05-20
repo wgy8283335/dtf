@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 /**
  * Login authorization request handler.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 @Component
 final class LoginAuthReqHandler extends ChannelInboundHandlerAdapter {

@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Proxy of cache for storing lock and condition.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public final class ServerThreadLockCacheProxy implements Cache {
     

@@ -5,7 +5,7 @@ package com.dtf.common.protobuf;
 /**
  * Auto generated proto message class.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 
 public final class MessageProto {

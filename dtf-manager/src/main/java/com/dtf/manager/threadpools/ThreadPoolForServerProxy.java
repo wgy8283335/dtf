@@ -17,7 +17,7 @@ import java.util.concurrent.TimeoutException;
 /**
  * Thread pool. Proxy of ExecutorService.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public final class ThreadPoolForServerProxy implements ExecutorService {
     

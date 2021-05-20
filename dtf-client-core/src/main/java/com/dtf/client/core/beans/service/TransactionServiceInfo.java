@@ -6,7 +6,7 @@ import com.dtf.common.protobuf.MessageProto.Message.ActionType;
 /**
  * TransactionServiceInfo is used to deliver the transaction information of client to dtf manager.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public final class TransactionServiceInfo extends BaseTransactionServiceInfo {
     

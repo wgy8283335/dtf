@@ -8,7 +8,7 @@ import java.util.Set;
 /**
  * Interface of transaction message group.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public interface TransactionMessageGroupInterface<T> {
     

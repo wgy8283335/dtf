@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 /**
  * Thread pool for client configuration.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 @Component
 @PropertySource("classpath:application.properties")

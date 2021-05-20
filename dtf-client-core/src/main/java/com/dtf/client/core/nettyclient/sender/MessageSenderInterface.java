@@ -3,7 +3,7 @@ package com.dtf.client.core.nettyclient.sender;
 /**
  * Interface of message sender.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public interface MessageSenderInterface {
     

@@ -17,7 +17,7 @@ import java.util.concurrent.ExecutorService;
 /**
  * Handle message for asynchronous commit.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public class HandleMessageForAsynchronousCommit implements HandleMessageStrategy {
     

@@ -14,7 +14,7 @@ import java.util.concurrent.ExecutorService;
 /**
  * Transaction message sender.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 
 @Component

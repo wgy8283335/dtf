@@ -14,7 +14,7 @@ import java.util.concurrent.ExecutorService;
 /**
  * Handle message for add action.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public class HandleMessageForAdd implements HandleMessageStrategy {
     

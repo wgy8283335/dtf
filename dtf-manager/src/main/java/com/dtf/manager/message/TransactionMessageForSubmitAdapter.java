@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Adapter of transaction message group interface for submitting.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public abstract class TransactionMessageForSubmitAdapter implements TransactionMessageGroupInterface<String> {
     

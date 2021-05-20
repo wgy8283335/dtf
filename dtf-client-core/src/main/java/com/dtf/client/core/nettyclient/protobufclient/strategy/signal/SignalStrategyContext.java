@@ -13,7 +13,7 @@ import com.dtf.common.protobuf.MessageProto.Message.ActionType;
 /**
  * Signal strategy context.
  *
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public final class SignalStrategyContext {
     

@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Http request interceptor.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 @Component
 final class DtfHttpRequestInterceptor implements ClientHttpRequestInterceptor {

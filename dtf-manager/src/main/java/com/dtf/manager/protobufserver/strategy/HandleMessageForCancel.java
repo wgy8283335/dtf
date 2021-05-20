@@ -12,7 +12,7 @@ import java.util.concurrent.ExecutorService;
 /**
  * Handle message for cancel action.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public class HandleMessageForCancel implements HandleMessageStrategy {
     

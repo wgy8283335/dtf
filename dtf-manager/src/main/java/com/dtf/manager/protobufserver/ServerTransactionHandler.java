@@ -19,7 +19,7 @@ import java.util.concurrent.ExecutorService;
  * Server transaction handler.
  * This part is the core of Manager.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public final class ServerTransactionHandler extends ChannelInboundHandlerAdapter {
     

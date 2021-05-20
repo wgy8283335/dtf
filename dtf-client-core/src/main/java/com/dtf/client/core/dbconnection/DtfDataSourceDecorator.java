@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  * Dtf data source decorator.
  * Implement the DataSource interface.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public final class DtfDataSourceDecorator implements DataSource {
     

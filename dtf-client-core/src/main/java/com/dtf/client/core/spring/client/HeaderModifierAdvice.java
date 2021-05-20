@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Controller Advice used to modify response header.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 @ControllerAdvice
 public final class HeaderModifierAdvice implements ResponseBodyAdvice<Object> {

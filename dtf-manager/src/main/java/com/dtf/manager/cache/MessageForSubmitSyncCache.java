@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Cache of message for synchronous submit.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public final class MessageForSubmitSyncCache implements MessageCacheInterface {
     

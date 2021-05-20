@@ -6,7 +6,7 @@ import io.netty.channel.ChannelHandlerContext;
 /**
  * Handle message strategy.
  *
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public interface HandleMessageStrategy {
     

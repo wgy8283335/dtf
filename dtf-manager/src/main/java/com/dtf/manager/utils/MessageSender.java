@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Message sender.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public final class MessageSender {
     

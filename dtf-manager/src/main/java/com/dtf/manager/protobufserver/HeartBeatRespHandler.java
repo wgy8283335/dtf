@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Heart beat request handler.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public final class HeartBeatRespHandler extends ChannelInboundHandlerAdapter {
     

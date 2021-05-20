@@ -9,7 +9,7 @@ import java.util.Set;
 /**
  * Utility of set.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public final class SetUtil {
     

@@ -10,7 +10,7 @@ import java.util.Set;
 /**
  * Transaction message group.
  *
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public final class TransactionMessageGroup extends TransactionMessageGroupAdapter {
     

@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 /**
  * Client transaction handler.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 @Component
 @ChannelHandler.Sharable

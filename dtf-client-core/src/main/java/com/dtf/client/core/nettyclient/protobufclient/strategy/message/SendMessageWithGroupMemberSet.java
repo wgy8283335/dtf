@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Implementation class of SendMessageStrategy interface.
  *
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public class SendMessageWithGroupMemberSet implements SendMessageStrategy {
 

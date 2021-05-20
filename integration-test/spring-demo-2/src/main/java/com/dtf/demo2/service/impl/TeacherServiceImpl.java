@@ -18,8 +18,7 @@ import java.util.List;
 /**
  * Implementation of teacher service.
  * 
- * @Author: wangguangyuan
- * @date: 2018/8/27-15:08
+ * @author wangguangyuan
  */
 @Service
 public class TeacherServiceImpl implements ITeacherService {

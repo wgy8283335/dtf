@@ -15,7 +15,7 @@ import java.util.concurrent.locks.Lock;
 /**
  * Lock and condition.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public final class LockAndCondition implements LockAndConditionInterface {
     

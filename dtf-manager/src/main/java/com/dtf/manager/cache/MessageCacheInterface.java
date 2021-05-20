@@ -5,7 +5,7 @@ import com.dtf.manager.message.TransactionMessageGroupInterface;
 /**
  * Interface of management of message cache.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public interface MessageCacheInterface {
     

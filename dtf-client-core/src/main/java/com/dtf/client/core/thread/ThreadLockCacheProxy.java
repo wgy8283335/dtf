@@ -14,12 +14,12 @@ import java.util.concurrent.ExecutionException;
 /**
  * proxy of guava cache.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
-@Component(value = "threadLockCacheProxy")
+@Component
 public final class ThreadLockCacheProxy implements Cache {
     
-    private Cache<String, ClientLockAndConditionInterface> cache;
+    private final Cache<String, ClientLockAndConditionInterface> cache;
     
     public ThreadLockCacheProxy() {
         cache = CacheBuilder.newBuilder().maximumSize(1000000L).build();

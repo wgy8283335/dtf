@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Interface of lock and condition.
  *
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public interface LockAndConditionInterface {
     

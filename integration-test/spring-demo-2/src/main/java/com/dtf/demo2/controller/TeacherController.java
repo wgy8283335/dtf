@@ -14,8 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * Teacher controller.
  * 
- * @Author: wangguangyuan
- * @date: 2018/8/27-15:00
+ * @author wangguangyuan
  */
 @RestController
 public class TeacherController {

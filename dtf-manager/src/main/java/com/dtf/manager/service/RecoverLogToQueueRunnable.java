@@ -12,7 +12,7 @@ import java.util.Queue;
 /**
  * Read log and send the uncommitted message to queue. 
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public final class RecoverLogToQueueRunnable implements Runnable {
     

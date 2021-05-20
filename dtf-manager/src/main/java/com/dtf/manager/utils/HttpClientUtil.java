@@ -19,7 +19,7 @@ import java.io.IOException;
 /**
  * Http client utility.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public final class HttpClientUtil {
     

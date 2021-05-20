@@ -3,7 +3,7 @@ package com.dtf.client.core.constants;
 /**
  * Member original id.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public final class Member {
     /**

@@ -3,7 +3,7 @@ package com.dtf.manager.message;
 /**
  * Message information.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public final class MessageInfo implements MessageInfoInterface {
     

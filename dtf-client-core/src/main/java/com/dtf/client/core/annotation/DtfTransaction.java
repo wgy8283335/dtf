@@ -9,7 +9,7 @@ import java.lang.annotation.RetentionPolicy;
 /**
  * Dtf Transaction Annotation.
  * 
- * @Author Jason
+ * @author wangguangyuan
  */
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)

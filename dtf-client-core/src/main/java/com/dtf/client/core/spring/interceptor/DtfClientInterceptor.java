@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Dtf client interceptor.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 @Aspect
 @Component

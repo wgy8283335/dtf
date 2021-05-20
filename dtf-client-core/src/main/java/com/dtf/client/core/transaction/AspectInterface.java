@@ -5,7 +5,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 /**
  * Aspect before the join point.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public interface AspectInterface {
 

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 /**
  * Implementation of application listener interface.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 
 @Service

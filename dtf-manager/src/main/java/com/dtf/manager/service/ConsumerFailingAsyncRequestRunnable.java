@@ -12,7 +12,7 @@ import java.util.Queue;
 /**
  * Consume failure asynchronous request.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public final class ConsumerFailingAsyncRequestRunnable implements Runnable {
     

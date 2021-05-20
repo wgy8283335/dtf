@@ -5,7 +5,7 @@ import java.util.UUID;
 /**
  * UUID Generator.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public final class UuidGenerator {
 

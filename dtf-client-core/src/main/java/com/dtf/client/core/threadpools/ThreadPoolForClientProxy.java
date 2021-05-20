@@ -18,7 +18,7 @@ import java.util.concurrent.TimeoutException;
 /**
  * Thread pool running on the client.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 @Component
 public final class ThreadPoolForClientProxy implements ExecutorService {

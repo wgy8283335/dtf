@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Message information.
  *
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public interface MessageInfoInterface extends Serializable {
     

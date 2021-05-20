@@ -12,7 +12,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 /**
  * Queue of asynchronous message.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public final class MessageAsyncQueueProxy implements Queue {
     

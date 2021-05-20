@@ -9,7 +9,7 @@ import java.util.Set;
 /**
  * Transaction service information factory.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public class TransactionServiceInfoFactory {
     

@@ -6,8 +6,7 @@ import com.dtf.demo2.po.Teacher;
 /**
  * Teacher service interface.
  * 
- * @Author: wangguangyuan
- * @date: 2018/8/27-15:00
+ * @author wangguangyuan
  */
 public interface ITeacherService {
     

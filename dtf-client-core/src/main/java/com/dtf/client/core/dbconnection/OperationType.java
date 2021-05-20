@@ -3,7 +3,7 @@ package com.dtf.client.core.dbconnection;
 /**
  * Transaction operation type of distributed transaction.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public enum OperationType {
     COMMIT,

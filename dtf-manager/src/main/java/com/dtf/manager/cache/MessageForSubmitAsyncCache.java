@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Cache of message for asynchronous submit.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public final class MessageForSubmitAsyncCache implements MessageCacheInterface {
     

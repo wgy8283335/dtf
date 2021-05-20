@@ -9,7 +9,7 @@ import java.util.Properties;
 /**
  * Reader of properties.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public final class PropertiesReader {
     

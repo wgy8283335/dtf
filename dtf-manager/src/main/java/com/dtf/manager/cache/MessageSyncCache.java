@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Cache of synchronous message.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public final class MessageSyncCache implements MessageCacheInterface {
     

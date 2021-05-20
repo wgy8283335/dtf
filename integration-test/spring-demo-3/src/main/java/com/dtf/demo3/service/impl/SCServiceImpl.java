@@ -17,8 +17,7 @@ import java.util.List;
 /**
  * Implementation of SC Service.
  * 
- * @Author: wangguangyuan
- * @date: 2018/8/27-15:08
+ * @author wangguangyuan
  */
 @Service
 public class SCServiceImpl implements ISCService {

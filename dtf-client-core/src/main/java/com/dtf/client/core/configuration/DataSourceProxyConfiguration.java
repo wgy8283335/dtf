@@ -13,7 +13,7 @@ import javax.sql.DataSource;
 /**
  * Data source proxy configuration.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 @Configuration
 @ComponentScan

@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Handle message for sub success.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public class HandleMessageForSubSuccess implements HandleMessageStrategy {
 

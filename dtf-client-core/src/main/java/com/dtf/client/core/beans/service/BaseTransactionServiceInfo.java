@@ -6,7 +6,7 @@ import com.dtf.common.protobuf.MessageProto;
 /**
  * Abstract class of base transaction service information.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public abstract class BaseTransactionServiceInfo {
 

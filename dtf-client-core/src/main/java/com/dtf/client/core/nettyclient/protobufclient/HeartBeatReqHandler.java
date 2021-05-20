@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Hear beat request handler.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 @Component
 final class HeartBeatReqHandler extends ChannelInboundHandlerAdapter {

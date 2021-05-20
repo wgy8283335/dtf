@@ -3,7 +3,7 @@ package com.dtf.manager.message;
 /**
  * Adapter of transaction message group.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public abstract class TransactionMessageGroupAdapter implements TransactionMessageGroupInterface<String> {
     

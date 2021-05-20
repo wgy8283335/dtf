@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Handle message for sub failure action.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public class HandleMessageForSubFail implements HandleMessageStrategy {
     

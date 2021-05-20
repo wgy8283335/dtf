@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Login authorization response handler.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public final class LoginAuthRespHandler extends ChannelInboundHandlerAdapter {
     

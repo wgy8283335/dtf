@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 /**
  * Netty service configuration.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 @Component
 @PropertySource("classpath:application.properties")

@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Cache of message asynchronous.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public final class MessageAsyncCache implements MessageCacheInterface {
     

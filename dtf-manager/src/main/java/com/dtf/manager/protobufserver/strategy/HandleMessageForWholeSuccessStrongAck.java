@@ -10,7 +10,7 @@ import io.netty.channel.ChannelHandlerContext;
 /**
  * Handle message for shole success strong ack action.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public class HandleMessageForWholeSuccessStrongAck implements HandleMessageStrategy {
     

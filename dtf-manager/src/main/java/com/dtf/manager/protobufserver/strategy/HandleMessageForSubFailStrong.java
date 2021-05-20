@@ -14,7 +14,7 @@ import java.util.concurrent.ExecutorService;
 /**
  * Handle message for sub failure strong action.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public class HandleMessageForSubFailStrong implements HandleMessageStrategy {
     

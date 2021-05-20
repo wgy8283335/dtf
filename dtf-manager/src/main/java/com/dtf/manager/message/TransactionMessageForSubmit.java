@@ -5,7 +5,7 @@ import java.util.Set;
 /**
  * Transaction message for submitting.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public final class TransactionMessageForSubmit extends TransactionMessageForSubmitAdapter {
     

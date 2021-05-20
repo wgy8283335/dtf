@@ -35,7 +35,7 @@ import java.io.InputStream;
 /**
  * Netty Server.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public final class NettyServer {
     

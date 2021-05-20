@@ -6,7 +6,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 /**
  * Abstract class of channel inbound handler adapter.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public abstract class AbstractClientTransactionHandler extends ChannelInboundHandlerAdapter {
 

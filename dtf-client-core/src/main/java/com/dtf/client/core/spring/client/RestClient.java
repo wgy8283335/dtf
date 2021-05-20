@@ -15,7 +15,7 @@ import java.util.Collections;
 /**
  * Restful request client in synchronous mode.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 @Component
 public final class RestClient {

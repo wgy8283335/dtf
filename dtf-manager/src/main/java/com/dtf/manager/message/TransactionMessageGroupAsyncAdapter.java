@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Adapter of transaction message group interface for asynchronous.
  *
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public abstract class TransactionMessageGroupAsyncAdapter implements TransactionMessageGroupInterface<MessageInfoInterface> {
     

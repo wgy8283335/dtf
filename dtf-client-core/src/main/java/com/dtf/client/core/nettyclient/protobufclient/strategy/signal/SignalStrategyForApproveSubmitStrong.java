@@ -9,7 +9,7 @@ import com.google.common.cache.Cache;
 /**
  * Process signal according to action type.
  *
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public class SignalStrategyForApproveSubmitStrong implements SignalStrategy {
     

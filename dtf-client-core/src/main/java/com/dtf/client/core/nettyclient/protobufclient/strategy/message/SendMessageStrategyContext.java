@@ -11,7 +11,7 @@ import com.dtf.common.protobuf.MessageProto.Message.ActionType;
 /**
  * Send message strategy context.
  *
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public final class SendMessageStrategyContext {
     

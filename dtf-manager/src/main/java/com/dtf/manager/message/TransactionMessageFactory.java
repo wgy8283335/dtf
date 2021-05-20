@@ -13,7 +13,7 @@ import java.util.Set;
 /**
  * Factory of creating transaction message.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public class TransactionMessageFactory {
     

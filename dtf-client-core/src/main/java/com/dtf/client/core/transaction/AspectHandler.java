@@ -33,7 +33,7 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * Aspect before the join point.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 @Component
 public final class AspectHandler implements AspectInterface {

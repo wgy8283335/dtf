@@ -14,7 +14,7 @@ import java.util.concurrent.ExecutorService;
 /**
  * Handle message for apply submit strong action.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public class HandleMessageForApplySubmitStrong implements HandleMessageStrategy {
     

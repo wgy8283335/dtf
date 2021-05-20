@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
  * The implementation of client lock and condition interface.
  * Wait and send signal between data source and netty client.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public interface ClientLockAndConditionInterface {
     

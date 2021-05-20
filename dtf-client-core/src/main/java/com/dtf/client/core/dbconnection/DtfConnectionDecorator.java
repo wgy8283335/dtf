@@ -42,7 +42,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * Dtf connection decorator.
  * Implement the java.sql.connection interface.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public final class DtfConnectionDecorator implements Connection {
     

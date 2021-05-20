@@ -3,7 +3,7 @@ package com.dtf.client.core.beans.type;
 /**
  * Transaction type.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public enum TransactionType {
     

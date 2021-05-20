@@ -20,7 +20,7 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * Restful request client in asynchronous mode.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 @Component
 public final class RestClientAsync {

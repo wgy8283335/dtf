@@ -17,7 +17,7 @@ import java.util.Set;
 /**
  * Send asynchronous request.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public final class SendAsyncRequestRunnable implements Runnable {
 

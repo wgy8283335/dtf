@@ -18,7 +18,7 @@ import java.util.concurrent.ExecutorService;
  * Check and submit runnable.
  * Process action, includes: ADD, ADD_STRONG, APPROVESUBMIT, APPROVESUBMIT_STRONG, CANCEL.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public final class CancelRunnable implements Runnable {
     

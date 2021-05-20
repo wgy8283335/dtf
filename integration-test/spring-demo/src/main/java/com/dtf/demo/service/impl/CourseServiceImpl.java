@@ -23,8 +23,7 @@ import java.util.List;
 /**
  * Course Service.
  * 
- * @Author: wangguangyuan
- * @date: 2018/8/27-15:08
+ * @author wangguangyuan
  */
 @Service
 public class CourseServiceImpl implements ICourseService {

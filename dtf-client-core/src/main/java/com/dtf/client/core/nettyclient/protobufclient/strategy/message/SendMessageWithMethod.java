@@ -12,7 +12,7 @@ import java.lang.reflect.Method;
 /**
  * Implementation class of SendMessageStrategy interface.
  *
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public class SendMessageWithMethod implements SendMessageStrategy {
 

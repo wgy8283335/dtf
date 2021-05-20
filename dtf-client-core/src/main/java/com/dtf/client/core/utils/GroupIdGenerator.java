@@ -3,7 +3,7 @@ package com.dtf.client.core.utils;
 /**
  * Generate snowflake id.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public class GroupIdGenerator {
     

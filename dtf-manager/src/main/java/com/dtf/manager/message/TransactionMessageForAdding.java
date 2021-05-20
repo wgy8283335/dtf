@@ -5,7 +5,7 @@ import io.netty.channel.ChannelHandlerContext;
 /**
  * Transaction message for adding.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public final class TransactionMessageForAdding implements TransactionMessageForAddingInterface {
     

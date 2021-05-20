@@ -7,7 +7,7 @@ import java.util.Set;
 /**
  * Transaction group information.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public final class TransactionGroupInfo extends BaseTransactionGroupInfo {
     

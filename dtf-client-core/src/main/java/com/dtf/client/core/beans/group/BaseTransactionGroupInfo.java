@@ -5,7 +5,7 @@ import java.util.Set;
 /**
  * Abstract class of base transaction group information.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public abstract class BaseTransactionGroupInfo {
     

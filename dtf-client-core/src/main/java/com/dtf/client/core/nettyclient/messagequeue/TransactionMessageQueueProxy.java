@@ -11,7 +11,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 /**
  * Linked blocking queue storing base transaction service information.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 @Component
 public final class TransactionMessageQueueProxy implements Queue {

@@ -6,7 +6,7 @@ import java.util.Set;
 /**
  * Transaction group information factory.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public class TransactionGroupInfoFactory {
 

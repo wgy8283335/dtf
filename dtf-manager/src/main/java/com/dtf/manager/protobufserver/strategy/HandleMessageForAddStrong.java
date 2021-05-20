@@ -13,7 +13,7 @@ import java.util.concurrent.ExecutorService;
 /**
  * Handle message for add strong action.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public class HandleMessageForAddStrong implements HandleMessageStrategy {
 

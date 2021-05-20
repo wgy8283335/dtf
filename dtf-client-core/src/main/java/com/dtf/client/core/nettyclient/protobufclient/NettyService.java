@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Netty service.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 @Component
 public final class NettyService {

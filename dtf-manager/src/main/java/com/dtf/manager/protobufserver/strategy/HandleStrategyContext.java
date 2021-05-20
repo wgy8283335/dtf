@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * Handle Strategy Context.
  *
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public final class HandleStrategyContext {
     

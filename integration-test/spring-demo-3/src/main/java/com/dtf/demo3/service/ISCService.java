@@ -3,8 +3,7 @@ package com.dtf.demo3.service;
 /**
  * Interface of SC.
  * 
- * @Author: wangguangyuan
- * @date: 2018/8/27-15:00
+ * @author wangguangyuan
  */
 
 import com.dtf.demo3.model.DemoResult;

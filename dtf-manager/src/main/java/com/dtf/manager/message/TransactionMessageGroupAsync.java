@@ -7,7 +7,7 @@ import java.util.Set;
 /**
  * Transaction message group for asynchronous.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public final class TransactionMessageGroupAsync extends TransactionMessageGroupAsyncAdapter {
     

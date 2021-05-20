@@ -13,7 +13,7 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * Send message.
  * 
- * @Author: wangguangyuan
+ * @author wangguangyuan
  */
 public final class SendMessageRunnable implements Runnable {
     
