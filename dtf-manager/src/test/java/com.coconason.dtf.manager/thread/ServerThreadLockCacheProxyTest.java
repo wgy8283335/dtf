@@ -1,4 +1,4 @@
-package com.coconason.dtf.manager.thread;
+package com.dtf.manager.thread;
 
 import org.junit.Test;
 

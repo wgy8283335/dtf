@@ -1,6 +1,6 @@
-package com.coconason.dtf.manager.thread;
+package com.dtf.manager.thread;
 
-import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
+import com.dtf.common.protobuf.MessageProto.Message.ActionType;
 import io.netty.channel.ChannelHandlerContext;
 import org.junit.Test;
 

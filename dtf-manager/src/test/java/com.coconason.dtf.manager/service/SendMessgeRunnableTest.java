@@ -1,7 +1,7 @@
-package com.coconason.dtf.manager.service;
+package com.dtf.manager.service;
 
-import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
-import com.coconason.dtf.manager.thread.ServerThreadLockCacheProxy;
+import com.dtf.common.protobuf.MessageProto.Message.ActionType;
+import com.dtf.manager.thread.ServerThreadLockCacheProxy;
 import org.junit.Test;
 
 import java.util.concurrent.ExecutorService;

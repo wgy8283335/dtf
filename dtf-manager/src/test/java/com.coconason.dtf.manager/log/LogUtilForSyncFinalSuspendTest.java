@@ -1,4 +1,4 @@
-package com.coconason.dtf.manager.log;
+package com.dtf.manager.log;
 
 import org.junit.FixMethodOrder;
 import org.junit.Test;

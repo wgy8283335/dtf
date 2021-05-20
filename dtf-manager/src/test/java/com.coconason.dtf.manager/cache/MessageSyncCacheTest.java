@@ -1,8 +1,8 @@
-package com.coconason.dtf.manager.cache;
+package com.dtf.manager.cache;
 
-import com.coconason.dtf.manager.message.TransactionMessageForAdding;
-import com.coconason.dtf.manager.message.TransactionMessageGroup;
-import com.coconason.dtf.manager.message.TransactionMessageGroupInterface;
+import com.dtf.manager.message.TransactionMessageForAdding;
+import com.dtf.manager.message.TransactionMessageGroup;
+import com.dtf.manager.message.TransactionMessageGroupInterface;
 import org.junit.Test;
 
 import java.util.HashSet;

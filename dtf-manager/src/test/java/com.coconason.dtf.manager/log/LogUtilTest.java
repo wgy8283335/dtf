@@ -1,7 +1,7 @@
-package com.coconason.dtf.manager.log;
+package com.dtf.manager.log;
 
-import com.coconason.dtf.manager.message.MessageInfo;
-import com.coconason.dtf.manager.message.MessageInfoInterface;
+import com.dtf.manager.message.MessageInfo;
+import com.dtf.manager.message.MessageInfoInterface;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;

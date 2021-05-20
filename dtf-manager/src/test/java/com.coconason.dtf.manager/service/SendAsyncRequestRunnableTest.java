@@ -1,11 +1,11 @@
-package com.coconason.dtf.manager.service;
+package com.dtf.manager.service;
 
-import com.coconason.dtf.common.protobuf.MessageProto;
-import com.coconason.dtf.manager.cache.MessageAsyncCache;
-import com.coconason.dtf.manager.cache.MessageCacheInterface;
-import com.coconason.dtf.manager.message.TransactionMessageForSubmit;
-import com.coconason.dtf.manager.message.TransactionMessageGroup;
-import com.coconason.dtf.manager.message.TransactionMessageGroupInterface;
+import com.dtf.common.protobuf.MessageProto;
+import com.dtf.manager.cache.MessageAsyncCache;
+import com.dtf.manager.cache.MessageCacheInterface;
+import com.dtf.manager.message.TransactionMessageForSubmit;
+import com.dtf.manager.message.TransactionMessageGroup;
+import com.dtf.manager.message.TransactionMessageGroupInterface;
 import org.junit.Test;
 
 import java.util.HashSet;

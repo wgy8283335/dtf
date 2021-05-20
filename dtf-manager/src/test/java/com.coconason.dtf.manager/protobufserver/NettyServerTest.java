@@ -1,4 +1,4 @@
-package com.coconason.dtf.manager.protobufserver;
+package com.dtf.manager.protobufserver;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;

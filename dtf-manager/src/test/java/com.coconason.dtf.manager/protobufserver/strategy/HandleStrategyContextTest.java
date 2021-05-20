@@ -1,20 +1,20 @@
-package com.coconason.dtf.manager.protobufserver.strategy;
+package com.dtf.manager.protobufserver.strategy;
 
 import com.alibaba.fastjson.JSONObject;
-import com.coconason.dtf.common.protobuf.MessageProto;
-import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
-import com.coconason.dtf.manager.cache.MessageAsyncCache;
-import com.coconason.dtf.manager.cache.MessageAsyncQueueProxy;
-import com.coconason.dtf.manager.cache.MessageCacheInterface;
-import com.coconason.dtf.manager.cache.MessageForSubmitAsyncCache;
-import com.coconason.dtf.manager.cache.MessageForSubmitSyncCache;
-import com.coconason.dtf.manager.cache.MessageSyncCache;
-import com.coconason.dtf.manager.message.TransactionMessageGroupInterface;
-import com.coconason.dtf.manager.protobufserver.ServerTransactionHandler;
-import com.coconason.dtf.manager.protobufserver.strategy.HandleStrategyContext;
-import com.coconason.dtf.manager.thread.LockAndConditionInterface;
-import com.coconason.dtf.manager.thread.ServerThreadLockCacheProxy;
-import com.coconason.dtf.manager.threadpools.ThreadPoolForServerProxy;
+import com.dtf.common.protobuf.MessageProto;
+import com.dtf.common.protobuf.MessageProto.Message.ActionType;
+import com.dtf.manager.cache.MessageAsyncCache;
+import com.dtf.manager.cache.MessageAsyncQueueProxy;
+import com.dtf.manager.cache.MessageCacheInterface;
+import com.dtf.manager.cache.MessageForSubmitAsyncCache;
+import com.dtf.manager.cache.MessageForSubmitSyncCache;
+import com.dtf.manager.cache.MessageSyncCache;
+import com.dtf.manager.message.TransactionMessageGroupInterface;
+import com.dtf.manager.protobufserver.ServerTransactionHandler;
+import com.dtf.manager.protobufserver.strategy.HandleStrategyContext;
+import com.dtf.manager.thread.LockAndConditionInterface;
+import com.dtf.manager.thread.ServerThreadLockCacheProxy;
+import com.dtf.manager.threadpools.ThreadPoolForServerProxy;
 import io.netty.channel.ChannelHandlerContext;
 import org.junit.Test;
 

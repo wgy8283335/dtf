@@ -1,6 +1,6 @@
-package com.coconason.dtf.manager.cache;
+package com.dtf.manager.cache;
 
-import com.coconason.dtf.manager.message.TransactionMessageForSubmit;
+import com.dtf.manager.message.TransactionMessageForSubmit;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

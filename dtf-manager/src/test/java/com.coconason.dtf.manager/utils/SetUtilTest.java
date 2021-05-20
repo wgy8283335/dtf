@@ -1,7 +1,7 @@
-package com.coconason.dtf.manager.utils;
+package com.dtf.manager.utils;
 
-import com.coconason.dtf.manager.message.MessageInfo;
-import com.coconason.dtf.manager.message.MessageInfoInterface;
+import com.dtf.manager.message.MessageInfo;
+import com.dtf.manager.message.MessageInfoInterface;
 import org.junit.Test;
 
 import java.util.HashSet;

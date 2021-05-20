@@ -1,4 +1,4 @@
-package com.coconason.dtf.manager.message;
+package com.dtf.manager.message;
 
 import io.netty.channel.ChannelHandlerContext;
 import org.junit.Test;

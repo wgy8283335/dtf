@@ -1,6 +1,6 @@
-package com.coconason.dtf.manager.service;
+package com.dtf.manager.service;
 
-import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
+import com.dtf.common.protobuf.MessageProto.Message.ActionType;
 import org.junit.Test;
 
 import java.util.concurrent.ExecutorService;

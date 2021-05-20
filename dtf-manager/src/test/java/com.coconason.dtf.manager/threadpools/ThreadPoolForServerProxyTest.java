@@ -1,6 +1,6 @@
-package com.coconason.dtf.manager.threadpools;
+package com.dtf.manager.threadpools;
 
-import com.coconason.dtf.manager.utils.PropertiesReader;
+import com.dtf.manager.utils.PropertiesReader;
 import org.junit.Test;
 
 import java.io.InputStream;

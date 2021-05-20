@@ -1,13 +1,13 @@
-package com.coconason.dtf.manager.message;
+package com.dtf.manager.message;
 
 import com.alibaba.fastjson.JSONObject;
-import com.coconason.dtf.common.protobuf.MessageProto;
+import com.dtf.common.protobuf.MessageProto;
 import org.junit.Test;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.coconason.dtf.common.protobuf.MessageProto.Message.newBuilder;
+import static com.dtf.common.protobuf.MessageProto.Message.newBuilder;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 

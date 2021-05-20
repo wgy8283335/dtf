@@ -1,4 +1,4 @@
-package com.coconason.dtf.manager.utils;
+package com.dtf.manager.utils;
 
 import org.junit.Test;
 

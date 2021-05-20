@@ -1,12 +1,12 @@
-package com.coconason.dtf.manager.service;
+package com.dtf.manager.service;
 
 import com.alibaba.fastjson.JSONObject;
-import com.coconason.dtf.common.protobuf.MessageProto.Message;
-import com.coconason.dtf.common.protobuf.MessageProto.Message.ActionType;
-import com.coconason.dtf.manager.cache.MessageCacheInterface;
-import com.coconason.dtf.manager.cache.MessageSyncCache;
-import com.coconason.dtf.manager.message.TransactionMessageGroup;
-import com.coconason.dtf.manager.message.TransactionMessageGroupInterface;
+import com.dtf.common.protobuf.MessageProto.Message;
+import com.dtf.common.protobuf.MessageProto.Message.ActionType;
+import com.dtf.manager.cache.MessageCacheInterface;
+import com.dtf.manager.cache.MessageSyncCache;
+import com.dtf.manager.message.TransactionMessageGroup;
+import com.dtf.manager.message.TransactionMessageGroupInterface;
 import org.junit.Test;
 
 import java.util.concurrent.ExecutorService;

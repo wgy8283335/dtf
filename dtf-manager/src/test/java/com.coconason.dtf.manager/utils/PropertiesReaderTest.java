@@ -1,6 +1,6 @@
-package com.coconason.dtf.manager.utils;
+package com.dtf.manager.utils;
 
-import com.coconason.dtf.manager.threadpools.ThreadPoolForServerProxyTest;
+import com.dtf.manager.threadpools.ThreadPoolForServerProxyTest;
 import org.junit.Test;
 
 import java.io.InputStream;

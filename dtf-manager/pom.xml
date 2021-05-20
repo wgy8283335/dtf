@@ -85,7 +85,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.coconason.dtf.manager.ManagerServerApplication</mainClass>
+                            <mainClass>com.dtf.manager.ManagerServerApplication</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
