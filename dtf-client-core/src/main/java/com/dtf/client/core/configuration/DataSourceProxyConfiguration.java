@@ -2,10 +2,16 @@ package com.dtf.client.core.configuration;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.dtf.client.core.dbconnection.DtfDataSourceDecorator;
+
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.core.env.Environment;
 
 import javax.sql.DataSource;
@@ -16,11 +22,16 @@ import javax.sql.DataSource;
  * @author wangguangyuan
  */
 @Configuration
-@ComponentScan
+@ComponentScan("com.dtf.client.core.dbconnection")
 public class DataSourceProxyConfiguration {
     
     @Autowired
     private Environment env;
+    
+    @Autowired
+    private DtfDataSourceDecorator dtfDataSourceDecorator;
+
+    private ApplicationContext context;
     
     /**
      * Create dtf data source.
@@ -45,10 +56,11 @@ public class DataSourceProxyConfiguration {
                 dataSource.setTestWhileIdle(true);
                 dataSource.setPoolPreparedStatements(false);
                 dataSource.setDefaultAutoCommit(false);
-                return new DtfDataSourceDecorator(dataSource);
+//                return new DtfDataSourceDecorator(dataSource);
+                dtfDataSourceDecorator.setDataSource(dataSource);
+                return dtfDataSourceDecorator;
             default:
                 return null;
         }
     }
-    
 }

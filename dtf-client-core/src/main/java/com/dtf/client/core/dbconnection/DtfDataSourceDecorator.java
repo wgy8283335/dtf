@@ -1,10 +1,13 @@
 package com.dtf.client.core.dbconnection;
 
 import com.dtf.client.core.thread.ThreadLockCacheProxy;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import javax.sql.DataSource;
+import org.springframework.stereotype.Component;
+
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -19,10 +22,11 @@ import java.util.logging.Logger;
  * 
  * @author wangguangyuan
  */
+@Component
 public final class DtfDataSourceDecorator implements DataSource {
     
     private DataSource dataSource;
-    
+
     @Autowired
     private ThreadLockCacheProxy threadLockCacheProxy;
     
@@ -92,5 +96,8 @@ public final class DtfDataSourceDecorator implements DataSource {
     public boolean isWrapperFor(final Class<?> iface) throws SQLException {
         return false;
     }
-    
+
+    public void setDataSource(final DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 }

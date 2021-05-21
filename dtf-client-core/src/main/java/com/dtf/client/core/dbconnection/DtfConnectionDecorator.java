@@ -13,6 +13,7 @@ import com.dtf.common.protobuf.MessageProto;
 import com.dtf.common.utils.UuidGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import java.sql.Array;
 import java.sql.Blob;
@@ -44,6 +45,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * 
  * @author wangguangyuan
  */
+@Component
 public final class DtfConnectionDecorator implements Connection {
     
     /**
@@ -86,13 +88,15 @@ public final class DtfConnectionDecorator implements Connection {
     private boolean hasRead;
     
     private final int waitTime = 10000;
-    
+
+    @SuppressWarnings("unchecked")
     public DtfConnectionDecorator(final Connection connection) {
         this.connection = connection;
         this.readOnly = false;
         this.hasRead = false;
     }
-    
+
+    @SuppressWarnings("unchecked")
     public DtfConnectionDecorator(final Connection connection, final ThreadLockCacheProxy threadLockCacheProxy, 
                                   final Queue queue, final ExecutorService threadPoolForClientProxy) {
         this.connection = connection;
@@ -108,6 +112,7 @@ public final class DtfConnectionDecorator implements Connection {
      * Only read only transaction could be committed by database connection directly.
      * Otherwise, commit will be handled by close(). Close() method is also a over written method.
      */
+    @SuppressWarnings("unchecked")
     @Override
     public void commit() throws SQLException {
         if (readOnly) {
@@ -123,6 +128,7 @@ public final class DtfConnectionDecorator implements Connection {
      * Only read only transaction could be rolled back by database connection directly.
      * Otherwise, commit will be rolled back by close(). Close() method is also a over written method.
      */
+    @SuppressWarnings("unchecked")
     @Override
     public void rollback() throws SQLException {
         if (readOnly) {
@@ -134,7 +140,8 @@ public final class DtfConnectionDecorator implements Connection {
         state = OperationType.ROLLBACK;
         connection.rollback();
     }
-    
+
+    @SuppressWarnings("unchecked")
     @Override
     public void rollback(final Savepoint savepoint) throws SQLException {
         logger.info("rollback");
@@ -146,6 +153,7 @@ public final class DtfConnectionDecorator implements Connection {
      * Close the connection.
      * The close() method is a over written method. Main process of the dtf transaction is described at here.
      */
+    @SuppressWarnings("unchecked")
     @Override
     public void close() throws SQLException {
         if (readOnly || hasRead || state == OperationType.ROLLBACK) {
@@ -441,6 +449,7 @@ public final class DtfConnectionDecorator implements Connection {
          * 5.Else if state get from the threadLockCacheProxy is OperationType.COMMIT or OperationType.ROLLBACK,then transactionWhenCommitOrRollback().
          * 6.Else if action type is ADD_STRONG or CANCEL, then transactionWhenAddStringOrCancel().
          */
+        @SuppressWarnings("unchecked")
         @Override
         public void run() {
             String groupId = transactionGroupInfo.getGroupId();
@@ -462,6 +471,7 @@ public final class DtfConnectionDecorator implements Connection {
             }
         }
         
+        @SuppressWarnings("unchecked")
         private boolean transactionWhenTimeout(final boolean result, final Long memberId, final String groupId, final Set groupMembers) {
             if (!result) {
                 logger.info("timeout and rollback");
@@ -476,6 +486,7 @@ public final class DtfConnectionDecorator implements Connection {
             return false;
         }
         
+        @SuppressWarnings("unchecked")
         private boolean transactionWhenCommit(final JSONObject map, final Long memberId, final String groupId, final Set groupMembers) {
             state = threadLockCacheProxy.getIfPresent(map.get("groupId").toString() + memberId).getState();
             if (state == OperationType.COMMIT) {
@@ -494,6 +505,7 @@ public final class DtfConnectionDecorator implements Connection {
             return false;
         }
         
+        @SuppressWarnings("unchecked")
         private boolean transactionWhenAddStringOrCancel(final Long memberId) {
             if ((memberId != 1) && (transactionServiceInfo.getAction() == MessageProto.Message.ActionType.ADD_STRONG) || transactionServiceInfo.getAction() == MessageProto.Message.ActionType.CANCEL) {
                 try {
@@ -506,6 +518,7 @@ public final class DtfConnectionDecorator implements Connection {
             return false;
         }
         
+        @SuppressWarnings("unchecked")
         private void addNewTransactionServiceToQueueWhenFalse(final String groupId, final Set groupMembers, final Long memberId) {
             if (transactionServiceInfo.getAction() == MessageProto.Message.ActionType.ADD_STRONG) {
                 queue.add(TransactionServiceInfoFactory.newInstanceForSub(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_FAIL_STRONG, groupId, groupMembers, memberId));
@@ -514,6 +527,7 @@ public final class DtfConnectionDecorator implements Connection {
             }
         }
         
+        @SuppressWarnings("unchecked")
         private void addNewTransactionServiceToQueueWhenCommit(final String groupId, final Set groupMembers, final Long memberId) {
             if (transactionServiceInfo.getAction() == MessageProto.Message.ActionType.ADD_STRONG) {
                 queue.add(TransactionServiceInfoFactory.newInstanceForSub(UuidGenerator.generateUuid(), MessageProto.Message.ActionType.SUB_SUCCESS_STRONG, groupId, groupMembers, memberId));
